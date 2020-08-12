@@ -1,13 +1,17 @@
 {
   "expo": {
-    "name": "kdg",
-    "slug": "kdg",
+    "name": "KDGAPP",
+    "slug": "KDGAPP",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
+    "androidNavigationBar": {
+      "visible": "sticky-immersive",
+      "barStyle": "dark-content"
+    },
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -17,7 +21,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.kdg.kdg",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.kdg.kdg",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
