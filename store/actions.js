@@ -206,6 +206,7 @@ export function asyncLogout(){
 export function asyncSetCurrency(currency){
     return async (dispatch) =>{
         try {
+            console.log(currency);
             dispatch(actChangeCurrency(currency))
             await AsyncStorage.setItem('currency', JSON.stringify(currency))
         } catch (error) {   

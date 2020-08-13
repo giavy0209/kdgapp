@@ -19,7 +19,7 @@ export default function App(){
         List.map((el,index) => {
         return (
 
-        <View key={index} style={accountStyle.blockSetting}>
+        <View key={index+ 'a'} style={accountStyle.blockSetting}>
             <Text style={accountStyle.settingTitle}>{el.name.toUpperCase()}</Text>
 
             {
@@ -27,7 +27,7 @@ export default function App(){
             
             return(
             <>
-            <Child.BlockComponent onPress={Child.navigate && (()=>handlePress(Child.navigate))} key={Child.index} style={[accountStyle.setting, index !== 0 && accountStyle.settingBorder]}>
+            <Child.BlockComponent onPress={Child.navigate && (()=>handlePress(Child.navigate))} key={index} style={[accountStyle.setting, index !== 0 && accountStyle.settingBorder]}>
                 <View style={accountStyle.maskOpacity}></View>
                 <View style={accountStyle.settingLeft}>
                     <View style={accountStyle.iconBlock}>
