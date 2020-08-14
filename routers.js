@@ -9,6 +9,8 @@ import Wallet from './components/Wallet'
     import News from './components/Wallet/News'
     import SetCoins from './components/Wallet/SetCoins'
     import History from './components/Wallet/History'
+    import Withdraw from './components/Wallet/Withdraw/Withdraw'
+    import WithdrawPage2 from './components/Wallet/Withdraw/WithdrawPage2'
 
 import Stake from './components/Stake'
 
@@ -111,6 +113,22 @@ const ROUTERS = [
         reqLogin: true,
         title: '',
         render : History,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'Withdraw',
+        reqLogin: true,
+        title: 'Chọn Coins',
+        render : Withdraw,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'WithdrawPage2',
+        reqLogin: true,
+        title: 'Gửi Coins',
+        render : WithdrawPage2,
         needFirstTime: false,
         needInMain: true
     },
