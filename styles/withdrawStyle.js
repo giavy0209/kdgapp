@@ -1,14 +1,16 @@
 import {StyleSheet} from 'react-native'
+import { Dimensions } from 'react-native';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+console.log("Width: " + windowWidth + " --- " + "Height: " + windowHeight);
 const styles = StyleSheet.create({
-    searchBoxContainer: {
+        searchBoxContainer: {
         borderRadius: 25,
         backgroundColor: 'rgba(46,47,79,0.4)',
-        marginLeft: 16,
-        marginRight: 16,
-        marginTop: 9,
-        height: 45,
+        height: (windowWidth*windowHeight)/7834,
         flexDirection: 'row',
-        paddingLeft: 20
+        paddingLeft: (windowWidth*windowHeight)/17625
 
     },
     searchBox: {
@@ -20,28 +22,29 @@ const styles = StyleSheet.create({
     },
 
     // ------------ List style -----------------
-        listContainer: {
-           marginTop: 22,
-           marginLeft: 15,
-           flexDirection: 'row',
-        },
         textList: {
-            fontSize: 16,
+            fontSize: (windowWidth*windowHeight)/22032,
             color: 'white',
 
         },
         description: {
-            fontSize: 13,
+            fontSize: (windowWidth*windowHeight)/27116,
             color: '#74767a',
         },
         exchangeRate: {
-            fontSize: 16,
+            fontSize: (windowWidth*windowHeight)/22032,
             color: 'rgba(241,243,244, 0.7)',
 
         },
         nearExchangeRate: {
-            fontSize: 13,
+            fontSize: (windowWidth*windowHeight)/27116,
             color: '#74767a',
+        },
+
+        listContainer : {
+            padding: (windowWidth*windowHeight)/23040,
+            borderBottomWidth:1,
+            borderBottomColor: '#29303d', 
         },
 
 // ---------WithdrawPage2----------
@@ -50,90 +53,49 @@ const styles = StyleSheet.create({
         balanceContainer: {
             borderRadius: 10,
             borderColor: '#cc9e00',
-            marginLeft: 16,
-            marginRight: 16,
-            marginTop: 10,
-            height: 80,
-            flexDirection: 'row',
-            paddingLeft: 5,
             borderWidth: 2,
-            marginBottom: 30,
+            margin: (windowWidth*windowHeight)/23040,
+            padding: (windowWidth*windowHeight)/23040,
         },
         coinName: {
-            fontSize: 16,
+            fontSize: (windowWidth*windowHeight)/16457,
             fontWeight: 'bold',
             color: 'white',
+            fontSize:  (windowWidth*windowHeight)/25179
 
         },
         balance: {
-            fontSize: 13,
             color: '#74767a',
+            fontSize: 14
         },
     // ------ Số tiền gửi ------------
         numberSendContainer: {
             borderRadius: 10,
-            marginLeft: 16,
-            marginRight: 16,
-            marginTop: 9,
-            height: 100,
+            margin: (windowWidth*windowHeight)/23040,
+            padding: (windowWidth*windowHeight)/23040,
             flexDirection: 'row',
-            paddingLeft: 5,
             backgroundColor: 'rgba(26,36,56, 0.8)',
-            marginBottom: 15
-        },
-        coinName: {
-            fontSize: 16,
-            fontWeight: 'bold',
-            color: 'white',
-
-        },
-        balance: {
-            fontSize: 13,
-            color: '#74767a',
         },
         nearSymbol: {
             color: 'rgba(241, 243, 244, 0.5)',
-            fontSize: 40
+            fontSize: (windowWidth*windowHeight)/10322
         },
         inputNumContainer: {
-            flexDirection: 'column',
             borderRadius: 10,
             backgroundColor: 'white',
-            marginLeft: 16,
-            marginRight: 16,
-            marginTop: 9,
-            height: 45,
             flexDirection: 'row',   
-            width: 150,
-    
+            width: windowWidth/3,
         },
         inputNumContainer2: {
-            flexDirection: 'column',
             borderRadius: 10,
             backgroundColor: 'white',
-            marginLeft: 16,
-            marginRight: 16,
-            marginTop: 9,
-            height: 45,
-            flexDirection: 'row',   
-            width: '100%',
+            width: '100%'
     
         },
         inputNum: {
             color: '#8a8c8e',
-        },
-        numberSendContainer2: {
-            borderRadius: 10,
-            marginLeft: 16,
-            marginRight: 16,
-            marginTop: 9,
-            height: 50,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            backgroundColor: 'rgba(26,36,56, 0.8)',
-            marginBottom: 15
+            fontSize: (windowWidth*windowHeight)/27116,
         }
-        
 
 
 })
