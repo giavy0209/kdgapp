@@ -12,7 +12,9 @@ import Wallet from './components/Wallet'
     import Withdraw from './components/Wallet/Withdraw/Withdraw'
     import WithdrawPage2 from './components/Wallet/Withdraw/WithdrawPage2'
 
-import Stake from './components/Stake'
+import Staking from './components/Stake'
+    import StakingHistory from './components/Stake/StakingHistory/'
+    import StakingJoining from './components/Stake/StakingJoining/'
 
 import Swap from './components/Swap'
 
@@ -244,6 +246,22 @@ const ROUTERS = [
         needFirstTime: false,
         needInMain: true
     },
+    {
+        name: 'StakingHistory',
+        reqLogin: true,
+        title: '',
+        render : StakingHistory,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'StakingJoining',
+        reqLogin: true,
+        title: '',
+        render : StakingJoining,
+        needFirstTime: false,
+        needInMain: true
+    },
 ];
 
 const TABS = [
@@ -258,7 +276,7 @@ const TABS = [
     {
         name: 'Staking',
         title: 'Staking',
-        render : Stake,
+        render : Staking,
         logo: tabStake,
         logoActive: tabStake,
         reqLogin: true,

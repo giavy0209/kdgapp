@@ -17,13 +17,7 @@ export default function App(){
 
 
     const [Width , setWidth] = useState(0);
-    const [list, setList] = useState([
-        {text: 'KDG', icon: coin, description: 'Kingdom Game 4.0', key: '1'},
-        {text: 'BTC', icon: coin, description: 'Bitcoin', key: '2'},
-        {text: 'ETH',icon: coin, description: 'Ethereum', key: '3'},
-        {text: 'KNC', icon: coin, description: 'Kyber Network', key: '4'}
-    
-      ]);
+  
     const [sendTo, setSendTo] = useState();
     const [address, setAddress] = useState();
     const [searchVal, setSearchVal] = useState();

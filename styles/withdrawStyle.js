@@ -17,8 +17,7 @@ const styles = StyleSheet.create({
         color: '#8a8c8e'
     },
     iconSearch: {
-        marginTop: 15,
-        paddingRight: 30
+    padding: (windowWidth*windowHeight)/28000
     },
 
     // ------------ List style -----------------

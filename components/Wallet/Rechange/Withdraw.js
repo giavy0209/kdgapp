@@ -25,7 +25,7 @@ export default function App(){
         
         <>
         <View style={mainStyles.container}>
-            <Header2 title="Chọn Coins"/>
+            
             <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
                 <View >
                     {/* <Image source={logo} style={{width: 25,padding: 0, height: 18 ,alignSelf: 'flex-start',resizeMode: 'contain'}} /> */}
