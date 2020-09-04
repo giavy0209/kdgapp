@@ -14,6 +14,7 @@ import Wallet from './components/Wallet'
 
 import Staking from './components/Stake'
     import StakingHistory from './components/Stake/StakingHistory/'
+    import StakingTime from './components/Stake/StakingTime/'
     import StakingJoining from './components/Stake/StakingJoining/'
 
 import Swap from './components/Swap'
@@ -251,6 +252,14 @@ const ROUTERS = [
         reqLogin: true,
         title: '',
         render : StakingHistory,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'StakingTime',
+        reqLogin: true,
+        title: '',
+        render : StakingTime,
         needFirstTime: false,
         needInMain: true
     },

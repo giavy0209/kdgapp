@@ -20,7 +20,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 export default function App({setOutScrollViewTop, setOutScrollView}){
 
     const [value, setValue] = useState(0);
-
+    const [isSelected, setSelection] = useState(false);
 
     const btnActive = (
         <JoinButton
@@ -53,11 +53,11 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         setOutScrollViewTop(<Header2 title="Tham gia Staking"/>)
         setOutScrollView(                
             <TouchableOpacity>
-                <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/56}}>
+                <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/25}}>
                     <LinearGradient 
                         start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                         colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
-                        style={{width: '90%', height: windowHeight/17, position: 'relative', backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30}}>
+                        style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 45}}>
                             <Text style={{color: '#111b2d', fontSize: 16}}>THAM GIA NGAY</Text>
                     </LinearGradient>
                 </View>
@@ -77,31 +77,31 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 <Image
                     source={require('../../../assets/images/coin.png')}
                 />
-                <Text style={{color: 'white', paddingBottom: windowHeight/30, fontSize: windowWidth*windowHeight/20843}}>KDG</Text>
+                <Text style={stakingStyle.coinName}>KDG</Text>
                 <View>
-                    <View style={{width: (windowHeight/60)*25.75, paddingBottom: 5, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Text style={{color: 'rgba(255,255,255,0.7)', width: '33.33%', fontSize: (windowWidth*windowHeight)/30020, textAlign: 'left'}}>Thời gian bắt đầu</Text>
-                        <Text style={{color: 'rgba(255,255,255,0.7)', width: '33.33%', fontSize: (windowWidth*windowHeight)/30020, textAlign: 'center' }}>Thời gian mở khóa</Text>
-                        <Text style={{color: 'rgba(255,255,255,0.7)', width: '33.33%', fontSize: (windowWidth*windowHeight)/30020, textAlign: 'right' }}>Thời gian phân bố gốc và lãi</Text>
+                    <View style={stakingStyle.timeContainer}>
+                        <Text style={{...stakingStyle.timeName, textAlign: 'left'}}>Thời gian bắt đầu</Text>
+                        <Text style={{...stakingStyle.timeName, textAlign: 'center'}}>Thời gian mở khóa</Text>
+                        <Text style={{...stakingStyle.timeName, textAlign: 'right'}}>Thời gian phân bố gốc và lãi</Text>
                     </View>
                         <Image
                             resizeMode={'cover'}
                             style={{ width: (windowHeight/60)*25.75, height: windowHeight/60 }}
                             source={require('../../../assets/images/timeline.png')}
                         />
-                    <View style={{width: (windowHeight/60)*25.75, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Text style={{color: 'rgba(255,255,255,0.9)', width: '33.33%', fontSize: (windowWidth*windowHeight)/26020, textAlign: 'left'}}>25/08/2020</Text>
-                        <Text style={{color: 'rgba(255,255,255,0.9)', width: '33.33%', fontSize: (windowWidth*windowHeight)/26020, textAlign: 'center' }}>29/08/2020</Text>
-                        <Text style={{color: 'rgba(255,255,255,0.9)', width: '33.33%', fontSize: (windowWidth*windowHeight)/26020, textAlign: 'right' }}>25/09/2020</Text>
+                    <View style={stakingStyle.dateContainer}>
+                        <Text style={{...stakingStyle.dateName, textAlign: 'left'}}>25/08/2020</Text>
+                        <Text style={{...stakingStyle.dateName, textAlign: 'center' }}>29/08/2020</Text>
+                        <Text style={{...stakingStyle.dateName, textAlign: 'right' }}>25/09/2020</Text>
                     </View>
                 </View>
             </View>
         </View>
         
-        <View style={{padding: (windowWidth*windowHeight)/29376, backgroundColor: 'rgba(29,37,54,0.8)'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10}}>
+        <View style={stakingStyle.mainStakingContainer}>
+            <View style={stakingStyle.stakingNumberContainer}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}> 
-                    <View style={{backgroundColor: 'rgba(16,20,34, 0.8)', width: (windowWidth*windowHeight)/10125, height: (windowWidth*windowHeight)/10125 , borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={stakingStyle.numberOrderContainer}>
                         <Text style={{color: '#fff'}}>1</Text>
                     </View>
                     <Text style={{paddingLeft: 10, color: '#fff'}}>Số tiền Staking</Text>
@@ -109,8 +109,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
 
                 <View>
-                    <Text style={{color: '#rgba(138,140,142, 0.8)', fontSize: (windowWidth*windowHeight)/25012}}>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </Text>
-    <Text style={{color: '#rgba(138,140,142, 0.8)', color: '#fff', fontSize: (windowWidth*windowHeight)/18506, position: 'absolute', bottom: windowHeight/222, left: windowWidth/7}}>{value}</Text>
+                    <Text style={stakingStyle.dashSymbol}>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </Text>
+                    <Text style={stakingStyle.valueStaking}>{value}</Text>
                 </View>
                 <Text style={{color: '#rgba(138,140,142, 0.8)', color: '#fff'}}>KDG</Text>
             </View>
@@ -136,24 +136,24 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}> 
-                    <View style={{backgroundColor: 'rgba(16,20,34, 0.8)', width: (windowWidth*windowHeight)/10125, height: (windowWidth*windowHeight)/10125 , borderRadius: 10, justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={stakingStyle.numberOrderContainer}>
                         <Text style={{color: '#fff'}}>2</Text>
                     </View>
                     <Text style={{paddingLeft: 10, color: '#fff'}}>Lãi suất tham chiếu năm</Text>
                 </View>
                 <Text style={{color: '#fff', paddingLeft: 10, fontSize: 20}}>30%</Text>
             </View>
-            <View style={{flexDirection: 'row', justifyContent: 'center', backgroundColor: '#fcf7bb', margin: (windowWidth*windowHeight)/3573 , marginVertical: windowHeight/50 , padding: (windowWidth*windowHeight)/12506, paddingVertical: windowHeight/80, borderRadius: 5}}>
+            <View style={stakingStyle.interestReceiveContainer}>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={{color: 'rgba(0,0,0,0.4)', fontSize: (windowWidth*windowHeight)/23000, fontWeight: 'bold'}}>Số tiền lãi nhận được</Text>
-                    <Text style={{paddingTop: 5, color: '#fac800', fontSize: (windowWidth*windowHeight)/19000, fontWeight: 'bold'}}>{(2.5*0.2*value)} KDG</Text>
+                    <Text style={stakingStyle.interestReceive}>Số tiền lãi nhận được</Text>
+                    <Text style={stakingStyle.interestReceiveUnit}>{(2.5*0.2*value)} KDG</Text>
                 </View>
             </View>
         </View>
         <View style={{padding: (windowWidth*windowHeight)/29376}}>
-            <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 20}}>
+            <View style={stakingStyle.iconInfoContainer}>
                 <FontAwesomeIcon size={20} color="#cb0d0d" icon={faInfoCircle}/>
-                <Text style={{paddingLeft: 10, color: '#fff', fontSize:  (windowWidth*windowHeight)/21000}}>Vui lòng đọc kĩ trước khi tham gia</Text>
+                <Text style={stakingStyle.iconInfo}>Vui lòng đọc kĩ trước khi tham gia</Text>
             </View>
             <View>
             <FlatList
@@ -163,9 +163,17 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     {key: '(3) Bạn không thể rút, giao dịch hay sử dụng số lượng KDG trong thời gian tham gia Staking'},
                     {key: '(4) Khi thời gian tham gia Staking kết thúc, cả gốc và lãi sẽ được mở khóa vào tài khoản của bạn'},
                 ]}
-                renderItem={({item}) => <Text style={{color: 'rgba(255,255,255, 0.6)', paddingBottom: 10}}>{item.key}</Text>}
+                renderItem={({item}) => <Text style={stakingStyle.termContent}>{item.key}</Text>}
             />
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <CheckBox
+                    value={isSelected}
+                    onValueChange={setSelection}
+                    tintColors={{ true: '#fac800', false: '#fff' }}
+                />
+                <View>
+                    <Text style={stakingStyle.termCheckboxTitle}>Tôi đã đọc và hiểu rõ cảnh báo rủi ro trước khi tham gia</Text>
+                </View>
                 
             </View>
             </View>

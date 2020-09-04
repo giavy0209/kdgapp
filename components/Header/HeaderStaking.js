@@ -15,8 +15,8 @@ export default function App({title, subTitle}){
                 }}
             />
             <View style={{position: 'absolute', top: windowHeight/24, left: windowWidth/20}}>
-            <Text style={{color: 'rgba(250,200,0,1)', fontSize: (windowWidth*windowHeight)/12060}}>{title}</Text>
-            <Text style={{color: 'rgba(255,255,255, 0.8)', fontSize: (windowWidth*windowHeight)/17866}}>{subTitle}</Text>
+            <Text style={{color: 'rgba(250,200,0,1)', fontSize: (windowWidth*windowHeight)/14060}}>{title}</Text>
+            <Text style={{color: 'rgba(255,255,255, 0.8)', fontSize: (windowWidth*windowHeight)/19866}}>{subTitle}</Text>
             </View>
         </View>
         </>
