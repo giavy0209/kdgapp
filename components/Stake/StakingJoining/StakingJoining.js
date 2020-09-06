@@ -163,7 +163,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     {key: '(3) Bạn không thể rút, giao dịch hay sử dụng số lượng KDG trong thời gian tham gia Staking'},
                     {key: '(4) Khi thời gian tham gia Staking kết thúc, cả gốc và lãi sẽ được mở khóa vào tài khoản của bạn'},
                 ]}
-                renderItem={({item}) => <Text style={stakingStyle.termContent}>{item.key}</Text>}
+                renderItem={({item}) => <View style={{paddingLeft: windowWidth/19}}><Text style={stakingStyle.termContent}>{item.key}</Text></View>}
             />
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <CheckBox
@@ -172,7 +172,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     tintColors={{ true: '#fac800', false: '#fff' }}
                 />
                 <View>
-                    <Text style={stakingStyle.termCheckboxTitle}>Tôi đã đọc và hiểu rõ cảnh báo rủi ro trước khi tham gia</Text>
+                    <Text style={stakingStyle.termCheckboxTitle}>Tôi đã đọc và hiểu <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: '#fff'}}>cảnh báo rủi ro</Text> trước khi tham gia</Text>
                 </View>
                 
             </View>

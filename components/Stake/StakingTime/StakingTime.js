@@ -90,9 +90,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             textDayFontWeight: '300',
             textMonthFontWeight: 'bold',
             textDayHeaderFontWeight: '300',
-            textDayFontSize: 14,
-            textMonthFontSize: 16,
-            textDayHeaderFontSize: 14
+            textDayFontSize: 13,
+            textMonthFontSize: 15,
+            textDayHeaderFontSize: 13
         }}
   
     />

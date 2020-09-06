@@ -8,7 +8,8 @@ import Wallet from './components/Wallet'
     import Notify from './components/Wallet/Notify'
     import News from './components/Wallet/News'
     import SetCoins from './components/Wallet/SetCoins'
-    import History from './components/Wallet/History'
+    import History from './components/Wallet/History/History'
+    import HistoryDetail from './components/Wallet/History/HistoryDetail'
     import Withdraw from './components/Wallet/Withdraw/Withdraw'
     import WithdrawPage2 from './components/Wallet/Withdraw/WithdrawPage2'
 
@@ -116,6 +117,14 @@ const ROUTERS = [
         reqLogin: true,
         title: '',
         render : History,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'HistoryDetail',
+        reqLogin: true,
+        title: '',
+        render : HistoryDetail,
         needFirstTime: false,
         needInMain: true
     },

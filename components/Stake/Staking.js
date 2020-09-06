@@ -88,12 +88,12 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
         <View style={stakingStyle.contentContainer}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> 
-                <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: (windowWidth*windowHeight)/22222 }}>Staking</Text>
+                <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: 13 }}>Staking</Text>
                 <TouchableOpacity
                     onPress={() => 
                     navigation.navigate('StakingHistory')} 
                 >
-                    <Text style={{color: '#d7ae07', fontSize: (windowWidth*windowHeight)/22222 }}>Lịch sử staking ></Text>
+                    <Text style={{color: '#d7ae07', fontSize: 13 }}>Lịch sử staking ></Text>
                 </TouchableOpacity>
             </View>
             <View style={stakingStyle.tableContainer}>
