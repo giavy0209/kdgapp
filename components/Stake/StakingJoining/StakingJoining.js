@@ -118,7 +118,6 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             <View style={{paddingHorizontal: 30}}>
                 <View style={{marginVertical: -20}}>
                     <Slider
-                        knobColor='#000'
                         valueOnChange={value => setValue(value)}
                         showRangeLabels={false}
                         inRangeBarColor='#fff'
@@ -146,7 +145,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             <View style={stakingStyle.interestReceiveContainer}>
                 <View style={{alignItems: 'center'}}>
                     <Text style={stakingStyle.interestReceive}>Số tiền lãi nhận được</Text>
-                    <Text style={stakingStyle.interestReceiveUnit}>{(2.5*0.2*value)} KDG</Text>
+                    <Text style={stakingStyle.interestReceiveUnit}>{(2.5*0.02*value)} KDG</Text>
                 </View>
             </View>
         </View>

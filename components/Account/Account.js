@@ -20,16 +20,27 @@ export default function App({navigation}){
                     <Text style={accountStyle.title}>Tài khoản</Text>
                     <View style={accountStyle.rowHeader}>
                         <View style={accountStyle.itemHeader}>
-                            <Image source={wallet}/>
-                            <Text style={accountStyle.textHeader}>Quản lý ví</Text>
+                            <TouchableOpacity 
+                                style={{alignItems: 'center'}}
+                                onPress={() => {navigation.navigate('WalletManage')}}
+                            >
+                                <Image source={wallet}/>
+                                <Text style={accountStyle.textHeader}>Quản lý ví</Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={accountStyle.itemHeader}>
                             <Image source={support}/>
                             <Text style={accountStyle.textHeader}>Hỗ trợ</Text>
                         </View>
+           
                         <View style={accountStyle.itemHeader}>
-                            <Image source={invitation}/>
-                            <Text style={accountStyle.textHeader}>Phần thưởng</Text>
+                            <TouchableOpacity 
+                                style={{alignItems: 'center'}}
+                                onPress={() => {navigation.navigate('Reward')}}
+                            >
+                                <Image source={invitation}/>
+                                <Text style={accountStyle.textHeader}>Phần thưởng</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

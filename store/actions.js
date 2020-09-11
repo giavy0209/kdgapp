@@ -157,30 +157,147 @@ export function asyncGetRouters(){
 export function asyncLogin(loginInfo){
     return async (dispatch) =>{
         try {
-            const res = (await calAPI.post('/api/authorize', loginInfo)).data
-            if(res.status === 1){
-                dispatch(actChangeLoginStatus(true))
-                dispatch(actChangeUserData(res.data))
-                const newRouters = []
+            const res = (await (await calAPI()).post('/api/authorize', loginInfo)).data
+            console.log(res)
+            return res
 
-                ROUTERS.forEach((router)=>{
-                    if(router.reqLogin){
-                        newRouters.push(router)
-                    }
-                })
-                
-                
-                dispatch(actChangeRouters(newRouters))
-                await AsyncStorage.setItem('userData', JSON.stringify(res.data))
-                await AsyncStorage.setItem('isLogin', JSON.stringify(true))
-                return null
-            }
         } catch (error) {
             console.log('login error ',error);
             return {ok: false, status: error.response.status}
         }
     }
 }
+
+export function asyncWithdraw(submiteData){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/deposit', submiteData)).data
+            console.log(res)
+            return res
+
+        } catch (error) {
+            console.log('Withdraw error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+// --------------------------2FA------------------------
+
+export function async2FA(userId){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/create_2fa', userId)).data
+            console.log(res)
+            return res
+
+        } catch (error) {
+            console.log('2FA error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+export function asyncVerify2FA(verifyInfo){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/verify_2fa', verifyInfo)).data
+            console.log(res)
+            return res
+
+        } catch (error) {
+            console.log('2FA error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+export function asyncDisable2FA(verifyInfo){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/disable_2fa', verifyInfo)).data
+            console.log(res)
+            return res
+
+        } catch (error) {
+            console.log('2FA error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+// ----------------------------------------------------
+
+export function asyncGetUserbyID(userId){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).get(`/api/user/${userId}`)).data
+            return res
+        } catch (error) {
+            console.log('login error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+export function asyncGetNews(skip, take){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).get(`/api/news?skip=${skip}&take=${take}`)).data
+            return res
+        } catch (error) {
+            console.log('login error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+
+export function asyncGetBalance(type, address){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).get(`/api/${type}/balance/${address}`)).data
+            return res
+        } catch (error) {
+            console.log('login error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+
+export function asyncGetBalanceDouble(address1, address2){
+    return async () =>{
+        var callAPI = await calAPI()
+            // const res = (await (await calAPI()).get(`/api/${type}/balance/${address}`)).data
+            // const res2 = (await (await calAPI()).get('/api/news?skip=0&take=10')).data
+        return Promise.all([
+            callAPI.get(`/api/eth_usdt/balance/${address1}`),
+            callAPI.get(`/api/tron_kdg/balance/${address2}`),
+        ])
+        .then(([resETH, resTRX]) =>{
+            return {resETH, resTRX};
+        })
+        .catch(error =>{
+            console.log('get balance error ',error);
+            return {ok: false, status: error.response.status}
+
+        })
+    }
+}
+
+
+export function asyncGetCoinPrice(coinType){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).get(`/api/markets/coin_price?coin_type=${coinType}`)).data
+            return res
+        } catch (error) {
+            console.log('login error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
 
 export function asyncLogout(){
     return async (dispatch) =>{
@@ -202,6 +319,7 @@ export function asyncLogout(){
         }
     }
 }
+
 
 export function asyncSetCurrency(currency){
     return async (dispatch) =>{

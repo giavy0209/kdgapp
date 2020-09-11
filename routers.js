@@ -12,6 +12,8 @@ import Wallet from './components/Wallet'
     import HistoryDetail from './components/Wallet/History/HistoryDetail'
     import Withdraw from './components/Wallet/Withdraw/Withdraw'
     import WithdrawPage2 from './components/Wallet/Withdraw/WithdrawPage2'
+    import Deposit from './components/Wallet/Deposit/Deposit'
+    import DepositPage2 from './components/Wallet/Deposit/DepositPage2'
 
 import Staking from './components/Stake'
     import StakingHistory from './components/Stake/StakingHistory/'
@@ -26,6 +28,8 @@ import Account from './components/Account'
     import Language from './components/Account/Language'
     import Display from './components/Account/Display'
     import Secure from './components/Account/Secure'
+        import Setting2FA from './components/Account/Secure/Setting2FA/Setting2FA'
+        import Generate2FACode from './components/Account/Secure/Setting2FA/Generate2FACode'
         import ChangePass from './components/Account/Secure/ChangePass'
         import Pin from './components/Account/Secure/Pin'
             import SetPin from './components/Account/Secure/Pin/SetPin'
@@ -35,6 +39,13 @@ import Account from './components/Account'
             import StartKYC from './components/Account/Secure/KYC/StartKYC'
                 import Upload1 from './components/Account/Secure/KYC/StartKYC/Upload1'
                 import Upload2 from './components/Account/Secure/KYC/StartKYC/Upload2'
+    import Invitation from './components/Account/Invitation'
+    import WalletManage from './components/Account/WalletManage/WalletManage'
+        import SelectCoin from './components/Account/WalletManage/SelectCoin'
+        import PrivateKey from './components/Account/WalletManage/PrivateKey'
+    import Reward from './components/Account/Reward/Reward'
+    import MyReward  from './components/Account/Reward/MyReward'
+    import Rule from './components/Account/Reward/Rule'
         
 
 
@@ -145,6 +156,22 @@ const ROUTERS = [
         needInMain: true
     },
     {
+        name: 'Deposit',
+        reqLogin: true,
+        title: 'Chọn Coins',
+        render : Deposit,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'DepositPage2',
+        reqLogin: true,
+        title: 'Chọn Coins',
+        render : DepositPage2,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
         name: 'Profile',
         reqLogin: true,
         title: '',
@@ -193,6 +220,22 @@ const ROUTERS = [
         needInMain: true
     },
     {
+        name: 'Setting2FA',
+        reqLogin: true,
+        title: '',
+        render : Setting2FA,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'Generate2FACode',
+        reqLogin: true,
+        title: '',
+        render : Generate2FACode,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
         name: 'Pin',
         reqLogin: true,
         title: '',
@@ -224,6 +267,7 @@ const ROUTERS = [
         needFirstTime: false,
         needInMain: true
     },
+    
     {
         name: 'KYC',
         reqLogin: true,
@@ -253,6 +297,62 @@ const ROUTERS = [
         reqLogin: true,
         title: '',
         render : Upload2,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'Invitation',
+        reqLogin: true,
+        title: '',
+        render : Invitation,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'WalletManage',
+        reqLogin: true,
+        title: '',
+        render : WalletManage,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'SelectCoin',
+        reqLogin: true,
+        title: '',
+        render : SelectCoin,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'PrivateKey',
+        reqLogin: true,
+        title: '',
+        render : PrivateKey,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'Reward',
+        reqLogin: true,
+        title: '',
+        render : Reward,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'MyReward',
+        reqLogin: true,
+        title: '',
+        render : MyReward,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'Rule',
+        reqLogin: true,
+        title: '',
+        render : Rule,
         needFirstTime: false,
         needInMain: true
     },

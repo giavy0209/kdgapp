@@ -2,12 +2,14 @@ import React, { useState, useCallback , useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux'
-import {actChangeUserData,actChangeLoginStatus,asyncLogin} from '../../store/actions'
+import {ROUTERS} from '../../routers'
+import {actChangeUserData,actChangeLoginStatus,asyncLogin, actChangeRouters} from '../../store/actions'
 import { View, TextInput, Text,  TouchableOpacity,Alert,Image} from 'react-native';
 import {mainStyles as styles} from '../../styles/'
 import logo from '../../assets/images/logo.png'
 
-import {transition} from '../../helper'
+import {transition, storage} from '../../helper'
+import AsyncStorage from '@react-native-community/async-storage';
 export default function App({navigation}) {
     const dispatch = useDispatch()
     const [Email, setEmail] = useState("")
@@ -46,8 +48,36 @@ export default function App({navigation}) {
 
     const login = useCallback(() => {
         dispatch(asyncLogin({email: Email, password: Password}))
-        .then(()=>{
-            
+        .then((res)=>{
+    
+            if(res.status === 103){
+                console.log("Emai khoong ton tai")
+                return;
+            }
+            if(res.status === 104){
+                console.log("Sai pass");
+                return;
+            }
+            if(res.status === 1){
+                console.log("Login thanh cong")
+                var newRouters = []
+                console.log(res);
+                ROUTERS.forEach((router)=>{
+                    if(router.reqLogin){
+                        newRouters.push(router)
+                    }
+                })
+
+                var storageData = {
+                    id: res.data._id
+                    
+                }
+
+                storage('_id' , res.data).setItem();
+                storage('token' , res.jwtToken).setItem();
+                dispatch(actChangeRouters(newRouters))
+                navigation.replace('Main');
+            }
         })
         .catch(console.log)
     }, [Email, Password])
@@ -65,6 +95,7 @@ export default function App({navigation}) {
                 <View style={styles.inputBlock}>
                     <Text style={[styles.placeHolderText,{bottom: EmailTextPosition , fontSize: EmailTextSize}, EmailFocus && {color: '#8a8c8e'}]}>Email</Text>
                     <TextInput 
+                    autoCapitalize="none"
                     onFocus={()=>{Email !== '' || !EmailFocus && setEmailFocus(true)}} 
                     onBlur={()=>{Email ==='' && setEmailFocus(false)}} 
                     onChangeText={value => setEmail(value)} 

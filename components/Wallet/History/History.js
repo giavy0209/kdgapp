@@ -3,7 +3,7 @@ import {  View, Text, Image, Dimensions, Clipboard} from 'react-native';
 import {LineChart } from 'react-native-chart-kit'
 import {mainStyles} from '../../../styles'
 import {Header2} from '../../Header'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faAngleDown, faCopy, faFilter } from '@fortawesome/free-solid-svg-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -12,17 +12,18 @@ import Select from './Select'
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop}){
+export default function App({setOutScrollView, setOutScrollViewTop}){
 
     const navigation = useNavigation()
+    const route = useRoute()
 
     const [SelectType, setSelectType] = useState(null)
     const [SelectedHistory, setSelectedHistory] = useState('Tất cả')
     const [SelectedTime, setSelectedTime] = useState('1 ngày')
 
-
+    const coinName = route.params.id;
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title={coin} />)
+        setOutScrollViewTop(<Header2 title={coinName} />)
     },[])
     useEffect(()=>{
         if(SelectType !== null){
@@ -106,7 +107,11 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
 
      
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: windowHeight/25, paddingHorizontal: 15}}>
-                    <TouchableOpacity style={{width: windowWidth/2.3}}>
+                    <TouchableOpacity 
+                        onPress={() => navigation.navigate('DepositPage2', {
+                            id: coinName
+                        })}
+                        style={{width: windowWidth/2.3}}>
                         <LinearGradient 
                                 start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                                 colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
@@ -114,7 +119,11 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                                 <Text style={{color: '#111b2d', fontSize: 16}}>NHẬN</Text>
                         </LinearGradient>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{width: windowWidth/2.3}}>
+                    <TouchableOpacity 
+                        onPress={() => navigation.navigate('WithdrawPage2', {
+                            id: coinName
+                        })}
+                        style={{width: windowWidth/2.3}}>
                         <View style={{alignItems: 'center', borderColor: '#fac800', borderWidth: 2, padding: windowWidth/38, width: '100%', borderRadius: 45}}>
                                 <Text style={{color: '#fac800'}}>GỬI</Text>
                         </View>
@@ -140,7 +149,12 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'rgba(28,38,59,0.7)', borderRadius: 5, padding: 15, borderBottomWidth: 1, borderColor: 'rgba(114,118,125,0.8)'}}>
                         <TouchableOpacity
-                            onPress={()=>navigation.navigate('HistoryDetail')}
+                            onPress={()=>          
+                                navigation.navigate('HistoryDetail', {
+                                    id: 'l9Hgnms8d',
+                                    type: 'deposit',
+                                    status: 0
+                              })}
                         >
                             <View style={{flexDirection: 'row'}}>
                                 <View>
@@ -165,7 +179,14 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     </View>
 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'rgba(28,38,59,0.7)', borderRadius: 5, padding: 15,  borderBottomWidth: 1, borderColor: 'rgba(114,118,125,0.8)'}}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={()=>          
+                                navigation.navigate('HistoryDetail', {
+                                    id: 'l9Hgnms8d',
+                                    type: 'withdraw',
+                                    status: 1
+                                })}
+                        >
                             <View style={{flexDirection: 'row'}}>
                                 <View>
                                     <Image
@@ -194,7 +215,14 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     </View>
 
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'rgba(28,38,59,0.7)', borderRadius: 5, padding: 15}}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={()=>          
+                            navigation.navigate('HistoryDetail', {
+                                id: 'l9Hgnms8d',
+                                type: 'withdraw',
+                                status: 2
+                            })}
+                        >
                             <View style={{flexDirection: 'row'}}>
                                 <View>
                                     <Image

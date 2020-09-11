@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {View, Text, TouchableOpacity, Alert, Image, Dimensions,BackHandler,ScrollView } from 'react-native';
 import { Camera } from 'expo-camera';
 import { mainStyles, walletStyles, scannerStyles } from '../../styles/'
@@ -11,12 +11,37 @@ import postImage from '../../assets/images/post-image.jpg'
 
 import GroupButton from './GroupButton'
 import ListCoin from './ListCoin'
+import AsyncStorage from '@react-native-community/async-storage';
+import calAPI from '../../axios';
+import { storage } from '../../helper';
+import { asyncGetBalance, asyncGetBalanceNews, asyncGetBalanceDouble, asyncGetNews } from '../../store/actions';
+import { FlatList } from 'react-native-gesture-handler';
 
 const hiddenBalance = "******"
 export default function App({ navigation }) {
-  const isLogin = useSelector(state => state.isLogin)
+  const dispatch = useDispatch();
+  const isLogin = useSelector(state => state.isLogin);
+
+
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
   const [VisibleBalance, setVisibleBalance] = useState(true);
+  const [UserData, setUserData] = useState({});
+
+
+  const [NewsData, setNewsData] = useState([]);
+
+
+  // ----------Balance Coin -----------
+  const [KGDBalance, setKDGBalance] = useState(0);
+  const [TRXBalance, setTRXBalance] = useState(0);
+  const [ETHBalance, setETHBalance] = useState(0);
+  const [USDTBalance, setUSDTBalance] = useState(0);
+  // ----------------------------------
+
+  // ----------Address Coin -----------
+  const [TRXAddress, setTRXAddress] = useState('');
+  const [ETHAddress, setETHAddress] = useState('');
+  // ----------------------------------
 
   const handleBarCodeScanned = useCallback(({ type, data }) => {
     alert(`Scanned data = ${data}`);
@@ -34,6 +59,15 @@ export default function App({ navigation }) {
     }
   }, [])
 
+//   const test = useCallback(async () => {
+//     var userinfo = await storage('_id').getItem();
+//     dispatch(asyncGetBalance('kdg', userinfo.trx_address))
+//     .then((res)=>{
+//       setKDGBalance(res);
+//     })
+//     .catch(console.log)
+// }, [])
+
   useEffect(()=>{
     BackHandler.addEventListener(
       "hardwareBackPress",
@@ -42,7 +76,40 @@ export default function App({ navigation }) {
         return true;
       }
     );
+
   },[])
+
+  useEffect(() => {
+    async function getwalletBlance() {
+      var userinfo = await storage('_id').getItem();
+      setTRXAddress(userinfo.trx_address);
+      setETHAddress(userinfo.erc_address);
+      dispatch(asyncGetBalanceDouble(userinfo.erc_address, userinfo.trx_address))
+      .then(({resETH, resTRX})=>{
+        setKDGBalance(resTRX.data.kdg_balance)
+        setTRXBalance(resTRX.data.trx_balance)
+        setETHBalance(resETH.data.eth_balance)
+        setUSDTBalance(resETH.data.usdt_balance)
+      })
+      
+      .catch(console.log)
+    }
+
+    getwalletBlance()
+  }, [])
+
+
+  useEffect(() => {
+    dispatch(asyncGetNews(5,12))
+    .then((res)=>{
+      setNewsData(res.data)
+    })
+    .catch(console.log) 
+}, [])
+
+
+  // test();\
+
   return (
     <>
       {!IsScannerOpen && 
@@ -62,7 +129,6 @@ export default function App({ navigation }) {
                 </TouchableOpacity>
               </View>
             </View>
-
             <View style={walletStyles.balance}>
               <View style={walletStyles.maskOpacity}></View>
               <View style={walletStyles.totalBalanceAndVisible}>
@@ -71,15 +137,15 @@ export default function App({ navigation }) {
                   <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
                 </TouchableOpacity>
               </View>
-              <Text style={walletStyles.totalKDG}>{VisibleBalance ? hiddenBalance : '300 KDG'}</Text>
+              <Text style={walletStyles.totalKDG}>{VisibleBalance ? hiddenBalance : KGDBalance + ' KDG'}</Text>
               <View style={walletStyles.availableAndLock}>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Available balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : '300 KDG'}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : KGDBalance + ' KDG'}</Text>
                 </View>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Locked balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : '300 KDG'}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : 0}</Text>
                 </View>
               </View>
             </View>
@@ -98,7 +164,16 @@ export default function App({ navigation }) {
               </View>
             </View>
 
-            <ListCoin VisibleBalance={VisibleBalance} hiddenBalance={hiddenBalance}/>
+            <ListCoin 
+              VisibleBalance={VisibleBalance}
+              hiddenBalance={hiddenBalance}
+              balanceKDG={KGDBalance}
+              balanceTRX={TRXBalance}
+              balanceETH={ETHBalance}
+              balanceUSDT={USDTBalance}
+              addressTRX={TRXAddress}
+              addressETH={ETHAddress}
+            />
 
             <View style={walletStyles.listPostHead}>
               <Text style={walletStyles.listPostHeadText}>News</Text>
@@ -108,36 +183,23 @@ export default function App({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            <ScrollView horizontal={true} style={walletStyles.listPost}>
+
               <View style={walletStyles.listPostScroll}>
+              <FlatList
+                horizontal={true}
+                data={NewsData}
+                renderItem={({item}) =>
                 <View style={walletStyles.post}>
                   <View>
-                    <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}><Image style={walletStyles.postImage} source={postImage}/></View>
-                    <Text style={walletStyles.postTitle}>Tháng 8 bùng nổ với chính sách Hoàn đậm 50%</Text>
+                    <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}><Image style={walletStyles.postImage} source={{ uri: item.thumbURL_vi}}/></View>
+                    <Text style={walletStyles.postTitle}>{item.title_vi}</Text>
+                {/* {console.log()} */}
                   </View>
-                </View>
-                <View style={walletStyles.post}>
-                  <View>
-                    <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}><Image style={walletStyles.postImage} source={postImage}/></View>
-                    <Text style={walletStyles.postTitle}>Tháng 8 bùng nổ với chính sách Hoàn đậm 50%</Text>
-                  </View>
-                </View>
-                <View style={walletStyles.post}>
-                  <View>
-                    <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}><Image style={walletStyles.postImage} source={postImage}/></View>
-                    <Text style={walletStyles.postTitle}>Tháng 8 bùng nổ với chính sách Hoàn đậm 50%</Text>
-                  </View>
-                </View>
-                <View style={walletStyles.post}>
-                  <View>
-                    <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}><Image style={walletStyles.postImage} source={postImage}/></View>
-                    <Text style={walletStyles.postTitle}>Tháng 8 bùng nổ với chính sách Hoàn đậm 50%</Text>
-                  </View>
-                </View>
-              </View>
-              
-              
-            </ScrollView>
+               </View>  }
+            />
+   
+              </View>        
+
 
           </View>
       }

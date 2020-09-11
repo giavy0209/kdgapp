@@ -106,13 +106,17 @@ export default function App({ navigation }) {
             return;
         }
         try {
-            const res = await calAPI.post('/api/register_user',{email: Email, password: Password,register_code : EmailCode})
-            console.log(res.data);
-            Alert.alert(
-                "Đăng ký",
-                "Đăng ký thành công",
-            )
-            navigation.replace('Login')
+            const res = (await calAPI.post('/api/register_user',{email: Email, password: Password, register_code : EmailCode})).data
+            console.log(res);
+            if(res.status === 0){
+                Alert.alert(
+                    "Lỗi",
+                    "Mã xác minh không hợp lệ",
+                )
+               
+            }
+
+            // navigation.replace('Login')
         } catch (error) {
             console.log(error.response);
             if(error.response.status === 401){
@@ -129,8 +133,9 @@ export default function App({ navigation }) {
         var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if(Email.match(mailformat)){
             try {
-                const res = await calAPI.post('/api/create_register_code ',{email: Email})
-                console.log(res.data);
+                const res = (await calAPI.post('/api/create_register_code ',{email: Email})).data
+   
+                console.log(res);
             } catch (error) {
                 // console.log(error.response);
             }

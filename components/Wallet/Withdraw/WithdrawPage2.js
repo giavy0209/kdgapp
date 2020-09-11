@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect , useCallback} from 'react'
 import {View, Text, Image, TextInput, FlatList, ScrollView} from 'react-native'
 import { mainStyles, withdrawStyle } from '../../../styles/'
 import {Header2} from '../../Header'
+import { useDispatch } from 'react-redux'
 import logo from '../../../assets/images/logo.png'
 import coin from '../../../assets/images/coin.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -10,6 +11,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Dimensions } from 'react-native';
+import { storage } from '../../../helper';
+import { asyncGetCoinPrice, asyncWithdraw } from '../../../store/actions'
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,15 +20,42 @@ export default function App(){
 
 
     const [Width , setWidth] = useState(0);
-  
-    const [sendTo, setSendTo] = useState();
-    const [address, setAddress] = useState();
-    const [searchVal, setSearchVal] = useState();
+
     const navigation = useNavigation();
     const route = useRoute();
+    const dispatch = useDispatch();
 
-    const { coinID, coinName } = route.params;
 
+    // --------Value Submit----------
+    const [ToAddress, setToAddress] = useState('')
+    const [ValueSend, setValueSend] = useState('')
+    const [Token, setToken] = useState('');
+    // -------------------------------
+
+
+    const [CoinPrice, setCoinPrice] = useState(0);
+    // const {id} = route.params;
+    const coinName = route.params.id;
+    const coinBalance = route.params.balance;
+    const inputNumberHandler = (value) => {
+
+        dispatch(asyncGetCoinPrice(`${coinName}VND`))
+        .then((res)=>{
+            var exchange_rate = res.data
+            var coin_price = exchange_rate*value
+            setCoinPrice(coin_price)
+        })
+        .catch(console.log) 
+    }
+
+    const withdraw = useCallback(async () => {
+        var userinfo = await storage('_id').getItem();
+        dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: 'kdg', toAddress: ToAddress, token: Token}))
+        .then((res)=>{
+            console.log(res);
+        })
+        .catch(console.log)
+    }, [ToAddress, Token])
     return (
         <>
 <View style={mainStyles.container}>
@@ -36,7 +66,7 @@ export default function App(){
                 <Image source={coin} style={{width: windowWidth*windowHeight/11750, height: windowWidth*windowHeight/11750}} />
                 <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
                     <Text style={withdrawStyle.coinName}>{coinName}</Text>
-                    <Text style={withdrawStyle.balance}>Số dư: {'0'} BTC</Text>
+                    <Text style={withdrawStyle.balance}>Số dư: {coinBalance + " " + coinName} </Text>
                 </View>                                   
             </View>
         </View>
@@ -52,27 +82,26 @@ export default function App(){
                             placeholderTextColor = "#8a8c8e"
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
-                            onChangeText={value=>setSendTo(value)} 
-                            value={sendTo} 
+                            onChangeText={value=>setValueSend(value)} 
                             style={withdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
-                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: (windowWidth*windowHeight)/28800}}>{coinName}</Text>
+                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>{coinName}</Text>
                         </View>
                     </View> 
                     <Text style={withdrawStyle.nearSymbol}>≈</Text>
                     <View style={withdrawStyle.inputNumContainer}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
                             <TextInput
-                            placeholderTextColor = "#8a8c8e"
-                            onFocus={()=>{}} 
-                            onBlur={()=>{}} 
-                            // onChangeText={value=>setAddress(value)} 
-                            value={150} 
-                            style={withdrawStyle.inputNum} />
+                                placeholderTextColor = "#8a8c8e"
+                                onFocus={()=>{}} 
+                                onBlur={()=>{}} 
+                                editable={false}
+                                value={CoinPrice.toString()}
+                                style={withdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
-                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: (windowWidth*windowHeight)/28800}}>USD</Text>
+                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>VND</Text>
                         </View>
                     </View> 
                 </View>      
@@ -90,8 +119,7 @@ export default function App(){
                             placeholderTextColor = "#8a8c8e"
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
-                            onChangeText={value=>setSearchVal(value)} 
-                            value={searchVal} 
+                            onChangeText={value=>setToAddress(value)} 
                             style={withdrawStyle.inputNum} />
                         </View>
                     </View> 
@@ -101,17 +129,17 @@ export default function App(){
 
         <View style={withdrawStyle.numberSendContainer}>
             <View>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>Ghi chú</Text>   
+                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>Mã xác thực 2FA</Text>   
                 <View style={{flexDirection: 'row'}}>
                     <View style={withdrawStyle.inputNumContainer2}>
                         <View style={{padding: (windowWidth*windowHeight)/23040}}>
                             <TextInput
-                            placeholder="Ghi chú"
+                            keyboardType='decimal-pad'
+                            placeholder="Xác thực 2FA"
                             placeholderTextColor = "#8a8c8e"
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
-                            onChangeText={value=>setSearchVal(value)} 
-                            value={searchVal} 
+                            onChangeText={value=>setToken(value)} 
                             style={withdrawStyle.inputNum} />
                         </View>
                     </View> 
@@ -126,7 +154,9 @@ export default function App(){
             </View>
         </View>
 
-        <TouchableOpacity>
+        <TouchableOpacity
+            onPress={withdraw}
+        >
             <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
                 <LinearGradient 
                     colors={['#e5be50', '#ecda8b', '#a47b00']}

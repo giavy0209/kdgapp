@@ -57,10 +57,9 @@ const styles = StyleSheet.create({
             padding: (windowWidth*windowHeight)/23040,
         },
         coinName: {
-            fontSize: (windowWidth*windowHeight)/16457,
             fontWeight: 'bold',
             color: 'white',
-            fontSize:  (windowWidth*windowHeight)/25179
+            fontSize:  15
 
         },
         balance: {
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
         },
         nearSymbol: {
             color: 'rgba(241, 243, 244, 0.5)',
-            fontSize: (windowWidth*windowHeight)/10322
+            fontSize: 40
         },
         inputNumContainer: {
             borderRadius: 10,
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
         },
         inputNum: {
             color: '#8a8c8e',
-            fontSize: (windowWidth*windowHeight)/27116,
+            fontSize: 14,
         }
 
 

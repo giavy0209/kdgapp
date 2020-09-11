@@ -58,6 +58,7 @@ const List = [
                 textRight: '',
                 arrow : true,
                 BlockComponent: TouchableOpacity,
+                navigate: 'Invitation'
             },
             {
                 icon : follow,

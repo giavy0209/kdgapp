@@ -10,7 +10,12 @@ export default function App(){
     const navigation = useNavigation()
     return (
         <View style={walletStyles.groupButton}>
-            <TouchableOpacity  onPress={()=>navigation.navigate('Withdraw')} style={walletStyles.buttonBlock} style={walletStyles.buttonBlock}>
+            <TouchableOpacity  
+                onPress={()=>navigation.navigate('Withdraw',{
+
+                })} 
+                style={walletStyles.buttonBlock} 
+                style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={withdraw}/>
@@ -18,7 +23,10 @@ export default function App(){
             </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={walletStyles.buttonBlock}>
+            <TouchableOpacity  
+                onPress={()=>navigation.navigate('Deposit', {
+                })}  
+                style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={deposit}/>
@@ -26,7 +34,9 @@ export default function App(){
             </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={walletStyles.buttonBlock}>
+            <TouchableOpacity 
+                onPress={()=>navigation.navigate('Staking')}
+                style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={stake}/>
