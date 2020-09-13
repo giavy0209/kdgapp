@@ -50,7 +50,7 @@ export default function App(){
     return (
         <>
             <Header2 setHeight={setHeight} title="Cài đặt 2FA"/>
-            <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 8}]}>
+            <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 12}]}>
                 <View style={{paddingTop: 15, alignItems: 'center'}}>
                     <View>
                         <Text style={{color: 'rgba(255,255,255,0.7)'}}>Scan tại đây để xác thực</Text>

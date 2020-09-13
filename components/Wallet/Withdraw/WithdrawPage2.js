@@ -1,8 +1,8 @@
 import React, { useState, useEffect , useCallback} from 'react'
-import {View, Text, Image, TextInput, FlatList, ScrollView} from 'react-native'
+import {View, Text, Image, TextInput, FlatList, ScrollView, Alert} from 'react-native'
 import { mainStyles, withdrawStyle } from '../../../styles/'
 import {Header2} from '../../Header'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../../assets/images/logo.png'
 import coin from '../../../assets/images/coin.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -17,8 +17,9 @@ import { asyncGetCoinPrice, asyncWithdraw } from '../../../store/actions'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default function App(){
-
-
+    
+    const typeCurrency = useSelector(state => state.currency)
+    
     const [Width , setWidth] = useState(0);
 
     const navigation = useNavigation();
@@ -33,26 +34,58 @@ export default function App(){
     // -------------------------------
 
 
-    const [CoinPrice, setCoinPrice] = useState(0);
+    const [CoinPriceVND, setCoinPriceVND] = useState(0);
+    const [CoinPriceUSD, setCoinPriceUSD] = useState(0);
+
     // const {id} = route.params;
     const coinName = route.params.id;
     const coinBalance = route.params.balance;
     const inputNumberHandler = (value) => {
 
+        // dispatch(asyncGetCoinPrice(`${coinName}VND`))
+        // .then((res)=>{
+        //     var exchange_rate = res.data
+        //     var coin_price = exchange_rate*value
+        //     setCoinPriceVND(coin_price)
+        // })
+        // .catch(console.log) 
+
+        // dispatch(asyncGetCoinPrice('USDVND'))
+        // .then((res)=>{
+        //     // var exchange_rate = res.data
+        //     // var coin_price = exchange_rate*value
+        //     // setCoinPriceVND(coin_price)
+        //     console.log(res);
+        // })
+        // .catch(console.log) 
+
+        
         dispatch(asyncGetCoinPrice(`${coinName}VND`))
-        .then((res)=>{
-            var exchange_rate = res.data
-            var coin_price = exchange_rate*value
-            setCoinPrice(coin_price)
+        .then(({resVND, resUSDVND})=>{
+            var exchange_rate_USD_VND = resUSDVND.data
+            var exchange_rate = resVND.data
+            var coin_price_VND = exchange_rate*value
+            var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
+            setCoinPriceVND(coin_price_VND.toFixed(2))
+            setCoinPriceUSD(coin_price_USD.toFixed(4));
         })
         .catch(console.log) 
     }
 
+
     const withdraw = useCallback(async () => {
         var userinfo = await storage('_id').getItem();
-        dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: 'kdg', toAddress: ToAddress, token: Token}))
+        var withdraw_type = coinName.toLowerCase();
+        dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: withdraw_type, toAddress: ToAddress, token: Token}))
         .then((res)=>{
             console.log(res);
+            if(res.status === 1 ){
+                Alert.alert(
+                    "Thông báo",
+                    `Đã chuyển thành công ${ValueSend} KDG`,
+                )
+                return;
+            }
         })
         .catch(console.log)
     }, [ToAddress, Token])
@@ -82,7 +115,7 @@ export default function App(){
                             placeholderTextColor = "#8a8c8e"
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
-                            onChangeText={value=>setValueSend(value)} 
+                            onChangeText={value=>inputNumberHandler(value)} 
                             style={withdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
@@ -95,13 +128,12 @@ export default function App(){
                             <TextInput
                                 placeholderTextColor = "#8a8c8e"
                                 onFocus={()=>{}} 
-                                onBlur={()=>{}} 
-                                editable={false}
-                                value={CoinPrice.toString()}
+                                onBlur={()=>{}}                      
+                                value={typeCurrency === 0 ? CoinPriceUSD.toString() : CoinPriceVND.toString() }
                                 style={withdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
-                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>VND</Text>
+                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>{typeCurrency === 0 ? 'USD' : 'VND'}</Text>
                         </View>
                     </View> 
                 </View>      

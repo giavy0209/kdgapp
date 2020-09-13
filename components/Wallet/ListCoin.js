@@ -31,8 +31,8 @@ export default function App({
 
     const data = [
         {key: 1, coinName: 'KDG', icon: kdgicon, valueUSD: '$0.020', balance: balanceKDG, address: addressTRX},
-        {key: 2, coinName: 'ETH', icon: ethicon, valueUSD: '$0.030', balance: balanceTRX, address: addressETH},
-        {key: 3, coinName: 'TRX', icon: trxicon, valueUSD: '$0.160', balance: balanceETH, address: addressTRX},
+        {key: 2, coinName: 'ETH', icon: ethicon, valueUSD: '$0.030', balance: balanceETH, address: addressETH},
+        {key: 3, coinName: 'TRX', icon: trxicon, valueUSD: '$0.160', balance: balanceTRX, address: addressTRX},
         {key: 4, coinName: 'USDT', icon: usdticon, valueUSD: '$0.160', balance: balanceUSDT, address: addressETH},
     ]
 
