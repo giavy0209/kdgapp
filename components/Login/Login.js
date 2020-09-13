@@ -4,20 +4,23 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux'
 import {ROUTERS} from '../../routers'
 import {actChangeUserData,actChangeLoginStatus,asyncLogin, actChangeRouters} from '../../store/actions'
-import { View, TextInput, Text,  TouchableOpacity,Alert,Image} from 'react-native';
+import { View, TextInput, Text,  TouchableOpacity ,Image} from 'react-native';
 import {mainStyles as styles} from '../../styles/'
 import logo from '../../assets/images/logo.png'
-
+import { useRoute } from '@react-navigation/native'
 import {transition, storage} from '../../helper'
 import AsyncStorage from '@react-native-community/async-storage';
 export default function App({navigation}) {
     const dispatch = useDispatch()
-    const [Email, setEmail] = useState("")
+    const [Error, setError] = useState(<Text></Text>);
+    const [Email, setEmail] = useState('')
+    const [EmailValidate, setEmailValidate] = useState(<Text></Text>)
     const [EmailFocus, setEmailFocus] = useState(false)
     const [EmailTextPosition, setEmailTextPosition] = useState(11)
     const [EmailTextSize, setEmailTextSize] = useState(15)
 
-    const [Password, setPassword] = useState("")
+    const [Password, setPassword] = useState('')
+    const [PasswordValidate, setPasswordValidate] = useState(<Text></Text>)
     const [PasswordFocus, setPasswordFocus] = useState(false)
     const [PasswordTextPosition, setPasswordTextPosition] = useState(11)
     const [PasswordTextSize, setPasswordTextSize] = useState(15)
@@ -25,7 +28,19 @@ export default function App({navigation}) {
     const [IsShowPassword, setIsShowPassword] = useState(false)
     const [InputPasswordHeight, setInputPasswordHeight] = useState(0)
     const [InputPasswordEyeHeight, setInputPasswordEyeHeight] = useState(0)
+    
+    const route = useRoute();
+    const { email_params } = route.params ?? {};
 
+
+    
+    useEffect(() => {
+        if(email_params ){
+            setEmailFocus(true);
+            setEmailValidate(null);
+            setEmail(email_params)
+        }
+    },[])
     useEffect(()=>{
         if(EmailFocus){
             transition(300, 11,36,setEmailTextPosition)
@@ -46,40 +61,72 @@ export default function App({navigation}) {
         }
     },[PasswordFocus])
 
+
+
+// --------------------Validation------------------------
+    const validateEmail = (val) => {
+        setEmail(val);
+        setError(null);
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(val.match(mailformat)){
+            setEmailValidate(null)
+        }else{
+            setEmailValidate(
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email không hợp lệ</Text>
+            )
+        }
+    }
+
+    const validatePassword = (val) => {
+        setPassword(val);
+        setError(null);
+        var passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
+        if(val.match(passwordFormat)){
+            setPasswordValidate(null)
+        }else{
+            setPasswordValidate(
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu phải ít nhất 8 ký tự cả chữ và số</Text>
+            )
+        }
+    }
+// ------------------------------------------------------
+
     const login = useCallback(() => {
-        dispatch(asyncLogin({email: Email, password: Password}))
-        .then((res)=>{
-    
-            if(res.status === 103){
-                console.log("Emai khoong ton tai")
-                return;
-            }
-            if(res.status === 104){
-                console.log("Sai pass");
-                return;
-            }
-            if(res.status === 1){
-                console.log("Login thanh cong")
-                var newRouters = []
-                console.log(res);
-                ROUTERS.forEach((router)=>{
-                    if(router.reqLogin){
-                        newRouters.push(router)
-                    }
-                })
-
-                var storageData = {
-                    id: res.data._id
-                    
+        if(EmailValidate === null && PasswordValidate === null){
+            dispatch(asyncLogin({email: Email, password: Password}))
+            .then((res)=>{
+                if(res.status === 103){
+                    setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email hoặc mật khẩu không đúng</Text>)
+                    return;
                 }
-
-                storage('_id' , res.data).setItem();
-                storage('token' , res.jwtToken).setItem();
-                dispatch(actChangeRouters(newRouters))
-                navigation.replace('Main');
-            }
-        })
-        .catch(console.log)
+                if(res.status === 104){
+                    setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email hoặc mật khẩu không đúng</Text>)
+                    return;
+                }
+                if(res.status === 1){
+                    console.log("Login thanh cong")
+                    var newRouters = []
+                    console.log(res);
+                    ROUTERS.forEach((router)=>{
+                        if(router.reqLogin){
+                            newRouters.push(router)
+                        }
+                    })
+    
+                    var storageData = {
+                        id: res.data._id
+                        
+                    }
+    
+                    storage('_id' , res.data).setItem();
+                    storage('token' , res.jwtToken).setItem();
+                    dispatch(actChangeRouters(newRouters))
+                    navigation.replace('Main');
+                }
+            })
+            .catch(console.log)
+        }
+       
     }, [Email, Password])
 
     const ToggleShowPassword = useCallback(() => {
@@ -98,9 +145,14 @@ export default function App({navigation}) {
                     autoCapitalize="none"
                     onFocus={()=>{Email !== '' || !EmailFocus && setEmailFocus(true)}} 
                     onBlur={()=>{Email ==='' && setEmailFocus(false)}} 
-                    onChangeText={value => setEmail(value)} 
+                    // onChangeText={value => setEmail(value)} 
+                    onChangeText={value => validateEmail(value)}
                     value={Email} 
                     style={styles.input} />
+                   
+                </View>
+                <View style={{padding: 5}}>
+                   {EmailValidate ? EmailValidate : Error}
                 </View>
                 <View style={styles.inputBlock}>
                     <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: '#8a8c8e'}]}>Nhập mật khẩu</Text>
@@ -108,7 +160,7 @@ export default function App({navigation}) {
                     onFocus={()=>{Password !== '' || !PasswordFocus && setPasswordFocus(true)}} 
                     onBlur={()=>{Password === '' && setPasswordFocus(false)}}
                     onLayout={e => setInputPasswordHeight(e.nativeEvent.layout.height)} 
-                    onChangeText={value => setPassword(value)} 
+                    onChangeText={value => validatePassword(value)} 
                     value={Password} 
                     style={styles.input} 
                     secureTextEntry={!IsShowPassword} 
@@ -121,9 +173,13 @@ export default function App({navigation}) {
                         <FontAwesomeIcon style={styles.eyeStyle} icon={IsShowPassword ? faEye : faEyeSlash}/>
                     </TouchableOpacity>
                 </View>
+                <View style={{padding: 5}}>
+                   {PasswordValidate}
+                </View>
                 <TouchableOpacity
-                onPress={login}
-                style={styles.button}
+                    disabled={(EmailValidate === null && PasswordValidate === null) ? false : true}
+                    onPress={login}
+                    style={{...styles.button, ...{opacity: (EmailValidate === null && PasswordValidate === null) ? 1 : 0.5}}}
                 >
                     <Text style={styles.buttonText}>Đăng nhập</Text>
                 </TouchableOpacity>

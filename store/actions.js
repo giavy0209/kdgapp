@@ -168,6 +168,33 @@ export function asyncLogin(loginInfo){
     }
 }
 
+
+export function asyncReg(regInfo){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/register_user', regInfo)).data
+            return res
+
+        } catch (error) {
+            console.log('register error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+export function asyncRegisterCode(Email){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/create_register_code ', Email)).data
+            return res
+
+        } catch (error) {
+            console.log('send mail error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
 export function asyncWithdraw(submiteData){
     return async (dispatch) =>{
         try {

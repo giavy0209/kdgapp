@@ -3,30 +3,38 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { View, TextInput, Text, TouchableOpacity,Alert, Image , Linking} from 'react-native';
 import {mainStyles as styles} from '../../styles/'
+import { useDispatch } from 'react-redux'
 import calAPI from '../../axios'
 import ticker from '../../assets/images/ticker.png'
 import {transition} from '../../helper'
+import {asyncReg, asyncRegisterCode} from '../../store/actions'
+
 
 export default function App({ navigation }) {
 
+    const dispatch = useDispatch()
     const [ToggleCheckBox, setToggleCheckBox] = useState(false)
 
     const [Email, setEmail] = useState("")
+    const [EmailValidate, setEmailValidate] = useState(<Text></Text>)
     const [EmailFocus, setEmailFocus] = useState(false)
     const [EmailTextPosition, setEmailTextPosition] = useState(11)
     const [EmailTextSize, setEmailTextSize] = useState(15)
 
     const [EmailCode, setEmailCode] = useState("")
+    const [EmailCodeValidate, setEmailCodeValidate] = useState(<Text></Text>)
     const [EmailCodeFocus, setEmailCodeFocus] = useState(false)
     const [EmailCodeTextPosition, setEmailCodeTextPosition] = useState(11)
     const [EmailCodeTextSize, setEmailCodeTextSize] = useState(15)
 
     const [Password, setPassword] = useState("")
+    const [PasswordValidate, setPasswordValidate] = useState(<Text></Text>)
     const [PasswordFocus, setPasswordFocus] = useState(false)
     const [PasswordTextPosition, setPasswordTextPosition] = useState(11)
     const [PasswordTextSize, setPasswordTextSize] = useState(15)
 
     const [RePassword, setRePassword] = useState("")
+    const [RePasswordValidate, setRePasswordValidate] = useState(<Text></Text>)
     const [RePasswordFocus, setRePasswordFocus] = useState(false)
     const [RePasswordTextPosition, setRePasswordTextPosition] = useState(11)
     const [RePasswordTextSize, setRePasswordTextSize] = useState(15)
@@ -39,6 +47,9 @@ export default function App({ navigation }) {
     const [IsShowPassword, setIsShowPassword] = useState(false)
     const [InputPasswordHeight, setInputPasswordHeight] = useState(0)
     const [InputPasswordEyeHeight, setInputPasswordEyeHeight] = useState(0)
+
+
+    const [CheckValidate, setCheckValidate] = useState(false);
 
     useEffect(()=>{
         if(EmailFocus){
@@ -90,14 +101,63 @@ export default function App({ navigation }) {
         }
     },[RefCodeFocus])
 
-    const reg = useCallback(async () => {
-        if(Password !== RePassword){
-            Alert.alert(
-                "Đăng ký",
-                "Nhập lại mật khẩu không khớp với mật khẩu đã nhập",
+// --------------------Validation------------------------
+    const validateEmail = (val) => {
+        setEmail(val);
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if(val.match(mailformat)){
+            setEmailValidate(null)
+        }else{
+            setEmailValidate(
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email không hợp lệ</Text>
             )
-            return;
         }
+    }
+    const validatePassword = (val) => {
+        setPassword(val);
+        var passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
+        if(val.match(passwordFormat)){
+            setPasswordValidate(null)
+        }else{
+            setPasswordValidate(
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu phải ít nhất 8 ký tự cả chữ và số</Text>
+            )
+        }
+    }
+    const validateRePassword = (val) => {
+        setRePassword(val);
+        if(val === Password){
+            setRePasswordValidate(null)
+        }else{
+            setRePasswordValidate(
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu không khớp</Text>
+            )
+        }
+    }
+    const validateEmailCode = (val) => {
+        setEmailCode(val)
+        var EmailCodeFormat = /^\d{6}$/
+        if(val.match(EmailCodeFormat)){
+            setEmailCodeValidate(null)
+        }else{
+            setEmailCodeValidate(
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mã xác minh không hợp lệ</Text>
+            )
+        }
+    }
+    useEffect(()=>{
+        if(EmailValidate === null && 
+           EmailCodeValidate === null && 
+           PasswordValidate === null && 
+           RePasswordValidate === null){
+               setCheckValidate(true)
+           }else{
+               setCheckValidate(false)
+           }
+    },[EmailValidate, EmailCodeValidate, PasswordValidate, RePasswordValidate ])
+// ------------------------------------------------------
+    const reg = useCallback(() => {
+        console.log(Email);
         if(!ToggleCheckBox){
             Alert.alert(
                 "Đăng ký",
@@ -105,46 +165,35 @@ export default function App({ navigation }) {
             )
             return;
         }
-        try {
-            const res = (await calAPI.post('/api/register_user',{email: Email, password: Password, register_code : EmailCode})).data
-            console.log(res);
+        dispatch(asyncReg({email: Email, password: Password, parent_ref_code: RefCode, register_code : EmailCode}))
+        .then((res)=>{
+            console.log(res)
             if(res.status === 0){
-                Alert.alert(
-                    "Lỗi",
-                    "Mã xác minh không hợp lệ",
-                )
-               
+                setEmailCodeValidate(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mã xác minh không đúng</Text>)
+                return
             }
-
-            // navigation.replace('Login')
-        } catch (error) {
-            console.log(error.response);
-            if(error.response.status === 401){
-                Alert.alert(
-                    "Đăng ký",
-                    "Email không hợp lệ",
-                )
+            if(res.status === 1){
+                navigation.replace('Login', {
+                    email_params: Email
+                })
             }
-        }
+        })
+        .catch(console.log)
         
+       
     }, [ToggleCheckBox, Email, EmailCode, Password, RePassword, RefCode])
+ 
+    const reqMailCode = useCallback(()=>{
+            dispatch(asyncRegisterCode({email: Email}))
 
-    const reqMailCode = useCallback(async ()=>{
-        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if(Email.match(mailformat)){
-            try {
-                const res = (await calAPI.post('/api/create_register_code ',{email: Email})).data
-   
-                console.log(res);
-            } catch (error) {
-                // console.log(error.response);
-            }
-        }else{
-            Alert.alert(
-                "Đăng ký",
-                "Email không đúng định dạng",
-            )
-        }
+            .then((res)=>{
+                if(res.status === 100 && res.msg === 'email is registed'){
+                    setEmailValidate( <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email đã được đăng ký</Text>)
+                    return
+                }
+            })
+            .catch(console.log)
+
     },[Email])
 
     const ToggleShowPassword = useCallback(() => {
@@ -161,22 +210,30 @@ export default function App({ navigation }) {
                     <TextInput 
                     onFocus={()=>{Email !== '' || !EmailFocus && setEmailFocus(true)}} 
                     onBlur={()=>{Email ==='' && setEmailFocus(false)}} 
-                    onChangeText={value => setEmail(value)} 
+                    onChangeText={(value) => validateEmail(value)} 
                     value={Email} 
                     style={styles.input} />
                 </View>
-
+                <View style={{padding: 5}}>
+                   {EmailValidate}
+                </View>
                 <View style={[styles.inputBlock]}>
                     <Text style={[styles.placeHolderText,{bottom: EmailCodeTextPosition , fontSize: EmailCodeTextSize}, EmailCodeFocus && {color: '#8a8c8e'}]}>Mã xác minh Email</Text>
                     <TextInput 
                     onFocus={()=>{EmailCode !== '' || !EmailCodeFocus && setEmailCodeFocus(true)}} 
                     onBlur={()=>{EmailCode ==='' && setEmailCodeFocus(false)}} 
-                    onChangeText={value => setEmailCode(value)} 
+                    onChangeText={value => validateEmailCode(value)}
                     value={EmailCode} 
                     style={[styles.input,{width: '84%'}]} />
-                    <TouchableOpacity style={{width: 50}} onPress={reqMailCode}><Text style={[{color: '#fac800', opacity: 0.4},Email !=='' && {opacity: 1}]}>Lấy mã</Text></TouchableOpacity>
+                    <TouchableOpacity style={{width: 70}} disabled={EmailValidate === null ? false : true} onPress={reqMailCode}>
+                        <View style={{ opacity: EmailValidate === null ? 1 : 0.5, backgroundColor: '#fac800', borderRadius: 10, alignItems: 'center', padding: 3}}>
+                            <Text style={{color: 'rgba(255,255,255,0.8)'}}>Lấy mã</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
-
+                <View style={{padding: 5}}>
+                   {EmailCodeValidate}
+                </View>
                 <View style={[styles.inputBlock,{flexDirection: 'column'}]}>
                     <View style={[styles.inputBlock, {marginTop: 0}]}>
                         <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: '#8a8c8e'}]}>Mật khẩu</Text>
@@ -184,7 +241,7 @@ export default function App({ navigation }) {
                         onFocus={()=>{Password !== '' || !PasswordFocus && setPasswordFocus(true)}} 
                         onBlur={()=>{Password === '' && setPasswordFocus(false)}}
                         onLayout={e => setInputPasswordHeight(e.nativeEvent.layout.height)} 
-                        onChangeText={value => setPassword(value)} 
+                        onChangeText={value => validatePassword(value)} 
                         value={Password} 
                         style={styles.input} 
                         secureTextEntry={!IsShowPassword} 
@@ -199,17 +256,29 @@ export default function App({ navigation }) {
                     </View>
                     <Text style={{fontSize: 13, fontFamily: 'Roboto_300Light_Italic', fontStyle: 'italic', color: '#8a8c8e', paddingLeft:8}}>Từ 8 - 20 ký tự, phải bao gồm chữ, số, ký tự và ít nhất một chữ viết hoa</Text>
                 </View>
-
+                <View style={{padding: 5}}>
+                   {PasswordValidate}
+                </View>
                 <View style={styles.inputBlock}>
                     <Text style={[styles.placeHolderText,{bottom: RePasswordTextPosition , fontSize: RePasswordTextSize}, RePasswordFocus && {color: '#8a8c8e'}]}>Xác nhận mật khẩu</Text>
                     <TextInput 
                     onFocus={()=>{RePassword !== '' || !RePasswordFocus && setRePasswordFocus(true)}} 
                     onBlur={()=>{RePassword ==='' && setRePasswordFocus(false)}} 
-                    onChangeText={value => setRePassword(value)} 
+                    onChangeText={value => validateRePassword(value)} 
                     value={RePassword} 
-                    style={styles.input} />
+                    style={styles.input} 
+                    secureTextEntry={!IsShowPassword} />
+                    <TouchableOpacity
+                        onLayout={e => setInputPasswordEyeHeight(e.nativeEvent.layout.height)}
+                        onPress={ToggleShowPassword}
+                        style={[styles.showPasswordButton,{top: (InputPasswordHeight / 2) - (InputPasswordEyeHeight / 2),}]}
+                        >
+                            <FontAwesomeIcon style={styles.eyeStyle} icon={IsShowPassword ? faEye : faEyeSlash}/>
+                    </TouchableOpacity>
                 </View>
-
+                <View style={{padding: 5}}>
+                   {RePasswordValidate}
+                </View>
                 <View style={styles.inputBlock}>
                     <Text style={[styles.placeHolderText,{bottom: RefCodeTextPosition , fontSize: RefCodeTextSize}, RefCodeFocus && {color: '#8a8c8e'}]}>Mã mời (tùy chọn)</Text>
                     <TextInput 
@@ -232,9 +301,7 @@ export default function App({ navigation }) {
                         </Text>
                     </Text>
                 </View>
-
-
-                <TouchableOpacity onPress={reg} style={styles.button} >
+                <TouchableOpacity disabled={CheckValidate ? false : true} onPress={reg} style={[styles.button, {opacity: CheckValidate ? 1 : 0.5}]} >
                     <Text style={styles.buttonText}>Đăng ký</Text>
                 </TouchableOpacity>
             </View>
