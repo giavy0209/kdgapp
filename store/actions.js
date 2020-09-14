@@ -154,6 +154,21 @@ export function asyncGetRouters(){
     }
 }
 
+
+export function asyncConvertKDGReward(value){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/convert_kdg_reward', value)).data
+            console.log(res)
+            return res
+
+        } catch (error) {
+            console.log('login error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
 export function asyncLogin(loginInfo){
     return async (dispatch) =>{
         try {
@@ -185,7 +200,7 @@ export function asyncReg(regInfo){
 export function asyncRegisterCode(Email){
     return async (dispatch) =>{
         try {
-            const res = (await (await calAPI()).post('/api/create_register_code ', Email)).data
+            const res = (await (await calAPI()).post('/api/create_register_code', Email)).data
             return res
 
         } catch (error) {
@@ -195,10 +210,52 @@ export function asyncRegisterCode(Email){
     }
 }
 
+export function asyncForgotPassword(userInfo){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/forgot_password', userInfo)).data
+            return res
+
+        } catch (error) {
+            console.log('Reset password error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+
+export function asynForgotPasswordCode(Email){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/create_forgot_password_code', Email)).data
+            return res
+
+        } catch (error) {
+            console.log('send mail error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+
 export function asyncWithdraw(submiteData){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/deposit', submiteData)).data
+            console.log(res)
+            return res
+
+        } catch (error) {
+            console.log('Withdraw error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+export function asyncStaking(submiteData){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/create_staking', submiteData)).data
             console.log(res)
             return res
 

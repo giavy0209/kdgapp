@@ -9,11 +9,12 @@ import * as Permissions from 'expo-permissions';
 import { Header2 } from '../../Header'
 import { mainStyles, accountStyle } from '../../../styles'
 import defaultAvata from '../../../assets/images/default-avata.webp'
-
+import { useRoute } from '@react-navigation/native'
 import {asyncLogout} from '../../../store/actions'
 
 export default function App() {
     const dispatch = useDispatch()
+    const route = useRoute()
     const [Height, setHeight] = useState(0)
     const [ContentHeight, setContentHeight] = useState(0)
     const [ButtonHeight, setButtonHeight] = useState(0)
@@ -23,6 +24,7 @@ export default function App() {
     const [ImageWidth, setImageWidth] = useState(0)
     const [image, setImage] = useState(defaultAvata)
 
+    const {email} = route.params;
     const getPermissionAsync = useCallback(async () => {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -63,7 +65,7 @@ export default function App() {
                 style={{paddingHorizontal: 19, paddingTop: 40, paddingBottom: 18, flexDirection: 'row', justifyContent: 'space-between', position: 'relative'}}>
                     <View style={[accountStyle.maskOpacity, {borderRadius: 8}]}></View>
                     <Text style={{color: '#ddd9d8'}}>Email</Text>
-                    <Text style={{color: '#8a8c8e'}}>luongthang9***@gmail.com</Text>
+                    <Text style={{color: '#8a8c8e'}}>{email}</Text>
 
                     <TouchableOpacity
                     onLayout={e => setImageWidth(e.nativeEvent.layout.width)}

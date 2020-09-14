@@ -12,7 +12,8 @@ import kdgicon from '../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../assets/images/IconCoin/ETH.png'
 import trxicon from '../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../assets/images/IconCoin/USDT.png'
-import { add } from 'react-native-reanimated';
+import kncicon from '../../assets/images/IconCoin/KNC.png'
+import mchicon from '../../assets/images/IconCoin/MCH.png'
 // ------------------------------------------
 
 export default function App({
@@ -22,8 +23,12 @@ export default function App({
     balanceTRX, 
     balanceETH, 
     balanceUSDT,
+    balanceKNC,
+    balanceMCH,
     addressTRX,
-    addressETH
+    addressETH,
+    addressKNC,
+    addressMCH
     }){
     const navigation = useNavigation()
     const [CoinHeight, setCoinHeight] = useState(0)
@@ -34,6 +39,8 @@ export default function App({
         {key: 2, coinName: 'ETH', icon: ethicon, valueUSD: '$0.030', balance: balanceETH, address: addressETH},
         {key: 3, coinName: 'TRX', icon: trxicon, valueUSD: '$0.160', balance: balanceTRX, address: addressTRX},
         {key: 4, coinName: 'USDT', icon: usdticon, valueUSD: '$0.160', balance: balanceUSDT, address: addressETH},
+        {key: 5, coinName: 'KNC', icon: kncicon, valueUSD: '$0.160', balance: balanceKNC, address: addressKNC},
+        {key: 6, coinName: 'MCH', icon: mchicon, valueUSD: '$0.160', balance: balanceMCH, address: addressMCH},
     ]
 
     const renderLeftActions = useCallback((id, balance, address) => {
@@ -107,7 +114,9 @@ export default function App({
                     renderLeftActions={()=>renderLeftActions(item.coinName, item.balance, item.address)}>
                     <TouchableOpacity 
                     onPress={()=>navigation.navigate('History', {
-                        id: item.coinName
+                        id: item.coinName,
+                        address: item.address,
+                        balance: item.balance
                     })}
                     onLayout={e=>setCoinHeight(e.nativeEvent.layout.height)} style={[walletStyles.coin,]}>
                         <View style={[walletStyles.maskOpacity,{opacity: .4}, 

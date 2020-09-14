@@ -54,7 +54,7 @@ export default function App({setOutScrollViewTop}){
                         <View style={{paddingVertical: 10}}>
                             <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 15}}>Tài khoản đăng ký trước ngày 1/9 sẽ được đổi tối đa <Text style={{color: '#fff', fontWeight: 'bold', fontStyle: 'italic'}}>20 KDG Reward/ ngày, tối đa 1 lần/ ngày</Text></Text>
                             <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 15, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
-                            <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 15, paddingTop: 20}}>Tài khoản đăng ký sau ngày 1/9 sẽ được đổi tối đa <Text style={{color: '#fff', fontWeight: 'bold', fontStyle: 'italic'}}>50 KDG Reward</Text> quy đổi mỗi ngày một lần</Text>
+                            <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 15, paddingTop: 20}}>Tài khoản đăng ký sau ngày 1/9 sẽ được quy đổi thành KDG token khi bạn <Text style={{color: '#fff', fontWeight: 'bold', fontStyle: 'italic'}}>có đủ 25 KDG reward, tối đa 50 KDG reward </Text>, tối đa 1 lần/ ngày</Text>
                             <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 15, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
                         </View>
                     </View>

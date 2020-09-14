@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         titleContent: {
             color: 'rgba(255,255,255, 0.7)', 
             textAlign: 'center', 
-            fontSize: 14
+            fontSize: 14,
+            paddingLeft: 5
         },
 
         // ----------------Staking History-------------------------
@@ -162,6 +163,20 @@ const styles = StyleSheet.create({
             color: 'rgba(255,255,255,0.5)', 
             fontSize: 12
         },
+        checkBox:{
+            backgroundColor : '#ddd9d8',
+            width: 15,
+            height: 15,
+            borderRadius: 2,
+            position: 'relative',
+          },
+          checkBoxTick: {
+            position: 'absolute',
+            top: 3,
+            left: 2,
+            width: 11,
+            height: 9,
+          },
         // ----------------Staking Time-------------------------
         stakingTimeContainer: {
             backgroundColor: 'rgba(27,36,56,0.8)',

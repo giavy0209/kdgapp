@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import {View, Text, TouchableOpacity, Image, FlatList, CheckBox} from 'react-native'
+import React, { useState, useEffect, useCallback } from 'react'
+import {View, Text, TouchableOpacity, Image, FlatList, Alert, TextInput} from 'react-native'
 import { mainStyles, stakingStyle } from '../../../styles'
 import {Header2} from '../../Header'
 import { JoinButton } from '../../Button'
@@ -7,20 +7,26 @@ import coin from '../../../assets/images/coin.png'
 import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
+import ticker from '../../../assets/images/ticker.png'
+
+// import RangeSlider, { Slider } from 'react-native-range-slider-expo'
+import Slider from '@react-native-community/slider';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { asyncStaking } from '../../../store/actions'
+import { storage } from '../../../helper'
+import { useDispatch, useSelector } from 'react-redux'
+
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height
 
-import RangeSlider, { Slider } from 'react-native-range-slider-expo'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
-
-
-
 
 export default function App({setOutScrollViewTop, setOutScrollView}){
-
-    const [value, setValue] = useState(0);
+    const dispatch = useDispatch();
+    const [ValueStaking, setValueStaking] = useState(0);
     const [isSelected, setSelection] = useState(false);
+    const [ToggleCheckBox, setToggleCheckBox] = useState(false)
 
     const btnActive = (
         <JoinButton
@@ -52,18 +58,52 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title="Tham gia Staking"/>)
         setOutScrollView(                
-            <TouchableOpacity>
-                <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/25}}>
-                    <LinearGradient 
-                        start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
-                        colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
-                        style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 45}}>
-                            <Text style={{color: '#111b2d', fontSize: 16}}>THAM GIA NGAY</Text>
-                    </LinearGradient>
-                </View>
-            </TouchableOpacity>
+           
         )
-    },[])
+    },[ValueStaking])
+
+    const Staking = useCallback(async () => {
+ 
+
+        var userinfo = await storage('_id').getItem();
+
+        dispatch(asyncStaking({userId: userinfo._id, kdg_coin: ValueStaking}))
+        .then((res)=>{
+          console.log(res);
+          if(res.status === 502){
+            Alert.alert(
+                "Staking",
+                "Giá trị Staking không hợp lệ",
+            )
+            return;
+          }     
+          if(res.status === 101){
+            Alert.alert(
+                "Staking",
+                "Giá trị tối thiểu là 200 KDG",
+            )
+            return;
+          }       
+          if(res.status === 103){
+            Alert.alert(
+                "Staking",
+                "Không đủ KDG để Staking",
+            )
+            return;
+          }
+          if(res.status === 1){
+            Alert.alert(
+                "Staking",
+                "Staking thành công",
+            )
+            setValueStaking(0)
+            return;
+          }
+        })
+        
+        .catch(console.log)
+
+    }, [ValueStaking])
 
     return (
         
@@ -110,15 +150,16 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
                 <View>
                     <Text style={stakingStyle.dashSymbol}>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </Text>
-                    <Text style={stakingStyle.valueStaking}>{value}</Text>
+                    <TextInput onChangeText={value => setValueStaking(value)} style={stakingStyle.valueStaking}>{ValueStaking}</TextInput>
                 </View>
                 <Text style={{color: '#rgba(138,140,142, 0.8)', color: '#fff'}}>KDG</Text>
             </View>
 
-            <View style={{paddingHorizontal: 30}}>
-                <View style={{marginVertical: -20}}>
-                    <Slider
-                        valueOnChange={value => setValue(value)}
+            <View style={{paddingHorizontal: 30, width: '100%'}}>
+                <View style={{alignItems: 'center'}}>
+                    {/* <Slider
+                        styleSize='small'
+                        valueOnChange={value => ValueStaking(value)}
                         showRangeLabels={false}
                         inRangeBarColor='#fff'
                         outOfRangeBarColor= "#e4c23d"
@@ -126,14 +167,26 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                         valueLabelsBackgroundColor= 'rgba(234,192,22, 0.2)'      
                         min={200}
                         max={50000}
+                    /> */}
+
+                        {console.log(ValueStaking)}
+                        <Slider
+                            style={{width: '100%'}}
+                            step={1}
+                            minimumValue={200}
+                            maximumValue={50000}
+                            thumbTintColor='#fac800'
+                            minimumTrackTintColor='#fac800'
+                            maximumTrackTintColor='#fff'
+                            onValueChange={value => setValueStaking(value)}
                     />
                 </View>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: -20}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Text style={{color: 'rgba(255,255,255,0.4)'}}>200 KDG</Text>
                     <Text style={{color: 'rgba(255,255,255,0.4)'}}>50000 KDG</Text>
                 </View>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}> 
                     <View style={stakingStyle.numberOrderContainer}>
                         <Text style={{color: '#fff'}}>2</Text>
@@ -145,7 +198,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             <View style={stakingStyle.interestReceiveContainer}>
                 <View style={{alignItems: 'center'}}>
                     <Text style={stakingStyle.interestReceive}>Số tiền lãi nhận được</Text>
-                    <Text style={stakingStyle.interestReceiveUnit}>{(2.5*0.02*value)} KDG</Text>
+                    <Text style={stakingStyle.interestReceiveUnit}>{(0.3*ValueStaking).toFixed(2)} KDG</Text>
                 </View>
             </View>
         </View>
@@ -165,19 +218,32 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 renderItem={({item}) => <View style={{paddingLeft: windowWidth/19}}><Text style={stakingStyle.termContent}>{item.key}</Text></View>}
             />
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <CheckBox
-                    value={isSelected}
-                    onValueChange={setSelection}
-                    tintColors={{ true: '#fac800', false: '#fff' }}
-                />
+                <TouchableOpacity style={{paddingRight: 10}} onPress={()=> setToggleCheckBox(!ToggleCheckBox)}>
+                    <View style={[stakingStyle.checkBox,ToggleCheckBox && {backgroundColor: '#fac800'}]}><Image style={[stakingStyle.checkBoxTick,!ToggleCheckBox && {opacity: 0}]} source={ticker}/></View>
+                </TouchableOpacity>
                 <View>
                     <Text style={stakingStyle.termCheckboxTitle}>Tôi đã đọc và hiểu <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: '#fff'}}>cảnh báo rủi ro</Text> trước khi tham gia</Text>
                 </View>
                 
             </View>
             </View>
+            
         </View>
+        
     </View>
+    <TouchableOpacity
+        style={{paddingVertical: 20}}
+        onPress={Staking}
+    >
+        <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/15}}>
+            <LinearGradient 
+                start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
+                colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
+                style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 45}}>
+                    <Text style={{color: '#111b2d', fontSize: 16}}>THAM GIA NGAY</Text>
+            </LinearGradient>
+        </View>
+    </TouchableOpacity>
 </View>
         </>
     )

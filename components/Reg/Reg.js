@@ -214,7 +214,7 @@ export default function App({ navigation }) {
                     value={Email} 
                     style={styles.input} />
                 </View>
-                <View style={{padding: 5}}>
+                <View style={{padding: 2}}>
                    {EmailValidate}
                 </View>
                 <View style={[styles.inputBlock]}>
@@ -231,7 +231,7 @@ export default function App({ navigation }) {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <View style={{padding: 5}}>
+                <View style={{padding: 2}}>
                    {EmailCodeValidate}
                 </View>
                 <View style={[styles.inputBlock,{flexDirection: 'column'}]}>
@@ -256,7 +256,7 @@ export default function App({ navigation }) {
                     </View>
                     <Text style={{fontSize: 13, fontFamily: 'Roboto_300Light_Italic', fontStyle: 'italic', color: '#8a8c8e', paddingLeft:8}}>Từ 8 - 20 ký tự, phải bao gồm chữ, số, ký tự và ít nhất một chữ viết hoa</Text>
                 </View>
-                <View style={{padding: 5}}>
+                <View style={{padding: 2}}>
                    {PasswordValidate}
                 </View>
                 <View style={styles.inputBlock}>
@@ -276,7 +276,7 @@ export default function App({ navigation }) {
                             <FontAwesomeIcon style={styles.eyeStyle} icon={IsShowPassword ? faEye : faEyeSlash}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{padding: 5}}>
+                <View style={{padding: 2}}>
                    {RePasswordValidate}
                 </View>
                 <View style={styles.inputBlock}>
@@ -291,7 +291,7 @@ export default function App({ navigation }) {
 
                 <View style={[styles.inputBlock,]}>
                     <TouchableOpacity style={{marginTop: -10}} onPress={()=> setToggleCheckBox(!ToggleCheckBox)}>
-                        <View style={styles.checkBox}><Image style={[styles.checkBoxTick,!ToggleCheckBox && {opacity: 0}]} source={ticker}/></View>
+                        <View style={[styles.checkBox,ToggleCheckBox && {backgroundColor: '#fac800'}]}><Image style={[styles.checkBoxTick,!ToggleCheckBox && {opacity: 0}]} source={ticker}/></View>
                     </TouchableOpacity>
                     <Text style={{fontSize: 14, color: '#8a8c8e', marginLeft: 6}}>Tôi đồng ý với 
                         <Text 

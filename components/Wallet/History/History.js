@@ -22,6 +22,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const [SelectedTime, setSelectedTime] = useState('1 ngày')
 
     const coinName = route.params.id;
+    const coinAddress = route.params.address;
+    const coinBalance = route.params.balance;
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title={coinName} />)
     },[])
@@ -97,10 +99,10 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                 />
 
                 <TouchableOpacity 
-                    onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                    onPress={() => Clipboard.setString(coinAddress)}
                     style={{padding: 20}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(29,38,59,0.6)', borderRadius: 5}}>
-                        <Text style={{color: 'rgba(255,255,255, 0.7)'}}>TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu</Text>
+                        <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{coinAddress}</Text>
                         <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                     </View>
                 </TouchableOpacity>
@@ -109,7 +111,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: windowHeight/25, paddingHorizontal: 15}}>
                     <TouchableOpacity 
                         onPress={() => navigation.navigate('DepositPage2', {
-                            id: coinName
+                            id: coinName,
+                            address: coinAddress
                         })}
                         style={{width: windowWidth/2.3}}>
                         <LinearGradient 
@@ -121,7 +124,9 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     </TouchableOpacity>
                     <TouchableOpacity 
                         onPress={() => navigation.navigate('WithdrawPage2', {
-                            id: coinName
+                            id: coinName,
+                            address: coinAddress,
+                            balance: coinBalance
                         })}
                         style={{width: windowWidth/2.3}}>
                         <View style={{alignItems: 'center', borderColor: '#fac800', borderWidth: 2, padding: windowWidth/38, width: '100%', borderRadius: 45}}>

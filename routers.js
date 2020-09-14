@@ -52,7 +52,9 @@ import Account from './components/Account'
 import tabWallet from './assets/images/tab-wallet.png'
 import tabWalletActive from './assets/images/tab-wallet-active.png'
 import tabStake from './assets/images/tab-stake.png'
+import tabStakeActive from './assets/images/tab-stake-active.png'
 import tabSwap from './assets/images/tab-swap.png'
+import tabSwapActive from './assets/images/tab-swap-active.png'
 import tabAccount from './assets/images/tab-account.png'
 import tabAccountActive from './assets/images/tab-account-active.png'
 
@@ -396,7 +398,7 @@ const TABS = [
         title: 'Staking',
         render : Staking,
         logo: tabStake,
-        logoActive: tabStake,
+        logoActive: tabStakeActive,
         reqLogin: true,
     },
     {
@@ -404,7 +406,7 @@ const TABS = [
         title: 'Swap',
         render : Swap,
         logo: tabSwap,
-        logoActive: tabSwap,
+        logoActive: tabSwapActive,
         reqLogin: true,
     },
     {

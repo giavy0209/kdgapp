@@ -16,7 +16,7 @@ import { asyncGetCoinPrice, asyncWithdraw } from '../../../store/actions'
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-export default function App(){
+export default function App({setOutScrollView}){
     
     const typeCurrency = useSelector(state => state.currency)
     
@@ -89,6 +89,23 @@ export default function App(){
         })
         .catch(console.log)
     }, [ToAddress, Token])
+
+    useEffect(()=>{
+        setOutScrollView(
+            <TouchableOpacity
+                onPress={withdraw}
+            >
+                <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/25}}>
+                    <LinearGradient 
+                        colors={['#e5be50', '#ecda8b', '#a47b00']}
+                        style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>
+                        <Text style={{color: '#111b2d', fontSize: 16}}>Gửi</Text>
+                    </LinearGradient>
+                </View>
+            </TouchableOpacity>
+        )
+    },[])
+
     return (
         <>
 <View style={mainStyles.container}>
@@ -185,18 +202,6 @@ export default function App(){
                 <Text style={{color: '#fac800',  fontSize: 12, paddingLeft: (windowWidth*windowHeight)/23040, fontWeight: 'bold'}}>0.000032 {coinName}</Text>
             </View>
         </View>
-
-        <TouchableOpacity
-            onPress={withdraw}
-        >
-            <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
-                <LinearGradient 
-                    colors={['#e5be50', '#ecda8b', '#a47b00']}
-                    style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>
-                    <Text style={{color: '#111b2d', fontSize: 16}}>Gửi</Text>
-                </LinearGradient>
-            </View>
-        </TouchableOpacity>
         
     </View>
 </View> 

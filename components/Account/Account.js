@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, Image, ImageBackground ,TouchableOpacity} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -11,7 +11,22 @@ import support from '../../assets/images/support-account.png'
 import invitation from '../../assets/images/invitation-account.png'
 import defaultAvata from '../../assets/images/default-avata.webp'
 import List from './ListSetting'
+import { storage } from '../../helper'
+
 export default function App({navigation}){
+
+  const [UserName, setUserName] = useState('')
+  const [UserEmail, setUserEmail] = useState('')
+
+  useEffect(() => {
+    async function getUserInfo() {
+      var userinfo = await storage('_id').getItem();
+      setUserName(userinfo.first_name + " " + userinfo.last_name);
+      setUserEmail(userinfo.email);
+    }
+
+    getUserInfo()
+  }, [UserName, UserEmail])
     return(
         <>
         <View style={[mainStyles.container,]}>
@@ -50,13 +65,16 @@ export default function App({navigation}){
                 <View style={accountStyle.blockAvata}>
                     <Image style={accountStyle.avata} source={defaultAvata}/>
                 </View>
-                <Text style={accountStyle.profileBarEmail}>luongdaithang***@gmail.com</Text>
+                    <Text style={accountStyle.profileBarEmail}>{UserName}</Text>
                 <LinearGradient 
                 start={[0,1]}
                 end={[1,0]}
                 style={accountStyle.pen}
                 colors={['#ab7f00', '#edd57c']}>
-                    <TouchableOpacity onPress={()=>navigation.navigate('Profile')} style={accountStyle.touchPen}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('Profile', {
+                                    // userName: UserName,
+                                    email: UserEmail
+                                })} style={accountStyle.touchPen}>
                         <FontAwesomeIcon color="#fff" icon={faPen}/>
                     </TouchableOpacity>
                 </LinearGradient>

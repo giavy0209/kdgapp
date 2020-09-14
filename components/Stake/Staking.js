@@ -3,13 +3,21 @@ import {View, Text, Image, TextInput, FlatList, ScrollView, SafeAreaView} from '
 import { mainStyles, stakingStyle } from '../../styles'
 import {HeaderStaking} from '../Header'
 import { JoinButton } from '../Button'
-import coin from '../../assets/images/coin.png'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 
+
+// ------------------Icon---------------------
+import kdgicon from '../../assets/images/IconCoin/KDG.png'
+import ethicon from '../../assets/images/IconCoin/ETH.png'
+import trxicon from '../../assets/images/IconCoin/TRX.png'
+import usdticon from '../../assets/images/IconCoin/USDT.png'
+// ------------------------------------------
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
 
 export default function App({setOutScrollViewTop, setOutScrollView}){
     const [Width , setWidth] = useState(0);
@@ -38,36 +46,13 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     iconColor="#fff"
     />)
 
-    const [list, setList] = useState([
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnInActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnInActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnInActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnInActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: coin, token: 'KDG', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
+    const list = [
+        {icon: kdgicon, token: 'KDG ', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
+        {icon: ethicon, token: 'ETH ', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
+        {icon: trxicon, token: 'TRX ', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
+        {icon: usdticon, token: 'USDT', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
         
-      ]);
+      ];
 
     const [searchVal, setSearchVal] = useState();
     const navigation = useNavigation()
@@ -120,8 +105,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                                 <View style={stakingStyle.tableContentContainer}>
                                     <View style={{width: '24%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                                         <Image
-                                            style={{marginRight: 10}}
-                                            source={require('../../assets/images/coin.png')}
+                                            style={{width: 33, height: 33}}
+                                            source={item.icon}
                                         />
                                         <Text style={stakingStyle.titleContent} >{item.token}</Text>
                                     </View>
