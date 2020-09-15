@@ -1,18 +1,19 @@
 import React, { useState, useEffect , useCallback} from 'react'
 import {View, Text, Image, TextInput, FlatList, ScrollView, Alert} from 'react-native'
-import { mainStyles, withdrawStyle } from '../../../styles/'
-import {Header2} from '../../Header'
+import { mainStyles, withdrawStyle, scannerStyles } from '../../../styles/'
+import {HeaderwithButton} from '../../Header'
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../../assets/images/logo.png'
 import coin from '../../../assets/images/coin.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Dimensions } from 'react-native';
 import { storage } from '../../../helper';
 import { asyncGetCoinPrice, asyncWithdraw } from '../../../store/actions'
+import { Camera } from 'expo-camera';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -26,7 +27,7 @@ export default function App({setOutScrollView}){
     const route = useRoute();
     const dispatch = useDispatch();
 
-
+    const [IsScannerOpen, setIsScannerOpen] = useState(false);
     // --------Value Submit----------
     const [ToAddress, setToAddress] = useState('')
     const [ValueSend, setValueSend] = useState('')
@@ -84,32 +85,44 @@ export default function App({setOutScrollView}){
                     "Thông báo",
                     `Đã chuyển thành công ${ValueSend} KDG`,
                 )
-                return;
+              
+            }else{
+                Alert.alert(
+                    "Thông báo",
+                    `Đã có lỗi xảy ra`,
+                )
+              
             }
         })
         .catch(console.log)
     }, [ToAddress, Token])
 
-    useEffect(()=>{
-        setOutScrollView(
-            <TouchableOpacity
-                onPress={withdraw}
-            >
-                <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/25}}>
-                    <LinearGradient 
-                        colors={['#e5be50', '#ecda8b', '#a47b00']}
-                        style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>
-                        <Text style={{color: '#111b2d', fontSize: 16}}>Gửi</Text>
-                    </LinearGradient>
-                </View>
-            </TouchableOpacity>
-        )
-    },[])
+
+    const handleBarCodeScanned = useCallback(({ type, data }) => {
+        // alert(`Scanned data = ${data}`);
+        setToAddress(data);
+        setIsScannerOpen(false)
+      }, []);
+    
+      const openScanner = useCallback(async () => {
+        const { status } = await Camera.requestPermissionsAsync();
+        if (status === 'granted') {
+          setIsScannerOpen(true)
+        } else {
+          Alert.alert(
+            'Cấp quyền',
+            'Bạn phải cấp quyền camera để sử dụng tính năng này'
+          )
+        }
+      }, [])
 
     return (
         <>
+{!IsScannerOpen && 
 <View style={mainStyles.container}>
-    <Header2 title={"Gửi " +  coinName}/>
+    <HeaderwithButton 
+        toPress={() => openScanner()}
+        title={"Gửi " +  coinName}/>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} > 
         <View style={withdrawStyle.balanceContainer}>
             <View style={{flexDirection: 'row'}}>
@@ -169,6 +182,7 @@ export default function App({setOutScrollView}){
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
                             onChangeText={value=>setToAddress(value)} 
+                            value={ToAddress}
                             style={withdrawStyle.inputNum} />
                         </View>
                     </View> 
@@ -202,9 +216,38 @@ export default function App({setOutScrollView}){
                 <Text style={{color: '#fac800',  fontSize: 12, paddingLeft: (windowWidth*windowHeight)/23040, fontWeight: 'bold'}}>0.000032 {coinName}</Text>
             </View>
         </View>
-        
+        <TouchableOpacity
+                onPress={withdraw}
+            >
+                <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/25}}>
+                    <LinearGradient 
+                        colors={['#e5be50', '#ecda8b', '#a47b00']}
+                        style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>
+                        <Text style={{color: '#111b2d', fontSize: 16}}>Gửi</Text>
+                    </LinearGradient>
+                </View>
+        </TouchableOpacity>
     </View>
 </View> 
+}
+{IsScannerOpen && 
+    <View
+        style={[scannerStyles.container,
+        { width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }
+        ]}
+      >
+        <TouchableOpacity
+          onPress={() => setIsScannerOpen(false)}
+          style={[scannerStyles.closeButton]}
+        >
+          <FontAwesomeIcon style={{color: '#fff',fontSize: 40}} icon={faTimes} />
+        </TouchableOpacity>
+        <Camera
+          onBarCodeScanned={handleBarCodeScanned}
+          ratio='1:1'
+          style={[{ width: Dimensions.get('screen').width, height: Dimensions.get('screen').width , position: 'absolute', top: '50%',transform: [{translateY: - Dimensions.get('screen').width/2}]}]}
+        />
+      </View>}
         </>
     )
 } 

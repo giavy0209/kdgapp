@@ -1,14 +1,19 @@
 import React, { useState, useCallback, useEffect} from 'react';
-import {  View, Text, Image, Dimensions, Clipboard} from 'react-native';
+import {  View, Text, Image, Dimensions, Clipboard, FlatList} from 'react-native';
+import { useSelector, useDispatch } from 'react-redux'
 import {LineChart } from 'react-native-chart-kit'
 import {mainStyles} from '../../../styles'
 import {Header2} from '../../Header'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faAngleDown, faCopy, faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faChevronLeft, faChevronRight, faCopy, faFilter } from '@fortawesome/free-solid-svg-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
 import Select from './Select'
+import HistoryButton from '../../Button/HistoryButton'
+
+import { storage } from '../../../helper'
+import { asyncGetBlockchainTransaction} from '../../../store/actions'
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -16,6 +21,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
     const navigation = useNavigation()
     const route = useRoute()
+    const dispatch = useDispatch()
 
     const [SelectType, setSelectType] = useState(null)
     const [SelectedHistory, setSelectedHistory] = useState('Tất cả')
@@ -24,9 +30,11 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const coinName = route.params.id;
     const coinAddress = route.params.address;
     const coinBalance = route.params.balance;
-    useEffect(()=>{
-        setOutScrollViewTop(<Header2 title={coinName} />)
-    },[])
+
+
+    const [Transaction, setTransaction] = useState([]);
+
+    const [Skip, setSkip] = useState(1)
     useEffect(()=>{
         if(SelectType !== null){
             setOutScrollView(<Select 
@@ -40,9 +48,36 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
         }
     },[SelectType])
 
-    const handleNext = useCallback(()=>{
-        setOutScrollView(<Confirm setOutScrollView={setOutScrollView} SelectedTime={SelectedTime}/>)
-    },[SelectedTime])
+
+    useEffect(() => {
+          var type = coinName.toLowerCase()
+          dispatch(asyncGetBlockchainTransaction(type, coinAddress, 1000,'2016-08-01'))
+          .then((res)=>{
+            setTransaction(res.data.data)
+            console.log(res);
+          })     
+          .catch(console.log)
+    
+      }, [])
+
+
+    useEffect(()=>{
+        setOutScrollViewTop(<Header2 title={coinName} />)
+    },[])
+
+
+    // const leftArrowHandler = (val) => { 
+    //     if(val > 5){
+    //         setSkip(val-5)
+     
+    //     }
+    // }
+
+    // const rightArrowHandler = (val) => {
+    //     setSkip(val+5)
+    // }
+
+    console.log(SelectedTime);
     
     return (
         <>   
@@ -119,7 +154,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                                 start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                                 colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
                                 style={{alignItems: 'center', padding: windowWidth/38, width: '100%', borderRadius: 45}}>
-                                <Text style={{color: '#111b2d', fontSize: 16}}>NHẬN</Text>
+                                <Text style={{color: '#111b2d', fontSize: 16}}>NẠP</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                     <TouchableOpacity 
@@ -130,7 +165,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         })}
                         style={{width: windowWidth/2.3}}>
                         <View style={{alignItems: 'center', borderColor: '#fac800', borderWidth: 2, padding: windowWidth/38, width: '100%', borderRadius: 45}}>
-                                <Text style={{color: '#fac800'}}>GỬI</Text>
+                                <Text style={{color: '#fac800'}}>RÚT</Text>
                         </View>
                     </TouchableOpacity>
                 </View>   
@@ -152,103 +187,28 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         </View>
                     </View>
 
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'rgba(28,38,59,0.7)', borderRadius: 5, padding: 15, borderBottomWidth: 1, borderColor: 'rgba(114,118,125,0.8)'}}>
-                        <TouchableOpacity
-                            onPress={()=>          
-                                navigation.navigate('HistoryDetail', {
-                                    id: 'l9Hgnms8d',
-                                    type: 'deposit',
-                                    status: 0
-                              })}
-                        >
-                            <View style={{flexDirection: 'row'}}>
-                                <View>
-                                    <Image
-                                        style={{
-                                            width: 35,
-                                            height: 35
-                                        }}
-                                        source={require('../../../assets/images/depositIcon.png')}
-                                    />
-                                </View>
-                                <View style={{paddingLeft: 10}}>
-                                    <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 14}}>Nhận</Text>
-                                    <Text style={{color: 'rgba(255,255,255,0.5)', fontSize: 12}}>08:21 - 20/02/20</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{alignItems: 'flex-end'}}>
-                            <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 14}}>+0.1 BTC</Text>
-                            <Text style={{color: '#26a65b', fontSize: 12, fontStyle: 'italic'}}>Thành công</Text>
-                        </View>
-                    </View>
-
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'rgba(28,38,59,0.7)', borderRadius: 5, padding: 15,  borderBottomWidth: 1, borderColor: 'rgba(114,118,125,0.8)'}}>
-                        <TouchableOpacity
-                            onPress={()=>          
-                                navigation.navigate('HistoryDetail', {
-                                    id: 'l9Hgnms8d',
-                                    type: 'withdraw',
-                                    status: 1
-                                })}
-                        >
-                            <View style={{flexDirection: 'row'}}>
-                                <View>
-                                    <Image
-                                        style={{
-                                            width: 35,
-                                            height: 35
-                                        }}
-                                        source={require('../../../assets/images/withdrawIcon.png')}
-                                    />
-                                </View>
-                                <View style={{paddingLeft: 10}}>
-                                    <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 14}}>Gửi</Text>
-                                    <Text style={{color: 'rgba(255,255,255,0.5)', fontSize: 12}}>08:21 - 20/02/20</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{alignItems: 'flex-end'}}>
-                            <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 14}}>-0.1 BTC</Text>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={{color: 'rgba(255,255,255,0.5)', fontSize: 12, fontStyle: 'italic'}}>Đang chờ</Text>
-                                <TouchableOpacity>
-                                    <Text style={{color: '#fac800', fontSize: 12, fontStyle: 'italic', paddingLeft: 5, textDecorationLine: 'underline'}}>Hủy</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'rgba(28,38,59,0.7)', borderRadius: 5, padding: 15}}>
-                        <TouchableOpacity
-                            onPress={()=>          
-                            navigation.navigate('HistoryDetail', {
-                                id: 'l9Hgnms8d',
-                                type: 'withdraw',
-                                status: 2
-                            })}
-                        >
-                            <View style={{flexDirection: 'row'}}>
-                                <View>
-                                    <Image
-                                        style={{
-                                            width: 35,
-                                            height: 35
-                                        }}
-                                        source={require('../../../assets/images/withdrawIcon.png')}
-                                    />
-                                </View>
-                                <View style={{paddingLeft: 10}}>
-                                    <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 14}}>Gửi</Text>
-                                    <Text style={{color: 'rgba(255,255,255,0.5)', fontSize: 12}}>08:21 - 20/02/20</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{alignItems: 'flex-end'}}>
-                            <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 14}}>+0.1 BTC</Text>
-                            <Text style={{color: '#e11f2e', fontSize: 12, fontStyle: 'italic'}}>Thất bại</Text>
-                        </View>
-                    </View>
+                    <FlatList
+                    data={Transaction}
+                    renderItem={({item}) => 
+                    
+                    <HistoryButton 
+                        type={item.transferFromAddress === coinAddress ? 'withdraw' : 'deposit'}
+                        status={item.confirmed === true ? 'success' : 'failed'}
+                        datetime={ 
+                                    (new Date(item.timestamp)).getHours().toString()  + ":" +
+                                    (new Date(item.timestamp)).getMonth().toString()  + ":" +
+                                    (new Date(item.timestamp)).getSeconds().toString()  + " - " +
+                                    (new Date(item.timestamp)).getDate().toString()  + "/"   +
+                                    (new Date(item.timestamp)).getMonth().toString() + "/"   +
+                                    (new Date(item.timestamp)).getFullYear().toString()
+                                 }
+                        value= {(item.amount)/Math.pow(10, 18)}
+                        coin_name={coinName}
+                    />
+                    
+                    }
+                    />
+                    
                 </View>
             </View>     
 

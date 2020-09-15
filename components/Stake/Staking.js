@@ -47,10 +47,10 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     />)
 
     const list = [
-        {icon: kdgicon, token: 'KDG ', time: '15 ngày', ratio: '+4.00%', btn: btnActive},
-        {icon: ethicon, token: 'ETH ', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: trxicon, token: 'TRX ', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
-        {icon: usdticon, token: 'USDT', time: '15 ngày', ratio: '+4.00%', btn: btnDisable},
+        {icon: kdgicon, token: 'KDG ', time: '60 ngày', ratio: '30%', btn: btnActive},
+        {icon: ethicon, token: 'ETH ', time: '60 ngày', ratio: '30%', btn: btnDisable},
+        {icon: trxicon, token: 'TRX ', time: '60 ngày', ratio: '30%', btn: btnDisable},
+        {icon: usdticon, token: 'USDT', time: '60 ngày', ratio: '30%', btn: btnDisable},
         
       ];
 
@@ -88,10 +88,10 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                         <Text style={stakingStyle.titleHeader} >Token</Text>
                     </View>
                     <View style={{width: '24%'}}>
-                        <Text style={stakingStyle.titleHeader} >Thời hạn khóa</Text>
+                        <Text style={stakingStyle.titleHeader} >Thời gian khoá tối thiểu</Text>
                     </View>
                     <View style={{width: '26%'}}>
-                        <Text style={stakingStyle.titleHeader} >Tỉ suất lợi nhuận ước tính hàng năm</Text>
+                        <Text style={stakingStyle.titleHeader} >Tỷ lệ lợi nhuận hàng năm dự kiến</Text>
                     </View>
                     <View style={{width: '26%'}}> 
                         <Text style={stakingStyle.titleHeader} ></Text>

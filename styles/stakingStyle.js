@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
             backgroundColor: 'rgba(26,37,56, 0.5)', 
             marginTop: windowHeight/66.7, 
             width: '100%', 
-            borderRadius: 8, 
+            borderTopRightRadius: 8,
+            borderBottomRightRadius: 8,
             paddingHorizontal: 10, 
             paddingVertical: 5
         },
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
             textAlign: 'center', 
             fontSize: 12,
             fontStyle: 'italic',
-            color: '#fac800'
+            color: '#fac800',
         },
         titleContentStakingHistory: {
             color: 'rgba(255,255,255,0.8)', 
@@ -58,8 +59,8 @@ const styles = StyleSheet.create({
             justifyContent: 'space-between',
             borderBottomColor: 'rgba(65,71,86,0.7)',
             borderBottomWidth: 1,
-            paddingVertical: 5,
-            marginTop: windowHeight/100
+            paddingVertical: 11,
+            marginTop: windowHeight/100,
         },
 
 

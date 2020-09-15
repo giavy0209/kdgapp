@@ -7,6 +7,10 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
+  "android": {
+    "package": "com.kdg.kingdomgame",
+    "versionCode": 1
+  },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.1.0",
     "@expo-google-fonts/roboto-condensed": "^0.1.0",

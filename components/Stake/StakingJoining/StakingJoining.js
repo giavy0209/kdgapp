@@ -28,31 +28,17 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const [isSelected, setSelection] = useState(false);
     const [ToggleCheckBox, setToggleCheckBox] = useState(false)
 
-    const btnActive = (
-        <JoinButton
-        title="Tham gia ngay" 
-        titleColor="#fac800"
-        tintColor="#fac800"
-        iconColor="#fff"
-        />)
-        const btnInActive = 
-    (    <JoinButton
-        title="Tham gia nsgay" 
-        titleColor="red"
-        borderTintColor='#707582'
-        borderTintWidth={1}
-        iconColor="#fff"
-        />)
-        const btnDisable = 
-    (    <JoinButton
-        title="Tham gia ngay" 
-        titleColor="#707582"
-        tintColor="#707582"
-        iconColor="#fff"
-        />)
+    var addDate = function(date,days){
+        date.setDate(date.getDate() + days);
+        return date
+    }
 
+    const lockDate = (addDate(new Date(), 2).getDate()) + "/" + (addDate(new Date(), 2).getMonth() + 1)+ "/" +(addDate(new Date(), 2).getFullYear())
+    const unLockdate = (addDate(new Date(), 2).getDate()) + "/" + (addDate(new Date(), 60).getMonth() + 1)+ "/" +(addDate(new Date(), 2).getFullYear())
+    const endDate = (addDate(new Date(), 4).getDate()) + "/" + (addDate(new Date(), 60).getMonth() + 1)+ "/" +(addDate(new Date(), 2).getFullYear())
     const [Width , setWidth] = useState(0);
 
+    console.log(endDate);
     const navigation = useNavigation()
 
     useEffect(()=>{
@@ -130,9 +116,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                             source={require('../../../assets/images/timeline.png')}
                         />
                     <View style={stakingStyle.dateContainer}>
-                        <Text style={{...stakingStyle.dateName, textAlign: 'left'}}>25/08/2020</Text>
-                        <Text style={{...stakingStyle.dateName, textAlign: 'center' }}>29/08/2020</Text>
-                        <Text style={{...stakingStyle.dateName, textAlign: 'right' }}>25/09/2020</Text>
+                        <Text style={{...stakingStyle.dateName, textAlign: 'left'}}>{lockDate}</Text>
+                        <Text style={{...stakingStyle.dateName, textAlign: 'center' }}>{unLockdate}</Text>
+                        <Text style={{...stakingStyle.dateName, textAlign: 'right' }}>{endDate}</Text>
                     </View>
                 </View>
             </View>

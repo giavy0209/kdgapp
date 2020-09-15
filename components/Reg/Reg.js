@@ -254,7 +254,7 @@ export default function App({ navigation }) {
                             <FontAwesomeIcon style={styles.eyeStyle} icon={IsShowPassword ? faEye : faEyeSlash}/>
                         </TouchableOpacity>
                     </View>
-                    <Text style={{fontSize: 13, fontFamily: 'Roboto_300Light_Italic', fontStyle: 'italic', color: '#8a8c8e', paddingLeft:8}}>Từ 8 - 20 ký tự, phải bao gồm chữ, số, ký tự và ít nhất một chữ viết hoa</Text>
+                 
                 </View>
                 <View style={{padding: 2}}>
                    {PasswordValidate}
@@ -301,7 +301,7 @@ export default function App({ navigation }) {
                         </Text>
                     </Text>
                 </View>
-                <TouchableOpacity disabled={CheckValidate ? false : true} onPress={reg} style={[styles.button, {opacity: CheckValidate ? 1 : 0.5}]} >
+                <TouchableOpacity disabled={CheckValidate ? false : true} style={[styles.button, {opacity: CheckValidate ? 1 : 0.5}]} onPress={reg} >
                     <Text style={styles.buttonText}>Đăng ký</Text>
                 </TouchableOpacity>
             </View>

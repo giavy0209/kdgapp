@@ -19,7 +19,7 @@ export default function App(){
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={withdraw}/>
-                <Text style={walletStyles.buttonText}>Gửi</Text>
+                <Text style={walletStyles.buttonText}>Rút</Text>
             </View>
             </TouchableOpacity>
 
@@ -44,7 +44,9 @@ export default function App(){
             </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={walletStyles.buttonBlock}>
+            <TouchableOpacity 
+                onPress={()=>navigation.navigate('Swap')}
+                style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={swap}/>

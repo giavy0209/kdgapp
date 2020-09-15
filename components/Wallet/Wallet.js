@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import {View, Text, TouchableOpacity, Alert, Image, Dimensions,BackHandler,ScrollView } from 'react-native';
+import {View, Text, TouchableOpacity, Alert, Image, Dimensions,BackHandler,FlatList } from 'react-native';
 import { Camera } from 'expo-camera';
 import { mainStyles, walletStyles, scannerStyles } from '../../styles/'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -14,8 +14,7 @@ import ListCoin from './ListCoin'
 import AsyncStorage from '@react-native-community/async-storage';
 import calAPI from '../../axios';
 import { storage } from '../../helper';
-import { asyncGetBalance, asyncGetBalanceNews, asyncGetBalanceDouble, asyncGetNews } from '../../store/actions';
-import { FlatList } from 'react-native-gesture-handler';
+import { asyncGetBalance, asyncGetBalanceNews, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice } from '../../store/actions';
 
 const hiddenBalance = "******"
 export default function App({ navigation }) {
@@ -43,6 +42,21 @@ export default function App({ navigation }) {
   const [ETHAddress, setETHAddress] = useState('');
   // ----------------------------------
 
+
+  
+  const [CoinPriceKDG, setCoinPriceKDG] = useState({
+    vnd: 0, usd: 0
+  });
+  const [CoinPriceETH, setCoinPriceETH] = useState({
+    vnd: 0, usd: 0
+  });
+  const [CoinPriceTRX, setCoinPriceTRX] = useState({
+    vnd: 0, usd: 0
+  });
+  const [CoinPriceUSDT, setCoinPriceUSDT] = useState({
+    vnd: 0, usd: 0
+  });
+  
   const handleBarCodeScanned = useCallback(({ type, data }) => {
     alert(`Scanned data = ${data}`);
   }, []);
@@ -90,8 +104,7 @@ export default function App({ navigation }) {
         setTRXBalance(resTRX.data.trx_balance)
         setETHBalance(resETH.data.eth_balance)
         setUSDTBalance(resETH.data.usdt_balance)
-      })
-      
+      })     
       .catch(console.log)
     }
 
@@ -107,8 +120,59 @@ export default function App({ navigation }) {
     .catch(console.log) 
 }, [])
 
+  // useEffect(() => {
+  //   dispatch(asyncGetCoinPrice(`KDGVND`))
+  //   .then(({resVND, resUSDVND})=>{
+  //       var exchange_rate_USD_VND = resUSDVND.data
+  //       var exchange_rate = resVND.data
+  //       var coin_price_VND = exchange_rate*KGDBalance
+  //       var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
+  //       setCoinPriceKDG({
+  //         vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4)
+  //       })
+  //       console.log(resVND);
+  //   })
+  //   .catch(console.log) 
 
-  // test();\
+  //   dispatch(asyncGetCoinPrice(`ETHVND`))
+  //   .then(({resVND, resUSDVND})=>{
+  //       var exchange_rate_USD_VND = resUSDVND.data
+  //       var exchange_rate = resVND.data
+  //       var coin_price_VND = exchange_rate*ETHBalance
+  //       var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
+  //       setCoinPriceETH({
+  //         vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4)
+  //       })
+  //   })
+  //   .catch(console.log) 
+    
+  //   dispatch(asyncGetCoinPrice(`TRXVND`))
+  //   .then(({resVND, resUSDVND})=>{
+  //       var exchange_rate_USD_VND = resUSDVND.data
+  //       var exchange_rate = resVND.data
+  //       var coin_price_VND = exchange_rate*TRXBalance
+  //       var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
+  //       setCoinPriceTRX({
+  //         vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4)
+  //       })
+  //   })
+  //   .catch(console.log) 
+    
+  //   dispatch(asyncGetCoinPrice(`USDTVND`))
+  //   .then(({resVND, resUSDVND})=>{
+  //       var exchange_rate_USD_VND = resUSDVND.data
+  //       var exchange_rate = resVND.data
+  //       var coin_price_VND = exchange_rate*USDTBalance
+  //       var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
+  //       setCoinPriceUSDT({
+  //         vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4)
+  //       })
+  //   })
+  //   .catch(console.log) 
+
+  // },[])
+
+
 
   return (
     <>
@@ -176,7 +240,7 @@ export default function App({ navigation }) {
             />
 
             <View style={walletStyles.listPostHead}>
-              <Text style={walletStyles.listPostHeadText}>News</Text>
+              <Text style={walletStyles.listPostHeadText}>Tin tức</Text>
               <TouchableOpacity onPress={()=>navigation.navigate('News')} style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={walletStyles.listPostHeadViewMore}>Xem thêm </Text>
                 <FontAwesomeIcon style={walletStyles.listPostHeadViewMore} icon={faAngleRight}/>
