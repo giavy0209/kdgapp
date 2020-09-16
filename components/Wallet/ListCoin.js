@@ -36,13 +36,18 @@ export default function App({
     const [CoinHeight, setCoinHeight] = useState(0)
     const [SwipeList, setSwipeList] = useState([])
 
+    var x = {
+        vnd: 'Chưa xác định', usd: 'Chưa xác định', exchange: {
+            vnd: 'Chưa xác định', usd: 'Chưa xác định'
+          }
+    }
     const data = [
         {coinPrice: coinPriceKDG, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
         {coinPrice: coinPriceETH, key: 2, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
         {coinPrice: coinPriceTRX, key: 3, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
         {coinPrice: coinPriceUSDT, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH},
-        {coinPrice: coinPriceUSDT, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
-        {coinPrice: coinPriceUSDT, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
+        {coinPrice: x, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
+        {coinPrice: x, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
     ]
 
     const renderLeftActions = useCallback((id, balance, address) => {
@@ -118,7 +123,8 @@ export default function App({
                     onPress={()=>navigation.navigate('History', {
                         id: item.coinName,
                         address: item.address,
-                        balance: item.balance
+                        balance: item.balance,
+                        coinPrice: item.coinPrice
                     })}
                     onLayout={e=>setCoinHeight(e.nativeEvent.layout.height)} style={[walletStyles.coin,]}>
                         <View style={[walletStyles.maskOpacity,{opacity: .4}, 

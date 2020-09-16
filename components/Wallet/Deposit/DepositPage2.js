@@ -16,6 +16,8 @@ import kdgicon from '../../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../../assets/images/IconCoin/ETH.png'
 import trxicon from '../../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../../assets/images/IconCoin/USDT.png'
+import kncicon from '../../../assets/images/IconCoin/KNC.png'
+import mchicon from '../../../assets/images/IconCoin/MCH.png'
 
 // ------------------------------------------
 
@@ -66,7 +68,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             <View>
             <QRCode
                 value={coinAddress}
-                logo={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : usdticon}
+                logo={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : mchicon}
             />
             </View>
             <View>
@@ -74,7 +76,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             </View>
             <View>
                 <TouchableOpacity 
-                    onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                    onPress={() => Clipboard.setString(coinAddress)}
                     style={{paddingTop: 5}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center'}}>
                         <Text style={{color: 'rgba(84,86,89, 0.9)', paddingRight: 5}}>{coinAddress}</Text>

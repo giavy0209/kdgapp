@@ -446,6 +446,20 @@ export function asyncGetStakingTransaction(userID){
 }
 
 
+export function asyncGetTransaction(userID){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).get(`/api/get_transaction?id=${userID}&skip=0&take=9999999&type=kyc-success`)).data
+            return res
+        } catch (error) {
+            console.log('get transaction error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
+
+
 export function asyncLogout(){
     return async (dispatch) =>{
         try {

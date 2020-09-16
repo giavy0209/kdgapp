@@ -55,6 +55,20 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             )
             return;
           }
+          if(res.status === 100){
+            Alert.alert(
+                "Swap",
+                "Bạn không đủ KDG Reward",
+            )
+            return;
+          }
+          if(res.status === 101){
+            Alert.alert(
+                "Swap",
+                "Bạn chỉ có thể Swap tối đa 20 KDG 1 ngày",
+            )
+            return;
+          }
           if(res.status === 1){
             Alert.alert(
                 "Swap",

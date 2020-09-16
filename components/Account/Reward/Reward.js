@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, TouchableOpacity, Image, TextInput} from 'react-native'
 
 import {Header2} from '../../Header'
@@ -7,9 +7,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy, faLink } from '@fortawesome/free-solid-svg-icons'
 import { useNavigation } from '@react-navigation/native'
 import FollowList from '../FollowList'
+import { storage } from '../../../helper'
+import { asyncGetTransaction } from '../../../store/actions'
+import { useDispatch, useSelector } from 'react-redux'
+
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
-
+    const [RefCode, setRefCode] = useState('');
+    const [RewardData, setRewardData] = useState([]);
+    const dispatch = useDispatch();
+   
+    useEffect(() => {
+        async function getwalletBlance() {
+          var userinfo = await storage('_id').getItem();
+          setRefCode(userinfo.ref_code)
+          console.log(userinfo._id)
+          dispatch(asyncGetTransaction(userinfo._id))
+         .then((res)=>{
+            setRewardData(res.data)
+         })
+         .catch(console.log) 
+         }
+      getwalletBlance()
+    
+      }, [])
+    
     
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title="Phần thưởng"/>)
@@ -42,11 +64,13 @@ export default function App({setOutScrollViewTop}){
                         </View>
                     </View>
                     <View style={{paddingTop: 20}}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                             onPress={() => Clipboard.setString(`https://www.kingdomgame.org/reg/${RefCode}`)}
+                        >
                             <View style={{backgroundColor: '#121827', paddingLeft: 10, flexDirection: 'row', borderRadius: 5}}>
                                 <View style={{flex: 7, paddingVertical: 10, flexDirection: 'row', alignItems: 'center'}}>
                                     <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faLink}/>
-                                    <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 10}}>Link: https://www.facebook.com/</Text>
+                                        <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 10}}>{`https://www.kingdomgame.org/reg/${RefCode}`}</Text>
                                 </View>
                                 <View style={{flex: 1, backgroundColor: '#fac800', alignItems: 'center', borderTopRightRadius: 5, borderBottomRightRadius: 5, paddingVertical: 10}}>
                                     <FontAwesomeIcon size={15} color="#fff" icon={faCopy}/>
@@ -57,11 +81,13 @@ export default function App({setOutScrollViewTop}){
                         <View style={{paddingVertical: 10}}>
                             <Text style={{color: 'rgba(255,255,255,0.7)'}}>Hoặc</Text>
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                             onPress={() => Clipboard.setString(RefCode)}
+                        >
                             <View style={{backgroundColor: '#121827', paddingLeft: 10, flexDirection: 'row', borderRadius: 5}}>
                                 <View style={{flex: 7, paddingVertical: 10, flexDirection: 'row', alignItems: 'center'}}>
                                     <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faLink}/>
-                                    <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 10}}>Link: https://www.google.com/</Text>
+                                    <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 10}}>{RefCode}</Text>
                                 </View>
                                 <View style={{flex: 1, backgroundColor: '#fac800', alignItems: 'center', borderTopRightRadius: 5, borderBottomRightRadius: 5, paddingVertical: 10}}>
                                     <FontAwesomeIcon size={15} color="#fff" icon={faCopy}/>
@@ -77,30 +103,21 @@ export default function App({setOutScrollViewTop}){
                 <FollowList />
                 <View style={{backgroundColor: 'rgba(40, 51, 73, 0.4)', width: '100%', padding: 20}}>
                     <TouchableOpacity
-                        onPress={() => {navigation.navigate('MyReward')}}
+                        onPress={() => {navigation.navigate('MyReward', {
+                            RewardData: RewardData
+                        })}}
                         style={{alignItems: 'center'}}
                     >
                         <Text style={{color: '#fff'}}>Phần Thưởng Của Tôi ></Text>
                     </TouchableOpacity>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30}}>
-                        <View style={{backgroundColor: '#121827', borderRadius: 10, width: '32%', padding: 5}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 30}}>
+                        <View style={{backgroundColor: '#121827', borderRadius: 10, width: '90%', padding: 5}}>
                             <View style={{alignItems: 'center'}}>
                                 <Text style={{textAlign: 'center', color: 'rgba(255,255,255,0.5)'}}>Số người mới KYC thành công</Text>
-                                <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>05</Text>
+                                    <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>{RewardData.length}</Text>
                             </View>
                         </View>
-                        <View style={{backgroundColor: '#121827', borderRadius: 10, width: '32%', padding: 5}}>
-                            <View style={{alignItems: 'center'}}>
-                                <Text style={{textAlign: 'center', color: 'rgba(255,255,255,0.5)'}}>Số người mới KYC thành công</Text>
-                                <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>05</Text>
-                            </View>
-                        </View>
-                        <View style={{backgroundColor: '#121827', borderRadius: 10, width: '32%', padding: 5}}>
-                            <View style={{alignItems: 'center'}}>
-                                <Text style={{textAlign: 'center', color: 'rgba(255,255,255,0.5)'}}>Số người mới KYC thành công</Text>
-                                <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>05</Text>
-                            </View>
-                        </View>
+                        
                     </View>
                 </View>
                 

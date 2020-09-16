@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect} from 'react';
-import {  View, Text, Image, Dimensions, Clipboard, FlatList} from 'react-native';
+import {  View, Text, Image, Dimensions, Clipboard, FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import {LineChart } from 'react-native-chart-kit'
 import {mainStyles} from '../../../styles'
@@ -11,6 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
 import Select from './Select'
 import HistoryButton from '../../Button/HistoryButton'
+import { WebView } from 'react-native-webview';
 
 import { storage } from '../../../helper'
 import { asyncGetBlockchainTransaction} from '../../../store/actions'
@@ -30,6 +31,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const coinName = route.params.id;
     const coinAddress = route.params.address;
     const coinBalance = route.params.balance;
+    const coinPrice = route.params.coinPrice;
 
 
     const [Transaction, setTransaction] = useState([]);
@@ -77,16 +79,18 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     //     setSkip(val+5)
     // }
 
-    
+    // let JS = '<script src="https://widgets.coingecko.com/coingecko-coin-ticker-widget.js"></script>';
+
+    // let source = JS + '<coingecko-coin-ticker-widget  coin-id="bitcoin" currency="usd" locale="en"></coingecko-coin-ticker-widget>';
     return (
         <>   
             <View style={[mainStyles.container]}>
                 <View style={{flexDirection: 'row',justifyContent: 'center', paddingVertical: 20}}>
                    <View> 
-                        <Text style={{color: '#fff', fontSize: 25, textAlign: 'center'}}>$4123</Text>
+                        <Text style={{color: '#fff', fontSize: 25, textAlign: 'center'}}>{'$'+ coinPrice.exchange.usd}</Text>
                         <Text style={{color: '#26a65b', fontSize: 12, textAlign: 'center'}}>+$15000(2.57%)</Text>
                    </View>
-                   <View style={{position: 'absolute', top: 25, right: 25}}>
+                   {/* <View style={{position: 'absolute', top: 25, right: 25}}>
                        <TouchableOpacity 
                             style={{flexDirection: 'row',  alignItems: 'center'}}
                             onPress={()=>setSelectType(1)}
@@ -94,7 +98,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                             <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: (windowWidth*windowHeight)/21000}}>7 ngày</Text>
                             <FontAwesomeIcon size={15} color="rgba(255,255,255,0.6)" icon={faAngleDown}/>
                         </TouchableOpacity>
-                   </View>
+                   </View> */}
                 </View>
                 <LineChart
                 data={{
@@ -131,7 +135,13 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     console.log(getColor());
                 }}
                 />
-
+            {/* <WebView
+               originWhitelist={['*']}
+               source={{ html: `<script src="https://widgets.coingecko.com/coingecko-coin-ticker-widget.js"></script>
+               <coingecko-coin-ticker-widget  coin-id="bitcoin" currency="usd" locale="en"></coingecko-coin-ticker-widget>` }}
+               javaScriptEnabled={true}
+               style={{ marginTop: 100 }}
+            /> */}
                 <TouchableOpacity 
                     onPress={() => Clipboard.setString(coinAddress)}
                     style={{padding: 20}}>
@@ -163,7 +173,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                             balance: coinBalance
                         })}
                         style={{width: windowWidth/2.3}}>
-                        <View style={{alignItems: 'center', borderColor: '#fac800', borderWidth: 2, padding: windowWidth/38, width: '100%', borderRadius: 45}}>
+                        <View style={{alignItems: 'center', borderColor: '#fac800', borderWidth: 2, padding: windowWidth/38, width: '100%', borderRadius: 20}}>
                                 <Text style={{color: '#fac800'}}>RÚT</Text>
                         </View>
                     </TouchableOpacity>
@@ -175,7 +185,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         <View>
                             <Text style={{color: '#deb306', fontSize: 18}}>Lịch sử</Text>
                         </View>
-                        <View style={{position: 'absolute', top: 2, right: 2}}>
+                        {/* <View style={{position: 'absolute', top: 2, right: 2}}>
                              <TouchableOpacity 
                                 style={{flexDirection: 'row',  alignItems: 'center'}}
                                 onPress={()=>setSelectType(0)}
@@ -183,7 +193,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                                 <Text style={{color: 'rgba(255,255,255,0.4)', fontSize: 14}}>Tất cả </Text>
                                 <FontAwesomeIcon size={12} color="rgba(255,255,255,0.4)" icon={faFilter}/>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                     </View>
 
                     <FlatList

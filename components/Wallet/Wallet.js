@@ -37,6 +37,8 @@ export default function App({ navigation }) {
   const [TRXBalance, setTRXBalance] = useState(0);
   const [ETHBalance, setETHBalance] = useState(0);
   const [USDTBalance, setUSDTBalance] = useState(0);
+  const [KNCBalance, setKNCBalance] = useState(0);
+  const [MCHBalance, setMCHBalance] = useState(0);
   // ----------------------------------
 
   // ----------Address Coin -----------
@@ -116,12 +118,21 @@ export default function App({ navigation }) {
         setUSDTBalance(resETH.data.usdt_balance)
       })     
       .catch(console.log)
+
+      dispatch(asyncGetBalance('knc',userinfo.erc_address))
+      .then((res)=>{
+        setKNCBalance(res.balance)
+      })     
+      .catch(console.log)
+
+      dispatch(asyncGetBalance('mch',userinfo.erc_address))
+      .then((res)=>{
+        setMCHBalance(res.balance)
+      })     
+      .catch(console.log)
     }
 
     getwalletBlance()
-
-
-
 
   }, [])
 
@@ -160,6 +171,20 @@ useEffect(() => {
       }
     })
     // console.log(resVND.data)
+  })
+  dispatch(asyncGetCoinPrice('TRON'))
+  .then(({resVND, resUSDVND})=>{
+     //Do code backend, nên resVND ở đây là USD
+    var exchange_rate_USD_VND = resUSDVND.data
+    var excahnge_rate = resVND.data['tron'].usd
+    var coin_price_USD = excahnge_rate*KGDBalance
+    var coin_price_VND = excahnge_rate*exchange_rate_USD_VND*KGDBalance
+    setCoinPriceTRX({
+      vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4), exchange: {
+        vnd: (excahnge_rate*exchange_rate_USD_VND).toFixed(2), usd: excahnge_rate.toFixed(4)
+      }
+    })
+
   })
   dispatch(asyncGetCoinPrice('USDTVND'))
   .then(({resVND, resUSDVND})=>{
@@ -240,6 +265,8 @@ useEffect(() => {
               balanceTRX={TRXBalance}
               balanceETH={ETHBalance}
               balanceUSDT={USDTBalance}
+              balanceKNC={KNCBalance}
+              balanceMCH={MCHBalance}
               addressTRX={TRXAddress}
               addressETH={ETHAddress}
               coinPriceKDG={CoinPriceKDG}

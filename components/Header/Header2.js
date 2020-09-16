@@ -21,7 +21,7 @@ export default function App({title,setHeight }){
         style={{width: '100%', height: 68, position: 'relative', backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{color: '#111b2d', fontSize: 16}}>{title}</Text>
             <TouchableOpacity onLayout={e => setArrowHeight(e.nativeEvent.layout.height)}  
-            style={{position: 'absolute', left: 15, top: (HeaderHeight / 2) - (ArrowHeight / 2)}} 
+            style={{width: '10%', position: 'absolute', left: 15, top: (HeaderHeight / 2) - (ArrowHeight / 2)}} 
             onPress={()=>{navigation.goBack()}}>
                 <FontAwesomeIcon size={20} style={{color: '#111b2d',fontSize: 40}} icon={faAngleLeft}/>
             </TouchableOpacity>
