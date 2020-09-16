@@ -27,20 +27,22 @@ export default function App({
     balanceMCH,
     addressTRX,
     addressETH,
-    addressKNC,
-    addressMCH
+    coinPriceKDG,
+    coinPriceETH,
+    coinPriceTRX,
+    coinPriceUSDT
     }){
     const navigation = useNavigation()
     const [CoinHeight, setCoinHeight] = useState(0)
     const [SwipeList, setSwipeList] = useState([])
 
     const data = [
-        {key: 1, coinName: 'KDG', icon: kdgicon, valueUSD: '$0.020', balance: balanceKDG, address: addressTRX},
-        {key: 2, coinName: 'ETH', icon: ethicon, valueUSD: '$0.030', balance: balanceETH, address: addressETH},
-        {key: 3, coinName: 'TRX', icon: trxicon, valueUSD: '$0.160', balance: balanceTRX, address: addressTRX},
-        {key: 4, coinName: 'USDT', icon: usdticon, valueUSD: '$0.160', balance: balanceUSDT, address: addressETH},
-        {key: 5, coinName: 'KNC', icon: kncicon, valueUSD: '$0.160', balance: balanceKNC, address: addressKNC},
-        {key: 6, coinName: 'MCH', icon: mchicon, valueUSD: '$0.160', balance: balanceMCH, address: addressMCH},
+        {coinPrice: coinPriceKDG, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
+        {coinPrice: coinPriceETH, key: 2, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
+        {coinPrice: coinPriceTRX, key: 3, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
+        {coinPrice: coinPriceUSDT, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH},
+        {coinPrice: coinPriceUSDT, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
+        {coinPrice: coinPriceUSDT, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
     ]
 
     const renderLeftActions = useCallback((id, balance, address) => {
@@ -127,12 +129,12 @@ export default function App({
                             <Image style={{width: 30, height: 30}} source={item.icon}/>
                             <View style={{marginLeft: 8}}>
                                 <Text style={walletStyles.coinName}>{item.coinName}</Text>
-                            <Text style={walletStyles.coinPirce}>{VisibleBalance ? hiddenBalance : item.valueUSD}</Text>
+                            <Text style={walletStyles.coinPirce}>{VisibleBalance ? hiddenBalance : `$${item.coinPrice.exchange.usd}`}</Text>
                             </View>
                         </View>
                         <View style={walletStyles.coinRight}>
                             <Text style={walletStyles.quantity}>{VisibleBalance ? hiddenBalance : item.balance}</Text>
-                            <Text style={walletStyles.coinPirce}>{VisibleBalance ? hiddenBalance : '~$0'}</Text>
+                            <Text style={walletStyles.coinPirce}>{VisibleBalance ? hiddenBalance : `~$${item.coinPrice.usd}`}</Text>
                         </View>
                     </TouchableOpacity>
                 </Swipeable>

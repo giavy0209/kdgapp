@@ -155,7 +155,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 <LinearGradient 
                     start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                     colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
-                    style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 45}}>
+                    style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20}}>
                         <Text style={{color: '#111b2d', fontSize: 16}}>Xác nhận</Text>
                 </LinearGradient>
             </View>

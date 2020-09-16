@@ -21,6 +21,8 @@ export default function App({ navigation }) {
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.isLogin);
 
+  const typeCurrency = useSelector(state => state.currency)
+
 
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
   const [VisibleBalance, setVisibleBalance] = useState(true);
@@ -45,16 +47,24 @@ export default function App({ navigation }) {
 
   
   const [CoinPriceKDG, setCoinPriceKDG] = useState({
-    vnd: 0, usd: 0
+    vnd: 0, usd: 0, exchange: {
+      vnd: 0, usd: 0
+    } 
   });
   const [CoinPriceETH, setCoinPriceETH] = useState({
-    vnd: 0, usd: 0
+    vnd: 0, usd: 0, exchange: {
+      vnd: 0, usd: 0
+    } 
   });
   const [CoinPriceTRX, setCoinPriceTRX] = useState({
-    vnd: 0, usd: 0
+    vnd: 0, usd: 0, exchange: {
+      vnd: 0, usd: 0
+    } 
   });
   const [CoinPriceUSDT, setCoinPriceUSDT] = useState({
-    vnd: 0, usd: 0
+    vnd: 0, usd: 0, exchange: {
+      vnd: 0, usd: 0
+    } 
   });
   
   const handleBarCodeScanned = useCallback(({ type, data }) => {
@@ -109,6 +119,10 @@ export default function App({ navigation }) {
     }
 
     getwalletBlance()
+
+
+
+
   }, [])
 
 
@@ -120,57 +134,48 @@ export default function App({ navigation }) {
     .catch(console.log) 
 }, [])
 
-  // useEffect(() => {
-  //   dispatch(asyncGetCoinPrice(`KDGVND`))
-  //   .then(({resVND, resUSDVND})=>{
-  //       var exchange_rate_USD_VND = resUSDVND.data
-  //       var exchange_rate = resVND.data
-  //       var coin_price_VND = exchange_rate*KGDBalance
-  //       var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
-  //       setCoinPriceKDG({
-  //         vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4)
-  //       })
-  //       console.log(resVND);
-  //   })
-  //   .catch(console.log) 
-
-  //   dispatch(asyncGetCoinPrice(`ETHVND`))
-  //   .then(({resVND, resUSDVND})=>{
-  //       var exchange_rate_USD_VND = resUSDVND.data
-  //       var exchange_rate = resVND.data
-  //       var coin_price_VND = exchange_rate*ETHBalance
-  //       var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
-  //       setCoinPriceETH({
-  //         vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4)
-  //       })
-  //   })
-  //   .catch(console.log) 
-    
-  //   dispatch(asyncGetCoinPrice(`TRXVND`))
-  //   .then(({resVND, resUSDVND})=>{
-  //       var exchange_rate_USD_VND = resUSDVND.data
-  //       var exchange_rate = resVND.data
-  //       var coin_price_VND = exchange_rate*TRXBalance
-  //       var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
-  //       setCoinPriceTRX({
-  //         vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4)
-  //       })
-  //   })
-  //   .catch(console.log) 
-    
-  //   dispatch(asyncGetCoinPrice(`USDTVND`))
-  //   .then(({resVND, resUSDVND})=>{
-  //       var exchange_rate_USD_VND = resUSDVND.data
-  //       var exchange_rate = resVND.data
-  //       var coin_price_VND = exchange_rate*USDTBalance
-  //       var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
-  //       setCoinPriceUSDT({
-  //         vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4)
-  //       })
-  //   })
-  //   .catch(console.log) 
-
-  // },[])
+useEffect(() => {
+  dispatch(asyncGetCoinPrice('KDG'))
+  .then(({resVND, resUSDVND})=>{
+     //Do code backend, nên resVND ở đây là USD
+    var exchange_rate_USD_VND = resUSDVND.data
+    var excahnge_rate = resVND.data['kingdom-game-4-0'].usd
+    var coin_price_USD = excahnge_rate*KGDBalance
+    var coin_price_VND = excahnge_rate*exchange_rate_USD_VND*KGDBalance
+    setCoinPriceKDG({
+      vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4), exchange: {
+        vnd: (excahnge_rate*exchange_rate_USD_VND).toFixed(2), usd: excahnge_rate.toFixed(4)
+      }
+    })
+  })
+  dispatch(asyncGetCoinPrice('ETHVND'))
+  .then(({resVND, resUSDVND})=>{
+    var exchange_rate_USD_VND = resUSDVND.data
+    var excahnge_rate = resVND.data
+    var coin_price_VND = excahnge_rate*ETHBalance
+    var coin_price_USD = (excahnge_rate*ETHBalance)/exchange_rate_USD_VND
+    setCoinPriceETH({
+      vnd: coin_price_VND, usd: coin_price_USD, exchange: {
+        vnd: (excahnge_rate).toFixed(2), usd: (excahnge_rate/exchange_rate_USD_VND).toFixed(4)
+      }
+    })
+    // console.log(resVND.data)
+  })
+  dispatch(asyncGetCoinPrice('USDTVND'))
+  .then(({resVND, resUSDVND})=>{
+    var exchange_rate_USD_VND = resUSDVND.data
+    var excahnge_rate = resVND.data
+    var coin_price_VND = excahnge_rate*ETHBalance
+    var coin_price_USD = (excahnge_rate*ETHBalance)/exchange_rate_USD_VND
+    setCoinPriceUSDT({
+      vnd: coin_price_VND, usd: coin_price_USD,  exchange: {
+        vnd: (excahnge_rate).toFixed(2), usd: (excahnge_rate/exchange_rate_USD_VND).toFixed(4)
+      }
+    })
+    // console.log(resVND.data)
+  })
+  .catch(console.log) 
+},[KGDBalance])
 
 
 
@@ -196,7 +201,7 @@ export default function App({ navigation }) {
             <View style={walletStyles.balance}>
               <View style={walletStyles.maskOpacity}></View>
               <View style={walletStyles.totalBalanceAndVisible}>
-                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : '$1200'}</Text>
+                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : typeCurrency === 0 ? '$' + CoinPriceKDG.usd : CoinPriceKDG.vnd + ' VND'}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
                   <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
                 </TouchableOpacity>
@@ -237,6 +242,10 @@ export default function App({ navigation }) {
               balanceUSDT={USDTBalance}
               addressTRX={TRXAddress}
               addressETH={ETHAddress}
+              coinPriceKDG={CoinPriceKDG}
+              coinPriceETH={CoinPriceETH}
+              coinPriceTRX={CoinPriceTRX}
+              coinPriceUSDT={CoinPriceUSDT}
             />
 
             <View style={walletStyles.listPostHead}>

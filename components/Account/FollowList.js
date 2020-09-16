@@ -10,6 +10,13 @@ import medium from '../../assets/images/medium.png'
 import youtube from '../../assets/images/youtube.png'
 import zalo from '../../assets/images/zalo.png'
 
+// import zalo from '../../assets/images/FolllowList/zalo.png'
+// import telegram from '../../assets/images/FolllowList/telegram.png'
+// import messenger from '../../assets/images/FolllowList/messenger.png'
+// import email from '../../assets/images/FolllowList/email.png'
+// import gmail from '../../assets/images/FolllowList/zalo.png'
+
+
 const ListFollow = [twitter, instagram, facebook, medium, youtube, zalo]
 
 export default function App(){

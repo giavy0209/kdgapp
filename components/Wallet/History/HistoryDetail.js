@@ -24,16 +24,11 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
 
     // ------------content---------------
     const [Status, setStatus] = useState(                        
-        <Text style={{color: '#259e58'}}>
-            Giao dịch thành công
-        </Text>
+        <Text style={{color: '#fac800'}}>
+           Giao dịch đang chờ
+       </Text>
     )
 
-    const [Title, setTitle] = useState(                
-        <View style={{paddingBottom: 10}}>
-            <Text style={{color: 'rgba(255,255,255,0.4)', fontSize: 14}}>THÔNG TIN CHI TIẾT</Text>
-        </View>
-    )
     const [Icon, setIcon] = useState(                        
         <Image
             style={{
@@ -46,33 +41,22 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
 
     // ---------------------------------
 
-    const { id, type, status } = route.params;
+    const { coin_name, type, status, fromAddress, toAddress, block, hash, amount, datetime } = route.params;
 
     useEffect(()=>{
-       if(status === 2){
+       if(status === 'failed'){
             setStatus(
                 <Text style={{color: '#c00e0f'}}>
                     Giao dịch thất bại
                 </Text>
             )
        }
-       if(status === 1){
+       if(status === 'success'){
             setStatus(
-                <Text style={{color: '#fac800'}}>
-                    Giao dịch đang chờ
+                <Text style={{color: '#259e58'}}>
+                    Giao dịch thành công
                 </Text>
             );
-            
-            setTitle(
-                <View style={{paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Text style={{color: 'rgba(255,255,255,0.4)', fontSize: 14}}>THÔNG TIN CHI TIẾT</Text>
-                    <TouchableOpacity>
-                        <View style={{borderColor: '#fac800', borderWidth: 1, borderRadius: 45, paddingHorizontal: 8, flexDirection: 'row', justifyContent: 'center'}}>
-                            <Text style={{color: '#fac800'}}>Hủy giao dịch</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            )
         }
 
 
@@ -90,28 +74,26 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
     },[])
 
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title={coin} />)
+        setOutScrollViewTop(<Header2 title={coin_name} />)
     },[])
 
     
-    // useEffect(()=>{
-    //    if(type === success){
 
-    //    }
-    // },[])
     useEffect(()=>{
         setOutScrollView(        
         <View style={{flex: 50  , backgroundColor: '#283349', borderRadius: 15}}>
             <View style={{padding: 20}}>
-                {Title}
+                 <View style={{paddingBottom: 10}}>
+                    <Text style={{color: 'rgba(255,255,255,0.4)', fontSize: 14}}>THÔNG TIN CHI TIẾT</Text>
+                 </View>
                 <View style={{height: '100%', flexDirection: 'column', justifyContent: 'space-between', paddingBottom: 80}}>
                     <View>
                         <Text style={{color: '#fff'}}>Từ</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            onPress={() => Clipboard.setString(fromAddress)}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(18,24,39,0.8)', borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu</Text>
+                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{fromAddress}</Text>
                                 <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                             </View>
                     </TouchableOpacity>
@@ -119,10 +101,10 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     <View>
                         <Text style={{color: '#fff'}}>Đến</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            onPress={() => Clipboard.setString(toAddress)}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(18,24,39,0.8)', borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu</Text>
+                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{toAddress}</Text>
                                 <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                             </View>
                     </TouchableOpacity>
@@ -130,27 +112,30 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     <View>
                         <Text style={{color: '#fff'}}>Mã giao dịch</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            // onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            disabled={true}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(18,24,39,0.8)', borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>TS8jRFiS3sjnwwJMAydTS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFuZifV9Bas3rKgFFu</Text>
+                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{hash}</Text>
                             </View>
                     </TouchableOpacity>
                     </View>
                     <View>
                         <Text style={{color: '#fff'}}>Block</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            // onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            disabled={true}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(18,24,39,0.8)', borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>TS8jRFiS3sjnwwJMAydTS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFuZifV9Bas3rKgFFu</Text>
+                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{block}</Text>
                             </View>
                     </TouchableOpacity>
                     </View>
                     <View>
                         <Text style={{color: '#fff'}}>Ghi chú</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            // onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            disabled={true}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(18,24,39,0.8)', borderRadius: 5}}>
                                 <Text style={{color: 'rgba(255,255,255, 0.7)'}}>N/A</Text>
@@ -160,7 +145,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                 </View>
             </View>
         </View>)
-    },[Title])
+    },[])
 
     
     return (
@@ -173,7 +158,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                         </Text> */}
                         {Status}
                         <Text style={{color: 'rgba(255,255,255,0.5)'}}>
-                            08:21 - 20/02/2020
+                           {datetime}
                         </Text>
                     </View>
                 </View>
@@ -181,7 +166,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     <View style={{alignItems: 'center'}}>
                         {Icon}
                         <View style={{paddingTop: 5}}>
-                            <Text style={{color: '#fac800', fontSize: 20, fontWeight: 'bold'}}>+ 0.1 BTC</Text>
+                            <Text style={{color: '#fac800', fontSize: 20, fontWeight: 'bold'}}>{type === 'deposit' ? `+ ${amount} ${coin_name}` : type === 'withdraw' ? `- ${amount} ${coin_name}` : 'Không xác định'}</Text>
                         </View>
                         <View style={{paddingTop: 5}}>
                             <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: 16}}>$500</Text>

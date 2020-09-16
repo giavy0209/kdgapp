@@ -43,32 +43,28 @@ export default function App({setOutScrollView}){
     const coinBalance = route.params.balance;
     const inputNumberHandler = (value) => {
 
-        // dispatch(asyncGetCoinPrice(`${coinName}VND`))
-        // .then((res)=>{
-        //     var exchange_rate = res.data
-        //     var coin_price = exchange_rate*value
-        //     setCoinPriceVND(coin_price)
-        // })
-        // .catch(console.log) 
 
-        // dispatch(asyncGetCoinPrice('USDVND'))
-        // .then((res)=>{
-        //     // var exchange_rate = res.data
-        //     // var coin_price = exchange_rate*value
-        //     // setCoinPriceVND(coin_price)
-        //     console.log(res);
-        // })
-        // .catch(console.log) 
 
-        
-        dispatch(asyncGetCoinPrice(`${coinName}VND`))
+        var coin_name = coinName === 'KDG' ? coinName : coinName + 'VND'
+        dispatch(asyncGetCoinPrice(coin_name))
         .then(({resVND, resUSDVND})=>{
-            var exchange_rate_USD_VND = resUSDVND.data
-            var exchange_rate = resVND.data
-            var coin_price_VND = exchange_rate*value
-            var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
-            setCoinPriceVND(coin_price_VND.toFixed(2))
-            setCoinPriceUSD(coin_price_USD.toFixed(4));
+            if(coinName === 'KDG'){
+                //Do code backend, nên resVND ở đây là USD
+                var exchange_rate_USD_VND = resUSDVND.data
+                var exchange_rate  = resVND.data['kingdom-game-4-0'].usd
+                var coin_price_USD = exchange_rate*value
+                var coin_price_VND = coin_price_USD*exchange_rate_USD_VND
+                setCoinPriceUSD(coin_price_USD.toFixed(4))
+                setCoinPriceVND(coin_price_VND.toFixed(2))
+            }else {
+                var exchange_rate_USD_VND = resUSDVND.data
+                var exchange_rate = resVND.data
+                var coin_price_VND = exchange_rate*value
+                var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
+                setCoinPriceVND(coin_price_VND.toFixed(2))
+                setCoinPriceUSD(coin_price_USD.toFixed(4));
+            }
+
         })
         .catch(console.log) 
     }

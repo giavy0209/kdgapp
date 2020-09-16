@@ -77,7 +77,6 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     //     setSkip(val+5)
     // }
 
-    console.log(SelectedTime);
     
     return (
         <>   
@@ -153,7 +152,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         <LinearGradient 
                                 start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                                 colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
-                                style={{alignItems: 'center', padding: windowWidth/38, width: '100%', borderRadius: 45}}>
+                                style={{alignItems: 'center', padding: windowWidth/38, width: '100%', borderRadius: 20}}>
                                 <Text style={{color: '#111b2d', fontSize: 16}}>NẠP</Text>
                         </LinearGradient>
                     </TouchableOpacity>
@@ -192,6 +191,25 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     renderItem={({item}) => 
                     
                     <HistoryButton 
+                        toPress={() => navigation.navigate('HistoryDetail', {
+                            coin_name: coinName,
+                            type: item.transferFromAddress === coinAddress ? 'withdraw' : 'deposit',
+                            status: item.confirmed === true ? 'success' : 'failed',
+                            fromAddress: item.transferFromAddress,
+                            toAddress: item.transferToAddress,
+                            block: item.block,
+                            hash: item.transactionHash,
+                            amount: (item.amount)/Math.pow(10, 18),
+                            datetime:            
+                                (new Date(item.timestamp)).getHours().toString()  + ":" +
+                                (new Date(item.timestamp)).getMonth().toString()  + ":" +
+                                (new Date(item.timestamp)).getSeconds().toString()  + " - " +
+                                (new Date(item.timestamp)).getDate().toString()  + "/"   +
+                                (new Date(item.timestamp)).getMonth().toString() + "/"   +
+                                (new Date(item.timestamp)).getFullYear().toString()
+
+
+                        })}
                         type={item.transferFromAddress === coinAddress ? 'withdraw' : 'deposit'}
                         status={item.confirmed === true ? 'success' : 'failed'}
                         datetime={ 
@@ -204,6 +222,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                                  }
                         value= {(item.amount)/Math.pow(10, 18)}
                         coin_name={coinName}
+          
                     />
                     
                     }
