@@ -31,10 +31,10 @@ export default function App() {
   });
 
   useEffect(()=>{
-    AsyncStorage.removeItem('isNotFirstTime')
-    // async function setFirstTime(){
-    //   await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
-    // }setFirstTime()
+    // AsyncStorage.removeItem('isNotFirstTime')
+    async function setFirstTime(){
+      await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
+    }setFirstTime()
   },[])
 
   if (fontsLoaded) {

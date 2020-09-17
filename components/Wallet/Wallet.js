@@ -68,6 +68,16 @@ export default function App({ navigation }) {
       vnd: 0, usd: 0
     } 
   });
+  const [CoinPriceKNC, setCoinPriceKNC] = useState({
+    vnd: 0, usd: 0, exchange: {
+      vnd: 0, usd: 0
+    } 
+  });
+  const [CoinPriceMCH, setCoinPriceMCH] = useState({
+    vnd: 0, usd: 0, exchange: {
+      vnd: 0, usd: 0
+    } 
+  });
   
   const handleBarCodeScanned = useCallback(({ type, data }) => {
     alert(`Scanned data = ${data}`);
@@ -148,60 +158,82 @@ export default function App({ navigation }) {
 
 useEffect(() => {
   dispatch(asyncGetCoinPrice('KDG'))
-  .then(({resVND, resUSDVND})=>{
-     //Do code backend, nên resVND ở đây là USD
-    var exchange_rate_USD_VND = resUSDVND.data
-    var excahnge_rate = resVND.data['kingdom-game-4-0'].usd
-    var coin_price_USD = excahnge_rate*KGDBalance
-    var coin_price_VND = excahnge_rate*exchange_rate_USD_VND*KGDBalance
-    setCoinPriceKDG({
-      vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4), exchange: {
-        vnd: (excahnge_rate*exchange_rate_USD_VND).toFixed(2), usd: excahnge_rate.toFixed(4)
-      }
-    })
-  })
-  dispatch(asyncGetCoinPrice('ETHVND'))
-  .then(({resVND, resUSDVND})=>{
-    var exchange_rate_USD_VND = resUSDVND.data
-    var excahnge_rate = resVND.data
-    var coin_price_VND = excahnge_rate*ETHBalance
-    var coin_price_USD = (excahnge_rate*ETHBalance)/exchange_rate_USD_VND
-    setCoinPriceETH({
-      vnd: coin_price_VND, usd: coin_price_USD, exchange: {
-        vnd: (excahnge_rate).toFixed(2), usd: (excahnge_rate/exchange_rate_USD_VND).toFixed(4)
-      }
-    })
-    // console.log(resVND.data)
-  })
-  dispatch(asyncGetCoinPrice('TRON'))
-  .then(({resVND, resUSDVND})=>{
-     //Do code backend, nên resVND ở đây là USD
-    var exchange_rate_USD_VND = resUSDVND.data
-    var excahnge_rate = resVND.data['tron'].usd
-    var coin_price_USD = excahnge_rate*KGDBalance
-    var coin_price_VND = excahnge_rate*exchange_rate_USD_VND*KGDBalance
-    setCoinPriceTRX({
-      vnd: coin_price_VND.toFixed(2), usd: coin_price_USD.toFixed(4), exchange: {
-        vnd: (excahnge_rate*exchange_rate_USD_VND).toFixed(2), usd: excahnge_rate.toFixed(4)
-      }
-    })
-
-  })
-  dispatch(asyncGetCoinPrice('USDTVND'))
-  .then(({resVND, resUSDVND})=>{
-    var exchange_rate_USD_VND = resUSDVND.data
-    var excahnge_rate = resVND.data
-    var coin_price_VND = excahnge_rate*ETHBalance
-    var coin_price_USD = (excahnge_rate*ETHBalance)/exchange_rate_USD_VND
-    setCoinPriceUSDT({
-      vnd: coin_price_VND, usd: coin_price_USD,  exchange: {
-        vnd: (excahnge_rate).toFixed(2), usd: (excahnge_rate/exchange_rate_USD_VND).toFixed(4)
-      }
-    })
-    // console.log(resVND.data)
+  .then((res)=>{
+    console.log(res.data2)
+      var coin_to_usd = res.data2.current_price.usd
+      var coin_to_cny = res.data2.current_price.cny
+      var coin_to_vnd = res.data2.current_price.vnd
+      setCoinPriceKDG({
+        vnd: (coin_to_vnd*KGDBalance).toFixed(2), usd: (coin_to_usd*KGDBalance).toFixed(4) , cny: (coin_to_usd*KGDBalance).toFixed(4), exchange: {
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+        } 
+      })
   })
   .catch(console.log) 
-},[KGDBalance])
+
+  dispatch(asyncGetCoinPrice('ETH'))
+  .then((res)=>{
+      var coin_to_usd = res.data2.current_price.usd
+      var coin_to_cny = res.data2.current_price.cny
+      var coin_to_vnd = res.data2.current_price.vnd
+      setCoinPriceETH({
+        vnd: (coin_to_vnd*ETHBalance).toFixed(2), usd: (coin_to_usd*ETHBalance).toFixed(4) , cny: (coin_to_usd*ETHBalance).toFixed(4), exchange: {
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+        } 
+      })
+  })
+  .catch(console.log) 
+
+  dispatch(asyncGetCoinPrice('TRON'))
+  .then((res)=>{
+      var coin_to_usd = res.data2.current_price.usd
+      var coin_to_cny = res.data2.current_price.cny
+      var coin_to_vnd = res.data2.current_price.vnd
+      setCoinPriceTRX({
+        vnd: (coin_to_vnd*TRXBalance).toFixed(2), usd: (coin_to_usd*TRXBalance).toFixed(4) , cny: (coin_to_usd*TRXBalance).toFixed(4), exchange: {
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+        } 
+      })
+  })
+
+  
+  dispatch(asyncGetCoinPrice('USDT'))
+  .then((res)=>{
+      var coin_to_usd = res.data2.current_price.usd
+      var coin_to_cny = res.data2.current_price.cny
+      var coin_to_vnd = res.data2.current_price.vnd
+      setCoinPriceUSDT({
+        vnd: (coin_to_vnd*USDTBalance).toFixed(2), usd: (coin_to_usd*USDTBalance).toFixed(4) , cny: (coin_to_usd*USDTBalance).toFixed(4), exchange: {
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+        } 
+      })
+  })
+    
+  dispatch(asyncGetCoinPrice('KNC'))
+  .then((res)=>{
+      var coin_to_usd = res.data2.current_price.usd
+      var coin_to_cny = res.data2.current_price.cny
+      var coin_to_vnd = res.data2.current_price.vnd
+      setCoinPriceKNC({
+        vnd: (coin_to_vnd*KNCBalance).toFixed(2), usd: (coin_to_usd*KNCBalance).toFixed(4) , cny: (coin_to_usd*KNCBalance).toFixed(4), exchange: {
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+        } 
+      })
+  })
+      
+  dispatch(asyncGetCoinPrice('MCH'))
+  .then((res)=>{
+      var coin_to_usd = res.data2.current_price.usd
+      var coin_to_cny = res.data2.current_price.cny
+      var coin_to_vnd = res.data2.current_price.vnd
+      setCoinPriceMCH({
+        vnd: (coin_to_vnd*MCHBalance).toFixed(2), usd: (coin_to_usd*MCHBalance).toFixed(4) , cny: (coin_to_usd*MCHBalance).toFixed(4), exchange: {
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+        } 
+      })
+  })
+  .catch(console.log) 
+},[KGDBalance, ETHAddress, USDTBalance, TRXBalance, KNCBalance, MCHBalance])
 
 
 
@@ -227,7 +259,7 @@ useEffect(() => {
             <View style={walletStyles.balance}>
               <View style={walletStyles.maskOpacity}></View>
               <View style={walletStyles.totalBalanceAndVisible}>
-                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : typeCurrency === 0 ? '$' + CoinPriceKDG.usd : CoinPriceKDG.vnd + ' VND'}</Text>
+                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? CoinPriceKDG.vnd + ' ₫' : typeCurrency === 2 ?  '¥' + CoinPriceKDG.cny : '$' + CoinPriceKDG.usd}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
                   <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
                 </TouchableOpacity>
@@ -274,6 +306,8 @@ useEffect(() => {
               coinPriceETH={CoinPriceETH}
               coinPriceTRX={CoinPriceTRX}
               coinPriceUSDT={CoinPriceUSDT}
+              coinPriceKNC={CoinPriceKNC}
+              coinPriceMCH={CoinPriceMCH}
             />
 
             <View style={walletStyles.listPostHead}>

@@ -383,40 +383,39 @@ export function asyncGetBalanceDouble(address1, address2){
 }
 
 
-// export function asyncGetCoinPrice(coinType){
-//     return async (dispatch) =>{
-//         try {
-//             const res = (await (await calAPI()).get(`/api/markets/coin_price?coin_type=${coinType}`)).data
-
-//             return res
-//         } catch (error) {
-//             console.log('login error ',error);
-//             return {ok: false, status: error.response.status}
-//         }
-//     }
-// }
-
-
-
-
 export function asyncGetCoinPrice(coinType){
-    return async () =>{
-        var callAPI = await calAPI()
-
-        return Promise.all([
-            (await (callAPI.get(`/api/markets/coin_price?coin_type=${coinType}`))).data,
-            (await (callAPI.get('api/global/convert_money/USDVND'))).data,
-        ])
-        .then(([resVND, resUSDVND]) =>{
-            return {resVND, resUSDVND};
-        })
-        .catch(error =>{
-            console.log('get coin price error ',error);
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).get(`/api/markets/coin_price?coin_type=${coinType}`)).data
+            return res
+        } catch (error) {
+            console.log('login error ',error);
             return {ok: false, status: error.response.status}
-
-        })
+        }
     }
 }
+
+
+
+
+// export function asyncGetCoinPrice(coinType){
+//     return async () =>{
+//         var callAPI = await calAPI()
+
+//         return Promise.all([
+//             (await (callAPI.get(`/api/markets/coin_price?coin_type=${coinType}`))).data,
+//             (await (callAPI.get('api/global/convert_money/USDVND'))).data,
+//         ])
+//         .then(([resVND, resUSDVND]) =>{
+//             return {resVND, resUSDVND};
+//         })
+//         .catch(error =>{
+//             console.log('get coin price error ',error);
+//             return {ok: false, status: error.response.status}
+
+//         })
+//     }
+// }
 
 
 export function asyncGetBlockchainTransaction(type, address, take, begin_date){
