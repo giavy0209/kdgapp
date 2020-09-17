@@ -17,6 +17,7 @@ export default function App(){
     const [Height, setHeight] = useState(0)
     const [ContentHeight, setContentHeight] = useState(0)
     const navigation = useNavigation()
+
     
     const { status } = route.params;
  
@@ -32,6 +33,7 @@ export default function App(){
                 email: userinfo.email,
                 status: status
            })
+        // console.log(res);
         })
         .catch(console.log)
     }, [])

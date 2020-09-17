@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect} from 'react';
-import {  View, Text, Image, Dimensions, Clipboard, FlatList } from 'react-native';
+import {  View, Text, Image, Dimensions, Clipboard, FlatList,TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import {LineChart } from 'react-native-chart-kit'
 import {mainStyles} from '../../../styles'
@@ -7,18 +7,28 @@ import {Header2} from '../../Header'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faAngleDown, faChevronLeft, faChevronRight, faCopy, faFilter } from '@fortawesome/free-solid-svg-icons'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
 import Select from './Select'
 import HistoryButton from '../../Button/HistoryButton'
-import { WebView } from 'react-native-webview';
+import Popup from '../../Popup/Popup'
 
 import { storage } from '../../../helper'
 import { asyncGetBlockchainTransaction} from '../../../store/actions'
+import WebView from 'react-native-webview';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollView, setOutScrollViewTop}){
+
+    const [isModalVisible, setModalVisible] = useState(false);
+  
+    const toggleModal = () => {
+      setModalVisible(!isModalVisible);
+      setTimeout(function(){ 
+        setModalVisible(false);
+       }, 1000);
+    };
+
 
     const navigation = useNavigation()
     const route = useRoute()
@@ -52,7 +62,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
 
     useEffect(() => {
-          var type = coinName.toLowerCase()
+          var type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase() 
           dispatch(asyncGetBlockchainTransaction(type, coinAddress, 1000,'2016-08-01'))
           .then((res)=>{
             setTransaction(res.data.data)
@@ -82,9 +92,16 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     // let JS = '<script src="https://widgets.coingecko.com/coingecko-coin-ticker-widget.js"></script>';
 
     // let source = JS + '<coingecko-coin-ticker-widget  coin-id="bitcoin" currency="usd" locale="en"></coingecko-coin-ticker-widget>';
+
+    const copyHandler = (address) => {
+        Clipboard.setString(address)
+        toggleModal()
+
+    }
     return (
         <>   
             <View style={[mainStyles.container]}>
+                <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
                 <View style={{flexDirection: 'row',justifyContent: 'center', paddingVertical: 20}}>
                    <View> 
                         <Text style={{color: '#fff', fontSize: 25, textAlign: 'center'}}>{'$'+ coinPrice.exchange.usd}</Text>
@@ -100,7 +117,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         </TouchableOpacity>
                    </View> */}
                 </View>
-                <LineChart
+                {/* <LineChart
                 data={{
                 labels: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],
                 datasets: [
@@ -135,15 +152,19 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     console.log(getColor());
                 }}
                 />
-            {/* <WebView
+                 */}
+            <WebView
                originWhitelist={['*']}
-               source={{ html: `<script src="https://widgets.coingecko.com/coingecko-coin-ticker-widget.js"></script>
-               <coingecko-coin-ticker-widget  coin-id="bitcoin" currency="usd" locale="en"></coingecko-coin-ticker-widget>` }}
-               javaScriptEnabled={true}
-               style={{ marginTop: 100 }}
-            /> */}
+               source={{ html: `<script src="https://widgets.coingecko.com/coingecko-coin-compare-chart-widget.js"></script>
+               <coingecko-coin-compare-chart-widget  coin-ids="kingdom-game-4-0,ethereum,tron,tether,kyber-network,meconcash" currency="usd" locale="en"></coingecko-coin-compare-chart-widget>` }}
+               scalesPageToFit={true}
+               bounces={false}
+               javaScriptEnabled
+               style={{ height: 180, width: '100%' }}
+               automaticallyAdjustContentInsets={false}
+            />
                 <TouchableOpacity 
-                    onPress={() => Clipboard.setString(coinAddress)}
+                    onPress={() => copyHandler(coinAddress)}
                     style={{padding: 20}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(29,38,59,0.6)', borderRadius: 5}}>
                         <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{coinAddress}</Text>
@@ -209,13 +230,13 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                             toAddress: item.transferToAddress,
                             block: item.block,
                             hash: item.transactionHash,
-                            amount: (item.amount)/Math.pow(10, 18),
+                            amount: coinName === 'TRX' ? (item.amount)/Math.pow(10, 6) : (item.amount)/Math.pow(10, 18),
                             datetime:            
                                 (new Date(item.timestamp)).getHours().toString()  + ":" +
-                                (new Date(item.timestamp)).getMonth().toString()  + ":" +
+                                (new Date(item.timestamp)).getMinutes().toString()  + ":" +
                                 (new Date(item.timestamp)).getSeconds().toString()  + " - " +
                                 (new Date(item.timestamp)).getDate().toString()  + "/"   +
-                                (new Date(item.timestamp)).getMonth().toString() + "/"   +
+                                ((new Date(item.timestamp)).getMonth() + 1).toString() + "/"   +
                                 (new Date(item.timestamp)).getFullYear().toString()
 
 
@@ -224,13 +245,13 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         status={item.confirmed === true ? 'success' : 'failed'}
                         datetime={ 
                                     (new Date(item.timestamp)).getHours().toString()  + ":" +
-                                    (new Date(item.timestamp)).getMonth().toString()  + ":" +
+                                    (new Date(item.timestamp)).getMinutes().toString()  + ":" +
                                     (new Date(item.timestamp)).getSeconds().toString()  + " - " +
                                     (new Date(item.timestamp)).getDate().toString()  + "/"   +
-                                    (new Date(item.timestamp)).getMonth().toString() + "/"   +
+                                    ((new Date(item.timestamp)).getMonth() + 1).toString() + "/"   +
                                     (new Date(item.timestamp)).getFullYear().toString()
                                  }
-                        value= {(item.amount)/Math.pow(10, 18)}
+                        value= {coinName === 'TRX' ? (item.amount)/Math.pow(10, 6) : (item.amount)/Math.pow(10, 18)}
                         coin_name={coinName}
           
                     />

@@ -422,7 +422,7 @@ export function asyncGetCoinPrice(coinType){
 export function asyncGetBlockchainTransaction(type, address, take, begin_date){
     return async (dispatch) =>{
         try {
-            const res = (await (await calAPI()).get(`/api/blockchain_transaction?coin_type=${type}&address=${address}&skip=1&take=${take}&begin_date=${begin_date}`)).data
+            const res = (await (await calAPI()).get(`/api/blockchain_transaction?coin_type=${type}&address=${address}&skip=0&take=${take}&begin_date=${begin_date}`)).data
             return res
         } catch (error) {
             console.log('get blockchain transaction error ',error);

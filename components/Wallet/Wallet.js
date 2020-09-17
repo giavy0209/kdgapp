@@ -290,7 +290,7 @@ useEffect(() => {
                 horizontal={true}
                 data={NewsData}
                 renderItem={({item}) => {
-                  console.log(item.content_en);
+
                   if(item.content_en !== undefined){
                     return <View style={walletStyles.post}>
                     <TouchableOpacity

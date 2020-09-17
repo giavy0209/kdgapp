@@ -7,9 +7,20 @@ import { useDispatch } from 'react-redux'
 import {transition} from '../../helper'
 
 import {Header1} from '../Header'
-import { asyncForgotPassword, asynForgotPasswordCode } from '../../store/actions';
+import { asyncForgotPassword, asynForgotPasswordCode } from '../../store/actions'
+import Popup from '../Popup/Popup'
 export default function App({ navigation }) {
 
+
+    const [PopupStatus, setPopupStatus] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+  
+    const toggleModal = () => {
+      setModalVisible(!isModalVisible);
+      setTimeout(function(){ 
+        setModalVisible(false);
+       }, 1000);
+    };
     const [ToggleCheckBox, setToggleCheckBox] = useState(false)
     const dispatch = useDispatch()
 
@@ -82,6 +93,30 @@ export default function App({ navigation }) {
         }
     },[RePasswordFocus])
 
+// -------------------Timmer--------------------------
+
+    const [seconds, setSeconds] = useState(0)
+
+  
+    function updateTime() {
+        if (seconds == 0) {
+          console.log("xong")
+        } else {
+          setSeconds(seconds => seconds - 1);
+        }
+    }
+
+// ------------------------------------------------
+
+    useEffect(() => {
+
+        const token = setTimeout(updateTime, 1000)
+
+        return function cleanUp() {
+        clearTimeout(token);
+        }
+    },[seconds])
+
 
     const resetPassword = useCallback(() => {
         // console.log(Email);
@@ -132,6 +167,19 @@ export default function App({ navigation }) {
                 return
             }
             console.log(res);
+            if(res.status === 1){
+                setSeconds(120);
+                setPopupStatus(true)
+                toggleModal()
+                return
+            }
+
+            if(res.status === 100 && res.err === 'you wait 2 minute to resend code'){
+                setPopupStatus(false)
+                toggleModal()
+                return
+            }
+            console.log(res);
         })
         .catch(console.log)
 
@@ -139,6 +187,7 @@ export default function App({ navigation }) {
 
 // --------------------Validation------------------------
 const validateEmail = (val) => {
+    setSeconds(0)
     setEmail(val);
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if(val.match(mailformat)){
@@ -208,11 +257,13 @@ useEffect(()=>{
                     onBlur={()=>{Email ==='' && setEmailFocus(false)}} 
                     onChangeText={(value) => validateEmail(value)} 
                     value={Email} 
+                    autoCapitalize = 'none'
                     style={styles.input} />
                 </View>
                 <View style={{padding: 2}}>
                    {EmailValidate}
                 </View>
+                <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? 'Lấy mã thành công' : 'Vui lòng chờ 2 phút để gửi lại'} isModalVisible={isModalVisible}/>
                 <View style={[styles.inputBlock]}>
                     <Text style={[styles.placeHolderText,{bottom: EmailCodeTextPosition , fontSize: EmailCodeTextSize}, EmailCodeFocus && {color: '#8a8c8e'}]}>Mã xác minh Email</Text>
                     <TextInput 
@@ -221,9 +272,10 @@ useEffect(()=>{
                     onChangeText={value => validateEmailCode(value)} 
                     value={EmailCode} 
                     style={[styles.input,{width: '84%'}]} />
-                    <TouchableOpacity style={{width: 70}} disabled={EmailValidate === null ? false : true} onPress={reqMailCode}>
-                        <View style={{ opacity: EmailValidate === null ? 1 : 0.5, backgroundColor: '#fac800', borderRadius: 10, alignItems: 'center', padding: 3}}>
-                            <Text style={{color: 'rgba(255,255,255,0.8)'}}>Lấy mã</Text>
+                    <TouchableOpacity style={{width: 70}} disabled={EmailValidate === null && seconds === 0 ? false : true} onPress={reqMailCode}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', opacity: EmailValidate === null  && seconds === 0 ? 1 : 0.5, backgroundColor: '#fac800', borderRadius: 10, alignItems: 'center', padding: 3}}>
+                            <Text style={{color: 'rgba(255,255,255,0.8)', paddingLeft: 5}}>Lấy mã</Text>
+                            <Text style={{color: 'rgba(255,255,255,0.8)', paddingHorizontal: 5}}>{seconds === 0 ? null : seconds}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

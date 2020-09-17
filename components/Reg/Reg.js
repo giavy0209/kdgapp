@@ -1,16 +1,29 @@
 import React, { useState, useCallback,useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { View, TextInput, Text, TouchableOpacity,Alert, Image , Linking} from 'react-native';
+import { View, TextInput, Text, TouchableOpacity,Alert, Image , Linking, Button} from 'react-native';
 import {mainStyles as styles} from '../../styles/'
 import { useDispatch } from 'react-redux'
 import calAPI from '../../axios'
 import ticker from '../../assets/images/ticker.png'
 import {transition} from '../../helper'
 import {asyncReg, asyncRegisterCode} from '../../store/actions'
+import Popup from '../Popup/Popup'
 
 
 export default function App({ navigation }) {
+
+    const [PopupStatus, setPopupStatus] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+  
+    const toggleModal = () => {
+      setModalVisible(!isModalVisible);
+      setTimeout(function(){ 
+        setModalVisible(false);
+       }, 1000);
+    };
+  
+
 
     const dispatch = useDispatch()
     const [ToggleCheckBox, setToggleCheckBox] = useState(false)
@@ -49,7 +62,12 @@ export default function App({ navigation }) {
     const [InputPasswordEyeHeight, setInputPasswordEyeHeight] = useState(0)
 
 
+
+
     const [CheckValidate, setCheckValidate] = useState(false);
+
+
+   
 
     useEffect(()=>{
         if(EmailFocus){
@@ -103,6 +121,7 @@ export default function App({ navigation }) {
 
 // --------------------Validation------------------------
     const validateEmail = (val) => {
+        setSeconds(0);
         setEmail(val);
         var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if(val.match(mailformat)){
@@ -185,12 +204,23 @@ export default function App({ navigation }) {
  
     const reqMailCode = useCallback(()=>{
             dispatch(asyncRegisterCode({email: Email}))
-
+                
             .then((res)=>{
                 if(res.status === 100 && res.msg === 'email is registed'){
                     setEmailValidate( <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email đã được đăng ký</Text>)
                     return
                 }
+                if(res.status === 100 && res.err === 'you wait 2 minute to resend code'){
+                    setPopupStatus(false)
+                    toggleModal()
+                    return
+                }
+                if(res.status === 1){
+                    setSeconds(120);
+                    setPopupStatus(true)
+                    toggleModal()
+                }
+                console.log(res);
             })
             .catch(console.log)
 
@@ -199,6 +229,30 @@ export default function App({ navigation }) {
     const ToggleShowPassword = useCallback(() => {
         setIsShowPassword(!IsShowPassword)
     }, [IsShowPassword])
+
+          
+
+    const [seconds, setSeconds] = useState(0)
+
+  
+    function updateTime() {
+        if (seconds == 0) {
+          console.log("xong")
+        } else {
+          setSeconds(seconds => seconds - 1);
+        }
+    }
+  
+
+    useEffect(() => {
+
+        const token = setTimeout(updateTime, 1000)
+
+        return function cleanUp() {
+        clearTimeout(token);
+        }
+    },[seconds])
+
 
     return (
         <View style={[styles.container, {paddingTop: 50,paddingHorizontal: 30, paddingBottom:20}]}>
@@ -211,12 +265,14 @@ export default function App({ navigation }) {
                     onFocus={()=>{Email !== '' || !EmailFocus && setEmailFocus(true)}} 
                     onBlur={()=>{Email ==='' && setEmailFocus(false)}} 
                     onChangeText={(value) => validateEmail(value)} 
-                    value={Email} 
+                    value={Email}
+                    autoCapitalize = 'none' 
                     style={styles.input} />
                 </View>
                 <View style={{padding: 2}}>
                    {EmailValidate}
                 </View>
+                <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? 'Lấy mã thành công' : 'Vui lòng chờ 2 phút để gửi lại'} isModalVisible={isModalVisible}/>
                 <View style={[styles.inputBlock]}>
                     <Text style={[styles.placeHolderText,{bottom: EmailCodeTextPosition , fontSize: EmailCodeTextSize}, EmailCodeFocus && {color: '#8a8c8e'}]}>Mã xác minh Email</Text>
                     <TextInput 
@@ -225,9 +281,10 @@ export default function App({ navigation }) {
                     onChangeText={value => validateEmailCode(value)}
                     value={EmailCode} 
                     style={[styles.input,{width: '84%'}]} />
-                    <TouchableOpacity style={{width: 70}} disabled={EmailValidate === null ? false : true} onPress={reqMailCode}>
-                        <View style={{ opacity: EmailValidate === null ? 1 : 0.5, backgroundColor: '#fac800', borderRadius: 10, alignItems: 'center', padding: 3}}>
-                            <Text style={{color: 'rgba(255,255,255,0.8)'}}>Lấy mã</Text>
+                    <TouchableOpacity style={{width: 70}} disabled={EmailValidate === null && seconds === 0 ? false : true} onPress={reqMailCode}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', opacity: EmailValidate === null  && seconds === 0 ? 1 : 0.5, backgroundColor: '#fac800', borderRadius: 10, alignItems: 'center', padding: 3}}>
+                            <Text style={{color: 'rgba(255,255,255,0.8)', paddingLeft: 5}}>Lấy mã</Text>
+                            <Text style={{color: 'rgba(255,255,255,0.8)', paddingHorizontal: 5}}>{seconds === 0 ? null : seconds}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -256,6 +313,7 @@ export default function App({ navigation }) {
                     </View>
                  
                 </View>
+
                 <View style={{padding: 2}}>
                    {PasswordValidate}
                 </View>
@@ -309,7 +367,11 @@ export default function App({ navigation }) {
                 <Text style={{color: '#8a8c8e'}}>Đã có tài khoản?</Text>
                 <TouchableOpacity onPress={()=>navigation.replace('Login')}><Text style={[styles.linkText], {color: '#fac800'}}>  Đăng nhập</Text></TouchableOpacity>
             </View>
-        </View>
+
+            <View style={{flex: 1}}>
+
+      </View>
+    </View>
     );
 }
 

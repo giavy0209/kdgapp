@@ -72,14 +72,14 @@ export default function App({setOutScrollView}){
 
     const withdraw = useCallback(async () => {
         var userinfo = await storage('_id').getItem();
-        var withdraw_type = coinName.toLowerCase();
+        var withdraw_type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase();
         console.log()
         dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: withdraw_type, toAddress: ToAddress, token: Token}))
         .then((res)=>{
             if(res.status === 1 ){
                 Alert.alert(
                     "Thông báo",
-                    `Đã chuyển thành công ${ValueSend} KDG`,
+                    `Đã chuyển thành công ${ValueSend} ${coinName}`,
                 )
                 return
             }else if(res.status === 100){

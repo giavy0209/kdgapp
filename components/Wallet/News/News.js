@@ -37,8 +37,8 @@ export default function App({setOutScrollViewTop}){
           />
           <View style={{width: '100%', backgroundColor: '#2c3040', position: 'absolute', height: 80}}>
             <TouchableOpacity 
-              onPress={()=>{navigation.goBack()}}
-              style={{position:'absolute', top: 35, left: 20}}>
+              onPress={()=>{navigation.navigate('Wallet')}}
+              style={{position:'absolute', top: 10, left: 15, padding: 20, zIndex: 9999}}>
               <FontAwesomeIcon color='#fff' size={20} icon={faChevronLeft} />
             </TouchableOpacity>
             <View style={{paddingTop: 20, justifyContent: 'center', alignItems: 'center'}}>

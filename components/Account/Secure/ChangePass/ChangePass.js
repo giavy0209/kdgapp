@@ -46,9 +46,12 @@ export default function App(){
             }
             if(res.status === 1 && res.msg === 'change password success'){
                 Alert.alert(
-                    "Đăng ký",
-                    "Đồng ý với điều khoản ....",
+                    "Đổi mật khẩu",
+                    "Đổi mật khẩu thành công",
                 )
+                setOldPass('')
+                setNewPass('')
+                setReNewPass('')
                 return
             }
             console.log(res);
