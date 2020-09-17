@@ -7,6 +7,7 @@ import { mainStyles } from '../styles/'
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 export default function Maincontainer({Component,route ,reqLogin, ...restProps}){
     const {bottom} = useSafeAreaInsets()
     const isLogin = useSelector(state=>state.isLogin)
@@ -39,7 +40,8 @@ export default function Maincontainer({Component,route ,reqLogin, ...restProps})
     return (
       <ImageBackground source={bg} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
         {OutScrollViewTop && OutScrollViewTop}
-        <ScrollView style={{ paddingBottom: bottom}}>
+        <ScrollView 
+          style={{ paddingBottom: bottom}}>
           <Component setOutScrollViewTop={setOutScrollViewTop} setOutScrollView={setOutScrollView} {...restProps}/>
         </ScrollView>
         {OutScrollView && OutScrollView}

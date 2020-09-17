@@ -138,9 +138,10 @@ export default function App({ navigation }) {
 
 
   useEffect(() => {
-    dispatch(asyncGetNews(5,12))
+    dispatch(asyncGetNews(1,20))
     .then((res)=>{
       setNewsData(res.data)
+      console.log(res.data)
     })
     .catch(console.log) 
 }, [])
@@ -288,14 +289,26 @@ useEffect(() => {
               <FlatList
                 horizontal={true}
                 data={NewsData}
-                renderItem={({item}) =>
-                <View style={walletStyles.post}>
-                  <View>
-                    <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}><Image style={walletStyles.postImage} source={{ uri: item.thumbURL_vi}}/></View>
-                    <Text style={walletStyles.postTitle}>{item.title_vi}</Text>
-                {/* {console.log()} */}
-                  </View>
-               </View>  }
+                renderItem={({item}) => {
+                  console.log(item.content_en);
+                  if(item.content_en !== undefined){
+                    return <View style={walletStyles.post}>
+                    <TouchableOpacity
+                      onPress={()=>navigation.navigate('News', {
+                        NewsID: item._id
+                      })}
+                    >
+                      <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}>
+                        <Image style={walletStyles.postImage} source={{ uri: item.thumbURL_en}}/></View>
+                      <Text style={walletStyles.postTitle}>{item.title_en}</Text>
+                    </TouchableOpacity>
+                  </View>  
+                    
+                  }
+                }
+              
+    
+               }
             />
    
               </View>        

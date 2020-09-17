@@ -15,6 +15,8 @@ import { storage } from '../../../helper';
 import { asyncGetCoinPrice, asyncWithdraw } from '../../../store/actions'
 import { Camera } from 'expo-camera';
 
+
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollView}){
@@ -42,9 +44,7 @@ export default function App({setOutScrollView}){
     const coinName = route.params.id;
     const coinBalance = route.params.balance;
     const inputNumberHandler = (value) => {
-
-
-
+        setValueSend(value);
         var coin_name = coinName === 'KDG' ? coinName : coinName + 'VND'
         dispatch(asyncGetCoinPrice(coin_name))
         .then(({resVND, resUSDVND})=>{
@@ -73,25 +73,35 @@ export default function App({setOutScrollView}){
     const withdraw = useCallback(async () => {
         var userinfo = await storage('_id').getItem();
         var withdraw_type = coinName.toLowerCase();
+        console.log()
         dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: withdraw_type, toAddress: ToAddress, token: Token}))
         .then((res)=>{
-            console.log(res);
             if(res.status === 1 ){
                 Alert.alert(
                     "Thông báo",
                     `Đã chuyển thành công ${ValueSend} KDG`,
                 )
+                return
+            }else if(res.status === 100){
+                Alert.alert(
+                    "Thông báo",
+                    `Mã 2FA không đúng`,
+                )
               
             }else{
                 Alert.alert(
                     "Thông báo",
-                    `Đã có lỗi xảy ra`,
+                    `Giao dịch thất bại`,
                 )
-              
             }
+            console.log(res);
+            console.log(ValueSend);
+            console.log(Token);
+            console.log(ToAddress);
+           
         })
         .catch(console.log)
-    }, [ToAddress, Token])
+    }, [ToAddress, Token, ValueSend])
 
 
     const handleBarCodeScanned = useCallback(({ type, data }) => {

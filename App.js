@@ -18,6 +18,7 @@ import {
   RobotoCondensed_300Light
 } from '@expo-google-fonts/roboto-condensed';
 
+
 console.disableYellowBox = true;
 export default function App() {
   let [fontsLoaded] = useFonts({
