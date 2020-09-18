@@ -25,8 +25,6 @@ export default function App({ navigation }) {
 
   const coinDisplay = useSelector(state => state.coin)
 
-  console.log(coinDisplay);
-
 
 
   const [IsScannerOpen, setIsScannerOpen] = useState(false);

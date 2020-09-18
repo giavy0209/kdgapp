@@ -38,7 +38,6 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const endDate = (addDate(new Date(), 4).getDate()) + "/" + (addDate(new Date(), 60).getMonth() + 1)+ "/" +(addDate(new Date(), 2).getFullYear())
     const [Width , setWidth] = useState(0);
 
-    console.log(endDate);
     const navigation = useNavigation()
 
     useEffect(()=>{
@@ -55,7 +54,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
         dispatch(asyncStaking({userId: userinfo._id, kdg_coin: ValueStaking}))
         .then((res)=>{
-          console.log(res);
+
           if(res.status === 502){
             Alert.alert(
                 "Staking",
@@ -155,7 +154,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                         max={50000}
                     /> */}
 
-                        {console.log(ValueStaking)}
+                     
                         <Slider
                             style={{width: '100%'}}
                             step={1}
@@ -184,7 +183,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             <View style={stakingStyle.interestReceiveContainer}>
                 <View style={{alignItems: 'center'}}>
                     <Text style={stakingStyle.interestReceive}>Số tiền lãi nhận được</Text>
-                    <Text style={stakingStyle.interestReceiveUnit}>{(0.3*ValueStaking).toFixed(2)} KDG</Text>
+                    <Text style={stakingStyle.interestReceiveUnit}>{(1.05*ValueStaking).toFixed(2)} KDG</Text>
                 </View>
             </View>
         </View>
@@ -207,8 +206,14 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 <TouchableOpacity style={{paddingRight: 10}} onPress={()=> setToggleCheckBox(!ToggleCheckBox)}>
                     <View style={[stakingStyle.checkBox,ToggleCheckBox && {backgroundColor: '#fac800'}]}><Image style={[stakingStyle.checkBoxTick,!ToggleCheckBox && {opacity: 0}]} source={ticker}/></View>
                 </TouchableOpacity>
-                <View>
-                    <Text style={stakingStyle.termCheckboxTitle}>Tôi đã đọc và hiểu <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: '#fff'}}>cảnh báo rủi ro</Text> trước khi tham gia</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={stakingStyle.termCheckboxTitle}>Tôi đã đọc và hiểu</Text>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Terms')}
+                    >
+                        <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: '#fff', paddingHorizontal: 5}}>cảnh báo rủi ro</Text>
+                    </TouchableOpacity>
+                    <Text style={stakingStyle.termCheckboxTitle}> trước khi tham gia</Text>
                 </View>
                 
             </View>

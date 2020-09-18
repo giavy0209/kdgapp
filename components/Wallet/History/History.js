@@ -66,7 +66,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
           dispatch(asyncGetBlockchainTransaction(type, coinAddress, 1000,'2016-08-01'))
           .then((res)=>{
             setTransaction(res.data.data)
-            console.log(res);
+          
           })     
           .catch(console.log)
     

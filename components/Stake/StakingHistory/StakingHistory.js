@@ -69,11 +69,11 @@ export default function App({setOutScrollViewTop}){
                             <Text style={stakingStyle.titleHeaderStakingHistory} >Coin/Token</Text>
                         </View>
                     </View>
-                    <View style={{backgroundColor: 'rgba(26,37,56, 0.5)'}}>                  
+                    <View style={{backgroundColor: 'rgba(26,37,56, 0.5)', paddingTop: windowHeight/38}}>                  
                     {StakingHistory.map(item => (
                     <View style={{
-                        marginTop: windowHeight/40, 
                         width: '100%', 
+                        paddingBottom:  windowHeight/50,
                         borderTopRightRadius: 8,
                         borderBottomRightRadius: 8,
                         paddingHorizontal: 10,

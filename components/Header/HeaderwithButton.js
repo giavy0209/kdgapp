@@ -29,7 +29,7 @@ export default function App({title,setHeight,toPress }){
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
-                  style={{position: 'absolute', right: 20, top: (HeaderHeight / 2) - (ArrowHeight / 2)}} 
+                  style={{position: 'absolute', right: 20, top: (HeaderHeight / 1) - (ArrowHeight / 2)}} 
                   onPress={toPress}
             >
                   <Image style={{width: 20,height: 20}} source={openscaner} />

@@ -35,9 +35,9 @@ export default function App({setOutScrollView}){
     },[SelectType])
 
     const handleNext = useCallback(()=>{
-        setOutScrollView(<Confirm setOutScrollView={setOutScrollView} SelectedID={SelectedID}/>)
+        setOutScrollView(<Confirm setOutScrollView={setOutScrollView} SelectedID={SelectedID} SelectedCountry={SelectedCountry} SelectedSex={SelectedSex}/>)
         // navigation.navigate(SelectedID === '')
-    },[SelectedID])
+    },[SelectedID, SelectedCountry, SelectedSex])
 
     console.log("SelectID: " + SelectedID)
     console.log("SelectCountry: " + SelectedCountry)

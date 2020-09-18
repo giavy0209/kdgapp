@@ -58,6 +58,7 @@ export default function App(){
             Alert.alert('Xác Minh Danh Tính', 'Bạn vui lòng tải lên đủ hình')
         }
     },[ImageFront,ImageSelfy])
+
     return (
         <>
             <Header2 setHeight={setHeight} title="Tải lên hình ảnh"/>

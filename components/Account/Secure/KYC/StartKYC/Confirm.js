@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import warning from '../../../../../assets/images/warn.png'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
-export default function App({setOutScrollView,SelectedID}){
+export default function App({setOutScrollView,SelectedID, SelectedCountry, SelectedSex}){
     const navigation = useNavigation()
     const screenHeight = useSelector(state=>state.height)
     const screenWidth = useSelector(state=>state.width)
@@ -24,7 +24,15 @@ export default function App({setOutScrollView,SelectedID}){
                     <View style={{flexDirection:'row',marginTop: 25}}>
                         <TouchableOpacity 
                         onPress={()=>{
-                            SelectedID === 0 || SelectedID === 1 ? navigation.navigate('Upload1') : navigation.navigate('Upload2')
+                            SelectedID === 0 || SelectedID === 1 ? navigation.navigate('Upload1', {
+                                SelectedID: SelectedID,
+                                SelectedCountry: SelectedCountry,
+                                SelectedSex: SelectedSex,
+                            }) : navigation.navigate('Upload2', {
+                                SelectedID: SelectedID,
+                                SelectedCountry: SelectedCountry,
+                                SelectedSex: SelectedSex,
+                            })
                         }}
                         style={{flex: 1, borderRadius: 8, overflow: 'hidden',width: '50%',}}>
                             <LinearGradient
