@@ -13,9 +13,9 @@ export default function App({setOutScrollView}){
     const navigation = useNavigation()
 
     const [SelectType, setSelectType] = useState(null)
-    const [SelectedCountry, setSelectedCountry] = useState('Việt Nam')
-    const [SelectedID, setSelectedID] = useState('Số CMND')
-    const [SelectedSex, setSelectedSex] = useState('Nam')
+    const [SelectedCountry, setSelectedCountry] = useState(0)
+    const [SelectedID, setSelectedID] = useState(0)
+    const [SelectedSex, setSelectedSex] = useState(0)
 
     const screenHeight = useSelector(state => state.height)
     const [Height, setHeight] =useState(0)
@@ -36,7 +36,13 @@ export default function App({setOutScrollView}){
 
     const handleNext = useCallback(()=>{
         setOutScrollView(<Confirm setOutScrollView={setOutScrollView} SelectedID={SelectedID}/>)
+        // navigation.navigate(SelectedID === '')
     },[SelectedID])
+
+    console.log("SelectID: " + SelectedID)
+    console.log("SelectCountry: " + SelectedCountry)
+    console.log("SelectSex: " + SelectedSex)
+
     return (
         <>
             <Header2 setHeight={setHeight} title="Xác minh danh tính"/>
@@ -51,7 +57,7 @@ export default function App({setOutScrollView}){
                 onPress={()=>setSelectType(0)}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedCountry}</Text>
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedCountry === 0 ? 'Việt Nam' : 'Quốc gia khác'}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'
@@ -66,7 +72,7 @@ export default function App({setOutScrollView}){
                 onPress={()=>setSelectType(1)}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedID}</Text>
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedID === 0 ? 'CMND/Bằng lái xe' : 'Hộ chiếu'}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'
@@ -81,7 +87,7 @@ export default function App({setOutScrollView}){
                 onPress={()=>setSelectType(2)}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex}</Text>
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'

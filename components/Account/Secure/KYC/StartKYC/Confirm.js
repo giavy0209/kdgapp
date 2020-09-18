@@ -24,7 +24,7 @@ export default function App({setOutScrollView,SelectedID}){
                     <View style={{flexDirection:'row',marginTop: 25}}>
                         <TouchableOpacity 
                         onPress={()=>{
-                            SelectedID === 'Số CMND' || SelectedID === 'Bằng lái xe' ? navigation.navigate('Upload1') : navigation.navigate('Upload2')
+                            SelectedID === 0 || SelectedID === 1 ? navigation.navigate('Upload1') : navigation.navigate('Upload2')
                         }}
                         style={{flex: 1, borderRadius: 8, overflow: 'hidden',width: '50%',}}>
                             <LinearGradient

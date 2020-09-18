@@ -27,12 +27,12 @@ export default function App(){
         setSearch(value)
     },[Search])
 // -------------------------Coin isEnable---------------------------
-    const [isEnabledKDG, setIsEnabledKDG] = useState(coinDisplay !== null ? coinDisplay.kdg : true);
-    const [isEnabledETH, setIsEnabledETH] = useState(coinDisplay !== null ? coinDisplay.eth : true);
-    const [isEnabledTRX, setIsEnabledTRX] = useState(coinDisplay !== null ? coinDisplay.trx : true);
-    const [isEnabledUSDT, setIsEnabledUSDT] = useState(coinDisplay !== null ? coinDisplay.usdt : true);
-    const [isEnabledKNC, setIsEnabledKNC] = useState(coinDisplay !== null ? coinDisplay.knc : true);
-    const [isEnabledMCH, setIsEnabledMCH] = useState(coinDisplay !== null ? coinDisplay.mch : true);
+    const [isEnabledKDG, setIsEnabledKDG] = useState(coinDisplay ? coinDisplay.kdg : true);
+    const [isEnabledETH, setIsEnabledETH] = useState(coinDisplay ? coinDisplay.eth : true);
+    const [isEnabledTRX, setIsEnabledTRX] = useState(coinDisplay ? coinDisplay.trx : true);
+    const [isEnabledUSDT, setIsEnabledUSDT] = useState(coinDisplay ? coinDisplay.usdt : true);
+    const [isEnabledKNC, setIsEnabledKNC] = useState(coinDisplay ? coinDisplay.knc : true);
+    const [isEnabledMCH, setIsEnabledMCH] = useState(coinDisplay ? coinDisplay.mch : true);
 // ---------------------------------------------------------
 
 // -------------------------Coin toggle---------------------------
