@@ -1,5 +1,5 @@
-import React from 'react'
-import {View, Text, Image, TouchableOpacity} from 'react-native'
+import React, { useCallback } from 'react'
+import {View, Text, Image, TouchableOpacity, Linking, Button} from 'react-native'
 
 import {accountStyle} from '../../styles'
 
@@ -9,27 +9,61 @@ import facebook from '../../assets/images/facebook.png'
 import medium from '../../assets/images/medium.png'
 import youtube from '../../assets/images/youtube.png'
 import zalo from '../../assets/images/zalo.png'
+import telegram from '../../assets/images/FolllowList/telegram.png'
 
 // import zalo from '../../assets/images/FolllowList/zalo.png'
-// import telegram from '../../assets/images/FolllowList/telegram.png'
+
 // import messenger from '../../assets/images/FolllowList/messenger.png'
 // import email from '../../assets/images/FolllowList/email.png'
 // import gmail from '../../assets/images/FolllowList/zalo.png'
 
 
-const ListFollow = [twitter, instagram, facebook, medium, youtube, zalo]
+const ListFollows = [twitter, facebook, medium, youtube, telegram]
+
+const ListFollow = [
+    {link: 'https://twitter.com/KingdomGame_KDG', icon: twitter},
+    {link: 'https://www.facebook.com/KingdomGameGlobal', icon: facebook},
+    {link: 'https://medium.com/kingdom-game-4-0', icon: medium},
+    {link: 'https://www.youtube.com/channel/UCl7ezf4kJUxjlPJwaoPtapA/featured', icon: youtube},
+    {link: 'https://t.me/kdg_en', icon: telegram},
+]
+
+const supportedURL = "https://google.com";
+
+
+const OpenURLButton = ({ url, icon, key }) => {
+  const handlePress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  }, [url]);
+
+        return  <TouchableOpacity onPress={handlePress} key={key} style={accountStyle.followBlock}>
+        <Image style={accountStyle.followIcon} source={icon}/>  
+    </TouchableOpacity>
+};
 
 export default function App(){
+
+
+
+    
 
     return(
         <>
         <View style={accountStyle.listFollow}>
+
             <View style={accountStyle.maskOpacity}/>
             {
             ListFollow.map((el,index)=>
-                <TouchableOpacity key={index} style={accountStyle.followBlock}>
-                    <Image style={accountStyle.followIcon} source={el}/>    
-                </TouchableOpacity>
+                <OpenURLButton url={el.link} icon={el.icon} key={index}  />
             )
             }
         </View>

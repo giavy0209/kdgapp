@@ -33,19 +33,20 @@ export default function App({
     coinPriceTRX,
     coinPriceUSDT,
     coinPriceKNC,
-    coinPriceMCH
+    coinPriceMCH,
+    coinDisplay
     }){
     const navigation = useNavigation()
     const [CoinHeight, setCoinHeight] = useState(0)
     const [SwipeList, setSwipeList] = useState([])
     const typeCurrency = useSelector(state => state.currency)
     const data = [
-        {coinPrice: coinPriceKDG, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
-        {coinPrice: coinPriceETH, key: 2, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
-        {coinPrice: coinPriceTRX, key: 3, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
-        {coinPrice: coinPriceUSDT, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH},
-        {coinPrice: coinPriceKNC, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
-        {coinPrice: coinPriceMCH, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
+        {isDisplay: coinDisplay.kdg, coinPrice: coinPriceKDG, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
+        {isDisplay: coinDisplay.eth, coinPrice: coinPriceETH, key: 2, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
+        {isDisplay: coinDisplay.trx, coinPrice: coinPriceTRX, key: 3, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
+        {isDisplay: coinDisplay.usdt, coinPrice: coinPriceUSDT, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH},
+        {isDisplay: coinDisplay.knc, coinPrice: coinPriceKNC, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
+        {isDisplay: coinDisplay.mch, coinPrice: coinPriceMCH, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
     ]
 
     const renderLeftActions = useCallback((id, balance, address) => {
@@ -60,7 +61,7 @@ export default function App({
                     style={[walletStyles.coinSwipeRight, 
                     {height: CoinHeight}]}>
                     <Image source={depositwhite}/>
-                    <Text style={{color: '#fff', fontSize: 12}}>Nhận</Text>
+                    <Text style={{color: '#fff', fontSize: 12}}>Nạp</Text>
                 </TouchableOpacity>
             </Animated.View>
           </RectButton>
@@ -79,7 +80,7 @@ export default function App({
                     style={[walletStyles.coinSwipeLeft, 
                     {height: CoinHeight}]}>
                     <Image source={withdrawwhite}/>
-                    <Text style={{color: '#fff', fontSize: 12}}>Gửi</Text>
+                    <Text style={{color: '#fff', fontSize: 12}}>Rút</Text>
                 </TouchableOpacity>
             </Animated.View>
           </RectButton>
@@ -111,8 +112,8 @@ export default function App({
             <FlatList
                 data={data}
                 renderItem={({item}) =>
-
-                <Swipeable onSwipeableClose={()=>handleSwipeClose(1)} 
+                {if(item.isDisplay === true)
+                return <Swipeable onSwipeableClose={()=>handleSwipeClose(1)} 
                     onSwipeableRightOpen={()=>handleSwipeOpen({id: item.coinName, dir: 'right'})} 
                     onSwipeableLeftOpen={()=>handleSwipeOpen({id: item.coinName, dir: 'left'})} 
                     renderRightActions={()=>renderRightActions(item.coinName, item.balance)} 
@@ -143,6 +144,7 @@ export default function App({
                     </TouchableOpacity>
                 </Swipeable>
                 }
+            }
             />
             
         </View>

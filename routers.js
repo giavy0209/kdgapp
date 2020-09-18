@@ -48,7 +48,7 @@ import Account from './components/Account'
     import MyReward  from './components/Account/Reward/MyReward'
     import Rule from './components/Account/Reward/Rule'
         
-
+import Terms from './components/Terms'
 
 import tabWallet from './assets/images/tab-wallet.png'
 import tabWalletActive from './assets/images/tab-wallet-active.png'
@@ -380,6 +380,14 @@ const ROUTERS = [
         reqLogin: true,
         title: '',
         render : StakingJoining,
+        needFirstTime: false,
+        needInMain: true
+    },
+    {
+        name: 'Terms',
+        reqLogin: true,
+        title: '',
+        render : Terms,
         needFirstTime: false,
         needInMain: true
     },

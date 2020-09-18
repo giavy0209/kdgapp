@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View, Text, Image, ImageBackground ,TouchableOpacity} from 'react-native'
+import { View, Text, Image, ImageBackground ,TouchableOpacity, Platform} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPen} from '@fortawesome/free-solid-svg-icons';
@@ -10,8 +10,11 @@ import wallet from '../../assets/images/wallet-account.png'
 import support from '../../assets/images/support-account.png'
 import invitation from '../../assets/images/invitation-account.png'
 import defaultAvata from '../../assets/images/default-avata.webp'
+import defaultAvataPNG from '../../assets/images/default-avata.png'
 import List from './ListSetting'
 import { storage } from '../../helper'
+
+import { useSelector } from 'react-redux'
 
 export default function App({navigation}){
 
@@ -63,7 +66,7 @@ export default function App({navigation}){
 
             <View style={accountStyle.profileBar}>
                 <View style={accountStyle.blockAvata}>
-                    <Image style={accountStyle.avata} source={defaultAvata}/>
+                    <Image style={accountStyle.avata} source={Platform.OS === 'ios' ? defaultAvataPNG : defaultAvata}/>
                 </View>
                     <Text style={accountStyle.profileBarEmail}>{UserName}</Text>
                 <LinearGradient 

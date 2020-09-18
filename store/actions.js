@@ -12,6 +12,7 @@ export const CHANGE_CURRENCY = 'CHANGE_CURRENCY';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const CHANGE_DISPLAY = 'CHANGE_DISPLAY';
 export const CHANGE_PIN = 'CHANGE_PIN';
+export const CHANGE_COIN_DISPLAY = 'CHANGE_COIN_DISPLAY';
 
 export function actChangeRouters(routers){
     return {
@@ -43,6 +44,13 @@ export function actChangeLoginStatus(status){
     return {
         type: CHANGE_LOGIN_STATUS,
         payload: {status}
+    }
+}
+
+export function actChangeCoin(coin){
+    return {
+        type: CHANGE_COIN_DISPLAY,
+        payload: {coin}
     }
 }
 
@@ -476,6 +484,19 @@ export function asyncLogout(){
             return null
         } catch (error) {
             console.log('logout error');
+        }
+    }
+}
+
+
+export function asyncSetCoin(coin){
+    return async (dispatch) =>{
+        try {
+            console.log(coin);
+            dispatch(actChangeCoin(coin))
+            await AsyncStorage.setItem('coin', JSON.stringify(coin))
+        } catch (error) {   
+            console.log('coin err');
         }
     }
 }

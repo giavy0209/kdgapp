@@ -23,6 +23,11 @@ export default function App({ navigation }) {
 
   const typeCurrency = useSelector(state => state.currency)
 
+  const coinDisplay = useSelector(state => state.coin)
+
+  console.log(coinDisplay);
+
+
 
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
   const [VisibleBalance, setVisibleBalance] = useState(true);
@@ -151,7 +156,6 @@ export default function App({ navigation }) {
     dispatch(asyncGetNews(1,20))
     .then((res)=>{
       setNewsData(res.data)
-      console.log(res.data)
     })
     .catch(console.log) 
 }, [])
@@ -159,7 +163,7 @@ export default function App({ navigation }) {
 useEffect(() => {
   dispatch(asyncGetCoinPrice('KDG'))
   .then((res)=>{
-    console.log(res.data2)
+
       var coin_to_usd = res.data2.current_price.usd
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
@@ -261,7 +265,9 @@ useEffect(() => {
               <View style={walletStyles.totalBalanceAndVisible}>
                 <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? CoinPriceKDG.vnd + ' ₫' : typeCurrency === 2 ?  '¥' + CoinPriceKDG.cny : '$' + CoinPriceKDG.usd}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
-                  <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
+                  <View style={{padding: 13}}>
+                    <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
+                  </View>
                 </TouchableOpacity>
               </View>
               <Text style={walletStyles.totalKDG}>{VisibleBalance ? hiddenBalance : KGDBalance + ' KDG'}</Text>
@@ -308,6 +314,7 @@ useEffect(() => {
               coinPriceUSDT={CoinPriceUSDT}
               coinPriceKNC={CoinPriceKNC}
               coinPriceMCH={CoinPriceMCH}
+              coinDisplay={coinDisplay}
             />
 
             <View style={walletStyles.listPostHead}>

@@ -28,14 +28,14 @@ export default function App(){
                 </TouchableOpacity>
                 <View style={{paddingTop: 10}}>
                     <TouchableOpacity 
-                    // onPress={()=>navigation.navigate('KYC')}
+                    onPress={()=>navigation.navigate('Terms')}
                     style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative'}}>
                         <View style={accountStyle.maskOpacity} ></View>
                         <Text style={{fontSize: 14, color: '#ddd9d8'}}>Thỏa thuận người dùng</Text>
                         <FontAwesomeIcon color="#8a8c8e" icon={faAngleRight}/>
                     </TouchableOpacity>
                     <TouchableOpacity 
-                    // onPress={()=>navigation.navigate('Pin')}
+                    onPress={()=>navigation.navigate('Terms')}
                     style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative',borderTopColor: '#3b3f49', borderTopWidth: 1}}>
                         <View style={accountStyle.maskOpacity} ></View>
                         <Text style={{fontSize: 14, color: '#ddd9d8'}}>Chính sách bảo mật</Text>

@@ -7,6 +7,7 @@ import {
     CHANGE_CURRENCY,
     CHANGE_LANGUAGE,
     CHANGE_DISPLAY,
+    CHANGE_COIN_DISPLAY,
     CHANGE_PIN
 } from './actions'
 
@@ -54,6 +55,11 @@ const reducers = function (state = {}, action) {
         ...action.payload,
       }
     }else if(action.type === CHANGE_DISPLAY){
+      return{
+        ...state,
+        ...action.payload,
+      }
+    }else if(action.type === CHANGE_COIN_DISPLAY){
       return{
         ...state,
         ...action.payload,

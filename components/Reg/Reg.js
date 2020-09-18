@@ -180,7 +180,7 @@ export default function App({ navigation }) {
         if(!ToggleCheckBox){
             Alert.alert(
                 "Đăng ký",
-                "Đồng ý với điều khoản ....",
+                "Bạn chưa đồng ý điều khoản",
             )
             return;
         }
@@ -353,7 +353,7 @@ export default function App({ navigation }) {
                     </TouchableOpacity>
                     <Text style={{fontSize: 14, color: '#8a8c8e', marginLeft: 6}}>Tôi đồng ý với 
                         <Text 
-                        onPress={()=> Linking.openURL('https://google.com')}
+                        onPress={()=> Linking.openURL('https://kingdomgame.org/terms-of-service/')}
                         style={{color: '#005cfc'}}
                         > Chính sách riêng tư | Điều khoản & điều kiện
                         </Text>

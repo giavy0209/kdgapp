@@ -6,6 +6,9 @@ import info from '../../assets/images/info.png'
 import follow from '../../assets/images/follow.png'
 import FollowList from './FollowList'
 import {View, TouchableOpacity} from 'react-native'
+
+
+
 const List = [
     {
         name: 'CHUNG',
@@ -13,7 +16,8 @@ const List = [
             {
                 icon : currency,
                 textLeft: 'Loại tiền tệ',
-                textRight: 'USD (Mặc định)',
+                textRight: 'currency_type',
+                // textRight: typeCurrency === 1 ? 'VND' : typeCurrency === 2 ? 'CNY' : 'USD (Mặc định)',
                 arrow : true,
                 BlockComponent: TouchableOpacity,
                 navigate: 'Currency'

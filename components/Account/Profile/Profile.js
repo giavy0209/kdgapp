@@ -9,6 +9,7 @@ import * as Permissions from 'expo-permissions';
 import { Header2 } from '../../Header'
 import { mainStyles, accountStyle } from '../../../styles'
 import defaultAvata from '../../../assets/images/default-avata.webp'
+import defaultAvataPNG from '../../../assets/images/default-avata.png'
 import { useRoute } from '@react-navigation/native'
 import {asyncLogout} from '../../../store/actions'
 
@@ -22,7 +23,7 @@ export default function App() {
 
     const [BlockWidth, setBlockWidth] = useState(0)
     const [ImageWidth, setImageWidth] = useState(0)
-    const [image, setImage] = useState(defaultAvata)
+    const [image, setImage] = useState(Platform.OS === 'ios' ? defaultAvataPNG : defaultAvata)
 
     const {email} = route.params;
     const getPermissionAsync = useCallback(async () => {
@@ -68,6 +69,7 @@ export default function App() {
                     <Text style={{color: '#8a8c8e'}}>{email}</Text>
 
                     <TouchableOpacity
+                    disabled={true}
                     onLayout={e => setImageWidth(e.nativeEvent.layout.width)}
                     onPress={getPermissionAsync}
                     style={{position: 'absolute', top: -53, alignSelf: 'center',left: BlockWidth / 2 - ImageWidth/2 ,zIndex: 999}}>
