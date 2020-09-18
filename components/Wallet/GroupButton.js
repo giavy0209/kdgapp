@@ -6,7 +6,7 @@ import stake from '../../assets/images/stake.png'
 import swap from '../../assets/images/swap.png'
 import { walletStyles } from '../../styles/'
 import { useNavigation } from '@react-navigation/native';
-export default function App(){
+export default function App({}){
     const navigation = useNavigation()
     return (
         <View style={walletStyles.groupButton}>

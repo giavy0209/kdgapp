@@ -8,7 +8,8 @@ import {
     CHANGE_LANGUAGE,
     CHANGE_DISPLAY,
     CHANGE_COIN_DISPLAY,
-    CHANGE_PIN
+    CHANGE_PIN,
+    CHANGE_COIN_NUMBERS
 } from './actions'
 
 const reducers = function (state = {}, action) {
@@ -60,6 +61,11 @@ const reducers = function (state = {}, action) {
         ...action.payload,
       }
     }else if(action.type === CHANGE_COIN_DISPLAY){
+      return{
+        ...state,
+        ...action.payload,
+      }
+    }else if(action.type === CHANGE_COIN_NUMBERS){
       return{
         ...state,
         ...action.payload,

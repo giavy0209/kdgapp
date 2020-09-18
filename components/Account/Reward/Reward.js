@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View, Text, TouchableOpacity, Image, TextInput} from 'react-native'
+import { View, Text, TouchableOpacity, Image, Clipboard} from 'react-native'
 
 import {Header2} from '../../Header'
 import { mainStyles,accountStyle } from '../../../styles'

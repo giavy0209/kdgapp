@@ -9,13 +9,14 @@ import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 import { storage } from '../../../helper'
 import { asyncGetBalanceDouble } from '../../../store/actions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // ------------------Icon---------------------
 import kdgicon from '../../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../../assets/images/IconCoin/ETH.png'
 import trxicon from '../../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../../assets/images/IconCoin/USDT.png'
-
+import kncicon from '../../../assets/images/IconCoin/KNC.png'
+import mchicon from '../../../assets/images/IconCoin/MCH.png'
 
 // ------------------------------------------
 
@@ -23,6 +24,8 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export default function App({setOutScrollViewTop}){
+
+    const coinNumbers = useSelector(state => state.coinNumbers)
     const [Width , setWidth] = useState(0);
     const dispatch = useDispatch();
     // ----------Balance Coin -----------
@@ -32,10 +35,13 @@ export default function App({setOutScrollViewTop}){
     const [USDTBalance, setUSDTBalance] = useState(0);
     // ----------------------------------
     const list = [
-        {balance: KGDBalance, text: 'KDG', icon: kdgicon, description: 'Kingdom Game 4.0', key: '1'},
-        {balance: TRXBalance, text: 'ETH', icon: ethicon, description: 'Ethereum', key: '2'},
-        {balance: ETHBalance, text: 'TRX',icon: trxicon, description: 'Tron', key: '3'},
-        {balance: USDTBalance, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
+        {exchange_rate: coinNumbers.kdg.exchange_rate, balance: coinNumbers.kdg.balance, text: 'KDG', icon: kdgicon, description: 'Kingdom Game 4.0', key: '1'},
+        {exchange_rate: coinNumbers.eth.exchange_rate, balance: coinNumbers.eth.balance, text: 'ETH', icon: ethicon, description: 'Ethereum', key: '2'},
+        {exchange_rate: coinNumbers.trx.exchange_rate, balance: coinNumbers.trx.balance, text: 'TRX',icon: trxicon, description: 'Tron', key: '3'},
+        {exchange_rate: coinNumbers.usdt.exchange_rate, balance: coinNumbers.usdt.balance, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
+        {exchange_rate: coinNumbers.knc.exchange_rate, balance: coinNumbers.knc.balance, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
+        {exchange_rate: coinNumbers.mch.exchange_rate, balance: coinNumbers.mch.balance, text: 'MCH', icon: mchicon, description: 'Meconcash ', key: '6'},
+    
       ];
   // ----------Address Coin -----------
    const [TRXAddress, setTRXAddress] = useState('');
@@ -121,7 +127,7 @@ export default function App({setOutScrollViewTop}){
                                     </View>
                                     <View style={{paddingRight: (windowWidth*windowHeight)/29376, alignItems: 'flex-end'}}>
                                         <Text style={withdrawStyle.exchangeRate}>{item.balance}</Text>
-                                        <Text style={withdrawStyle.nearExchangeRate}>≈ $1</Text>
+                                        <Text style={withdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
                                     </View>
                                 </View>
                             </View>   

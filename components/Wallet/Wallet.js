@@ -14,7 +14,7 @@ import ListCoin from './ListCoin'
 import AsyncStorage from '@react-native-community/async-storage';
 import calAPI from '../../axios';
 import { storage } from '../../helper';
-import { asyncGetBalance, asyncGetBalanceNews, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice } from '../../store/actions';
+import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice } from '../../store/actions';
 
 const hiddenBalance = "******"
 export default function App({ navigation }) {
@@ -52,33 +52,33 @@ export default function App({ navigation }) {
 
   
   const [CoinPriceKDG, setCoinPriceKDG] = useState({
-    vnd: 0, usd: 0, exchange: {
-      vnd: 0, usd: 0
+    vnd: 0, usd: 0, cny: 0, exchange: {
+      vnd: 0, usd: 0, cny: 0
     } 
   });
   const [CoinPriceETH, setCoinPriceETH] = useState({
-    vnd: 0, usd: 0, exchange: {
-      vnd: 0, usd: 0
+    vnd: 0, usd: 0, cny: 0, exchange: {
+      vnd: 0, usd: 0, cny: 0
     } 
   });
   const [CoinPriceTRX, setCoinPriceTRX] = useState({
-    vnd: 0, usd: 0, exchange: {
-      vnd: 0, usd: 0
+    vnd: 0, usd: 0, cny: 0, exchange: {
+      vnd: 0, usd: 0, cny: 0
     } 
   });
   const [CoinPriceUSDT, setCoinPriceUSDT] = useState({
-    vnd: 0, usd: 0, exchange: {
-      vnd: 0, usd: 0
+    vnd: 0, usd: 0, cny: 0, exchange: {
+      vnd: 0, usd: 0, cny: 0
     } 
   });
   const [CoinPriceKNC, setCoinPriceKNC] = useState({
-    vnd: 0, usd: 0, exchange: {
-      vnd: 0, usd: 0
+    vnd: 0, usd: 0, cny: 0, exchange: {
+      vnd: 0, usd: 0, cny: 0
     } 
   });
   const [CoinPriceMCH, setCoinPriceMCH] = useState({
-    vnd: 0, usd: 0, exchange: {
-      vnd: 0, usd: 0
+    vnd: 0, usd: 0, cny: 0, exchange: {
+      vnd: 0, usd: 0, cny: 0
     } 
   });
   
@@ -237,7 +237,50 @@ useEffect(() => {
   .catch(console.log) 
 },[KGDBalance, ETHAddress, USDTBalance, TRXBalance, KNCBalance, MCHBalance])
 
+useEffect(() => {
 
+  dispatch(asyncSetCoinNumbers({
+    kdg: {
+      balance: KGDBalance,
+      exchange_rate: CoinPriceKDG
+    },
+    eth: {
+      balance: ETHBalance,
+      exchange_rate: CoinPriceETH
+    },
+    trx: {
+      balance: TRXBalance,
+      exchange_rate: CoinPriceTRX
+    },
+    usdt: {
+      balance: USDTBalance,
+      exchange_rate: CoinPriceUSDT
+    },
+    knc: {
+      balance: KNCBalance,
+      exchange_rate: CoinPriceKNC
+    },
+    mch: {
+      balance: MCHBalance,
+      exchange_rate: CoinPriceMCH
+    },
+
+  }))
+
+}, [KGDBalance, 
+  ETHAddress, 
+  USDTBalance, 
+  TRXBalance, 
+  KNCBalance, 
+  MCHBalance, 
+  CoinPriceKDG,
+  CoinPriceETH,
+  CoinPriceTRX,
+  CoinPriceUSDT,
+  CoinPriceKNC,
+  CoinPriceMCH
+
+])
 
   return (
     <>
@@ -281,7 +324,7 @@ useEffect(() => {
               </View>
             </View>
 
-            <GroupButton/>
+            <GroupButton />
             
             <View style={walletStyles.listCoinHead}>
               <Text style={walletStyles.listCoinHeadColor}>Total Assets</Text>

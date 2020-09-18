@@ -22,6 +22,7 @@ const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollView}){
     
     const typeCurrency = useSelector(state => state.currency)
+    const coinNumbers = useSelector(state => state.coinNumbers)
     
     const [Width , setWidth] = useState(0);
 
@@ -36,44 +37,22 @@ export default function App({setOutScrollView}){
     const [Token, setToken] = useState('');
     // -------------------------------
 
-
-    const [CoinPriceVND, setCoinPriceVND] = useState(0);
-    const [CoinPriceUSD, setCoinPriceUSD] = useState(0);
+    const [CoinPriceExchange, setCoinPriceExchange] = useState({})
 
     // const {id} = route.params;
     const coinName = route.params.id;
-    const coinBalance = route.params.balance;
+
     const inputNumberHandler = (value) => {
         setValueSend(value);
-        var coin_name = coinName === 'KDG' ? coinName : coinName + 'VND'
-        dispatch(asyncGetCoinPrice(coin_name))
-        .then(({resVND, resUSDVND})=>{
-            if(coinName === 'KDG'){
-                //Do code backend, nên resVND ở đây là USD
-                var exchange_rate_USD_VND = resUSDVND.data
-                var exchange_rate  = resVND.data['kingdom-game-4-0'].usd
-                var coin_price_USD = exchange_rate*value
-                var coin_price_VND = coin_price_USD*exchange_rate_USD_VND
-                setCoinPriceUSD(coin_price_USD.toFixed(4))
-                setCoinPriceVND(coin_price_VND.toFixed(2))
-            }else {
-                var exchange_rate_USD_VND = resUSDVND.data
-                var exchange_rate = resVND.data
-                var coin_price_VND = exchange_rate*value
-                var coin_price_USD = coin_price_VND/exchange_rate_USD_VND
-                setCoinPriceVND(coin_price_VND.toFixed(2))
-                setCoinPriceUSD(coin_price_USD.toFixed(4));
-            }
-
-        })
-        .catch(console.log) 
+        var coin_name = coinName.toLowerCase();
+        setCoinPriceExchange(coinNumbers[coin_name].exchange_rate.exchange)
     }
 
 
     const withdraw = useCallback(async () => {
         var userinfo = await storage('_id').getItem();
         var withdraw_type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase();
-        console.log()
+
         dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: withdraw_type, toAddress: ToAddress, token: Token}))
         .then((res)=>{
             if(res.status === 1 ){
@@ -94,11 +73,7 @@ export default function App({setOutScrollView}){
                     `Giao dịch thất bại`,
                 )
             }
-            console.log(res);
-            console.log(ValueSend);
-            console.log(Token);
-            console.log(ToAddress);
-           
+
         })
         .catch(console.log)
     }, [ToAddress, Token, ValueSend])
@@ -135,7 +110,7 @@ export default function App({setOutScrollView}){
                 <Image source={coin} style={{width: windowWidth*windowHeight/11750, height: windowWidth*windowHeight/11750}} />
                 <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
                     <Text style={withdrawStyle.coinName}>{coinName}</Text>
-                    <Text style={withdrawStyle.balance}>Số dư: {coinBalance + " " + coinName} </Text>
+                    <Text style={withdrawStyle.balance}>Số dư: {coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
                 </View>                                   
             </View>
         </View>
@@ -165,7 +140,9 @@ export default function App({setOutScrollView}){
                                 placeholderTextColor = "#8a8c8e"
                                 onFocus={()=>{}} 
                                 onBlur={()=>{}}                      
-                                value={typeCurrency === 0 ? CoinPriceUSD.toString() : CoinPriceVND.toString() }
+                                value={(ValueSend*CoinPriceExchange[typeCurrency === 1 ? 'vnd' : typeCurrency === 2 ? 'cny' : 'usd' ]).toString() === 'NaN' ? '0' : 
+                                            (ValueSend*CoinPriceExchange[typeCurrency === 1 ? 'vnd' : typeCurrency === 2 ? 'cny' : 'usd' ]).toString()
+                                      }
                                 style={withdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>

@@ -13,6 +13,7 @@ export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const CHANGE_DISPLAY = 'CHANGE_DISPLAY';
 export const CHANGE_PIN = 'CHANGE_PIN';
 export const CHANGE_COIN_DISPLAY = 'CHANGE_COIN_DISPLAY';
+export const CHANGE_COIN_NUMBERS = 'CHANGE_COIN_NUMBERS';
 
 export function actChangeRouters(routers){
     return {
@@ -54,6 +55,14 @@ export function actChangeCoin(coin){
     }
 }
 
+export function actChangeCoinNumbers(coinNumbers){
+    return {
+        type: CHANGE_COIN_NUMBERS,
+        payload: {coinNumbers}
+    }
+}
+
+
 
 export function actChangeCurrency(currency){
     return {
@@ -69,12 +78,15 @@ export function actChangeLanguage(language){
     }
 }
 
+
 export function actChangeDisplay(display){
     return {
         type: CHANGE_DISPLAY,
         payload: {display}
     }
 }
+
+
 
 export function actChangePin(pin){
     return {
@@ -492,7 +504,7 @@ export function asyncLogout(){
 export function asyncSetCoin(coin){
     return async (dispatch) =>{
         try {
-            console.log(coin);
+    
             dispatch(actChangeCoin(coin))
             await AsyncStorage.setItem('coin', JSON.stringify(coin))
         } catch (error) {   
@@ -500,6 +512,18 @@ export function asyncSetCoin(coin){
         }
     }
 }
+
+export function asyncSetCoinNumbers(coinNumbers){
+    return async (dispatch) =>{
+        try {
+            dispatch(actChangeCoinNumbers(coinNumbers))
+            await AsyncStorage.setItem('coinNumbers', JSON.stringify(coinNumbers))
+        } catch (error) {   
+            console.log('coin err');
+        }
+    }
+}
+
 
 
 export function asyncSetCurrency(currency){
