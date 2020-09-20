@@ -84,7 +84,7 @@ export default function App({setOutScrollViewTop}){
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
         <View style={{padding: (windowWidth*windowHeight)/29376}}>
             <View style={withdrawStyle.searchBoxContainer}>
-                <View style={withdrawStyle.iconSearch}>
+                <View style={{justifyContent: 'center', paddingRight: 10}}>
                     <FontAwesomeIcon color="#8a8c8e" icon={faSearch}/>
                 </View>
                 <TextInput
@@ -102,11 +102,44 @@ export default function App({setOutScrollViewTop}){
             searchVal ? (
             <View>
                 <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>Kết quả</Text>
+                <FlatList
+                data={list}
+                renderItem={({item}) => 
+                {
+                    if(((item.text).toLowerCase()).startsWith(searchVal.toLowerCase()) || ((item.description).toLowerCase()).startsWith(searchVal.toLowerCase())){
+                        return (
+                            <View style={withdrawStyle.listContainer}>
+                                <TouchableOpacity 
+                                onPress={() => 
+                                navigation.navigate('DepositPage2', {
+                                    id: item.text, 
+                                    address: item.text === 'KDG' || item.text === 'TRX' ? TRXAddress : ETHAddress,
+                                    icon: item.icon
+                                })} >
+                                    <View style={{flexDirection: 'row'}}>
+                                        <Image source={item.icon} style={{width: 35, height: 35}} />
+                                        <View style={{width: '93%',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: (windowWidth*windowHeight)/35251}}>
+                                            <View>
+                                                <Text style={withdrawStyle.textList}>{item.text}</Text>
+                                                <Text style={withdrawStyle.description}>{item.description}</Text>
+                                            </View>
+                                            <View style={{paddingRight: (windowWidth*windowHeight)/29376, alignItems: 'flex-end'}}>
+                                                <Text style={withdrawStyle.exchangeRate}>{item.balance}</Text>
+                                                <Text style={withdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
+                                            </View>
+                                        </View>
+                                    </View>   
+                                </TouchableOpacity>
+                            </View>
+                        )         
+                    }
+                }
+              }
+                />
+                
             </View>
-            ) : null
-            }
-
-            <ScrollView>
+            
+            ) : (
                 <FlatList
                 data={list}
                 renderItem={({item}) => (
@@ -135,11 +168,10 @@ export default function App({setOutScrollViewTop}){
                     </View>
                 )}
                 />
-                <View>
-                    <Text>{searchVal}</Text>
-                </View>
-            </ScrollView>  
 
+            )
+            }
+            
         </View>
     </View>
 </View>

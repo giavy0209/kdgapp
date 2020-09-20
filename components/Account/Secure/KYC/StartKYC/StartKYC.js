@@ -39,9 +39,6 @@ export default function App({setOutScrollView}){
         // navigation.navigate(SelectedID === '')
     },[SelectedID, SelectedCountry, SelectedSex])
 
-    console.log("SelectID: " + SelectedID)
-    console.log("SelectCountry: " + SelectedCountry)
-    console.log("SelectSex: " + SelectedSex)
 
     return (
         <>

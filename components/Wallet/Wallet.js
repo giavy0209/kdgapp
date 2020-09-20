@@ -53,32 +53,32 @@ export default function App({ navigation }) {
   
   const [CoinPriceKDG, setCoinPriceKDG] = useState({
     vnd: 0, usd: 0, cny: 0, exchange: {
-      vnd: 0, usd: 0, cny: 0
+      vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceETH, setCoinPriceETH] = useState({
     vnd: 0, usd: 0, cny: 0, exchange: {
-      vnd: 0, usd: 0, cny: 0
+      vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceTRX, setCoinPriceTRX] = useState({
     vnd: 0, usd: 0, cny: 0, exchange: {
-      vnd: 0, usd: 0, cny: 0
+      vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceUSDT, setCoinPriceUSDT] = useState({
     vnd: 0, usd: 0, cny: 0, exchange: {
-      vnd: 0, usd: 0, cny: 0
+      vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceKNC, setCoinPriceKNC] = useState({
     vnd: 0, usd: 0, cny: 0, exchange: {
-      vnd: 0, usd: 0, cny: 0
+      vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceMCH, setCoinPriceMCH] = useState({
     vnd: 0, usd: 0, cny: 0, exchange: {
-      vnd: 0, usd: 0, cny: 0
+      vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   
@@ -151,7 +151,7 @@ export default function App({ navigation }) {
 
 
   useEffect(() => {
-    dispatch(asyncGetNews(1,20))
+    dispatch(asyncGetNews(0,20))
     .then((res)=>{
       setNewsData(res.data)
     })
@@ -162,12 +162,14 @@ useEffect(() => {
   dispatch(asyncGetCoinPrice('KDG'))
   .then((res)=>{
 
+
       var coin_to_usd = res.data2.current_price.usd
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
+      var coin_percent24h = res.data2.price_change_percentage_24h
       setCoinPriceKDG({
         vnd: (coin_to_vnd*KGDBalance).toFixed(2), usd: (coin_to_usd*KGDBalance).toFixed(4) , cny: (coin_to_usd*KGDBalance).toFixed(4), exchange: {
-          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
   })
@@ -178,9 +180,10 @@ useEffect(() => {
       var coin_to_usd = res.data2.current_price.usd
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
+      var coin_percent24h = res.data2.price_change_percentage_24h
       setCoinPriceETH({
         vnd: (coin_to_vnd*ETHBalance).toFixed(2), usd: (coin_to_usd*ETHBalance).toFixed(4) , cny: (coin_to_usd*ETHBalance).toFixed(4), exchange: {
-          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
   })
@@ -191,9 +194,10 @@ useEffect(() => {
       var coin_to_usd = res.data2.current_price.usd
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
+      var coin_percent24h = res.data2.price_change_percentage_24h
       setCoinPriceTRX({
         vnd: (coin_to_vnd*TRXBalance).toFixed(2), usd: (coin_to_usd*TRXBalance).toFixed(4) , cny: (coin_to_usd*TRXBalance).toFixed(4), exchange: {
-          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
   })
@@ -204,9 +208,10 @@ useEffect(() => {
       var coin_to_usd = res.data2.current_price.usd
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
+      var coin_percent24h = res.data2.price_change_percentage_24h
       setCoinPriceUSDT({
         vnd: (coin_to_vnd*USDTBalance).toFixed(2), usd: (coin_to_usd*USDTBalance).toFixed(4) , cny: (coin_to_usd*USDTBalance).toFixed(4), exchange: {
-          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
   })
@@ -216,9 +221,10 @@ useEffect(() => {
       var coin_to_usd = res.data2.current_price.usd
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
+      var coin_percent24h = res.data2.price_change_percentage_24h
       setCoinPriceKNC({
         vnd: (coin_to_vnd*KNCBalance).toFixed(2), usd: (coin_to_usd*KNCBalance).toFixed(4) , cny: (coin_to_usd*KNCBalance).toFixed(4), exchange: {
-          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
   })
@@ -228,9 +234,10 @@ useEffect(() => {
       var coin_to_usd = res.data2.current_price.usd
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
+      var coin_percent24h = res.data2.price_change_percentage_24h
       setCoinPriceMCH({
         vnd: (coin_to_vnd*MCHBalance).toFixed(2), usd: (coin_to_usd*MCHBalance).toFixed(4) , cny: (coin_to_usd*MCHBalance).toFixed(4), exchange: {
-          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4)
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
   })

@@ -24,8 +24,7 @@ export default function Button({ScreenWidth, ScreenHeight,ActivePage,setActivePa
                         backgroundColor: 'transparent',
                         fontSize: 14,
                         color: '#000',
-                        }}>
-                        Đăng nhập
+                        }}>Đăng nhập
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>

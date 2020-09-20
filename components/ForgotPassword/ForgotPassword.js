@@ -295,9 +295,8 @@ useEffect(()=>{
                         secureTextEntry={!IsShowPassword} 
                         />
                         <TouchableOpacity
-                        onLayout={e => setInputPasswordEyeHeight(e.nativeEvent.layout.height)}
                         onPress={ToggleShowPassword}
-                        style={[styles.showPasswordButton,{top: (InputPasswordHeight / 2) - (InputPasswordEyeHeight / 2),}]}
+                        style={[styles.showPasswordButton,{top: (InputPasswordHeight / 15) - (InputPasswordEyeHeight / 2), padding: 10}]}
                         >
                             <FontAwesomeIcon style={styles.eyeStyle} icon={IsShowPassword ? faEye : faEyeSlash}/>
                         </TouchableOpacity>
@@ -318,9 +317,8 @@ useEffect(()=>{
                     style={styles.input}
                     secureTextEntry={!IsShowPassword}  />
                     <TouchableOpacity
-                    onLayout={e => setInputPasswordEyeHeight(e.nativeEvent.layout.height)}
                     onPress={ToggleShowPassword}
-                    style={[styles.showPasswordButton,{top: (InputPasswordHeight / 2) - (InputPasswordEyeHeight / 2),}]}
+                    style={[styles.showPasswordButton,{top: (InputPasswordHeight / 15) - (InputPasswordEyeHeight / 2), padding: 10}]}
                     >
                         <FontAwesomeIcon style={styles.eyeStyle} icon={IsShowPassword ? faEye : faEyeSlash}/>
                     </TouchableOpacity>

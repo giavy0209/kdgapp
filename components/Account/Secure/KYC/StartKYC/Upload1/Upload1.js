@@ -66,8 +66,7 @@ export default function App(){
     const handleNext = useCallback(async ()=>{
         var userinfo = await storage('_id').getItem();
         if(ImageFront && ImageBack && ImageSelfy){
-           
-                
+        
                 const arrayUpload = []
                 const uploadFont = new FormData()
                 uploadFont.append('file', Platform.OS === 'android' ? ImageFront.uri : ImageFront.uri.replace ('file://' , ''))
@@ -85,8 +84,6 @@ export default function App(){
                     uploadBack.append('userId' , userinfo._id)
                     arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadBack))
                 }
-                
-
                 try {
                     var res = await Promise.all(arrayUpload)
                     console.log(res);

@@ -21,6 +21,7 @@ const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollViewTop}){
     const dispatch = useDispatch();
     const [Width , setWidth] = useState(0);
+    const [RightColumnn,setRightColumn] = useState(0);
     // const list = [
     //     {icon: coin, token: 'KDG', timeStartLock: '15 ngày', timeStartUnlock: '20 ngày', numLock: '5', ratio: '5 tỷ USD', progress: '20 ngày', productivity: '15 ngày', status: '20 ngày', action: '15 ngày'},  
     //   ];
@@ -69,19 +70,18 @@ export default function App({setOutScrollViewTop}){
                             <Text style={stakingStyle.titleHeaderStakingHistory} >Coin/Token</Text>
                         </View>
                     </View>
-                    <View style={{backgroundColor: 'rgba(26,37,56, 0.5)', paddingTop: windowHeight/38}}>                  
+                    <View style={{backgroundColor: 'rgba(26,37,56, 0.5)', paddingTop: RightColumnn/1.8}}>                  
                     {StakingHistory.map(item => (
                     <View style={{
                         width: '100%', 
-                        paddingBottom:  windowHeight/50,
                         borderTopRightRadius: 8,
                         borderBottomRightRadius: 8,
-                        paddingHorizontal: 10,
+                        paddingBottom: RightColumnn/2.25
        
                     }}>
                             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                             <Image
-                                style={{marginRight: 10}}
+                                style={{marginRight: 10, height: 30, width: 30}}
                                 source={require('../../../assets/images/coin.png')}
                             />
                             <Text style={stakingStyle.titleContentStakingHistory} > KDG</Text>
@@ -112,17 +112,17 @@ export default function App({setOutScrollViewTop}){
                         <FlatList
                                     data={StakingHistory}
                                     renderItem={({item}) => (
-                                        <View style={stakingStyle.tableContentStackingHistoryContainer}>
+                                        <View   onLayout={e => setRightColumn(e.nativeEvent.layout.height)}  style={stakingStyle.tableContentStackingHistoryContainer}>
                                             <View style={{width: '20%', justifyContent: 'center', alignItems: 'center'}}>
                                                 <Text style={stakingStyle.titleContentStakingHistory} >{        
                                                     (new Date(item.start_date)).getDate().toString()  + "/"   +
-                                                    (new Date(item.start_date)).getMonth().toString() + "/"   +
+                                                    ((new Date(item.start_date)).getMonth() +1 ).toString() + "/"   +
                                                     (new Date(item.start_date)).getFullYear().toString()}</Text>
                                             </View>
                                             <View style={{width: '20%', justifyContent: 'center', alignItems: 'center'}}>
                                                 <Text style={stakingStyle.titleContentStakingHistory} >{        
                                                     (new Date(item.end_date)).getDate().toString()  + "/"   +
-                                                    (new Date(item.end_date)).getMonth().toString() + "/"   +
+                                                    ((new Date(item.end_date)).getMonth() + 1).toString() + "/"   +
                                                     (new Date(item.end_date)).getFullYear().toString()}</Text>
                                             </View>
                                             <View style={{width: '20%', justifyContent: 'center', alignItems: 'center'}}>

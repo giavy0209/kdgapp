@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import {View, Text, Image, TextInput,TouchableOpacity,Switch} from 'react-native'
+import {View, Text, Image, TextInput,TouchableOpacity,Switch, FlatList} from 'react-native'
 import { mainStyles } from '../../../styles'
 import {Header2} from '../../Header'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -89,30 +89,79 @@ useEffect(() => {
                 </View>
                 
                     
-                {data.map((item) => (
+               
 
-                <View>
-                    <View style={{marginTop: 17}}>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between',alignContent: 'center', marginTop: 10, paddingBottom: 13, borderBottomColor: '#29303d', borderBottomWidth: 1}}>
-                            <View style={{flexDirection: 'row', alignContent: 'center'}}>
-                                <Image source={item.icon} style={{width: 37, height: 37, resizeMode: 'contain'}}/>
-                                <View style={{marginLeft: 12}}>
-                                    <Text style={{color: '#fff'}}>{item.text}</Text>
-                                    <Text style={{color: '#8a8c8e'}}>{item.description}</Text>
+
+{
+            Search ? (
+            <View>
+                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>Kết quả</Text>
+                <FlatList
+                data={data}
+                renderItem={({item}) => 
+                {
+                    if(((item.text).toLowerCase()).startsWith(Search.toLowerCase()) || ((item.description).toLowerCase()).startsWith(Search.toLowerCase())){
+                        return (
+                            <View>
+                            <View style={{marginTop: 17}}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between',alignContent: 'center', marginTop: 10, paddingBottom: 13, borderBottomColor: '#29303d', borderBottomWidth: 1}}>
+                                    <View style={{flexDirection: 'row', alignContent: 'center'}}>
+                                        <Image source={item.icon} style={{width: 37, height: 37, resizeMode: 'contain'}}/>
+                                        <View style={{marginLeft: 12}}>
+                                            <Text style={{color: '#fff'}}>{item.text}</Text>
+                                            <Text style={{color: '#8a8c8e'}}>{item.description}</Text>
+                                        </View>
+                                    </View>
+                                    <Switch
+                                        trackColor={{ false: "#767577", true: '#FFFF99' }}
+                                        thumbColor={item.isEnabled ? "#fac800" : "#f4f3f4"}
+                                        ios_backgroundColor="#3e3e3e"
+                                        onValueChange={item.toggle}
+                                        value={item.isEnabled}
+                                    />
                                 </View>
                             </View>
-                            <Switch
-                                trackColor={{ false: "#767577", true: '#FFFF99' }}
-                                thumbColor={item.isEnabled ? "#fac800" : "#f4f3f4"}
-                                ios_backgroundColor="#3e3e3e"
-                                onValueChange={item.toggle}
-                                value={item.isEnabled}
-                            />
+                        </View>
+    
+                        )         
+                    }
+                }
+              }
+                />
+                
+            </View>
+            
+            ) : (
+                    <FlatList
+                    data={data}
+                    renderItem={({item}) => (
+                        <View>
+                        <View style={{marginTop: 17}}>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between',alignContent: 'center', marginTop: 10, paddingBottom: 13, borderBottomColor: '#29303d', borderBottomWidth: 1}}>
+                                <View style={{flexDirection: 'row', alignContent: 'center'}}>
+                                    <Image source={item.icon} style={{width: 37, height: 37, resizeMode: 'contain'}}/>
+                                    <View style={{marginLeft: 12}}>
+                                        <Text style={{color: '#fff'}}>{item.text}</Text>
+                                        <Text style={{color: '#8a8c8e'}}>{item.description}</Text>
+                                    </View>
+                                </View>
+                                <Switch
+                                    trackColor={{ false: "#767577", true: '#FFFF99' }}
+                                    thumbColor={item.isEnabled ? "#fac800" : "#f4f3f4"}
+                                    ios_backgroundColor="#3e3e3e"
+                                    onValueChange={item.toggle}
+                                    value={item.isEnabled}
+                                />
+                            </View>
                         </View>
                     </View>
-                </View>
 
-                ))}
+                        )}
+                    />
+
+                )
+            }
+
 
             </View>
         </View>

@@ -168,8 +168,8 @@ export default function App({navigation}) {
                     <TouchableOpacity
                     onLayout={e => setInputPasswordEyeHeight(e.nativeEvent.layout.height)}
                     onPress={ToggleShowPassword}
-                    style={[styles.showPasswordButton,{top: (InputPasswordHeight / 2) - (InputPasswordEyeHeight / 2),}]}
-                    >
+                    style={[styles.showPasswordButton,{top: (InputPasswordHeight / 2) - (InputPasswordEyeHeight / 2), padding: 15}]}
+                    >   
                         <FontAwesomeIcon style={styles.eyeStyle} icon={IsShowPassword ? faEye : faEyeSlash}/>
                     </TouchableOpacity>
                 </View>
@@ -185,7 +185,7 @@ export default function App({navigation}) {
                 </TouchableOpacity>
             </View>
             <View style={[styles.groupText,{justifyContent: 'space-between', marginTop: 24}]}>
-                <TouchableOpacity onPress={()=>navigation.navigate('ForgotPassword')}><Text style={[styles.linkText, {color: '#fff'}]}>Quên mật khẩu?</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.navigate('ForgotPassword')}><Text style={[styles.linkText, {color: '#fac800'}]}>Quên mật khẩu?</Text></TouchableOpacity>
                 <TouchableOpacity onPress={()=>navigation.replace('Reg')}><Text style={[styles.linkText], {color: '#fac800'}}>Đăng ký</Text></TouchableOpacity>
             </View>
         </View>

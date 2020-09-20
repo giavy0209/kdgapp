@@ -16,6 +16,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { asyncStaking } from '../../../store/actions'
 import { storage } from '../../../helper'
 import { useDispatch, useSelector } from 'react-redux'
+import { Value } from 'react-native-reanimated'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -90,6 +91,20 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
     }, [ValueStaking])
 
+    const edittingHandler = (e) => {
+        var value = parseInt(e.nativeEvent.text);
+        setValueStaking(value)
+    }
+    useEffect(() => {
+        if(ValueStaking < 200){
+            setValueStaking(200)
+            return
+        }
+        if(ValueStaking > 50000){
+            setValueStaking(50000)
+            return
+        }
+    },[ValueStaking])
     return (
         
         <>
@@ -135,7 +150,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
                 <View>
                     <Text style={stakingStyle.dashSymbol}>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </Text>
-                    <TextInput onChangeText={value => setValueStaking(value)} style={stakingStyle.valueStaking}>{ValueStaking}</TextInput>
+                    <TextInput onEndEditing={edittingHandler} style={[stakingStyle.valueStaking, {width: '100%'}]}>{ValueStaking}</TextInput>
                 </View>
                 <Text style={{color: '#rgba(138,140,142, 0.8)', color: '#fff'}}>KDG</Text>
             </View>
@@ -163,6 +178,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                             thumbTintColor='#fac800'
                             minimumTrackTintColor='#fac800'
                             maximumTrackTintColor='#fff'
+                            value={parseInt(ValueStaking)}
                             onValueChange={value => setValueStaking(value)}
                     />
                 </View>
@@ -182,7 +198,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             </View>
             <View style={stakingStyle.interestReceiveContainer}>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={stakingStyle.interestReceive}>Số tiền lãi nhận được</Text>
+                    <Text style={stakingStyle.interestReceive}>Số tiền lãi và gốc nhận được</Text>
                     <Text style={stakingStyle.interestReceiveUnit}>{(1.05*ValueStaking).toFixed(2)} KDG</Text>
                 </View>
             </View>
@@ -195,8 +211,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             <View>
             <FlatList
                 data={[
-                    {key: '(1) Số lượng tham gia Staking tối thiếu là 100 KDG, thời gian khóa tối thiểu là 60 ngày'},
-                    {key: '(2) Lãi suất sẽ được tính vào ngày tiếp theo sau khi bạn tham gia Staking'},
+                    {key: '(1) Số lượng tham gia Staking tối thiếu là 200 KDG, thời gian khóa tối thiểu là 60 ngày'},
+                    {key: '(2) Lãi suất sẽ được tính sau hai ngày kể từ khi bạn tham gia Staking'},
                     {key: '(3) Bạn không thể rút, giao dịch hay sử dụng số lượng KDG trong thời gian tham gia Staking'},
                     {key: '(4) Khi thời gian tham gia Staking kết thúc, cả gốc và lãi sẽ được mở khóa vào tài khoản của bạn'},
                 ]}
@@ -209,7 +225,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={stakingStyle.termCheckboxTitle}>Tôi đã đọc và hiểu</Text>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('Terms')}
+                        onPress={() => navigation.navigate('Terms', {
+                            id: 1,
+                        })}
                     >
                         <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: '#fff', paddingHorizontal: 5}}>cảnh báo rủi ro</Text>
                     </TouchableOpacity>
@@ -223,15 +241,17 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         
     </View>
     <TouchableOpacity
+        disabled={ToggleCheckBox ? false : true}
         style={{paddingVertical: 20}}
         onPress={Staking}
     >
         <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/15}}>
             <LinearGradient 
                 start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
-                colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
+                colors={ToggleCheckBox ? ['rgba(212, 175, 55, 1)', 'rgba(237, 218, 139, 1)', 'rgba(167, 123, 0, 1)', 'rgba(231, 190, 34, 1)', 'rgba(232, 191, 35, 1)'] : 
+                                         ['rgba(212, 175, 55, 0.4)', 'rgba(237, 218, 139, 0.4)', 'rgba(167, 123, 0, 0.4)', 'rgba(231, 190, 34, 0.4)', 'rgba(232, 191, 35, 0.4)']}
                 style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20}}>
-                    <Text style={{color: '#111b2d', fontSize: 16}}>THAM GIA NGAY</Text>
+                    <Text style={{color: '#111b2d', fontSize: 16, opacity: ToggleCheckBox ? 1 : 0.4}}>THAM GIA NGAY</Text>
             </LinearGradient>
         </View>
     </TouchableOpacity>

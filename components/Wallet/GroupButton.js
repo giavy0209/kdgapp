@@ -14,7 +14,6 @@ export default function App({}){
                 onPress={()=>navigation.navigate('Withdraw',{
 
                 })} 
-                style={walletStyles.buttonBlock} 
                 style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
@@ -39,7 +38,7 @@ export default function App({}){
                 style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
-                <Image source={stake}/>
+                <Image style={{marginTop: 5}} source={stake}/>
                 <Text style={walletStyles.buttonText}>Staking</Text>
             </View>
             </TouchableOpacity>
@@ -49,7 +48,7 @@ export default function App({}){
                 style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
-                <Image source={swap}/>
+                <Image style={{marginTop: 5}}  source={swap}/>
                 <Text style={walletStyles.buttonText}>Swap</Text>
             </View>
             </TouchableOpacity>

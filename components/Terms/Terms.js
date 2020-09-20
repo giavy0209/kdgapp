@@ -13,8 +13,6 @@ export default function App({setOutScrollViewTop}){
     const [Width , setWidth] = useState(0);
     const navigation = useNavigation();
     const route = useRoute();
-
-
     const dimen = Dimensions.get('window');
     const isIphoneTaiTho =  Platform.OS === 'ios' &&
     !Platform.isPad &&

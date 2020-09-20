@@ -37,7 +37,10 @@ export default function App({setOutScrollViewTop}){
                     {RewardData.map((item) => (
                         <View style={{flexDirection: 'row'}}>
                             <View style={{backgroundColor: 'rgba(36,45,65 ,0.8)', width: '28%' , paddingVertical: 10, justifyContent: 'center'}}>
-                                <Text style={{alignSelf: 'center' ,textAlign: 'center', color: 'rgba(255,255,255,0.8)'}}>{item.create_date}</Text>
+                                <Text style={{alignSelf: 'center' ,textAlign: 'center', color: 'rgba(255,255,255,0.8)'}}>{        
+                                    (new Date(item.create_date)).getDate().toString()  + "/"   +
+                                    ((new Date(item.create_date)).getMonth() + 1).toString() + "/"   +
+                                    (new Date(item.create_date)).getFullYear().toString()}</Text>
                             </View>
                             <View style={{backgroundColor: 'rgba(36,45,65 ,0.8)', width: '44%' , paddingVertical: 10, borderLeftColor: 'rgba(255,255,255,0.3)', borderLeftWidth: 1, justifyContent: 'center'}}>
                                 <Text style={{alignSelf: 'center' ,textAlign: 'center', color: 'rgba(255,255,255,0.8)'}}>{item.from.email}</Text>
