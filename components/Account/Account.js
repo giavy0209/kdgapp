@@ -68,7 +68,7 @@ export default function App({navigation}){
                 <View style={accountStyle.blockAvata}>
                     <Image style={accountStyle.avata} source={Platform.OS === 'ios' ? defaultAvataPNG : defaultAvata}/>
                 </View>
-                    <Text style={accountStyle.profileBarEmail}>{UserName}</Text>
+                    <Text style={accountStyle.profileBarEmail}>{UserEmail}</Text>
                 <LinearGradient 
                 start={[0,1]}
                 end={[1,0]}

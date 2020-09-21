@@ -95,12 +95,17 @@ export default function App({navigation}) {
         if(EmailValidate === null && PasswordValidate === null){
             dispatch(asyncLogin({email: Email, password: Password}))
             .then((res)=>{
+                console.log(res)
                 if(res.status === 103){
                     setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email hoặc mật khẩu không đúng</Text>)
                     return;
                 }
                 if(res.status === 104){
                     setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email hoặc mật khẩu không đúng</Text>)
+                    return;
+                }
+                if(res.status === 502){
+                    setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Đã có lỗi xảy ra</Text>)
                     return;
                 }
                 if(res.status === 1){

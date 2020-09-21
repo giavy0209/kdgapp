@@ -10,6 +10,7 @@ import { Dimensions } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import QRCode from '../../QRGenerate/QRCode'
+import Popup from '../../Popup/Popup'
 
 // ------------------Icon---------------------
 import kdgicon from '../../../assets/images/IconCoin/KDG.png'
@@ -34,7 +35,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const [searchVal, setSearchVal] = useState();
     const navigation = useNavigation();
     const route = useRoute();
-
+    const [isModalVisible, setModalVisible] = useState(false);
     const coinName = route.params.id;
     const coinAddress = route.params.address;
 
@@ -80,12 +81,24 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
           alert(error.message);
         }
       };
+      const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+        setTimeout(function(){ 
+          setModalVisible(false);
+         }, 1000);
+      };
+    
+      const copyHandler = () => {
+        Clipboard.setString(coinAddress)
+        toggleModal()
+    }
 
 
     return (
         <>
 <View style={mainStyles.container}>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} > 
+    <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
         <View style={{paddingTop: 15, alignItems: 'center'}}>
             <View>
                 <Text style={{color: 'rgba(255,255,255,0.7)'}}>Scan tại đây để nạp</Text>
@@ -101,7 +114,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             </View>
             <View>
                 <TouchableOpacity 
-                    onPress={() => Clipboard.setString(coinAddress)}
+                    onPress={copyHandler}
                     style={{paddingTop: 5}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center'}}>
                         <Text style={{color: 'rgba(84,86,89, 0.9)', paddingRight: 5}}>{coinAddress}</Text>

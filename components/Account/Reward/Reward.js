@@ -28,7 +28,7 @@ export default function App({setOutScrollViewTop}){
         async function getUserInfo() {
           var userinfo = await storage('_id').getItem();
           setRefCode(userinfo.ref_code)
-          console.log(userinfo._id)
+ 
           dispatch(asyncGetTransaction(userinfo._id))
          .then((res)=>{
             setRewardData(res.data)
@@ -37,7 +37,6 @@ export default function App({setOutScrollViewTop}){
 
          dispatch(asyncGetUserbyID(userinfo._id))
           .then((res)=>{
-            console.log(res);
             setKDGReward(res.data.kdg_reward)
           })
           .catch(console.log)

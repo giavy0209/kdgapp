@@ -17,6 +17,8 @@ import mchicon from '../../assets/images/IconCoin/MCH.png'
 import { useSelector } from 'react-redux';
 // ------------------------------------------
 
+
+
 export default function App({
     VisibleBalance,
     hiddenBalance, 
@@ -34,7 +36,8 @@ export default function App({
     coinPriceUSDT,
     coinPriceKNC,
     coinPriceMCH,
-    coinDisplay
+    coinDisplay,
+    isShortCoin,
     }){
     const navigation = useNavigation()
     const [CoinHeight, setCoinHeight] = useState(0)
@@ -116,7 +119,13 @@ export default function App({
         <View style={walletStyles.listCoin}>
             <View style={walletStyles.maskOpacity}></View>
             <FlatList
-                data={data}
+                data={isShortCoin === true ? 
+                    data.sort(function(a, b){
+                        return a.coinPrice.exchange.usd < b.coinPrice.exchange.usd;
+                    })
+                    : data
+                }
+
                 renderItem={({item, index}) =>
                 {if(item.isDisplay === true)
                 return <Swipeable onSwipeableClose={()=>handleSwipeClose(1)} 

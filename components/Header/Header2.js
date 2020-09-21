@@ -1,6 +1,6 @@
 import React, { useState, useCallback,useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import {View,Text, TouchableOpacity } from 'react-native'
+import {View,Text, TouchableOpacity, BackHandler } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,20 @@ export default function App({title,setHeight }){
     const navigation = useNavigation();
     const [ArrowHeight,setArrowHeight] = useState(0)
     const [HeaderHeight,setHeaderHeight] = useState(0)
+
+        
+    function handleBackButtonClick() {
+        navigation.goBack();
+        return true;
+      }
+    
+      useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+        return () => {
+          BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+        };
+      }, []);
+      
     return(
         <>
         <LinearGradient 

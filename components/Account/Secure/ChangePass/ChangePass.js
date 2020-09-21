@@ -54,7 +54,6 @@ export default function App(){
                 setReNewPass('')
                 return
             }
-            console.log(res);
         })
         .catch(console.log)
     },[OldPass, NewPass, ReNewPass])

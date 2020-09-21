@@ -18,6 +18,8 @@ const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation();
     const route = useRoute();
+    const [lang, setlang] = useState('vi')
+
     const {NewsID} = route.params ?? {}
 
     const injectedJavaScript = useRef( `

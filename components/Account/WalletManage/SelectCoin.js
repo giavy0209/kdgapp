@@ -81,7 +81,7 @@ export default function App({setOutScrollViewTop}){
 
         dispatch(asyncExportPrivateKey({id: userinfo._id, password: pass_private, coin_type: coinType}))
         .then((res)=>{
-            console.log(res)
+
             if(res.status === 1 && res.msg === 'wrong password'){
                 setError('Mật khẩu không chính xác')
                 toggleModal()
@@ -105,7 +105,6 @@ export default function App({setOutScrollViewTop}){
                 return
             }
 
-            console.log(res)
         })
         .catch(console.log)
         

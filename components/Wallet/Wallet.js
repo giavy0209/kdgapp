@@ -29,6 +29,7 @@ export default function App({ navigation }) {
 
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
   const [VisibleBalance, setVisibleBalance] = useState(true);
+  const [IsShortCoin, setIsShortCoin] = useState(false);
   const [UserData, setUserData] = useState({});
 
 
@@ -327,7 +328,7 @@ useEffect(() => {
               <View style={walletStyles.availableAndLock}>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Available balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : KGDBalance + ' KDG'}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? CoinPriceKDG.vnd + ' ₫' : typeCurrency === 2 ?  '¥' + CoinPriceKDG.cny : '$' + CoinPriceKDG.usd}</Text>
                 </View>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Locked balance</Text>
@@ -341,7 +342,8 @@ useEffect(() => {
             <View style={walletStyles.listCoinHead}>
               <Text style={walletStyles.listCoinHeadColor}>Total Assets</Text>
               <View style={[walletStyles.listCoinHead, {justifyContent:'flex-end', marginTop: 0}]}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setIsShortCoin(!IsShortCoin)}
+                >
                   <FontAwesomeIcon style={walletStyles.listCoinHeadColor} icon={faSortAmountDown}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>navigation.navigate('SetCoins')}>
@@ -368,6 +370,8 @@ useEffect(() => {
               coinPriceKNC={CoinPriceKNC}
               coinPriceMCH={CoinPriceMCH}
               coinDisplay={coinDisplay}
+              isShortCoin={IsShortCoin}
+         
             />
 
             <View style={walletStyles.listPostHead}>
@@ -385,7 +389,7 @@ useEffect(() => {
                 data={NewsData}
                 renderItem={({item}) => {
 
-                  if(item.content_en !== undefined){
+                  if(item.content_vi !== undefined){
                     return <View style={walletStyles.post}>
                     <TouchableOpacity
                       onPress={()=>navigation.navigate('News', {
@@ -393,8 +397,8 @@ useEffect(() => {
                       })}
                     >
                       <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}>
-                        <Image style={walletStyles.postImage} source={{ uri: item.thumbURL_en}}/></View>
-                      <Text style={walletStyles.postTitle}>{item.title_en}</Text>
+                        <Image style={walletStyles.postImage} source={{ uri: item.thumbURL_vi}}/></View>
+                      <Text style={walletStyles.postTitle}>{item.title_vi}</Text>
                     </TouchableOpacity>
                   </View>  
                     
