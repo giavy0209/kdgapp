@@ -83,7 +83,10 @@ export default function App({ navigation }) {
   });
   
   const handleBarCodeScanned = useCallback(({ type, data }) => {
-    alert(`Scanned data = ${data}`);
+      navigation.navigate('Withdraw', {
+        addressScan: data
+      })
+      setIsScannerOpen(false)
   }, []);
 
   const openScanner = useCallback(async () => {
@@ -302,9 +305,11 @@ useEffect(() => {
                 >
                   <Image style={walletStyles.scanQRIcon} source={openscaner} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>navigation.navigate('Notify')} style={walletStyles.notifyIcon}>
+                <TouchableOpacity onPress={()=>navigation.navigate('Notify', {
+                  NewsData: NewsData
+                })} style={walletStyles.notifyIcon}>
                   <FontAwesomeIcon icon={faBell} style={{ color: '#fff' }} />
-                  <Text style={walletStyles.notifyCount}>15</Text>
+                  {/* <Text style={walletStyles.notifyCount}>15</Text> */}
                 </TouchableOpacity>
               </View>
             </View>
@@ -414,7 +419,7 @@ useEffect(() => {
           onPress={() => setIsScannerOpen(false)}
           style={[scannerStyles.closeButton]}
         >
-          <FontAwesomeIcon style={{color: '#fff',fontSize: 40}} icon={faTimes} />
+          <FontAwesomeIcon style={{color: '#fac800'}} size={30} icon={faTimes} />
         </TouchableOpacity>
         <Camera
           onBarCodeScanned={handleBarCodeScanned}

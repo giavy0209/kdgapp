@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "KDGAPP",
-    "slug": "KDGAPP",
+    "name": "King Wallet",
+    "slug": "KingWallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
@@ -21,11 +21,11 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.kdg.kdg",
+      "bundleIdentifier": "com.kingdomgame.kingwallet",
       "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.kdg.kdg",
+      "package": "com.kingdomgame.kingwallet",
       "versionCode": 1
     },
     "web": {

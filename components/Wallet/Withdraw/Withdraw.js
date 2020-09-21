@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {View, Text, Image, TextInput, FlatList, ScrollView, SafeAreaView} from 'react-native'
+import {View, Text, Image, TextInput, FlatList, ScrollView, SafeAreaView, Alert} from 'react-native'
 import { mainStyles, withdrawStyle } from '../../../styles/'
 import {Header2} from '../../Header'
 import logo from '../../../assets/images/logo.png'
@@ -30,9 +30,13 @@ export default function App({setOutScrollViewTop}){
     const [Width , setWidth] = useState(0);
     const dispatch = useDispatch();
     const coinNumbers = useSelector(state => state.coinNumbers)
+    const route = useRoute();
 
     const [searchVal, setSearchVal] = useState();
     const navigation = useNavigation()
+
+    const { addressScan } = route.params ?? {}
+
 
 
     useEffect(()=>{
@@ -51,6 +55,16 @@ export default function App({setOutScrollViewTop}){
         {exchange_rate: coinNumbers.mch.exchange_rate, balance: coinNumbers.mch.balance, text: 'MCH', icon: mchicon, description: 'Meconcash ', key: '6'},
     
       ];
+
+
+      useEffect(()=>{
+        if(addressScan !== undefined){
+            Alert.alert(
+                'Địa chỉ ví',
+                 addressScan
+              )
+        }
+      },[])
 
     return (
         
@@ -89,7 +103,8 @@ export default function App({setOutScrollViewTop}){
                                onPress={() => 
                                 navigation.navigate('WithdrawPage2', {
                                     id: item.text,
-                                    balance: item.balance
+                                    balance: item.balance, 
+                                    addressScan: addressScan
                                 })}>
                                     <View style={{flexDirection: 'row'}}>
                                         <Image source={item.icon} style={{width: 35, height: 35}} />
@@ -123,7 +138,8 @@ export default function App({setOutScrollViewTop}){
                             onPress={() => 
                                 navigation.navigate('WithdrawPage2', {
                                     id: item.text,
-                                    balance: item.balance
+                                    balance: item.balance,
+                                    addressScan: addressScan
                                 })} >
                                 <View style={{flexDirection: 'row'}}>
                                     <Image source={item.icon} style={{width: 35, height: 35}} />

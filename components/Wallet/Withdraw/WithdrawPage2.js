@@ -1,5 +1,5 @@
 import React, { useState, useEffect , useCallback} from 'react'
-import {View, Text, Image, TextInput, FlatList, ScrollView, Alert} from 'react-native'
+import {View, Text, Image, TextInput, FlatList, ScrollView, Alert, BackHandler} from 'react-native'
 import { mainStyles, withdrawStyle, scannerStyles } from '../../../styles/'
 import {HeaderwithButton} from '../../Header'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,6 +41,9 @@ export default function App({setOutScrollView}){
 
     // const {id} = route.params;
     const coinName = route.params.id;
+    const { addressScan } = route.params ?? {}
+
+
 
     const inputNumberHandler = (value) => {
         setValueSend(value);
@@ -60,6 +63,10 @@ export default function App({setOutScrollView}){
                     "Thông báo",
                     `Đã chuyển thành công ${ValueSend} ${coinName}`,
                 )
+
+                setValueSend('')
+                setToAddress('')
+                setToken('')
                 return
             }else if(res.status === 100){
                 Alert.alert(
@@ -96,6 +103,23 @@ export default function App({setOutScrollView}){
           )
         }
       }, [])
+
+      useEffect(()=>{
+        BackHandler.addEventListener(
+          "hardwareBackPress",
+          ()=>{
+            setIsScannerOpen(false)
+            return true;
+          }
+        );
+    
+      },[])
+
+      useEffect(()=>{
+        if(addressScan !== undefined){
+            setToAddress(addressScan)
+        }
+      },[])
 
     return (
         <>
@@ -193,16 +217,10 @@ export default function App({setOutScrollView}){
             </View>
         </View>
 
-        <View style={withdrawStyle.numberSendContainer}>
-            <View style={{flexDirection: 'row'}}>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: 12}}>Phí giao dịch</Text>   
-                <Text style={{color: '#fac800',  fontSize: 12, paddingLeft: (windowWidth*windowHeight)/23040, fontWeight: 'bold'}}>0.000032 {coinName}</Text>
-            </View>
-        </View>
         <TouchableOpacity
                 onPress={withdraw}
             >
-                <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/25}}>
+                <View style={{alignItems: 'center', justifyContent: 'center', marginTop: windowHeight/25}}>
                     <LinearGradient 
                         colors={['#e5be50', '#ecda8b', '#a47b00']}
                         style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>
@@ -213,17 +231,16 @@ export default function App({setOutScrollView}){
     </View>
 </View> 
 }
-{IsScannerOpen && 
-    <View
+{IsScannerOpen && <View
         style={[scannerStyles.container,
         { width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }
         ]}
       >
         <TouchableOpacity
           onPress={() => setIsScannerOpen(false)}
-          style={[scannerStyles.closeButton]}
+          style={{paddingTop: 150, alignItems: 'flex-end', paddingRight: 20}}
         >
-          <FontAwesomeIcon style={{color: '#fff',fontSize: 40}} icon={faTimes} />
+          <FontAwesomeIcon style={{color: '#fac800'}} size={30} icon={faTimes} />
         </TouchableOpacity>
         <Camera
           onBarCodeScanned={handleBarCodeScanned}

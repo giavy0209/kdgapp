@@ -416,6 +416,19 @@ export function asyncGetCoinPrice(coinType){
 }
 
 
+export function asyncExportPrivateKey(userInfo){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/private_key', userInfo)).data
+            return res
+
+        } catch (error) {
+            console.log('Private key error ',error);
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
 
 
 // export function asyncGetCoinPrice(coinType){

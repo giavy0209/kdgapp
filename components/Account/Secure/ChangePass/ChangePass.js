@@ -64,7 +64,7 @@ export default function App(){
 
     const validateOldPassword = (val) => {
         setOldPass(val);
-        var passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
+        var passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&,.]{8,}$/;
         if(val.match(passwordFormat)){
             setOldPassValidate(null)
         }else{
@@ -75,7 +75,7 @@ export default function App(){
     }
     const validateNewPassword = (val) => {
         setNewPass(val);
-        var passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
+        var passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&,.]{8,}$/;
         if(val.match(passwordFormat)){
             setNewPassValidate(null)
         }else{
@@ -120,6 +120,7 @@ export default function App(){
                     value={OldPass} 
                     onChangeText={value => validateOldPassword(value)} 
                     placeholder='Mật khẩu hiện tại'
+                    placeholderTextColor='rgba(255,255,255,0.4)'
                     style={{paddingVertical: 5, borderTopRightRadius:5,borderBottomRightRadius: 5,flex: 1,width: '100%', paddingHorizontal: 13,paddingLeft: 9, paddingRight: 40, color: '#ddd9d8', fontSize: 14 ,backgroundColor: '#2e394f',}}/>
                     <TouchableOpacity onPress={()=>setOldPassVisible(!OldPassVisible)} style={{position: 'absolute', right: 16, top: '50%', transform: [{translateY: -8}]}}><FontAwesomeIcon color='#8a8c8e' icon={OldPassVisible ? faEye : faEyeSlash} /></TouchableOpacity>
    
@@ -137,6 +138,7 @@ export default function App(){
                     value={NewPass} 
                     onChangeText={value => validateNewPassword(value)} 
                     placeholder='Mật khẩu mới'
+                    placeholderTextColor='rgba(255,255,255,0.4)'
                     style={{paddingVertical: 5, borderTopRightRadius:5,borderBottomRightRadius: 5,flex: 1,width: '100%', paddingHorizontal: 13,paddingLeft: 9, paddingRight: 40, color: '#ddd9d8', fontSize: 14 ,backgroundColor: '#2e394f',}}/>
                     <TouchableOpacity onPress={()=>setNewPassVisible(!NewPassVisible)} style={{position: 'absolute', right: 16, top: '50%', transform: [{translateY: -8}]}}><FontAwesomeIcon color='#8a8c8e' icon={NewPassVisible ? faEye : faEyeSlash} /></TouchableOpacity>
                 </View>
@@ -153,6 +155,7 @@ export default function App(){
                     value={ReNewPass} 
                     onChangeText={value => validateReNewPassword(value)} 
                     placeholder='Xác nhận mật khẩu'
+                    placeholderTextColor='rgba(255,255,255,0.4)'
                     style={{paddingVertical: 5, borderTopRightRadius:5,borderBottomRightRadius: 5,flex: 1,width: '100%', paddingHorizontal: 13,paddingLeft: 9, paddingRight: 40, color: '#ddd9d8', fontSize: 14 ,backgroundColor: '#2e394f',}}/>
                     <TouchableOpacity onPress={()=>setReNewPassVisible(!ReNewPassVisible)} style={{position: 'absolute', right: 16, top: '50%', transform: [{translateY: -8}]}}><FontAwesomeIcon color='#8a8c8e' icon={ReNewPassVisible ? faEye : faEyeSlash} /></TouchableOpacity>
                 </View>

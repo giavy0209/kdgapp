@@ -46,7 +46,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     useEffect(()=>{
         setOutScrollView(
             <TouchableOpacity style={{marginBottom: windowHeight/25}}>
-            <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
+            <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: 40}}>
                 <LinearGradient 
                     colors={['#e5be50', '#ecda8b', '#a47b00']}
                     style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>

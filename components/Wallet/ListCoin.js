@@ -49,7 +49,7 @@ export default function App({
         {coinPrice: coinPriceKDG, isDisplay: coinDisplay ? coinDisplay.kdg : true, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
         {coinPrice: coinPriceETH, isDisplay: coinDisplay ? coinDisplay.eth : true, key: 2, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
         {coinPrice: coinPriceTRX, isDisplay: coinDisplay ? coinDisplay.trx : true, key: 3, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
-        { coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH},
+        {coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH},
         {coinPrice: coinPriceKNC, isDisplay: coinDisplay ? coinDisplay.knc : true, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
         {coinPrice: coinPriceMCH, isDisplay: coinDisplay ? coinDisplay.mch : true, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
     ]
@@ -109,18 +109,30 @@ export default function App({
         if(index !== -1) return SwipeList[index].dir
         else return false
     },[SwipeList])
-
+    
+    let rowRefs = new Map();
     return (
         <>
         <View style={walletStyles.listCoin}>
             <View style={walletStyles.maskOpacity}></View>
             <FlatList
                 data={data}
-                renderItem={({item}) =>
+                renderItem={({item, index}) =>
                 {if(item.isDisplay === true)
                 return <Swipeable onSwipeableClose={()=>handleSwipeClose(1)} 
-                    onSwipeableRightOpen={()=>handleSwipeOpen({id: item.coinName, dir: 'right'})} 
-                    onSwipeableLeftOpen={()=>handleSwipeOpen({id: item.coinName, dir: 'left'})} 
+                    // onSwipeableRightOpen={()=>handleSwipeOpen({id: item.coinName, dir: 'right'})} 
+                    // onSwipeableLeftOpen={()=>handleSwipeOpen({id: item.coinName, dir: 'left'})} 
+                    key={index}
+                    ref={ref => {
+                    if (ref && !rowRefs.get(index)) {
+                        rowRefs.set(index, ref);
+                    }
+                    }}
+                    onSwipeableWillOpen={()=>{
+                        [...rowRefs.entries()].forEach(([key, ref]) => {
+                        if (key !== index && ref) ref.close();
+                        });
+                    }}
                     renderRightActions={()=>renderRightActions(item.coinName, item.balance)} 
                     renderLeftActions={()=>renderLeftActions(item.coinName, item.balance, item.address)}>
                     <TouchableOpacity 

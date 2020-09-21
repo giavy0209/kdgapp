@@ -11,11 +11,11 @@ export default function App({title, isModalVisible, type}){
     ((dimen.height === 812 || dimen.width === 812) || (dimen.height === 896 || dimen.width === 896))
     return(
         <>
-        <Modal animationIn='bounceInRight' isVisible={isModalVisible}>
+        <Modal animationIn='fadeIn'animationOut='fadeOut' animationInTiming={50} isVisible={isModalVisible}>
             <View style={{backgroundColor: type === 'success' ? '#26a65b' : '#f54336', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: isIphoneTaiTho ? 40 : 10, right: 10, paddingVertical: 5, borderRadius: 10}}>
                 <Text style={{color: '#fff', paddingHorizontal: 10}}>{title}</Text>
             </View>
         </Modal>
         </>
     )
-}
+} 

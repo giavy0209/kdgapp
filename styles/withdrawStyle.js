@@ -8,16 +8,16 @@ const styles = StyleSheet.create({
         searchBoxContainer: {
         borderRadius: 25,
         backgroundColor: 'rgba(46,47,79,0.4)',
-        height: (windowWidth*windowHeight)/7834,
         flexDirection: 'row',
-        paddingLeft: (windowWidth*windowHeight)/17625
+        padding: 13
+
 
     },
     searchBox: {
         color: '#8a8c8e'
     },
     iconSearch: {
-    padding: (windowWidth*windowHeight)/28000
+        padding: (windowWidth*windowHeight)/28000
     },
 
     // ------------ List style -----------------

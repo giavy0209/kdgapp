@@ -1,34 +1,57 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, TouchableOpacity, Image, Clipboard} from 'react-native'
 
 import {Header2} from '../../Header'
 import { mainStyles,accountStyle } from '../../../styles'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy, faLink } from '@fortawesome/free-solid-svg-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import FollowList from '../FollowList'
+import Popup from '../../Popup/Popup'
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
-
-    
+    const route = useRoute()
+    const [isModalVisible, setModalVisible] = useState(false);
+   
+    const {coinAdress, coinPrivate, coinName} = route.params
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title="Xuất Private Key"/>)
     },[])
+
+    const copyHandler1 = (coinAdress) => {
+        Clipboard.setString()
+        toggleModal()
+    }
+
+    const copyHandler2 = () => {
+        Clipboard.setString(coinPrivate)
+        toggleModal()
+    }
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+        setTimeout(function(){ 
+          setModalVisible(false);
+         }, 1000);
+      };
+
+      console.log(coinAdress)
     
     return (
         <>
             <View style={[mainStyles.container,]}>
+            <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
                 <View style={{padding: 10}}>
                     <View style={{alignItems: 'center'}}>
-                        <Text style={{color: 'rgba(255,255,255,0.5)'}}>Dưới đây là địa chỉ ETH và Private key</Text>
+                        <Text style={{color: 'rgba(255,255,255,0.5)'}}>{`Dưới đây là địa chỉ ${coinName} và Private key`}</Text>
                     </View>
                     <View style={{paddingTop: 15}}>
                         <Text style={{color: '#fff', paddingBottom: 5}}>Địa chỉ</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            onPress={copyHandler1}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(40,51,73,0.4)', borderRadius: 10}}>
-                                <Text style={{color: 'rgba(255,255,255,0.5)'}}>TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu</Text>
+                            <Text style={{color: 'rgba(255,255,255,0.5)'}}>{coinAdress}</Text>
                                 <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                             </View>
                         </TouchableOpacity>
@@ -36,10 +59,10 @@ export default function App({setOutScrollViewTop}){
                     <View style={{paddingTop: 15}}>
                         <Text style={{color: '#fff', paddingBottom: 5}}>Private key (HEX)</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            onPress={copyHandler2}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(40,51,73,0.4)', borderRadius: 10}}>
-                                <Text style={{color: 'rgba(255,255,255,0.5)'}}>TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu</Text>
+                            <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 20}}>{coinPrivate}</Text>
                                 <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                             </View>
                         </TouchableOpacity>
