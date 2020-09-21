@@ -129,7 +129,6 @@ export function asyncGetRouters(){
             await AsyncStorage.setItem('display', JSON.stringify(0))
             dispatch(actChangeDisplay(0))
         }else{
-            console.log(display);
             dispatch(actChangeDisplay(display))
         }
 
@@ -169,7 +168,6 @@ export function asyncGetRouters(){
       } catch (err) {
         dispatch(actChangeRouters(ROUTERS))
         dispatch(actChangeLoginStatus(false))
-        console.log('error router' ,err);
       }
     }
 }
@@ -179,11 +177,9 @@ export function asyncConvertKDGReward(value){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/convert_kdg_reward', value)).data
-            console.log(res)
             return res
 
         } catch (error) {
-            console.log('login error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -193,11 +189,9 @@ export function asyncLogin(loginInfo){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/authorize', loginInfo)).data
-            console.log(res)
             return res
 
         } catch (error) {
-            console.log('login error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -211,7 +205,6 @@ export function asyncReg(regInfo){
             return res
 
         } catch (error) {
-            console.log('register error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -224,7 +217,6 @@ export function asyncRegisterCode(Email){
             return res
 
         } catch (error) {
-            console.log('send mail error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -237,7 +229,6 @@ export function asyncForgotPassword(userInfo){
             return res
 
         } catch (error) {
-            console.log('Reset password error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -251,7 +242,6 @@ export function asynForgotPasswordCode(Email){
             return res
 
         } catch (error) {
-            console.log('send mail error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -264,7 +254,6 @@ export function asyncChangePassword(userInfo){
             return res
 
         } catch (error) {
-            console.log('Change password error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -275,11 +264,9 @@ export function asyncWithdraw(submiteData){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/deposit', submiteData)).data
-            console.log(res)
             return res
 
         } catch (error) {
-            console.log('Withdraw error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -289,11 +276,9 @@ export function asyncStaking(submiteData){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/create_staking', submiteData)).data
-            console.log(res)
             return res
 
         } catch (error) {
-            console.log('Withdraw error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -304,11 +289,9 @@ export function async2FA(userId){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/create_2fa', userId)).data
-            console.log(res)
             return res
 
         } catch (error) {
-            console.log('2FA error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -318,11 +301,9 @@ export function asyncVerify2FA(verifyInfo){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/verify_2fa', verifyInfo)).data
-            console.log(res)
             return res
 
         } catch (error) {
-            console.log('2FA error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -332,11 +313,9 @@ export function asyncDisable2FA(verifyInfo){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/disable_2fa', verifyInfo)).data
-            console.log(res)
             return res
 
         } catch (error) {
-            console.log('2FA error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -350,7 +329,6 @@ export function asyncGetUserbyID(userId){
             const res = (await (await calAPI()).get(`/api/user/${userId}`)).data
             return res
         } catch (error) {
-            console.log('login error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -362,7 +340,6 @@ export function asyncGetNews(skip, take){
             const res = (await (await calAPI()).get(`/api/news?skip=${skip}&take=${take}`)).data
             return res
         } catch (error) {
-            console.log('login error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -375,7 +352,6 @@ export function asyncGetBalance(type, address){
             const res = (await (await calAPI()).get(`/api/${type}/balance/${address}`)).data
             return res
         } catch (error) {
-            console.log('login error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -395,7 +371,6 @@ export function asyncGetBalanceDouble(address1, address2){
             return {resETH, resTRX};
         })
         .catch(error =>{
-            console.log('get balance error ',error);
             return {ok: false, status: error.response.status}
 
         })
@@ -409,7 +384,6 @@ export function asyncGetCoinPrice(coinType){
             const res = (await (await calAPI()).get(`/api/markets/coin_price?coin_type=${coinType}`)).data
             return res
         } catch (error) {
-            console.log('login error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -423,7 +397,6 @@ export function asyncExportPrivateKey(userInfo){
             return res
 
         } catch (error) {
-            console.log('Private key error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -443,7 +416,6 @@ export function asyncExportPrivateKey(userInfo){
 //             return {resVND, resUSDVND};
 //         })
 //         .catch(error =>{
-//             console.log('get coin price error ',error);
 //             return {ok: false, status: error.response.status}
 
 //         })
@@ -457,7 +429,6 @@ export function asyncGetBlockchainTransaction(type, address, take, begin_date){
             const res = (await (await calAPI()).get(`/api/blockchain_transaction?coin_type=${type}&address=${address}&skip=1&take=${take}&begin_date=${begin_date}`)).data
             return res
         } catch (error) {
-            console.log('get blockchain transaction error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -471,7 +442,6 @@ export function asyncGetStakingTransaction(userID){
             const res = (await (await calAPI()).get(`/api/get_staking_transaction/${userID}`)).data
             return res
         } catch (error) {
-            console.log('get staking transaction error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -484,7 +454,6 @@ export function asyncGetTransaction(userID){
             const res = (await (await calAPI()).get(`/api/get_transaction?id=${userID}&skip=0&take=9999999&type=kyc-success`)).data
             return res
         } catch (error) {
-            console.log('get transaction error ',error);
             return {ok: false, status: error.response.status}
         }
     }
@@ -508,7 +477,6 @@ export function asyncLogout(){
             await AsyncStorage.removeItem('isLogin')
             return null
         } catch (error) {
-            console.log('logout error');
         }
     }
 }
@@ -521,7 +489,6 @@ export function asyncSetCoin(coin){
             dispatch(actChangeCoin(coin))
             await AsyncStorage.setItem('coin', JSON.stringify(coin))
         } catch (error) {   
-            console.log('coin err');
         }
     }
 }
@@ -532,7 +499,6 @@ export function asyncSetCoinNumbers(coinNumbers){
             dispatch(actChangeCoinNumbers(coinNumbers))
             await AsyncStorage.setItem('coinNumbers', JSON.stringify(coinNumbers))
         } catch (error) {   
-            console.log('coin err');
         }
     }
 }
@@ -542,11 +508,9 @@ export function asyncSetCoinNumbers(coinNumbers){
 export function asyncSetCurrency(currency){
     return async (dispatch) =>{
         try {
-            console.log(currency);
             dispatch(actChangeCurrency(currency))
             await AsyncStorage.setItem('currency', JSON.stringify(currency))
         } catch (error) {   
-            console.log('currency err');
         }
     }
 }
@@ -557,7 +521,6 @@ export function asyncSetLanguage(language){
             dispatch(actChangeLanguage(language))
             await AsyncStorage.setItem('language', JSON.stringify(language))
         } catch (error) {   
-            console.log('lang err');
         }
     }
 }
@@ -568,7 +531,6 @@ export function asyncSetDisplay(display){
             dispatch(actChangeDisplay(display))
             await AsyncStorage.setItem('display', JSON.stringify(display))
         } catch (error) {   
-            console.log('díplay err');
         }
     }
 }
@@ -579,7 +541,6 @@ export function asyncSetPin(pin){
             dispatch(actChangePin(pin))
             await AsyncStorage.setItem('pin', JSON.stringify(pin))
         } catch (error) {   
-            console.log('pin err');
         }
     }
 }

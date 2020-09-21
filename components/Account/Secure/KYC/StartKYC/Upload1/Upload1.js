@@ -68,25 +68,43 @@ export default function App(){
         if(ImageFront && ImageBack && ImageSelfy){
         
                 const arrayUpload = []
-                const uploadFont = new FormData()
-                uploadFont.append('file', Platform.OS === 'android' ? ImageFront.uri : ImageFront.uri.replace ('file://' , ''))
-                uploadFont.append('userId' , userinfo._id)
-                arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadFont))
+                const uploadFront = new FormData()
+                const extFront = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
+                const fileFront = {
+                    uri : Platform.OS === 'android' ? ImageFront.uri : ImageFront.uri.replace ('file://' , ''),
+                    type: 'image/png',
+                    name: `photo.${extFront}`,
+                }
+                uploadFront.append('file', fileFront)
+                uploadFront.append('userId' , userinfo._id)
+                arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadFront))
 
+                const extSelf = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
+                const fileSelf = {
+                    uri : Platform.OS === 'android' ? ImageSelfy.uri : ImageSelfy.uri.replace ('file://' , ''),
+                    type: 'image/png',
+                    name: `photo.${extSelf}`,
+                }
                 const uploadSelf = new FormData()
-                uploadSelf.append('file', Platform.OS === 'android' ? ImageBack.uri : ImageBack.uri.replace ('file://' , ''))
+                uploadSelf.append('file', fileSelf)
                 uploadSelf.append('userId' , userinfo._id)
                 arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelf))
 
                 if(SelectedID === 0){
+                    const extBack = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
+                    const fileBack = {
+                        uri : Platform.OS === 'android' ? ImageBack.uri : ImageBack.uri.replace ('file://' , ''),
+                        type: 'image/png',
+                        name: `photo.${extBack}`,
+                    }
+
                     const uploadBack = new FormData()
-                    uploadBack.append('file', Platform.OS === 'android' ? ImageSelfy.uri : ImageSelfy.uri.replace ('file://' , ''))
+                    uploadBack.append('file',fileBack)
                     uploadBack.append('userId' , userinfo._id)
                     arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadBack))
                 }
                 try {
                     var res = await Promise.all(arrayUpload)
-                    console.log(res);
                     var isUploadOK = true
                     res.forEach(el=>{
                         if(el.data.status !== 1) isUploadOK = false
@@ -100,6 +118,7 @@ export default function App(){
                         return
                     }
                     if(isUploadOK === true){
+                        console.log('okkkkkkk');
                         // var kycInfo = {
                         //     // kyc_country : SelectedContry,
                         //     // kyc_number : submitData.id,
@@ -135,7 +154,29 @@ export default function App(){
         }
     },[ImageFront, ImageBack,ImageSelfy])
 
+    const handleTest = useCallback (async () =>{
+        var id = (await storage('_id').getItem())._id;
+        
+        const uploadFont = new FormData()
+        
+        const fileExtension = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
+        const photoFont = {
+            uri : ImageFront.uri,
+            type: 'image/png',
+	        name: `photo.${fileExtension}`,
+        }
 
+        uploadFont.append('file', photoFont)
+        uploadFont.append('userId' , id)
+        console.log(uploadFont);
+        try {
+            console.log('run');
+            var uploadTest = (await (await calAPI()).post('/api/upload_kyc_image', uploadFont)).data
+            console.log('test'  ,uploadTest);
+        } catch (error) {
+            console.log('error upload ',error);
+        }
+    },[ImageFront])
     return (
         <>
             <Header2 setHeight={setHeight} title="Tải lên hình ảnh"/>

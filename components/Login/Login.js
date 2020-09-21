@@ -104,9 +104,7 @@ export default function App({navigation}) {
                     return;
                 }
                 if(res.status === 1){
-                    console.log("Login thanh cong")
                     var newRouters = []
-                    console.log(res);
                     ROUTERS.forEach((router)=>{
                         if(router.reqLogin){
                             newRouters.push(router)
@@ -124,7 +122,6 @@ export default function App({navigation}) {
                     navigation.replace('Main');
                 }
             })
-            .catch(console.log)
         }
        
     }, [Email, Password])

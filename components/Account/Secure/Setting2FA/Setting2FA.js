@@ -24,7 +24,6 @@ export default function App(){
 
     const generate2FACode = useCallback(async () => {
         var userinfo = await storage('_id').getItem();
-        // console.log(userinfo);
         dispatch(async2FA({userId: userinfo._id}))
         .then((res)=>{
            navigation.navigate('Generate2FACode', {
@@ -33,7 +32,6 @@ export default function App(){
                 email: userinfo.email,
                 status: status
            })
-        // console.log(res);
         })
         .catch(console.log)
     }, [])

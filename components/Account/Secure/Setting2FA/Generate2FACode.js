@@ -56,9 +56,7 @@ export default function App(){
                     navigation.navigate('Me')
                    }, 2000);
             }
-            console.log(res)
         })
-        .catch(console.log)
     }, [userId, Value])
 
     const disable2FA = useCallback(() => {
@@ -76,12 +74,9 @@ export default function App(){
                     navigation.navigate('Me')
                    }, 2000);
             }
-            console.log(res);
         })
-        .catch(console.log)
     }, [userId, Value])
 
-    console.log(status);
 
 
     return (
