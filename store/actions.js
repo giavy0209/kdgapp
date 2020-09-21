@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import {ROUTERS} from '../routers'
 import calAPI from '../axios'
+import { storage } from '../helper';
 
 export const GET_ROUTERS = 'GET_ROUTERS';
 export const CHANGE_ROUTER = 'CHANGE_ROUTER';
@@ -189,6 +190,7 @@ export function asyncLogin(loginInfo){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/authorize', loginInfo)).data
+            storage('token' , res.jwtToken).setItem();
             return res
 
         } catch (error) {

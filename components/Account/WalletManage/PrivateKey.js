@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import { View, Text, TouchableOpacity, Image, Clipboard} from 'react-native'
 
 import {Header2} from '../../Header'

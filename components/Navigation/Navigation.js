@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { View ,Dimensions} from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useSafeAreaInsets, SafeAreaView} from 'react-native-safe-area-context';
 
 import { useSelector,useDispatch } from 'react-redux'
-import {actChangeScreenHeight, actChangeScreenWidth, asyncGetRouters} from '../../store/actions'
+import {actChangeScreenHeight, actChangeScreenWidth, asyncGetRouters, asyncLogin} from '../../store/actions'
 
 import Maincomponent from '../Maincontainer'
 
@@ -23,8 +23,26 @@ export default function App() {
 
   const Routers = useSelector(state => state.routers)
 
+  const checkRefreshToken = useCallback(async ()=>{
+    var loginTime = JSON.parse(await storage('loginTime').getItem()) 
+    var currTime = new Date().getTime()
+    if(currTime - loginTime >= 1200000){
+      var {email, password} = JSON.parse(storage('loginInfo').getItem())
+      dispatch(asyncLogin({email, password}))
+    }
+    setInterval(async () => {
+      var loginTime = JSON.parse(await storage('loginTime').getItem()) 
+      var currTime = new Date().getTime()
+      if(currTime - loginTime >= 1200000){
+        var {email, password} = JSON.parse(storage('loginInfo').getItem())
+        dispatch(asyncLogin({email, password}))
+      }
+    }, 20000);
+  },[])
+
   useMemo(()=>{
     dispatch(asyncGetRouters())
+    checkRefreshToken()
   },[])
   
   useEffect(()=>{

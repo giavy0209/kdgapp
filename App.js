@@ -19,7 +19,6 @@ import {
 } from '@expo-google-fonts/roboto-condensed';
 import { storage } from './helper';
 
-
 console.disableYellowBox = true;
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -36,18 +35,7 @@ export default function App() {
     async function setFirstTime(){
       await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
       
-      var loginTime = JSON.parse(await storage('loginTime').getItem()) 
-      var currTime = new Date().getTime()
-      if(currTime - loginTime >= 1200000){
-        //login here
-      }
-      setInterval(async () => {
-        var loginTime = JSON.parse(await storage('loginTime').getItem()) 
-        var currTime = new Date().getTime()
-        if(currTime - loginTime >= 1200000){
-          //login here
-        }
-      }, 20000);
+      
     }setFirstTime()
 
   },[])

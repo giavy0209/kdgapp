@@ -7,8 +7,6 @@ import follow from '../../assets/images/follow.png'
 import FollowList from './FollowList'
 import {View, TouchableOpacity} from 'react-native'
 
-
-
 const List = [
     {
         name: 'CHUNG',
