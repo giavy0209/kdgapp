@@ -41,6 +41,13 @@ export default function App() {
       if(currTime - loginTime >= 1200000){
         //login here
       }
+      setInterval(() => {
+        var loginTime = JSON.parse(await storage('loginTime').getItem()) 
+        var currTime = new Date().getTime()
+        if(currTime - loginTime >= 1200000){
+          //login here
+        }
+      }, 20000);
     }setFirstTime()
 
   },[])
