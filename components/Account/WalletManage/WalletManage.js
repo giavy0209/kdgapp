@@ -6,35 +6,32 @@ import { mainStyles,accountStyle } from '../../../styles'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { useNavigation } from '@react-navigation/native'
-import Dialog from "react-native-dialog"
+import PopupInput from '../../Popup/PopupInput'
+// import Dialog from "react-native-dialog"
 export default function App(){
     const navigation = useNavigation()
     const [WalletName, setWalletName] = useState('Kingdome game 4.0')
     const [WalletNames, setWalletNames] = useState('Kingdome game 4.0')
-
-    const [DialogVisible, setDialogVisible] = useState(false)
+    const [isModalVisibleInput, setModalVisibleInput] = useState(false);
 
     const submitHandler = (value) => {
+        setModalVisibleInput(false)
         setWalletNames(value)
-        setDialogVisible(false)
     }
+
 
     return (
         <>
             <Header2 title="Quản lý ví"/>
             <View style={[mainStyles.container,]}>
-                <Dialog.Container visible={DialogVisible}>
-                    <Dialog.Title>Tên ví</Dialog.Title>
-                        <Dialog.Description>
-                        Tên ví bạn muốn đổi
-                        </Dialog.Description>
-                        <Dialog.Input onChangeText={value => setWalletName(value)}/>
-                        <Dialog.Button onPress={() => setDialogVisible(false)} label="Cancel" />
-                    <Dialog.Button onPress={() => submitHandler(WalletName)} label="OK" />
-                </Dialog.Container>
+            <PopupInput 
+                toCancel={() => setModalVisibleInput(false)} 
+                toSubmit={() => submitHandler(WalletName)}
+                toChangeText={(value) => setWalletName(value)} 
+                isModalVisible={isModalVisibleInput}/>
                 <View>
                     <TouchableOpacity 
-                    onPress={() => setDialogVisible(true)}
+                    onPress={() => setModalVisibleInput(true)}
                     style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative'}}>
                         <View style={accountStyle.maskOpacity} ></View>
                         <Text style={{fontSize: 14, color: '#ddd9d8'}}>Tên ví</Text>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {View, Text, Image, TextInput, FlatList, ScrollView, Clipboard} from 'react-native'
+import {View, Text, Image, TextInput, FlatList, Share, Clipboard} from 'react-native'
 import { mainStyles } from '../../../styles'
 import {Header2} from '../../Header'
 
@@ -45,7 +45,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
     useEffect(()=>{
         setOutScrollView(
-            <TouchableOpacity style={{marginBottom: windowHeight/25}}>
+            <TouchableOpacity onPress={onShare} style={{marginBottom: windowHeight/25}}>
             <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: 40}}>
                 <LinearGradient 
                     colors={['#e5be50', '#ecda8b', '#a47b00']}
@@ -56,6 +56,31 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
         </TouchableOpacity>
         )
     },[])
+
+
+          
+    const onShare = async () => {
+        try {
+          const result = await Share.share({
+            message:
+              `Địa chỉ ví của tôi
+              \n${coinAddress}
+              `,
+          });
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+            } else {
+              // shared
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+          }
+        } catch (error) {
+          alert(error.message);
+        }
+      };
+
 
     return (
         <>

@@ -11,7 +11,7 @@ import { Dimensions } from 'react-native'
 import { asyncExportPrivateKey } from '../../../store/actions'
 import { useDispatch } from 'react-redux'
 import Popup from '../../Popup/Popup'
-import Dialog from "react-native-dialog"
+import PopupInputPassword from '../../Popup/PopupInputPassword'
 // ------------------Icon---------------------
 import kdgicon from '../../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../../assets/images/IconCoin/ETH.png'
@@ -30,6 +30,7 @@ export default function App({setOutScrollViewTop}){
     const dispatch = useDispatch();
     const [Width , setWidth] = useState(0);
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isModalVisibleInput, setModalVisibleInput] = useState(false);
     const [Error, setError] = useState()
       
     const toggleModal = () => {
@@ -56,7 +57,6 @@ export default function App({setOutScrollViewTop}){
 
     const [searchVal, setSearchVal] = useState();
     const navigation = useNavigation()
-    const [DialogVisible, setDialogVisible] = useState(false)
 
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title="Chọn Coins"/>)
@@ -66,14 +66,10 @@ export default function App({setOutScrollViewTop}){
     //     console.log("Password is: " + password)
     //     console.log("Coin is: " + coin_name)
     // }
-    useEffect(() => {
-        if(Error !== null){
-            toggleModal()
-        }
-    })
+
 
     const submitPasswordHandler = useCallback(async (pass_private, coin_name) => {
-        setDialogVisible(false)
+        setModalVisibleInput(false)
         var userinfo = await storage('_id').getItem();
         if(coin_name === 'USDT' || coin_name === 'ETH' || coin_name === 'KNC'|| coin_name === 'MCH'){
             var coinType = 'erc'
@@ -88,11 +84,13 @@ export default function App({setOutScrollViewTop}){
             console.log(res)
             if(res.status === 1 && res.msg === 'wrong password'){
                 setError('Mật khẩu không chính xác')
+                toggleModal()
                 setPasswordPrivate('')
                 return
             }
             if(res.status === 0){
                 setError('Đã có lỗi xảy ra')
+                toggleModal()
                 setPasswordPrivate('')
                 return
             }
@@ -102,25 +100,24 @@ export default function App({setOutScrollViewTop}){
                     coinPrivate: res.privateKey,
                     coinName: coin_name
                 })
-                setDialogVisible(false)
+            
                 setPasswordPrivate('')
                 return
             }
 
-            setDialogVisible(false)
             console.log(res)
         })
         .catch(console.log)
         
 
-    }, [])
+    }, [PasswordPrivate])
 
 
-    const onInputPassword = (value) => {
-        setDialogVisible(true)
+
+    const selectCoinHandler = (value) => {
+        setModalVisibleInput(true)
         setCoinSelected(value)
-    };
-
+    }
 
 
     return (
@@ -128,20 +125,17 @@ export default function App({setOutScrollViewTop}){
         <>
 
 <View style={mainStyles.container}>
-  
-    <Dialog.Container visible={DialogVisible}>
-          <Dialog.Title>Mật khẩu</Dialog.Title>
-          <Dialog.Description>
-            Vui lòng nhập mật khẩu để xuất Private Key
-          </Dialog.Description>
-          <Dialog.Input secureTextEntry={true} onChangeText={value => setPasswordPrivate(value)}/>
-          <Dialog.Button onPress={() => setDialogVisible(false)} label="Cancel" />
-          <Dialog.Button onPress={() => submitPasswordHandler(PasswordPrivate, CoinSelected)} label="OK" />
-        </Dialog.Container>
+        
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
      <Popup type='failed' title={Error} isModalVisible={isModalVisible}/>
+     
+     <PopupInputPassword 
+        toCancel={() => setModalVisibleInput(false)} 
+        toSubmit={() => submitPasswordHandler(PasswordPrivate, CoinSelected)}
+        toChangeText={(value) => setPasswordPrivate(value)} 
+        isModalVisible={isModalVisibleInput}/>
         <View style={{padding: (windowWidth*windowHeight)/29376}}>
-            <View style={withdrawStyle.searchBoxContainer}>
+            <View style={[withdrawStyle.searchBoxContainer, {alignItems: 'center'}]}>
                 <FontAwesomeIcon color="#8a8c8e" icon={faSearch}/>
                 <TextInput
                 placeholder="Tìm kiếm" 
@@ -171,7 +165,7 @@ export default function App({setOutScrollViewTop}){
                                 // coinID: item.key,
                                 // coinName: item.text
                                 // })} 
-                                onPress={() => onInputPassword(item.short_name)}
+                                onPress={() => selectCoinHandler(item.short_name)}
                                 >
                                     <View style={{flexDirection: 'row'}}>
                                         <Image source={item.icon} style={{width: 35, height: 35}} />
@@ -202,7 +196,7 @@ export default function App({setOutScrollViewTop}){
                                 // coinID: item.key,
                                 // coinName: item.text
                                 // })} 
-                                onPress={() => onInputPassword(item.short_name)}
+                                onPress={() => selectCoinHandler(item.short_name)}
                     >
                         <View style={{flexDirection: 'row'}}>
                             <Image source={item.icon} style={{width: 35, height: 35}} />

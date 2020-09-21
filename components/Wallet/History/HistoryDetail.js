@@ -9,6 +9,7 @@ import { faAngleDown, faCopy, faFilter } from '@fortawesome/free-solid-svg-icons
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
 import Select from './Select'
+import Popup from '../../Popup/Popup'
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -16,6 +17,8 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
 
     const navigation = useNavigation()
     const route = useRoute();
+
+    const [isModalVisible, setModalVisible] = useState(false);
 
     
     const [SelectType, setSelectType] = useState(null)
@@ -42,6 +45,14 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
     // ---------------------------------
 
     const { coin_name, type, status, fromAddress, toAddress, block, hash, amount, datetime } = route.params;
+
+    
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+        setTimeout(function(){ 
+          setModalVisible(false);
+         }, 1000);
+      };
 
     useEffect(()=>{
        if(status === 'failed'){
@@ -78,6 +89,22 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
     },[])
 
     
+    const copyHandler1 = () => {
+        Clipboard.setString(fromAddress)
+        toggleModal()
+    }
+
+    const copyHandler2 = () => {
+        Clipboard.setString(toAddress)
+        toggleModal()
+    }
+
+    
+    const copyHandler3 = () => {
+        Clipboard.setString(hash)
+        toggleModal()
+    }
+
 
     useEffect(()=>{
         setOutScrollView(        
@@ -90,7 +117,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     <View>
                         <Text style={{color: '#fff'}}>Từ</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString(fromAddress)}
+                            onPress={copyHandler1}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(18,24,39,0.8)', borderRadius: 5}}>
                                 <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{fromAddress}</Text>
@@ -101,7 +128,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     <View>
                         <Text style={{color: '#fff'}}>Đến</Text>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString(toAddress)}
+                            onPress={copyHandler2}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(18,24,39,0.8)', borderRadius: 5}}>
                                 <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{toAddress}</Text>
@@ -112,7 +139,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     <View>
                         <Text style={{color: '#fff'}}>Mã giao dịch</Text>
                         <TouchableOpacity 
-                            // onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
+                            onPress={copyHandler3}
                             disabled={true}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(18,24,39,0.8)', borderRadius: 5}}>
@@ -147,10 +174,11 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
         </View>)
     },[])
 
-    
+
     return (
         <>   
             <View style={[mainStyles.container]}>
+            <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
                 <View style={{padding: 10}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         {/* <Text style={{color: '#259e58'}}>
@@ -168,9 +196,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                         <View style={{paddingTop: 5}}>
                             <Text style={{color: '#fac800', fontSize: 20, fontWeight: 'bold'}}>{type === 'deposit' ? `+ ${amount} ${coin_name}` : type === 'withdraw' ? `- ${amount} ${coin_name}` : 'Không xác định'}</Text>
                         </View>
-                        <View style={{paddingTop: 5}}>
-                            <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: 16}}>$500</Text>
-                        </View>
+          
                     </View>
                 </View>
             </View>     

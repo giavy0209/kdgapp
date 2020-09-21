@@ -242,7 +242,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                                         toAddress: item.to,
                                         block: item.blockNumber,
                                         hash: item.hash,
-                                        amount: (item.value)/Math.pow(10, 18),
+                                        amount: coinName === 'MCH' ? (item.value)/Math.pow(10, 8) : (item.value)/Math.pow(10, 18),
                                         datetime:            
                                             (new Date((item.timeStamp)*1000)).getHours().toString()  + ":" +
                                             (new Date((item.timeStamp)*1000)).getMinutes().toString()  + ":" +
