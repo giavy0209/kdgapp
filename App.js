@@ -17,6 +17,7 @@ import {
 import {
   RobotoCondensed_300Light
 } from '@expo-google-fonts/roboto-condensed';
+import { storage } from './helper';
 
 
 console.disableYellowBox = true;
@@ -34,7 +35,14 @@ export default function App() {
     // AsyncStorage.removeItem('isNotFirstTime')
     async function setFirstTime(){
       await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
+      
+      var loginTime = JSON.parse(await storage('loginTime').getItem()) 
+      var currTime = new Date().getTime()
+      if(currTime - loginTime >= 1200000){
+        //login here
+      }
     }setFirstTime()
+
   },[])
 
   if (fontsLoaded) {

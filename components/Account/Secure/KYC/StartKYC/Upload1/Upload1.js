@@ -118,7 +118,6 @@ export default function App(){
                         return
                     }
                     if(isUploadOK === true){
-                        console.log('okkkkkkk');
                         // var kycInfo = {
                         //     // kyc_country : SelectedContry,
                         //     // kyc_number : submitData.id,

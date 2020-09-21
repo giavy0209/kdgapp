@@ -119,6 +119,7 @@ export default function App({navigation}) {
                     storage('_id' , res.data).setItem();
                     storage('token' , res.jwtToken).setItem();
                     dispatch(actChangeRouters(newRouters))
+                    storage('loginTime', new Date().getTime()).setItem()
                     navigation.replace('Main');
                 }
             })
