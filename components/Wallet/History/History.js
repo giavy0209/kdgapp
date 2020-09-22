@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect} from 'react';
-import {  View, Text, Image, Dimensions, Clipboard, FlatList,TouchableOpacity } from 'react-native';
+import {  View, Text, Image, Dimensions, Clipboard, FlatList,TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import {LineChart } from 'react-native-chart-kit'
 import {mainStyles} from '../../../styles'
@@ -36,6 +36,10 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const route = useRoute()
     const dispatch = useDispatch()
 
+    
+    const [Loading, setLoading] = useState(false);
+    
+
     const [SelectType, setSelectType] = useState(null)
     const [SelectedHistory, setSelectedHistory] = useState('Tất cả')
     const [SelectedTime, setSelectedTime] = useState('1 ngày')
@@ -64,15 +68,17 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
 
     useEffect(() => {
+          setLoading(true)
           var type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase() 
           dispatch(asyncGetBlockchainTransaction(type, coinAddress, 10,'2016-08-01'))
           .then((res)=>{
             if(type === 'usdt' || type === 'eth'|| type === 'knc' || type === 'mch'){
+                setLoading(false)
                 setTransaction(res.data.result)
             }else{
+                setLoading(false)
                 setTransaction(res.data.data)
             }
-          
           })     
           .catch(console.log)
     
@@ -104,8 +110,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
         toggleModal()
 
     }
-    
-
+    console.log("sdf" + Transaction)
 
     const percent24h = coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.percent24h
     return (
@@ -226,7 +231,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                             </TouchableOpacity>
                         </View> */}
                     </View>
-
+                    {  Loading === true ?  <ActivityIndicator size="small" color="#fac800" />
+                    : Transaction !== [] ?
                     <FlatList
                     data={Transaction}
                     renderItem={({item}) => 
@@ -311,7 +317,9 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                    
                     
                     }
-                    />
+                    /> : <Text style={{color: 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>Trống</Text>
+                     
+                    }
                     
                 </View>
             </View>     

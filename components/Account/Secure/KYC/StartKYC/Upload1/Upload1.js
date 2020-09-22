@@ -23,7 +23,7 @@ import FormData from 'form-data';
 export default function App(){
 
     const dispatch = useDispatch()
-    const { SelectedID, SelectedCountry, SelectedSex } = useRoute().params;
+    const { SelectedID, SelectedCountry, SelectedSex, Name, IDNumber } = useRoute().params;
 
     const screenHeight = useSelector(state => state.height)
     const [Height, setHeight] =useState(0)
@@ -118,33 +118,34 @@ export default function App(){
                         return
                     }
                     if(isUploadOK === true){
-                        // var kycInfo = {
-                        //     // kyc_country : SelectedContry,
-                        //     // kyc_number : submitData.id,
-                        //     // kyc_name : submitData.name,
-                        //     kyc : '2',
-                        //     id : userinfo._id,
-                        // }
-                        // const resUpdate = ((await calAPI()).put(`/api/user`,kycInfo)).data 
+                        var kycInfo = {
+                            kyc_country : SelectedContry === 0 ? 'VN' : 'Others',
+                            kyc_number : IDNumber,
+                            kyc_name : Name,
+                            kyc : '2',
+                            id : userinfo._id,
+                        }
+                        const resUpdate = ((await calAPI()).put(`/api/user`, kycInfo)).data 
             
-
-                        // if(resUpdate.status === 1){
-                        //     dispatch(asyncGetUserData(false))
-                        //     Alert.alert(
-                        //         'Thành công',
-                        //         'Gửi thành công vui lòng chờ xét duyệt'
-                        //     )
-                        // }else if (resUpdate.status === 100){
-                        //     Alert.alert(
-                        //         'Lỗi',
-                        //         'Số chứng minh/passport đã được sử dụng cho tài khoản khác'
-                        //     )
-                        // }else{
-                        //     Alert.alert(
-                        //         'Lỗi',
-                        //         'Gửi KYC không thành công, vui lòng thử lại'
-                        //     )
-                        // }
+                        console.log(resUpdate)
+                        if(resUpdate.status === 1){
+                            dispatch(asyncGetUserData(false))
+                            Alert.alert(
+                                'Thành công',
+                                'Gửi thành công vui lòng chờ xét duyệt'
+                            )
+                        }else if (resUpdate.status === 100){
+                            Alert.alert(
+                                'Lỗi',
+                                'Số chứng minh/passport đã được sử dụng cho tài khoản khác'
+                            )
+                        }else{
+                            Alert.alert(
+                                'Lỗi',
+                                'Gửi KYC không thành công, vui lòng thử lại'
+                            )
+                        }
+        
                     }
                 } catch (error) {
                 
@@ -153,29 +154,7 @@ export default function App(){
         }
     },[ImageFront, ImageBack,ImageSelfy])
 
-    const handleTest = useCallback (async () =>{
-        var id = (await storage('_id').getItem())._id;
-        
-        const uploadFont = new FormData()
-        
-        const fileExtension = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
-        const photoFont = {
-            uri : ImageFront.uri,
-            type: 'image/png',
-	        name: `photo.${fileExtension}`,
-        }
-
-        uploadFont.append('file', photoFont)
-        uploadFont.append('userId' , id)
-        console.log(uploadFont);
-        try {
-            console.log('run');
-            var uploadTest = (await (await calAPI()).post('/api/upload_kyc_image', uploadFont)).data
-            console.log('test'  ,uploadTest);
-        } catch (error) {
-            console.log('error upload ',error);
-        }
-    },[ImageFront])
+    
     return (
         <>
             <Header2 setHeight={setHeight} title="Tải lên hình ảnh"/>

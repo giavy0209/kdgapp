@@ -391,6 +391,15 @@ const ROUTERS = [
         needFirstTime: false,
         needInMain: true
     },
+
+    {
+        name: 'Terms2',
+        reqLogin: false,
+        title: '',
+        render : Terms,
+        needFirstTime: false,
+        needInMain: true
+    },
 ];
 
 const TABS = [

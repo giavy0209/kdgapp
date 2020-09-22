@@ -59,8 +59,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
     useEffect(()=>{
         setOutScrollViewTop(<HeaderStaking
-                                title="Kingdom Staking"
-                                subTitle="Mô hình chia sẻ kinh tế trong thời đại số"
+                                title=""
+                                subTitle=""
                             />)
 
     },[])

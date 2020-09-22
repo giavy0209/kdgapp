@@ -352,9 +352,9 @@ export default function App({ navigation }) {
                     </TouchableOpacity>
                     <Text style={{fontSize: 14, color: '#8a8c8e', marginLeft: 6}}>Tôi đồng ý với 
                         <Text 
-                        onPress={()=> Linking.openURL('https://kingdomgame.org/terms-of-service/')}
+                        onPress={()=> navigation.navigate('Terms2')}
                         style={{color: '#005cfc'}}
-                        > Chính sách riêng tư | Điều khoản & điều kiện
+                        > Thỏa thuận người dùng | Chính sách bảo mật của KDG
                         </Text>
                     </Text>
                 </View>

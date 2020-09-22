@@ -4,7 +4,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux'
 import {ROUTERS} from '../../routers'
 import {actChangeUserData,actChangeLoginStatus,asyncLogin, actChangeRouters} from '../../store/actions'
-import { View, TextInput, Text,  TouchableOpacity ,Image} from 'react-native';
+import { View, TextInput, Text,  TouchableOpacity ,Image, ActivityIndicator} from 'react-native';
 import {mainStyles as styles} from '../../styles/'
 import logo from '../../assets/images/logo.png'
 import { useRoute } from '@react-navigation/native'
@@ -28,6 +28,8 @@ export default function App({navigation}) {
     const [IsShowPassword, setIsShowPassword] = useState(false)
     const [InputPasswordHeight, setInputPasswordHeight] = useState(0)
     const [InputPasswordEyeHeight, setInputPasswordEyeHeight] = useState(0)
+
+    const [Loading, setLoading] = useState(false);
     
     const route = useRoute();
     const { email_params } = route.params ?? {};
@@ -92,23 +94,23 @@ export default function App({navigation}) {
 // ------------------------------------------------------
 
     const login = useCallback(() => {
+        setLoading(true)
         if(EmailValidate === null && PasswordValidate === null){
             dispatch(asyncLogin({email: Email, password: Password}))
             .then((res)=>{
                 console.log(res)
                 if(res.status === 103){
+                    setLoading(false)
                     setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email hoặc mật khẩu không đúng</Text>)
                     return;
                 }
                 if(res.status === 104){
+                    setLoading(false)
                     setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email hoặc mật khẩu không đúng</Text>)
                     return;
                 }
-                if(res.status === 502){
-                    setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Đã có lỗi xảy ra</Text>)
-                    return;
-                }
                 if(res.status === 1){
+                    setLoading(false)
                     var newRouters = []
                     ROUTERS.forEach((router)=>{
                         if(router.reqLogin){
@@ -128,8 +130,14 @@ export default function App({navigation}) {
                     dispatch(actChangeRouters(newRouters))
                     storage('loginTime', new Date().getTime()).setItem()
                     navigation.replace('Main');
+
+                    return
                 }
+                setLoading(false)
+                setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Đã có lỗi xảy ra</Text>)
             })
+
+
         }
        
     }, [Email, Password])
@@ -182,11 +190,12 @@ export default function App({navigation}) {
                    {PasswordValidate}
                 </View>
                 <TouchableOpacity
-                    disabled={(EmailValidate === null && PasswordValidate === null) ? false : true}
+                    disabled={(EmailValidate === null && PasswordValidate === null && Loading === false) ? false : true}
                     onPress={login}
-                    style={{...styles.button, ...{opacity: (EmailValidate === null && PasswordValidate === null) ? 1 : 0.5}}}
+                    style={{...styles.button, ...{opacity: (EmailValidate === null && PasswordValidate === null && Loading === false) ? 1 : 0.5}}}
                 >
-                    <Text style={styles.buttonText}>Đăng nhập</Text>
+                   {  Loading === true ?  <ActivityIndicator size="small" color="#fff" />
+                    : <Text style={styles.buttonText}>Đăng nhập</Text>}
                 </TouchableOpacity>
             </View>
             <View style={[styles.groupText,{justifyContent: 'space-between', marginTop: 24}]}>

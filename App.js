@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import {View, SafeAreaView} from 'react-native'
+import {View, SafeAreaView, AppState} from 'react-native'
 import { Provider} from 'react-redux'
 import store from './store'
 import Navigation from './components/Navigation'
@@ -39,6 +39,7 @@ export default function App() {
     }setFirstTime()
 
   },[])
+
 
   if (fontsLoaded) {
     return (

@@ -304,7 +304,7 @@ useEffect(()=>{
                     <View style={{padding: 2, alignSelf: 'flex-start'}}>
                         {PasswordValidate}
                     </View>
-                    <Text style={{fontSize: 13, fontFamily: 'Roboto_300Light_Italic', fontStyle: 'italic', color: '#8a8c8e', paddingLeft:8}}>Từ 8 - 20 ký tự, phải bao gồm chữ, số, ký tự và ít nhất một chữ viết hoa</Text>
+                
                 </View>
 
                 <View style={styles.inputBlock}>

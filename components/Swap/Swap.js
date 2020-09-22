@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import {View, Text, TouchableOpacity, Image, Alert, TextInput} from 'react-native'
+import {View, Text, TouchableOpacity, Image, Alert, TextInput, ActivityIndicator} from 'react-native'
 import { mainStyles } from '../../styles'
 import {Header2} from '../Header'
 import { useNavigation } from '@react-navigation/native'
@@ -9,6 +9,7 @@ import coin from '../../assets/images/IconCoin/KDG.png'
 import { asyncConvertKDGReward } from '../../store/actions'
 import { storage } from '../../helper'
 import { useDispatch, useSelector } from 'react-redux'
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height
@@ -21,7 +22,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const [ValueSwap, setValueSwap] = useState(0);
     const [isSelected, setSelection] = useState(false);
 
-
+    const [Loading, setLoading] = useState(false);
     const [Width , setWidth] = useState(0);
     const dispatch = useDispatch();
 
@@ -34,14 +35,15 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     
 
     const Swap = useCallback(async () => {
- 
+        setLoading(true)  
 
         var userinfo = await storage('_id').getItem();
 
         dispatch(asyncConvertKDGReward({userId: userinfo._id, value: ValueSwap}))
         .then((res)=>{
-          console.log(res);
+            console.log(res)
           if(res.status === 104){
+            setLoading(false)
             Alert.alert(
                 "Swap",
                 "Bạn phải chuyển đổi tối thiểu 25 KDG",
@@ -49,6 +51,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             return;
           }          
           if(res.status === 100){
+            setLoading(false)
             Alert.alert(
                 "Swap",
                 "Bạn không đủ KDG Reward",
@@ -56,6 +59,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             return;
           }
           if(res.status === 100){
+            setLoading(false)
             Alert.alert(
                 "Swap",
                 "Bạn không đủ KDG Reward",
@@ -63,6 +67,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             return;
           }
           if(res.status === 101){
+            setLoading(false)
             Alert.alert(
                 "Swap",
                 "Bạn chỉ có thể Swap tối đa 20 KDG 1 ngày",
@@ -70,6 +75,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             return;
           }
           if(res.status === 1){
+            setLoading(false)
             Alert.alert(
                 "Swap",
                 "Swap thành công",
@@ -77,6 +83,12 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             setValueSwap(0)
             return;
           }
+          setLoading(false)
+          Alert.alert(
+            "Swap",
+            "Swap không thành công",
+         )
+        
         })
         
         .catch(console.log)
@@ -170,7 +182,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                     colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
                     style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20}}>
-                        <Text style={{color: '#111b2d', fontSize: 16}}>Xác nhận</Text>
+
+                   {  Loading === true ?  <ActivityIndicator size="small" color="#fff" />
+                    : <Text style={{color: '#111b2d', fontSize: 16}}>Xác nhận</Text> }
                 </LinearGradient>
             </View>
         </TouchableOpacity>

@@ -214,10 +214,6 @@ export default function App({setOutScrollViewTop}){
             />
             }
                
-                <View>
-                    <Text>{searchVal}</Text>
-                </View> 
-
         </View>
     </View>
 </View>

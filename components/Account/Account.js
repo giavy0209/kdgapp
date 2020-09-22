@@ -64,7 +64,12 @@ export default function App({navigation}){
                 </View>
             </ImageBackground>
 
-            <View style={accountStyle.profileBar}>
+            <TouchableOpacity 
+                onPress={()=>navigation.navigate('Profile', {
+                    // userName: UserName,
+                    email: UserEmail
+                })} 
+                style={accountStyle.profileBar}>
                 <View style={accountStyle.blockAvata}>
                     <Image style={accountStyle.avata} source={Platform.OS === 'ios' ? defaultAvataPNG : defaultAvata}/>
                 </View>
@@ -81,7 +86,7 @@ export default function App({navigation}){
                         <FontAwesomeIcon color="#fff" icon={faPen}/>
                     </TouchableOpacity>
                 </LinearGradient>
-            </View>
+            </TouchableOpacity>
 
            <List />
         </View>

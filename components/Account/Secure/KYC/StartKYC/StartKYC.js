@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { View, Text, TouchableOpacity,Switch,Image, Alert } from 'react-native'
+import { View, Text, TouchableOpacity,Switch,Image, Alert, TextInput } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSort } from '@fortawesome/free-solid-svg-icons'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -9,13 +9,17 @@ import {mainStyles, walletStyles} from '../../../../../styles'
 import { useNavigation } from '@react-navigation/native'
 import Select from './Select'
 import Confirm from './Confirm'
+import { Popup } from '../../../../Popup'
 export default function App({setOutScrollView}){
     const navigation = useNavigation()
-
+    const [isModalVisible, setModalVisible] = useState(false);
     const [SelectType, setSelectType] = useState(null)
     const [SelectedCountry, setSelectedCountry] = useState(0)
     const [SelectedID, setSelectedID] = useState(0)
     const [SelectedSex, setSelectedSex] = useState(0)
+
+    const [Name, setName] = useState('')
+    const [IDNumber, setIDNumber] = useState('')
 
     const screenHeight = useSelector(state => state.height)
     const [Height, setHeight] =useState(0)
@@ -34,15 +38,33 @@ export default function App({setOutScrollView}){
         }
     },[SelectType])
 
+      
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+        setTimeout(function(){ 
+          setModalVisible(false);
+         }, 1000);
+      };
+    
+
     const handleNext = useCallback(()=>{
-        setOutScrollView(<Confirm setOutScrollView={setOutScrollView} SelectedID={SelectedID} SelectedCountry={SelectedCountry} SelectedSex={SelectedSex}/>)
+        if(IDNumber === '' || Name === ''){
+            toggleModal()
+        } else{
+            setOutScrollView(<Confirm Name={Name} IDNumber={IDNumber} setOutScrollView={setOutScrollView} SelectedID={SelectedID} SelectedCountry={SelectedCountry} SelectedSex={SelectedSex}
+                Name=''
+            />)
+        }
+
         // navigation.navigate(SelectedID === '')
-    },[SelectedID, SelectedCountry, SelectedSex])
+    },[SelectedID, SelectedCountry, SelectedSex, Name, IDNumber])
+
 
 
     return (
         <>
             <Header2 setHeight={setHeight} title="Xác minh danh tính"/>
+            <Popup type='failed' title='Vui lòng nhập đầy đủ thông tin' isModalVisible={isModalVisible}/>
             <View 
             onLayout={e=>setContentHeight(e.nativeEvent.layout.height)}
             style={[mainStyles.container, {marginHorizontal: 14, marginVertical: 8}]}>
@@ -77,7 +99,16 @@ export default function App({setOutScrollView}){
                         icon={faSort}/>
                     </View>
                 </TouchableOpacity>
-
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>Họ và tên</Text>
+                <View 
+                style={{marginTop: 8}}>
+                    <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
+                        <View style={walletStyles.maskOpacity}></View>
+                        {/* <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text> */}
+                        <TextInput onChangeText={(value) => setName(value)}  placeholder='Nhập họ và tên' keyboardType='decimal-pad' style={[mainStyles.fontsize14, mainStyles.color2]}/>
+                    </View>
+                </View>
+                
                 <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>GIỚI TÍNH</Text>
                 <TouchableOpacity 
                 style={{marginTop: 8}}
@@ -92,7 +123,20 @@ export default function App({setOutScrollView}){
                         icon={faSort}/>
                     </View>
                 </TouchableOpacity>
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>SỐ CMND/BẰNG LÁI XE/HỘ CHIẾU</Text>
+                <View
+                style={{marginTop: 8}}>
+                    <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
+                        <View style={walletStyles.maskOpacity}></View>
+                        {/* <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text> */}
+                        <TextInput onChangeText={(value) => setIDNumber(value)} placeholder='Nhập số cmnd/bằng lái xe/hộ chiếu' keyboardType='decimal-pad' style={[mainStyles.fontsize14, mainStyles.color2]}/>
+                    </View>
+                </View>
+                
+                
             </View>
+
+            
 
             {SelectType === null && <TouchableOpacity 
             onPress={handleNext}
@@ -109,6 +153,9 @@ export default function App({setOutScrollView}){
                     <Text style={{color: '#111b2d', fontSize: 14}}>Tiếp theo</Text>
                 </LinearGradient>
             </TouchableOpacity>}
+
+
+            
         </>
     )
 }

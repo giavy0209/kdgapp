@@ -33,7 +33,7 @@ export default function App(){
     const navigation = useNavigation();
     const [Value, setValue] = useState('');
     const dispatch = useDispatch();
-    const { userId, gaSecret, email, status } = route.params;
+    const { userId, gaSecret, email, status2FA } = route.params;
 
     const valueQR = `otpauth://totp/Kingdomgame:${email}?secret=${gaSecret}&issuer=Kingdomgame`;
     
@@ -85,7 +85,7 @@ export default function App(){
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 12}]}>
                 <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? 'Thành công' : 'Mã xác thực không chính xác'} isModalVisible={isModalVisible}/>
                 <View style={{paddingTop: 15, alignItems: 'center'}}>
-                {status === false ?
+                {status2FA === false ?
                 (<View style={{alignItems: 'center'}}>
                     <View>
                         <Text style={{color: 'rgba(255,255,255,0.7)'}}>Scan tại đây để xác thực</Text>
@@ -123,13 +123,13 @@ export default function App(){
                         />
                     </View>
                     <TouchableOpacity 
-                        onPress={status === true ? disable2FA : verify2FA}
+                        onPress={status2FA === true ? disable2FA : verify2FA}
                         style={{width: '100%'}}>
                         <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
                             <LinearGradient 
                                 colors={['#e5be50', '#ecda8b', '#a47b00']}
                                 style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 20, width: '92%', height: 40}}>
-                                <Text style={{color: '#111b2d', fontSize: 16,}}>{status === true ? 'Hủy cài đặt 2FA' : 'Xác nhận 2FA'}</Text>
+                                <Text style={{color: '#111b2d', fontSize: 16,}}>{status2FA === true ? 'Hủy cài đặt 2FA' : 'Xác nhận 2FA'}</Text>
                             </LinearGradient>
                         </View>
                 </TouchableOpacity>

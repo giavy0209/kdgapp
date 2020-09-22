@@ -143,7 +143,7 @@ export default function App({setOutScrollViewTop}){
                                 colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
                                 style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20, flexDirection: 'row', justifyContent: 'center'}}>
                                 <FontAwesomeIcon size={15} color="rgba(0,0,0,0.8)" icon={faShareAlt}/>
-                                <Text style={{color: '#111b2d', fontSize: 16, paddingLeft: 10}}>Xác nhận</Text>
+                                <Text style={{color: '#111b2d', fontSize: 16, paddingLeft: 10}}>Chia sẻ</Text>
                                 </LinearGradient>
                             </View>
                        </TouchableOpacity>

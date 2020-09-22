@@ -19,7 +19,7 @@ export default function App(){
     const navigation = useNavigation()
 
     
-    const { status } = route.params;
+    const { status2FA } = route.params;
  
 
     const generate2FACode = useCallback(async () => {
@@ -30,7 +30,7 @@ export default function App(){
                 userId: userinfo._id,
                 gaSecret: res.gaSecret,
                 email: userinfo.email,
-                status: status
+                status2FA: status2FA
            })
         })
         .catch(console.log)
@@ -43,7 +43,7 @@ export default function App(){
                     <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 16}}></Text>
                 </View>
                 <View style={{alignItems: 'center', paddingTop: 10}}>
-                    <Text style={{color: 'rgba(255,255,255,0.5)'}}>{status === true ? 'Bạn đã cài đặt 2FA, muốn hủy vui lòng xác nhận dưới đây' : 'Để cài đặt bảo vệ tài khoản, bạn nên cài đặt 2FA'}</Text>
+                    <Text style={{color: 'rgba(255,255,255,0.5)'}}>{status2FA === true ? 'Bạn đã cài đặt 2FA, muốn hủy vui lòng xác nhận dưới đây' : 'Để cài đặt bảo vệ tài khoản, bạn nên cài đặt 2FA'}</Text>
                 </View>
                 <TouchableOpacity
                     onPress={generate2FACode}
@@ -51,7 +51,7 @@ export default function App(){
                     <View style={{alignItems: 'center', paddingTop: 20}}>
                         <View style={{flexDirection: 'row', alignItems:'center', backgroundColor: '#fff', paddingVertical: 10, paddingHorizontal: 50, borderRadius: 10}}>
                             <Image source={logo} style={{width: 35, height: 35}} />
-                            <Text style={{paddingLeft: 10}}>{status === true ? 'Hủy cài đặt 2FA' : 'Cài đặt 2FA'}</Text>
+                            <Text style={{paddingLeft: 10}}>{status2FA === true ? 'Hủy cài đặt 2FA' : 'Cài đặt 2FA'}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>

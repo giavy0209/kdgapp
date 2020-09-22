@@ -14,7 +14,7 @@ import ListCoin from './ListCoin'
 import AsyncStorage from '@react-native-community/async-storage';
 import calAPI from '../../axios';
 import { storage } from '../../helper';
-import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice } from '../../store/actions';
+import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID } from '../../store/actions';
 
 const hiddenBalance = "******"
 export default function App({ navigation }) {
@@ -49,40 +49,102 @@ export default function App({ navigation }) {
   const [TRXAddress, setTRXAddress] = useState('');
   const [ETHAddress, setETHAddress] = useState('');
   // ----------------------------------
+  const [KDGLock, setKDGLock] = useState(0);
 
 
+  const [CoinPriceKDGLock, setCoinPriceKDGLock] = useState({
+    btc: 0, vnd: 0, usd: 0, cny: 0
+  });
   
   const [CoinPriceKDG, setCoinPriceKDG] = useState({
-    vnd: 0, usd: 0, cny: 0, exchange: {
+    btc: 0, vnd: 0, usd: 0, cny: 0, exchange: {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceETH, setCoinPriceETH] = useState({
-    vnd: 0, usd: 0, cny: 0, exchange: {
+    btc: 0, vnd: 0, usd: 0, cny: 0, exchange: {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceTRX, setCoinPriceTRX] = useState({
-    vnd: 0, usd: 0, cny: 0, exchange: {
+    btc: 0, vnd: 0, usd: 0, cny: 0, exchange: {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceUSDT, setCoinPriceUSDT] = useState({
-    vnd: 0, usd: 0, cny: 0, exchange: {
+    btc: 0, vnd: 0, usd: 0, cny: 0, exchange: {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceKNC, setCoinPriceKNC] = useState({
-    vnd: 0, usd: 0, cny: 0, exchange: {
+    btc: 0, vnd: 0, usd: 0, cny: 0, exchange: {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
   const [CoinPriceMCH, setCoinPriceMCH] = useState({
-    vnd: 0, usd: 0, cny: 0, exchange: {
+    btc: 0, vnd: 0, usd: 0, cny: 0, exchange: {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
-  
+
+
+  const TotalBalance = {
+    btc: (parseFloat(CoinPriceKDG.btc)+ 
+    parseFloat(CoinPriceETH.btc) + 
+    parseFloat(CoinPriceUSDT.btc) + 
+    parseFloat(CoinPriceTRX.btc) + 
+    parseFloat(CoinPriceKNC.btc ) + 
+    parseFloat(CoinPriceMCH.btc)).toFixed(8),
+    vnd: (parseFloat(CoinPriceKDG.vnd)+ 
+    parseFloat(CoinPriceETH.vnd) + 
+    parseFloat(CoinPriceUSDT.vnd) + 
+    parseFloat(CoinPriceTRX.vnd) + 
+    parseFloat(CoinPriceKNC.vnd ) + 
+    parseFloat(CoinPriceMCH.vnd)).toFixed(2),
+    usd: (parseFloat(CoinPriceKDG.usd)+ 
+    parseFloat(CoinPriceETH.usd) + 
+    parseFloat(CoinPriceUSDT.usd) + 
+    parseFloat(CoinPriceTRX.usd) + 
+    parseFloat(CoinPriceKNC.usd ) + 
+    parseFloat(CoinPriceMCH.usd)).toFixed(4),
+    cny: (parseFloat(CoinPriceKDG.cny)+ 
+    parseFloat(CoinPriceETH.cny) + 
+    parseFloat(CoinPriceUSDT.cny) + 
+    parseFloat(CoinPriceTRX.cny) + 
+    parseFloat(CoinPriceKNC.cny ) + 
+    parseFloat(CoinPriceMCH.cny)).toFixed(4),
+    
+  }
+
+  const AvailableBalance = {
+    btc: (parseFloat(CoinPriceKDG.btc)+ 
+    parseFloat(CoinPriceETH.btc) + 
+    parseFloat(CoinPriceUSDT.btc) + 
+    parseFloat(CoinPriceTRX.btc) + 
+    parseFloat(CoinPriceKNC.btc ) + 
+    parseFloat(CoinPriceMCH.btc) - parseFloat(CoinPriceKDGLock.btc)).toFixed(8),
+    vnd: (parseFloat(CoinPriceKDG.vnd)+ 
+    parseFloat(CoinPriceETH.vnd) + 
+    parseFloat(CoinPriceUSDT.vnd) + 
+    parseFloat(CoinPriceTRX.vnd) + 
+    parseFloat(CoinPriceKNC.vnd ) + 
+    parseFloat(CoinPriceMCH.vnd) - parseFloat(CoinPriceKDGLock.vnd)).toFixed(2),
+    usd: (parseFloat(CoinPriceKDG.usd)+ 
+    parseFloat(CoinPriceETH.usd) + 
+    parseFloat(CoinPriceUSDT.usd) + 
+    parseFloat(CoinPriceTRX.usd) + 
+    parseFloat(CoinPriceKNC.usd ) + 
+    parseFloat(CoinPriceMCH.usd) - parseFloat(CoinPriceKDGLock.usd)).toFixed(4),
+    cny: (parseFloat(CoinPriceKDG.cny)+ 
+    parseFloat(CoinPriceETH.cny) + 
+    parseFloat(CoinPriceUSDT.cny) + 
+    parseFloat(CoinPriceTRX.cny) + 
+    parseFloat(CoinPriceKNC.cny ) + 
+    parseFloat(CoinPriceMCH.cny) - parseFloat(CoinPriceKDGLock.cny)).toFixed(4),
+    
+  }
+
+
   const handleBarCodeScanned = useCallback(({ type, data }) => {
       navigation.navigate('Withdraw', {
         addressScan: data
@@ -102,14 +164,7 @@ export default function App({ navigation }) {
     }
   }, [])
 
-//   const test = useCallback(async () => {
-//     var userinfo = await storage('_id').getItem();
-//     dispatch(asyncGetBalance('kdg', userinfo.trx_address))
-//     .then((res)=>{
-//       setKDGBalance(res);
-//     })
-//     .catch(console.log)
-// }, [])
+
 
   useEffect(()=>{
     BackHandler.addEventListener(
@@ -122,11 +177,21 @@ export default function App({ navigation }) {
 
   },[])
 
+  
+
   useEffect(() => {
     async function getwalletBlance() {
       var userinfo = await storage('_id').getItem();
       setTRXAddress(userinfo.trx_address);
       setETHAddress(userinfo.erc_address);
+      dispatch(asyncGetUserbyID(userinfo._id))
+      .then((res)=>{
+        if(res.data.kdg_lock !== undefined){
+            setKDGLock(res.data.kdg_lock);
+            return
+        }
+      })
+      .catch(console.log)
       dispatch(asyncGetBalanceDouble(userinfo.erc_address, userinfo.trx_address))
       .then(({resETH, resTRX})=>{
         setKDGBalance(resTRX.data.kdg_balance)
@@ -151,7 +216,10 @@ export default function App({ navigation }) {
 
     getwalletBlance()
 
+
   }, [])
+
+
 
 
   useEffect(() => {
@@ -171,10 +239,14 @@ useEffect(() => {
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
       var coin_percent24h = res.data2.price_change_percentage_24h
+      var coin_to_btc = res.data2.current_price.btc
       setCoinPriceKDG({
-        vnd: (coin_to_vnd*KGDBalance).toFixed(2), usd: (coin_to_usd*KGDBalance).toFixed(4) , cny: (coin_to_usd*KGDBalance).toFixed(4), exchange: {
+        btc: (coin_to_btc*KGDBalance), vnd: (coin_to_vnd*KGDBalance).toFixed(2), usd: (coin_to_usd*KGDBalance).toFixed(4) , cny: (coin_to_usd*KGDBalance).toFixed(4), exchange: {
           vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
+      })
+      setCoinPriceKDGLock({
+        btc: (coin_to_btc*KDGLock), vnd: (coin_to_vnd*KDGLock).toFixed(2), usd: (coin_to_usd*KDGLock).toFixed(4) , cny: (coin_to_usd*KDGLock).toFixed(4)
       })
   })
   .catch(console.log) 
@@ -185,8 +257,9 @@ useEffect(() => {
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
       var coin_percent24h = res.data2.price_change_percentage_24h
+      var coin_to_btc = res.data2.current_price.btc
       setCoinPriceETH({
-        vnd: (coin_to_vnd*ETHBalance).toFixed(2), usd: (coin_to_usd*ETHBalance).toFixed(4) , cny: (coin_to_usd*ETHBalance).toFixed(4), exchange: {
+        btc: (coin_to_btc*ETHBalance), vnd: (coin_to_vnd*ETHBalance).toFixed(2), usd: (coin_to_usd*ETHBalance).toFixed(4) , cny: (coin_to_usd*ETHBalance).toFixed(4), exchange: {
           vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
@@ -199,8 +272,9 @@ useEffect(() => {
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
       var coin_percent24h = res.data2.price_change_percentage_24h
+      var coin_to_btc = res.data2.current_price.btc
       setCoinPriceTRX({
-        vnd: (coin_to_vnd*TRXBalance).toFixed(2), usd: (coin_to_usd*TRXBalance).toFixed(4) , cny: (coin_to_usd*TRXBalance).toFixed(4), exchange: {
+        btc: (coin_to_btc*TRXBalance), vnd: (coin_to_vnd*TRXBalance).toFixed(2), usd: (coin_to_usd*TRXBalance).toFixed(4) , cny: (coin_to_usd*TRXBalance).toFixed(4), exchange: {
           vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
@@ -213,8 +287,9 @@ useEffect(() => {
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
       var coin_percent24h = res.data2.price_change_percentage_24h
+      var coin_to_btc = res.data2.current_price.btc
       setCoinPriceUSDT({
-        vnd: (coin_to_vnd*USDTBalance).toFixed(2), usd: (coin_to_usd*USDTBalance).toFixed(4) , cny: (coin_to_usd*USDTBalance).toFixed(4), exchange: {
+        btc: (coin_to_btc*USDTBalance), vnd: (coin_to_vnd*USDTBalance).toFixed(2), usd: (coin_to_usd*USDTBalance).toFixed(4) , cny: (coin_to_usd*USDTBalance).toFixed(4), exchange: {
           vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
@@ -226,8 +301,9 @@ useEffect(() => {
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
       var coin_percent24h = res.data2.price_change_percentage_24h
+      var coin_to_btc = res.data2.current_price.btc
       setCoinPriceKNC({
-        vnd: (coin_to_vnd*KNCBalance).toFixed(2), usd: (coin_to_usd*KNCBalance).toFixed(4) , cny: (coin_to_usd*KNCBalance).toFixed(4), exchange: {
+        btc: (coin_to_btc*KNCBalance), vnd: (coin_to_vnd*KNCBalance).toFixed(2), usd: (coin_to_usd*KNCBalance).toFixed(4) , cny: (coin_to_usd*KNCBalance).toFixed(4), exchange: {
           vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
@@ -239,13 +315,15 @@ useEffect(() => {
       var coin_to_cny = res.data2.current_price.cny
       var coin_to_vnd = res.data2.current_price.vnd
       var coin_percent24h = res.data2.price_change_percentage_24h
+      var coin_to_btc = res.data2.current_price.btc
       setCoinPriceMCH({
-        vnd: (coin_to_vnd*MCHBalance).toFixed(2), usd: (coin_to_usd*MCHBalance).toFixed(4) , cny: (coin_to_usd*MCHBalance).toFixed(4), exchange: {
+        btc: (coin_to_btc*MCHBalance), vnd: (coin_to_vnd*MCHBalance).toFixed(2), usd: (coin_to_usd*MCHBalance).toFixed(4) , cny: (coin_to_usd*MCHBalance).toFixed(4), exchange: {
           vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
         } 
       })
   })
   .catch(console.log) 
+
 },[KGDBalance, ETHAddress, USDTBalance, TRXBalance, KNCBalance, MCHBalance])
 
 useEffect(() => {
@@ -317,22 +395,21 @@ useEffect(() => {
             <View style={walletStyles.balance}>
               <View style={walletStyles.maskOpacity}></View>
               <View style={walletStyles.totalBalanceAndVisible}>
-                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? CoinPriceKDG.vnd + ' ₫' : typeCurrency === 2 ?  '¥' + CoinPriceKDG.cny : '$' + CoinPriceKDG.usd}</Text>
+                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : TotalBalance.btc + " BTC"}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
                   <View style={{padding: 13}}>
                     <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
                   </View>
                 </TouchableOpacity>
               </View>
-              <Text style={walletStyles.totalKDG}>{VisibleBalance ? hiddenBalance : KGDBalance + ' KDG'}</Text>
               <View style={walletStyles.availableAndLock}>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Available balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? CoinPriceKDG.vnd + ' ₫' : typeCurrency === 2 ?  '¥' + CoinPriceKDG.cny : '$' + CoinPriceKDG.usd}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? AvailableBalance.vnd + ' ₫' : AvailableBalance === 2 ?  '¥' + AvailableBalance.cny : '$' + AvailableBalance.usd}</Text>
                 </View>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Locked balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : 0}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : KDGLock}</Text>
                 </View>
               </View>
             </View>

@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         overflow: 'hidden',
         borderColor: '#e3c05a',
-        borderWidth: 1
+        borderWidth: 1,
     },
     avata: {
         resizeMode: 'cover',

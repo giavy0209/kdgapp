@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import {View, Text, TouchableOpacity, Image, FlatList, Alert, TextInput} from 'react-native'
+import {View, Text, TouchableOpacity, Image, FlatList, Alert, TextInput, ActivityIndicator} from 'react-native'
 import { mainStyles, stakingStyle } from '../../../styles'
 import {Header2} from '../../Header'
 import { JoinButton } from '../../Button'
@@ -17,6 +17,7 @@ import { asyncStaking } from '../../../store/actions'
 import { storage } from '../../../helper'
 import { useDispatch, useSelector } from 'react-redux'
 import { Value } from 'react-native-reanimated'
+import { PopupStaking } from '../../Popup'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -28,6 +29,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const [ValueStaking, setValueStaking] = useState(0);
     const [isSelected, setSelection] = useState(false);
     const [ToggleCheckBox, setToggleCheckBox] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const [Loading, setLoading] = useState(false);
 
     var addDate = function(date,days){
         date.setDate(date.getDate() + days);
@@ -49,28 +53,15 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     },[ValueStaking])
 
     const Staking = useCallback(async () => {
- 
+        setLoading(true)  
 
         var userinfo = await storage('_id').getItem();
 
         dispatch(asyncStaking({userId: userinfo._id, kdg_coin: ValueStaking}))
-        .then((res)=>{
-
-          if(res.status === 502){
-            Alert.alert(
-                "Staking",
-                "Giá trị Staking không hợp lệ",
-            )
-            return;
-          }     
-          if(res.status === 101){
-            Alert.alert(
-                "Staking",
-                "Giá trị tối thiểu là 200 KDG",
-            )
-            return;
-          }       
+        .then((res)=>{      
           if(res.status === 103){
+            setToggleCheckBox(false)
+            setLoading(false)
             Alert.alert(
                 "Staking",
                 "Không đủ KDG để Staking",
@@ -78,13 +69,16 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             return;
           }
           if(res.status === 1){
-            Alert.alert(
-                "Staking",
-                "Staking thành công",
-            )
-            setValueStaking(0)
+            setLoading(false)
+            setModalVisible(true)
+            setToggleCheckBox(false)
             return;
           }
+          setToggleCheckBox(false)
+          Alert.alert(
+            "Staking",
+            "Đã có lỗi xảy ra",
+        )
         })
         
         .catch(console.log)
@@ -105,12 +99,16 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             return
         }
     },[ValueStaking])
+
+    const okPopupHandler = () => {
+        setModalVisible(false)
+    }
     return (
         
         <>
 
 <View style={mainStyles.container}>
-
+<PopupStaking toPress={() => setModalVisible(false)} isModalVisible={isModalVisible}/>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
         <View style={{padding: (windowWidth*windowHeight)/29376, backgroundColor: 'rgba(29,37,54,0.8)', marginBottom: 13}}>
             <View style={{alignItems: 'center'}}>
@@ -241,17 +239,18 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         
     </View>
     <TouchableOpacity
-        disabled={ToggleCheckBox ? false : true}
+        disabled={ToggleCheckBox  && Loading === false ? false : true}
         style={{paddingVertical: 20}}
         onPress={Staking}
     >
         <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: windowHeight/15}}>
             <LinearGradient 
                 start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
-                colors={ToggleCheckBox ? ['rgba(212, 175, 55, 1)', 'rgba(237, 218, 139, 1)', 'rgba(167, 123, 0, 1)', 'rgba(231, 190, 34, 1)', 'rgba(232, 191, 35, 1)'] : 
+                colors={ToggleCheckBox && Loading === false ? ['rgba(212, 175, 55, 1)', 'rgba(237, 218, 139, 1)', 'rgba(167, 123, 0, 1)', 'rgba(231, 190, 34, 1)', 'rgba(232, 191, 35, 1)'] : 
                                          ['rgba(212, 175, 55, 0.4)', 'rgba(237, 218, 139, 0.4)', 'rgba(167, 123, 0, 0.4)', 'rgba(231, 190, 34, 0.4)', 'rgba(232, 191, 35, 0.4)']}
                 style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20}}>
-                    <Text style={{color: '#111b2d', fontSize: 16, opacity: ToggleCheckBox ? 1 : 0.4}}>THAM GIA NGAY</Text>
+                    {  Loading === true ?   <ActivityIndicator size="small" color="#000" />
+                    :<Text style={{color: '#111b2d', fontSize: 16, opacity: ToggleCheckBox ? 1 : 0.4}}>THAM GIA NGAY</Text>}
             </LinearGradient>
         </View>
     </TouchableOpacity>
