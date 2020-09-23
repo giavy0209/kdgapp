@@ -34,7 +34,7 @@ export default function App({setOutScrollViewTop}){
         {address: coinNumbers.kdg.address , exchange_rate: coinNumbers.kdg.exchange_rate, balance: coinNumbers.kdg.balance, text: 'KDG', icon: kdgicon, description: 'Kingdom Game 4.0', key: '1'},
         {address: coinNumbers.eth.address , exchange_rate: coinNumbers.eth.exchange_rate, balance: coinNumbers.eth.balance, text: 'ETH', icon: ethicon, description: 'Ethereum', key: '2'},
         {address: coinNumbers.trx.address , exchange_rate: coinNumbers.trx.exchange_rate, balance: coinNumbers.trx.balance, text: 'TRX',icon: trxicon, description: 'Tron', key: '3'},
-        {address: coinNumbers.usdt.address , exchange_rate: coinNumbers.usdt.exchange_rate, balance: coinNumbers.usdt.balance, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
+        {address: coinNumbers.usdt.address , addressTRC: coinNumbers.trx.address, exchange_rate: coinNumbers.usdt.exchange_rate, balance: coinNumbers.usdt.balance, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
         {address: coinNumbers.knc.address , exchange_rate: coinNumbers.knc.exchange_rate, balance: coinNumbers.knc.balance, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
         {address: coinNumbers.mch.address , exchange_rate: coinNumbers.mch.exchange_rate, balance: coinNumbers.mch.balance, text: 'MCH', icon: mchicon, description: 'Meconcash ', key: '6'},
         {address: coinNumbers.tomo.address , exchange_rate: coinNumbers.tomo.exchange_rate, balance: coinNumbers.tomo.balance, text: 'TOMO', icon: tomoicon, description: 'TomoChain ', key: '7'},
@@ -90,7 +90,8 @@ export default function App({setOutScrollViewTop}){
                                 navigation.navigate('DepositPage2', {
                                     id: item.text, 
                                     address: item.address,
-                                    icon: item.icon
+                                    icon: item.icon, 
+                                    addressTRC: item.addressTRC ? item.addressTRC : ''
                                 })} >
                                     <View style={{flexDirection: 'row'}}>
                                         <Image source={item.icon} style={{width: 35, height: 35}} />
@@ -125,7 +126,8 @@ export default function App({setOutScrollViewTop}){
                         navigation.navigate('DepositPage2', {
                             id: item.text, 
                             address: item.address,
-                            icon: item.icon
+                            icon: item.icon,
+                            addressTRC: item.addressTRC ? item.addressTRC : ''
                         })} >
                             <View style={{flexDirection: 'row'}}>
                                 <Image source={item.icon} style={{width: 35, height: 35}} />

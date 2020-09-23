@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector, useDispatch} from 'react-redux'
 import { storage } from '../../../helper'
 import { asyncGetUserbyID } from '../../../store/actions'
-import store from '../../../store'
+
 export default function App(){
     const navigation = useNavigation()
 
@@ -17,7 +17,7 @@ export default function App(){
 
     const secureStatus = useSelector(state => state.secstatus)
 
-    console.log(store.getState())
+
 
    
     return (
