@@ -18,10 +18,12 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import calAPI from '../../../../../../axios'
 import { storage } from '../../../../../../helper'
+import { asyncSecureStatus, asyncUpdateUser } from '../../../../../../store/actions';
 
 import FormData from 'form-data';
 export default function App(){
 
+    const navigation = useNavigation()
     const dispatch = useDispatch()
     const { SelectedID, SelectedCountry, SelectedSex, Name, IDNumber } = useRoute().params;
 
@@ -33,6 +35,9 @@ export default function App(){
     const [ImageFront, setImageFront] = useState(null)
     const [ImageBack, setImageBack] = useState(null)
     const [ImageSelfy, setImageSelfy] = useState(null)
+
+
+    const secureStatus = useSelector(state => state.secstatus)
 
     const pickImage = useCallback(async (type) => {
         try {
@@ -110,7 +115,7 @@ export default function App(){
                         if(el.data.status !== 1) isUploadOK = false
                     })
 
-                    if(!isUploadOK) {
+                    if(isUploadOK === false) {
                         Alert.alert(
                             'Lỗi',
                             'Tải hình không thành công'
@@ -118,40 +123,74 @@ export default function App(){
                         return
                     }
                     if(isUploadOK === true){
+
                         var kycInfo = {
-                            kyc_country : SelectedContry === 0 ? 'VN' : 'Others',
-                            kyc_number : IDNumber,
+                            kyc_country : SelectedCountry ===0 ? 'VN' : 'Others',
+                            kyc_number : IDNumber.toString(),
                             kyc_name : Name,
                             kyc : '2',
                             id : userinfo._id,
                         }
-                        const resUpdate = ((await calAPI()).put(`/api/user`, kycInfo)).data 
+                        dispatch(asyncUpdateUser(kycInfo))
+                        .then((res)=>{
+                            console.log(res)
+                            if(res.status === 1){
+                                dispatch(asyncSecureStatus({
+                                    ...secureStatus,
+                                    kyc: '2'
+                
+                                }))
+                                Alert.alert(
+                                    'Thành công',
+                                    'Gửi thành công vui lòng chờ xét duyệt'
+                                )
+                                navigation.navigate('Secure')
+                                return
+                            }
+                            if(res.status === 100){
+                                Alert.alert(
+                                    'Lỗi',
+                                    'Số chứng minh/passport đã được sử dụng cho tài khoản khác'
+                                )
+                                return
+                            }
+                                Alert.alert(
+                                    'Lỗi',
+                                    'Gửi KYC không thành công, vui lòng thử lại'
+                                )
+                        })
+                        .catch(console.log)
             
-                        console.log(resUpdate)
-                        if(resUpdate.status === 1){
-                            dispatch(asyncGetUserData(false))
-                            Alert.alert(
-                                'Thành công',
-                                'Gửi thành công vui lòng chờ xét duyệt'
-                            )
-                        }else if (resUpdate.status === 100){
-                            Alert.alert(
-                                'Lỗi',
-                                'Số chứng minh/passport đã được sử dụng cho tài khoản khác'
-                            )
-                        }else{
-                            Alert.alert(
-                                'Lỗi',
-                                'Gửi KYC không thành công, vui lòng thử lại'
-                            )
-                        }
-        
+                        // if(resUpdate.status === 1){
+                        //     Alert.alert(
+                        //         'Thành công',
+                        //         'Gửi thành công vui lòng chờ xét duyệt'
+                        //     )
+                        // }else if (resUpdate.status === 100){
+                        //     Alert.alert(
+                        //         'Lỗi',
+                        //         'Số chứng minh/passport đã được sử dụng cho tài khoản khác'
+                        //     )
+                        // }else{
+                        //     Alert.alert(
+                        //         'Lỗi',
+                        //         'Gửi KYC không thành công, vui lòng thử lại'
+                        //     )
+                        // }
+          
                     }
+                    
+
                 } catch (error) {
                 
                     return
                 }
+                return
         }
+        Alert.alert(
+            'Lỗi',
+            'Tải hình không thành công'
+        )
     },[ImageFront, ImageBack,ImageSelfy])
 
     

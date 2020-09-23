@@ -10,6 +10,7 @@ export default function App({setOutScrollView,SelectedID, SelectedCountry, Selec
     const screenHeight = useSelector(state=>state.height)
     const screenWidth = useSelector(state=>state.width)
     const [Height, setHeight] = useState(0)
+
     return(
         <>
             <View

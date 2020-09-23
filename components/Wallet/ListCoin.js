@@ -14,6 +14,7 @@ import trxicon from '../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../assets/images/IconCoin/MCH.png'
+import tomoicon from '../../assets/images/IconCoin/TOMO.png'
 import { useSelector } from 'react-redux';
 // ------------------------------------------
 
@@ -28,14 +29,17 @@ export default function App({
     balanceUSDT,
     balanceKNC,
     balanceMCH,
+    balanceTOMO,
     addressTRX,
     addressETH,
+    addressTOMO,
     coinPriceKDG,
     coinPriceETH,
     coinPriceTRX,
     coinPriceUSDT,
     coinPriceKNC,
     coinPriceMCH,
+    coinPriceTOMO,
     coinDisplay,
     isShortCoin,
     }){
@@ -55,6 +59,7 @@ export default function App({
         {coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH},
         {coinPrice: coinPriceKNC, isDisplay: coinDisplay ? coinDisplay.knc : true, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
         {coinPrice: coinPriceMCH, isDisplay: coinDisplay ? coinDisplay.mch : true, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
+        {coinPrice: coinPriceTOMO, isDisplay: coinDisplay ? coinDisplay.tomo : true, key: 7, coinName: 'TOMO', icon: tomoicon, balance: balanceTOMO, address: addressTOMO},
     ]
 
     const renderLeftActions = useCallback((id, balance, address) => {

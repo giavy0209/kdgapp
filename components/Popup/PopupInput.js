@@ -18,7 +18,7 @@ export default function App({toChangeText, isModalVisible, toCancel, toSubmit}){
                     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)}  style={{ width: '70%', alignItems: 'center'}}>
                         <View style={{padding: 20, alignItems: 'center'}}>
                             <Text style={{color: '#fff', fontSize: 16, fontWeight: 'bold', paddingBottom: 15, width: '100%'}}>Tên ví</Text>
-                            <View style={{backgroundColor: '#fff', width: 220, paddingLeft: 15, borderRadius: 20, padding: 5, flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <View style={{backgroundColor: '#fff', width: 220, paddingLeft: 15, borderRadius: 20, padding: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <View style={{flexDirection: 'row'}}>
                                     <TextInput onChangeText={toChangeText}  placeholder='Tên ví bạn muốn đổi'/> 
                                 </View>

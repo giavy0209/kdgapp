@@ -52,7 +52,6 @@ export default function App({setOutScrollView}){
             toggleModal()
         } else{
             setOutScrollView(<Confirm Name={Name} IDNumber={IDNumber} setOutScrollView={setOutScrollView} SelectedID={SelectedID} SelectedCountry={SelectedCountry} SelectedSex={SelectedSex}
-                Name=''
             />)
         }
 
@@ -99,13 +98,13 @@ export default function App({setOutScrollView}){
                         icon={faSort}/>
                     </View>
                 </TouchableOpacity>
-                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>Họ và tên</Text>
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>TÊN</Text>
                 <View 
                 style={{marginTop: 8}}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
                         {/* <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text> */}
-                        <TextInput onChangeText={(value) => setName(value)}  placeholder='Nhập họ và tên' keyboardType='decimal-pad' style={[mainStyles.fontsize14, mainStyles.color2]}/>
+                        <TextInput onChangeText={(value) => setName(value)}  placeholder='Nhập Tên' placeholderTextColor='#fff' style={[mainStyles.fontsize14, mainStyles.color2]}/>
                     </View>
                 </View>
                 
@@ -123,13 +122,13 @@ export default function App({setOutScrollView}){
                         icon={faSort}/>
                     </View>
                 </TouchableOpacity>
-                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>SỐ CMND/BẰNG LÁI XE/HỘ CHIẾU</Text>
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{SelectedID === 0 ? 'SỐ CMND/BẰNG LÁI XE' : 'HỘ CHIẾU'}</Text>
                 <View
                 style={{marginTop: 8}}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
                         {/* <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text> */}
-                        <TextInput onChangeText={(value) => setIDNumber(value)} placeholder='Nhập số cmnd/bằng lái xe/hộ chiếu' keyboardType='decimal-pad' style={[mainStyles.fontsize14, mainStyles.color2]}/>
+                        <TextInput onChangeText={(value) => setIDNumber(value)} placeholder={SelectedID === 0 ? 'Nhập Số CMND/Bằng lái xe' : 'Nhập Hộ Chiếu'} placeholderTextColor='#fff'  style={[mainStyles.fontsize14, mainStyles.color2]}/>
                     </View>
                 </View>
                 

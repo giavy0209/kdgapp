@@ -33,6 +33,7 @@ export default function App(){
     const [isEnabledUSDT, setIsEnabledUSDT] = useState(coinDisplay ? coinDisplay.usdt : true);
     const [isEnabledKNC, setIsEnabledKNC] = useState(coinDisplay ? coinDisplay.knc : true);
     const [isEnabledMCH, setIsEnabledMCH] = useState(coinDisplay ? coinDisplay.mch : true);
+    const [isEnabledTOMO, setIsEnabledTOMO] = useState(coinDisplay ? coinDisplay.tomo : true);
 // ---------------------------------------------------------
 
 // -------------------------Coin toggle---------------------------
@@ -42,6 +43,7 @@ const toggleSwitchTRX = () => setIsEnabledTRX(previousState => !previousState);
 const toggleSwitchUSDT = () => setIsEnabledUSDT(previousState => !previousState);
 const toggleSwitchKNC = () => setIsEnabledKNC(previousState => !previousState);
 const toggleSwitchMCH = () => setIsEnabledMCH(previousState => !previousState);
+const toggleSwitchTOMO = () => setIsEnabledTOMO(previousState => !previousState);
 // ---------------------------------------------------------
 
 const data = [
@@ -51,6 +53,7 @@ const data = [
     { isEnabled: isEnabledUSDT, toggle: toggleSwitchUSDT, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
     { isEnabled: isEnabledKNC, toggle: toggleSwitchKNC, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
     { isEnabled: isEnabledMCH, toggle: toggleSwitchMCH, text: 'MCH', icon: mchicon, description: 'MeconCash', key: '6'},
+    { isEnabled: isEnabledTOMO, toggle: toggleSwitchTOMO, text: 'TOMO', icon: mchicon, description: 'TomoChain', key: '7'},
 ]
 
 
@@ -63,10 +66,11 @@ useEffect(() => {
         trx: isEnabledTRX, 
         usdt: isEnabledUSDT, 
         knc: isEnabledKNC, 
-        mch: isEnabledMCH
+        mch: isEnabledMCH,
+        tomo: isEnabledTOMO
     }))
 
-}, [isEnabledKDG, isEnabledETH, isEnabledTRX, isEnabledUSDT, isEnabledKNC, isEnabledMCH])
+}, [isEnabledKDG, isEnabledETH, isEnabledTRX, isEnabledUSDT, isEnabledKNC, isEnabledMCH, isEnabledTOMO])
 
     return (
         <>
