@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { View, Text, TouchableOpacity, Image, Clipboard, Share} from 'react-native'
 
 import {Header2} from '../../Header'
@@ -12,22 +12,32 @@ import { asyncGetTransaction, asyncGetUserbyID } from '../../../store/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import Popup from '../../Popup/Popup'
 import { LinearGradient } from 'expo-linear-gradient'
+import store from '../../../store'
+var RefCode = ''
 
+const handleGetStore = () =>{
+    RefCode = store.getState().ref_code
+}
 
+const copyHandler1 = (toggleModal) => {
+    Clipboard.setString(`https://www.kingdomgame.org/reg/${RefCode}`)
+    toggleModal()
+}
 
-
+const copyHandler2 = (toggleModal) => {
+    Clipboard.setString(RefCode)
+    toggleModal()
+}
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
-    const [RefCode, setRefCode] = useState('');
     const [KDGReward, setKDGReward] = useState(0)
     const [RewardData, setRewardData] = useState([]);
     const dispatch = useDispatch();
     const [isModalVisible, setModalVisible] = useState(false);
-   
     useEffect(() => {
+        handleGetStore()
         async function getUserInfo() {
           var userinfo = await storage('_id').getItem();
-          setRefCode(userinfo.ref_code)
  
           dispatch(asyncGetTransaction(userinfo._id))
          .then((res)=>{
@@ -37,7 +47,7 @@ export default function App({setOutScrollViewTop}){
 
          dispatch(asyncGetUserbyID(userinfo._id))
           .then((res)=>{
-            setKDGReward(res.data.kdg_reward)
+            setKDGReward(res.data ? (res.data.kdg_reward ? res.data.kdg_reward : 0 ): 0 )
           })
           .catch(console.log)
          }
@@ -45,28 +55,17 @@ export default function App({setOutScrollViewTop}){
     
       }, [])
     
-    
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title="Phần thưởng"/>)
     },[])
 
-    const toggleModal = () => {
+    const toggleModal = useCallback(() => {
         setModalVisible(!isModalVisible);
         setTimeout(function(){ 
           setModalVisible(false);
          }, 1000);
-      };
+    },[isModalVisible])
     
-
-    const copyHandler1 = () => {
-        Clipboard.setString(`https://www.kingdomgame.org/reg/${RefCode}`)
-        toggleModal()
-    }
-
-    const copyHandler2 = () => {
-        Clipboard.setString(RefCode)
-        toggleModal()
-    }
 
     const onShare = async () => {
         try {
@@ -124,14 +123,14 @@ export default function App({setOutScrollViewTop}){
                       </View>
                       <View style={{flexDirection: 'row', paddingBottom: 15}}>
                           <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>Link giới thiệu:</Text>
-                          <TouchableOpacity onPress={copyHandler1} style={{flexDirection: 'row'}}>
+                          <TouchableOpacity onPress={()=>copyHandler1(toggleModal)} style={{flexDirection: 'row'}}>
                             <Text style={{paddingHorizontal: 10, fontSize: 15, color: '#0687d7', paddingLeft: 60}}>{`https://www.kingdomgame.\norg/reg/${RefCode}`}</Text>
                             <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                           </TouchableOpacity>
                       </View>
                       <View style={{flexDirection: 'row', paddingBottom: 15}}>
                           <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>Mã giới thiệu:</Text>
-                          <TouchableOpacity onPress={copyHandler2} style={{flexDirection: 'row'}}>
+                          <TouchableOpacity onPress={()=>copyHandler2(toggleModal)} style={{flexDirection: 'row'}}>
                             <Text style={{paddingHorizontal: 10, fontSize: 15, color: '#fff', paddingLeft: 70}}>{RefCode}</Text>
                             <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                           </TouchableOpacity>
@@ -163,7 +162,7 @@ export default function App({setOutScrollViewTop}){
                         <View style={{backgroundColor: '#121827', borderRadius: 10, width: '90%', padding: 5}}>
                             <View style={{alignItems: 'center'}}>
                                 <Text style={{textAlign: 'center', color: 'rgba(255,255,255,0.5)'}}>Số người mới KYC thành công</Text>
-                                    <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>{RewardData.length}</Text>
+                                    {/* <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>{RewardData.length}</Text> */}
                             </View>
                         </View>
                         

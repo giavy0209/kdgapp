@@ -106,7 +106,6 @@ export function asyncGetRouters(){
         const currency = JSON.parse(await AsyncStorage.getItem('currency'))
         const language = JSON.parse(await AsyncStorage.getItem('language'))
         const display = JSON.parse(await AsyncStorage.getItem('display'))
-        console.log(PIN);
         if(PIN){
             dispatch(actChangePin(PIN))
         }
