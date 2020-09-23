@@ -54,7 +54,7 @@ export default function App({navigation}){
                         <View style={accountStyle.itemHeader}>
                             <TouchableOpacity 
                                 style={{alignItems: 'center'}}
-                                onPress={() => {navigation.navigate('Reward')}}
+                                onPress={() => {navigation.navigate('Ref')}}
                             >
                                 <Image source={invitation}/>
                                 <Text style={accountStyle.textHeader}>Phần thưởng</Text>
