@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import QRCode from '../../../QRGenerate/QRCode'
 import { LinearGradient } from 'expo-linear-gradient'
-import { asyncVerify2FA , asyncDisable2FA} from '../../../../store/actions'
+import { asyncVerify2FA , asyncDisable2FA, asyncSecureStatus} from '../../../../store/actions'
 import Popup from '../../../Popup/Popup'
 
 export default function App(){
@@ -27,6 +27,9 @@ export default function App(){
     };
 
     const screenHeight = useSelector(state=>state.height)
+
+    const secureStatus = useSelector(state => state.secstatus)
+
     const [Height, setHeight] = useState(0)
     const [ContentHeight, setContentHeight] = useState(0)
     const route = useRoute();
@@ -48,13 +51,18 @@ export default function App(){
             if(res.status === 100){
                 setPopupStatus(false)
                 toggleModal()
+                return
             }
             if(res.status === 1){
+                dispatch(asyncSecureStatus({
+                    ...secureStatus,
+                    is2FA: !secureStatus.is2FA
+
+                }))
                 setPopupStatus(true)
                 toggleModal()
-                setTimeout(function(){ 
-                    navigation.navigate('Me')
-                   }, 2000);
+                navigation.navigate('Secure')
+                return
             }
         })
     }, [userId, Value])
@@ -62,18 +70,26 @@ export default function App(){
     const disable2FA = useCallback(() => {
         dispatch(asyncDisable2FA({userId: userId, token: Value}))
         .then((res)=>{
+            console.log(res)
             // navigation.navigate('Me')
             if(res.status === 100){
                 setPopupStatus(false)
                 toggleModal()
+                return
             }
             if(res.status === 1){
+                dispatch(asyncSecureStatus({
+                    ...secureStatus,
+                    is2FA: !secureStatus.is2FA
+
+                }))
                 setPopupStatus(true)
                 toggleModal()
-                setTimeout(function(){ 
-                    navigation.navigate('Me')
-                   }, 2000);
+                navigation.navigate('Secure')
+                return
             }
+            setPopupStatus(false)
+            toggleModal()
         })
     }, [userId, Value])
 

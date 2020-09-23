@@ -14,7 +14,7 @@ import ListCoin from './ListCoin'
 import AsyncStorage from '@react-native-community/async-storage';
 import calAPI from '../../axios';
 import { storage } from '../../helper';
-import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID } from '../../store/actions';
+import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus } from '../../store/actions';
 
 const hiddenBalance = "******"
 export default function App({ navigation }) {
@@ -35,6 +35,8 @@ export default function App({ navigation }) {
 
   const [NewsData, setNewsData] = useState([]);
 
+  const [Count, setCount] = useState(0);
+
 
   // ----------Balance Coin -----------
   const [KGDBalance, setKDGBalance] = useState(0);
@@ -43,11 +45,13 @@ export default function App({ navigation }) {
   const [USDTBalance, setUSDTBalance] = useState(0);
   const [KNCBalance, setKNCBalance] = useState(0);
   const [MCHBalance, setMCHBalance] = useState(0);
+  const [TOMOBalance, setTOMOBalance] = useState(0);
   // ----------------------------------
 
   // ----------Address Coin -----------
   const [TRXAddress, setTRXAddress] = useState('');
   const [ETHAddress, setETHAddress] = useState('');
+  const [TOMOAddress, setTOMOAddress] = useState('');
   // ----------------------------------
   const [KDGLock, setKDGLock] = useState(0);
 
@@ -86,6 +90,11 @@ export default function App({ navigation }) {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
+  const [CoinPriceTOMO, setCoinPriceTOMO] = useState({
+    btc: 0, vnd: 0, usd: 0, cny: 0, exchange: {
+      vnd: 0, usd: 0, cny: 0, percent24h: 0
+    } 
+  });
 
 
   const TotalBalance = {
@@ -94,24 +103,28 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceUSDT.btc) + 
     parseFloat(CoinPriceTRX.btc) + 
     parseFloat(CoinPriceKNC.btc ) + 
+    parseFloat(CoinPriceTOMO.btc ) + 
     parseFloat(CoinPriceMCH.btc)).toFixed(8),
     vnd: (parseFloat(CoinPriceKDG.vnd)+ 
     parseFloat(CoinPriceETH.vnd) + 
     parseFloat(CoinPriceUSDT.vnd) + 
     parseFloat(CoinPriceTRX.vnd) + 
     parseFloat(CoinPriceKNC.vnd ) + 
+    parseFloat(CoinPriceTOMO.vnd ) + 
     parseFloat(CoinPriceMCH.vnd)).toFixed(2),
     usd: (parseFloat(CoinPriceKDG.usd)+ 
     parseFloat(CoinPriceETH.usd) + 
     parseFloat(CoinPriceUSDT.usd) + 
     parseFloat(CoinPriceTRX.usd) + 
     parseFloat(CoinPriceKNC.usd ) + 
+    parseFloat(CoinPriceTOMO.usd ) + 
     parseFloat(CoinPriceMCH.usd)).toFixed(4),
     cny: (parseFloat(CoinPriceKDG.cny)+ 
     parseFloat(CoinPriceETH.cny) + 
     parseFloat(CoinPriceUSDT.cny) + 
     parseFloat(CoinPriceTRX.cny) + 
     parseFloat(CoinPriceKNC.cny ) + 
+    parseFloat(CoinPriceTOMO.cny ) + 
     parseFloat(CoinPriceMCH.cny)).toFixed(4),
     
   }
@@ -122,24 +135,28 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceUSDT.btc) + 
     parseFloat(CoinPriceTRX.btc) + 
     parseFloat(CoinPriceKNC.btc ) + 
+    parseFloat(CoinPriceTOMO.btc ) + 
     parseFloat(CoinPriceMCH.btc) - parseFloat(CoinPriceKDGLock.btc)).toFixed(8),
     vnd: (parseFloat(CoinPriceKDG.vnd)+ 
     parseFloat(CoinPriceETH.vnd) + 
     parseFloat(CoinPriceUSDT.vnd) + 
     parseFloat(CoinPriceTRX.vnd) + 
     parseFloat(CoinPriceKNC.vnd ) + 
+    parseFloat(CoinPriceTOMO.vnd ) + 
     parseFloat(CoinPriceMCH.vnd) - parseFloat(CoinPriceKDGLock.vnd)).toFixed(2),
     usd: (parseFloat(CoinPriceKDG.usd)+ 
     parseFloat(CoinPriceETH.usd) + 
     parseFloat(CoinPriceUSDT.usd) + 
     parseFloat(CoinPriceTRX.usd) + 
     parseFloat(CoinPriceKNC.usd ) + 
+    parseFloat(CoinPriceTOMO.usd ) + 
     parseFloat(CoinPriceMCH.usd) - parseFloat(CoinPriceKDGLock.usd)).toFixed(4),
     cny: (parseFloat(CoinPriceKDG.cny)+ 
     parseFloat(CoinPriceETH.cny) + 
     parseFloat(CoinPriceUSDT.cny) + 
     parseFloat(CoinPriceTRX.cny) + 
     parseFloat(CoinPriceKNC.cny ) + 
+    parseFloat(CoinPriceTOMO.cny ) + 
     parseFloat(CoinPriceMCH.cny) - parseFloat(CoinPriceKDGLock.cny)).toFixed(4),
     
   }
@@ -182,12 +199,15 @@ export default function App({ navigation }) {
   useEffect(() => {
     async function getwalletBlance() {
       var userinfo = await storage('_id').getItem();
+
       setTRXAddress(userinfo.trx_address);
       setETHAddress(userinfo.erc_address);
       dispatch(asyncGetUserbyID(userinfo._id))
       .then((res)=>{
+        setTOMOAddress(res.data.tomo_address)
         if(res.data.kdg_lock !== undefined){
             setKDGLock(res.data.kdg_lock);
+            setUserData(res.data)
             return
         }
       })
@@ -210,22 +230,56 @@ export default function App({ navigation }) {
       dispatch(asyncGetBalance('mch',userinfo.erc_address))
       .then((res)=>{
         setMCHBalance(res.balance)
-      })     
+      })  
+
+      dispatch(asyncGetBalance('tomo', TOMOAddress))
+      .then((res)=>{
+        setTOMOBalance(res.balance)
+      })      
       .catch(console.log)
     }
 
     getwalletBlance()
 
 
-  }, [])
+  }, [TOMOBalance, TOMOAddress])
 
 
+useEffect(() => {
+  dispatch(actChangeSecureStatus({
+    kdg_reward: UserData.kdg_reward,
+    kyc: UserData.kyc,
+    kyc_success: UserData.kyc_success,
+    is2FA: UserData.is2FA,
+    create_date: UserData.create_date
+}))
+},[UserData])
 
 
   useEffect(() => {
+    var dem = 0
     dispatch(asyncGetNews(0,20))
     .then((res)=>{
       setNewsData(res.data)
+      
+      res.data.slice(0,4).map((item) =>{
+        if(item.content_vi !== undefined && item.meta_vi !== undefined){
+            if(
+                (
+                  (new Date(item.create_date)).getDate().toString()  + "/"   +
+                  ((new Date(item.create_date)).getMonth() + 1).toString() + "/"   +
+                  (new Date(item.create_date)).getFullYear().toString()
+                )   ===    (
+                  (new Date()).getDate().toString()  + "/"   +
+                  ((new Date()).getMonth() + 1).toString() + "/"   +
+                  (new Date()).getFullYear().toString()
+                ) 
+            ){
+              dem += 1
+            }
+        }
+    })
+      setCount(dem)
     })
     .catch(console.log) 
 }, [])
@@ -322,52 +376,79 @@ useEffect(() => {
         } 
       })
   })
+
+  dispatch(asyncGetCoinPrice('TOMO'))
+  .then((res)=>{
+      var coin_to_usd = res.data2.current_price.usd
+      var coin_to_cny = res.data2.current_price.cny
+      var coin_to_vnd = res.data2.current_price.vnd
+      var coin_percent24h = res.data2.price_change_percentage_24h
+      var coin_to_btc = res.data2.current_price.btc
+      setCoinPriceTOMO({
+        btc: (coin_to_btc*TOMOBalance), vnd: (coin_to_vnd*TOMOBalance).toFixed(2), usd: (coin_to_usd*TOMOBalance).toFixed(4) , cny: (coin_to_usd*TOMOBalance).toFixed(4), exchange: {
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
+        } 
+      })
+  })
   .catch(console.log) 
 
-},[KGDBalance, ETHAddress, USDTBalance, TRXBalance, KNCBalance, MCHBalance])
+},[KGDBalance, ETHBalance, USDTBalance, TRXBalance, KNCBalance, MCHBalance, TOMOBalance])
 
 useEffect(() => {
 
   dispatch(asyncSetCoinNumbers({
     kdg: {
       balance: KGDBalance,
-      exchange_rate: CoinPriceKDG
+      exchange_rate: CoinPriceKDG,
+      address: TRXAddress
     },
     eth: {
       balance: ETHBalance,
-      exchange_rate: CoinPriceETH
+      exchange_rate: CoinPriceETH,
+      address: ETHAddress
     },
     trx: {
       balance: TRXBalance,
-      exchange_rate: CoinPriceTRX
+      exchange_rate: CoinPriceTRX,
+      address: TRXAddress
     },
     usdt: {
       balance: USDTBalance,
-      exchange_rate: CoinPriceUSDT
+      exchange_rate: CoinPriceUSDT,
+      address: ETHAddress
     },
     knc: {
       balance: KNCBalance,
-      exchange_rate: CoinPriceKNC
+      exchange_rate: CoinPriceKNC,
+      address: ETHAddress
     },
     mch: {
       balance: MCHBalance,
-      exchange_rate: CoinPriceMCH
+      exchange_rate: CoinPriceMCH,
+      address: ETHAddress
     },
+    tomo: {
+      balance: TOMOBalance,
+      exchange_rate: CoinPriceTOMO,
+      address: TOMOAddress
+    },
+
 
   }))
 
 }, [KGDBalance, 
-  ETHAddress, 
   USDTBalance, 
   TRXBalance, 
   KNCBalance, 
-  MCHBalance, 
+  MCHBalance,
+  TOMOBalance, 
   CoinPriceKDG,
   CoinPriceETH,
   CoinPriceTRX,
   CoinPriceUSDT,
   CoinPriceKNC,
-  CoinPriceMCH
+  CoinPriceMCH,
+  CoinPriceTOMO
 
 ])
 
@@ -388,14 +469,14 @@ useEffect(() => {
                   NewsData: NewsData
                 })} style={walletStyles.notifyIcon}>
                   <FontAwesomeIcon icon={faBell} style={{ color: '#fff' }} />
-                  {/* <Text style={walletStyles.notifyCount}>15</Text> */}
+                  {Count !== 0 ?<Text style={walletStyles.notifyCount}>{Count}</Text> : null}
                 </TouchableOpacity>
               </View>
             </View>
             <View style={walletStyles.balance}>
               <View style={walletStyles.maskOpacity}></View>
               <View style={walletStyles.totalBalanceAndVisible}>
-                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : TotalBalance.btc + " BTC"}</Text>
+                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : AvailableBalance.usd === NaN ? '0' : TotalBalance.btc + " BTC"}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
                   <View style={{padding: 13}}>
                     <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
@@ -405,11 +486,20 @@ useEffect(() => {
               <View style={walletStyles.availableAndLock}>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Available balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? AvailableBalance.vnd + ' ₫' : AvailableBalance === 2 ?  '¥' + AvailableBalance.cny : '$' + AvailableBalance.usd}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  AvailableBalance.usd === NaN ? '0' :
+                    typeCurrency === 1 ? 
+                    AvailableBalance.vnd + ' ₫' : 
+                    typeCurrency === 2 ?  
+                    '¥' + AvailableBalance.cny : 
+                    '$' + AvailableBalance.usd}</Text>
                 </View>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Locked balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : KDGLock}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? 
+                    CoinPriceKDGLock.vnd + ' ₫' : 
+                    CoinPriceKDGLock === 2 ?  
+                    '¥' + CoinPriceKDGLock.cny : 
+                    '$' + CoinPriceKDGLock.usd}</Text>
                 </View>
               </View>
             </View>
@@ -438,14 +528,17 @@ useEffect(() => {
               balanceUSDT={USDTBalance}
               balanceKNC={KNCBalance}
               balanceMCH={MCHBalance}
+              balanceTOMO={TOMOBalance}
               addressTRX={TRXAddress}
               addressETH={ETHAddress}
+              addressTOMO={TOMOAddress}
               coinPriceKDG={CoinPriceKDG}
               coinPriceETH={CoinPriceETH}
               coinPriceTRX={CoinPriceTRX}
               coinPriceUSDT={CoinPriceUSDT}
               coinPriceKNC={CoinPriceKNC}
               coinPriceMCH={CoinPriceMCH}
+              coinPriceTOMO={CoinPriceTOMO}
               coinDisplay={coinDisplay}
               isShortCoin={IsShortCoin}
          

@@ -81,6 +81,7 @@ export default function App({setOutScrollViewTop}){
 
         dispatch(asyncExportPrivateKey({id: userinfo._id, password: pass_private, coin_type: coinType}))
         .then((res)=>{
+            console.log(res)
 
             if(res.status === 1 && res.msg === 'wrong password'){
                 setError('Mật khẩu không chính xác')
@@ -104,12 +105,15 @@ export default function App({setOutScrollViewTop}){
                 setPasswordPrivate('')
                 return
             }
-
+            
+            setError('Đã có lỗi xảy ra')
+            toggleModal()
+            setPasswordPrivate('')
         })
         .catch(console.log)
         
 
-    }, [PasswordPrivate])
+    }, [PasswordPrivate, Error])
 
 
 
@@ -127,7 +131,13 @@ export default function App({setOutScrollViewTop}){
         
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
      <Popup type='failed' title={Error} isModalVisible={isModalVisible}/>
-     
+     { isModalVisibleInput === true ?
+         <PopupInputPassword 
+         toCancel={() => setModalVisibleInput(false)} 
+         toSubmit={() => submitPasswordHandler(PasswordPrivate, CoinSelected)}
+         toChangeText={(value) => setPasswordPrivate(value)} 
+         isModalVisible={isModalVisibleInput}/> : null
+     }
      <PopupInputPassword 
         toCancel={() => setModalVisibleInput(false)} 
         toSubmit={() => submitPasswordHandler(PasswordPrivate, CoinSelected)}

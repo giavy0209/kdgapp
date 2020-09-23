@@ -16,18 +16,6 @@ export default function App(){
 
     const {NewsData} = route.params ?? {}
 
-    useEffect(async () => {
-        var userinfo = await storage('_id').getItem()
-        var date_time =     (new Date(userinfo.create_date)).getHours().toString()  + ":" +
-                            (new Date(userinfo.create_date)).getMinutes().toString()  + ":" +
-                            (new Date(userinfo.create_date)).getSeconds().toString()  + " - " +
-                            (new Date(userinfo.create_date)).getDate().toString()  + "/"   +
-                            ((new Date(userinfo.create_date)).getMonth() + 1).toString() + "/"   +
-                            (new Date(userinfo.create_date)).getFullYear().toString()
-
-        setCreateDate(date_time);
-
-    },[])
 
     var listnoti = [
         { title: 'Chúc mừng bạn đã tham gia King Wallet', 
@@ -56,7 +44,17 @@ export default function App(){
                                     ((new Date(item.create_date)).getMonth() + 1).toString() + "/"   +
                                     (new Date(item.create_date)).getFullYear().toString()
                                 }
-                                status={false}
+                                status={
+                                    (
+                                        (new Date(item.create_date)).getDate().toString()  + "/"   +
+                                        ((new Date(item.create_date)).getMonth() + 1).toString() + "/"   +
+                                        (new Date(item.create_date)).getFullYear().toString()
+                                    )   ===    (
+                                        (new Date()).getDate().toString()  + "/"   +
+                                        ((new Date()).getMonth() + 1).toString() + "/"   +
+                                        (new Date()).getFullYear().toString()
+                                    )  ? true : false
+                                }
                     
                         />
 
@@ -69,7 +67,7 @@ export default function App(){
                     <Notification
                         title={item.title}
                         content={item.content}
-                        datetime={item.datetime}
+                        datetime=''
                     />
 
                 ))}

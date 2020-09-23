@@ -17,6 +17,7 @@ import trxicon from '../../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../../assets/images/IconCoin/MCH.png'
+import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
 
 // ------------------------------------------
 
@@ -28,25 +29,18 @@ export default function App({setOutScrollViewTop}){
     const coinNumbers = useSelector(state => state.coinNumbers)
     const [Width , setWidth] = useState(0);
     const dispatch = useDispatch();
-    // ----------Balance Coin -----------
-    const [KGDBalance, setKDGBalance] = useState(0);
-    const [TRXBalance, setTRXBalance] = useState(0);
-    const [ETHBalance, setETHBalance] = useState(0);
-    const [USDTBalance, setUSDTBalance] = useState(0);
-    // ----------------------------------
+
     const list = [
-        {exchange_rate: coinNumbers.kdg.exchange_rate, balance: coinNumbers.kdg.balance, text: 'KDG', icon: kdgicon, description: 'Kingdom Game 4.0', key: '1'},
-        {exchange_rate: coinNumbers.eth.exchange_rate, balance: coinNumbers.eth.balance, text: 'ETH', icon: ethicon, description: 'Ethereum', key: '2'},
-        {exchange_rate: coinNumbers.trx.exchange_rate, balance: coinNumbers.trx.balance, text: 'TRX',icon: trxicon, description: 'Tron', key: '3'},
-        {exchange_rate: coinNumbers.usdt.exchange_rate, balance: coinNumbers.usdt.balance, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
-        {exchange_rate: coinNumbers.knc.exchange_rate, balance: coinNumbers.knc.balance, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
-        {exchange_rate: coinNumbers.mch.exchange_rate, balance: coinNumbers.mch.balance, text: 'MCH', icon: mchicon, description: 'Meconcash ', key: '6'},
+        {address: coinNumbers.kdg.address , exchange_rate: coinNumbers.kdg.exchange_rate, balance: coinNumbers.kdg.balance, text: 'KDG', icon: kdgicon, description: 'Kingdom Game 4.0', key: '1'},
+        {address: coinNumbers.eth.address , exchange_rate: coinNumbers.eth.exchange_rate, balance: coinNumbers.eth.balance, text: 'ETH', icon: ethicon, description: 'Ethereum', key: '2'},
+        {address: coinNumbers.trx.address , exchange_rate: coinNumbers.trx.exchange_rate, balance: coinNumbers.trx.balance, text: 'TRX',icon: trxicon, description: 'Tron', key: '3'},
+        {address: coinNumbers.usdt.address , exchange_rate: coinNumbers.usdt.exchange_rate, balance: coinNumbers.usdt.balance, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
+        {address: coinNumbers.knc.address , exchange_rate: coinNumbers.knc.exchange_rate, balance: coinNumbers.knc.balance, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
+        {address: coinNumbers.mch.address , exchange_rate: coinNumbers.mch.exchange_rate, balance: coinNumbers.mch.balance, text: 'MCH', icon: mchicon, description: 'Meconcash ', key: '6'},
+        {address: coinNumbers.tomo.address , exchange_rate: coinNumbers.tomo.exchange_rate, balance: coinNumbers.tomo.balance, text: 'TOMO', icon: tomoicon, description: 'TomoChain ', key: '7'},
     
       ];
-  // ----------Address Coin -----------
-   const [TRXAddress, setTRXAddress] = useState('');
-   const [ETHAddress, setETHAddress] = useState('');
-  // ----------------------------------
+
 
     const [searchVal, setSearchVal] = useState();
     const navigation = useNavigation()
@@ -54,24 +48,6 @@ export default function App({setOutScrollViewTop}){
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title="Chọn Coins"/>)
     },[])
-
-    useEffect(() => {
-        async function getwalletBlance() {
-          var userinfo = await storage('_id').getItem();
-          setTRXAddress(userinfo.trx_address);
-          setETHAddress(userinfo.erc_address);
-          dispatch(asyncGetBalanceDouble(userinfo.erc_address, userinfo.trx_address))
-          .then(({resETH, resTRX})=>{
-            setKDGBalance(resTRX.data.kdg_balance)
-            setTRXBalance(resTRX.data.trx_balance)
-            setETHBalance(resETH.data.eth_balance)
-            setUSDTBalance(resETH.data.usdt_balance)
-          })
-          
-          .catch(console.log)
-        }
-       getwalletBlance()
-      }, [])    
 
 
 
@@ -113,7 +89,7 @@ export default function App({setOutScrollViewTop}){
                                 onPress={() => 
                                 navigation.navigate('DepositPage2', {
                                     id: item.text, 
-                                    address: item.text === 'KDG' || item.text === 'TRX' ? TRXAddress : ETHAddress,
+                                    address: item.address,
                                     icon: item.icon
                                 })} >
                                     <View style={{flexDirection: 'row'}}>
@@ -148,7 +124,7 @@ export default function App({setOutScrollViewTop}){
                         onPress={() => 
                         navigation.navigate('DepositPage2', {
                             id: item.text, 
-                            address: item.text === 'KDG' || item.text === 'TRX' ? TRXAddress : ETHAddress,
+                            address: item.address,
                             icon: item.icon
                         })} >
                             <View style={{flexDirection: 'row'}}>

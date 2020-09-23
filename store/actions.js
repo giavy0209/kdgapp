@@ -15,6 +15,7 @@ export const CHANGE_DISPLAY = 'CHANGE_DISPLAY';
 export const CHANGE_PIN = 'CHANGE_PIN';
 export const CHANGE_COIN_DISPLAY = 'CHANGE_COIN_DISPLAY';
 export const CHANGE_COIN_NUMBERS = 'CHANGE_COIN_NUMBERS';
+export const CHANGE_SECURE_STATUS = 'CHANGE_SECURE_STATUS';
 
 export function actChangeRouters(routers){
     return {
@@ -53,6 +54,13 @@ export function actChangeCoin(coin){
     return {
         type: CHANGE_COIN_DISPLAY,
         payload: {coin}
+    }
+}
+
+export function actChangeSecureStatus(secstatus){
+    return {
+        type: CHANGE_SECURE_STATUS,
+        payload: {secstatus}
     }
 }
 
@@ -189,6 +197,19 @@ export function asyncConvertKDGReward(value){
         }
     }
 }
+
+export function asyncUpdateUser(UserInfo){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).put('/api/user', UserInfo)).data
+            return res
+
+        } catch (error) {
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
 
 export function asyncLogin(loginInfo){
     return async (dispatch) =>{
@@ -509,6 +530,18 @@ export function asyncLogout(){
 
             return null
         } catch (error) {
+        }
+    }
+}
+
+
+export function asyncSecureStatus(secstatus){
+    return async (dispatch) =>{
+        try {
+    
+            dispatch(actChangeSecureStatus(secstatus))
+            await AsyncStorage.setItem('secstatus', JSON.stringify(secstatus))
+        } catch (error) {   
         }
     }
 }
