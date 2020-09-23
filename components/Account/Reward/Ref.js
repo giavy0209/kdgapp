@@ -56,7 +56,7 @@ export default function App({setOutScrollViewTop}){
       }, [])
     
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title="Phần thưởng"/>)
+        setOutScrollViewTop(<Header2 title="Giới thiệu"/>)
     },[])
 
     const toggleModal = useCallback(() => {
@@ -156,13 +156,13 @@ export default function App({setOutScrollViewTop}){
                         })}}
                         style={{alignItems: 'center'}}
                     >
-                        <Text style={{color: '#fff'}}>Phần Thưởng Của Tôi ></Text>
+                        <Text style={{color: '#fff'}}>Phần Thưởng Của Tôi</Text>
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 30}}>
                         <View style={{backgroundColor: '#121827', borderRadius: 10, width: '90%', padding: 5}}>
                             <View style={{alignItems: 'center'}}>
                                 <Text style={{textAlign: 'center', color: 'rgba(255,255,255,0.5)'}}>Số người mới KYC thành công</Text>
-                                    {/* <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>{RewardData.length}</Text> */}
+                                    <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>{RewardData ? RewardData.length : 0}</Text>
                             </View>
                         </View>
                         
