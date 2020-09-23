@@ -14,7 +14,7 @@ import ListCoin from './ListCoin'
 import AsyncStorage from '@react-native-community/async-storage';
 import calAPI from '../../axios';
 import { storage } from '../../helper';
-import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus } from '../../store/actions';
+import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus } from '../../store/actions';
 
 const hiddenBalance = "******"
 export default function App({ navigation }) {
@@ -34,6 +34,8 @@ export default function App({ navigation }) {
 
 
   const [NewsData, setNewsData] = useState([]);
+
+  const [Count, setCount] = useState(0);
 
 
   // ----------Balance Coin -----------
@@ -240,11 +242,11 @@ export default function App({ navigation }) {
     getwalletBlance()
 
 
-  }, [TOMOBalance])
+  }, [TOMOBalance, TOMOAddress])
 
 
 useEffect(() => {
-  dispatch(asyncSecureStatus({
+  dispatch(actChangeSecureStatus({
     kdg_reward: UserData.kdg_reward,
     kyc: UserData.kyc,
     kyc_success: UserData.kyc_success,
@@ -255,9 +257,29 @@ useEffect(() => {
 
 
   useEffect(() => {
+    var dem = 0
     dispatch(asyncGetNews(0,20))
     .then((res)=>{
       setNewsData(res.data)
+      
+      res.data.slice(0,4).map((item) =>{
+        if(item.content_vi !== undefined && item.meta_vi !== undefined){
+            if(
+                (
+                  (new Date(item.create_date)).getDate().toString()  + "/"   +
+                  ((new Date(item.create_date)).getMonth() + 1).toString() + "/"   +
+                  (new Date(item.create_date)).getFullYear().toString()
+                )   ===    (
+                  (new Date()).getDate().toString()  + "/"   +
+                  ((new Date()).getMonth() + 1).toString() + "/"   +
+                  (new Date()).getFullYear().toString()
+                ) 
+            ){
+              dem += 1
+            }
+        }
+    })
+      setCount(dem)
     })
     .catch(console.log) 
 }, [])
@@ -447,14 +469,14 @@ useEffect(() => {
                   NewsData: NewsData
                 })} style={walletStyles.notifyIcon}>
                   <FontAwesomeIcon icon={faBell} style={{ color: '#fff' }} />
-                  {/* <Text style={walletStyles.notifyCount}>15</Text> */}
+                  {Count !== 0 ?<Text style={walletStyles.notifyCount}>{Count}</Text> : null}
                 </TouchableOpacity>
               </View>
             </View>
             <View style={walletStyles.balance}>
               <View style={walletStyles.maskOpacity}></View>
               <View style={walletStyles.totalBalanceAndVisible}>
-                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : TotalBalance.btc + " BTC"}</Text>
+                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : AvailableBalance.usd === NaN ? '0' : TotalBalance.btc + " BTC"}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
                   <View style={{padding: 13}}>
                     <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
@@ -464,11 +486,20 @@ useEffect(() => {
               <View style={walletStyles.availableAndLock}>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Available balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? AvailableBalance.vnd + ' ₫' : AvailableBalance === 2 ?  '¥' + AvailableBalance.cny : '$' + AvailableBalance.usd}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  AvailableBalance.usd === NaN ? '0' :
+                    typeCurrency === 1 ? 
+                    AvailableBalance.vnd + ' ₫' : 
+                    typeCurrency === 2 ?  
+                    '¥' + AvailableBalance.cny : 
+                    '$' + AvailableBalance.usd}</Text>
                 </View>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Locked balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? CoinPriceKDGLock.vnd + ' ₫' : CoinPriceKDGLock === 2 ?  '¥' + CoinPriceKDGLock.cny : '$' + CoinPriceKDGLock.usd}</Text>
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? 
+                    CoinPriceKDGLock.vnd + ' ₫' : 
+                    CoinPriceKDGLock === 2 ?  
+                    '¥' + CoinPriceKDGLock.cny : 
+                    '$' + CoinPriceKDGLock.usd}</Text>
                 </View>
               </View>
             </View>

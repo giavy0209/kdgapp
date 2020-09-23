@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, Text, Image, TouchableOpacity,Alert, TextInput, ActivityIndicator} from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
@@ -11,11 +11,22 @@ import { mainStyles, accountStyle } from '../../../styles'
 import defaultAvata from '../../../assets/images/default-avata.webp'
 import defaultAvataPNG from '../../../assets/images/default-avata.png'
 import { useRoute } from '@react-navigation/native'
-import {asyncLogout} from '../../../store/actions'
+import {asyncGetUserbyID, asyncLogout} from '../../../store/actions'
 import { LinearGradient } from 'expo-linear-gradient'
 import { storage } from '../../../helper';
 import { asyncUpdateUser  } from '../../../store/actions'
+import { Popup } from '../../Popup';
 
+
+function isValidDate(dateString) {
+    var regEx = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if(!dateString.match(regEx)) return false;  // Invalid format
+    var [date, month, year] = dateString.split('/')
+    var d = new Date(year, month - 1,0);
+    var dNum = d.getTime();
+    if(!dNum && dNum !== 0) return false; // NaN value, Invalid date
+    return true
+}
 export default function App() {
     const dispatch = useDispatch()
     const route = useRoute()
@@ -31,10 +42,40 @@ export default function App() {
 
     const [SelectedGender, setSelectedGender] = useState(0)
 
+    const [UserInfoInServer, setUserInfoInServer] = useState({
+    })
     const [Name, setName] = useState('')
-    const [Date, setDate] = useState('')
+    const [Birthday, setBirthday] = useState('')
+    const [IsUpadteSuccess, setIsUpadteSuccess] = useState(false)
 
     const {email} = route.params;
+
+    useEffect(() => {
+        async function getUserInfo() {
+          var userinfo = await storage('_id').getItem();
+          dispatch(asyncGetUserbyID(userinfo._id))
+          .then((res)=>{
+            // setUserInfoInServer({
+            //     Name: res.data.first_name + " " + res.data.last_name,
+            //     Gender: res.data.gioi_tinh_id,
+            //     Birthday: res.data.birth_day,
+            // })
+            setSelectedGender(res.data.gioi_tinh_id)
+            setName(res.data.first_name + res.data.last_name)
+            setBirthday(
+                (new Date(res.data.birth_day)).getDate().toString()  + "/"   +
+                ((new Date(res.data.birth_day)).getMonth() + 1).toString() + "/"   +
+                (new Date(res.data.birth_day)).getFullYear().toString()
+            )
+          })
+    
+        }
+    
+        getUserInfo()
+    
+    
+      },[IsUpadteSuccess])
+
     const getPermissionAsync = useCallback(async () => {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -67,21 +108,58 @@ export default function App() {
     },[])
 
 
-    const withdraw = useCallback(async () => {
-        var userinfo = await storage('_id').getItem();
+    const updateUser = useCallback(async (name, gender, birthday) => {
+        var last_name = name.substr(name.indexOf(' '))
+        var first_name = name.substr(0,name.indexOf(' '))
+        var [day, month, year] = birthday.split('/')
 
-        dispatch(asyncWithdraw({userId: userinfo._id, name: Name, gioi_tinh_id: SelectedGender}))
-        .then((res)=>{
-          
+        var birth_day = `${month}/${day}/${year}`
 
-        })
-        .catch(console.log)
-    }, [ToAddress, Token, ValueSend])
+
+        toggleModal()
+        if(name){
+            var userinfo = await storage('_id').getItem();
+            var submitInfo = 
+            {
+                id: userinfo._id, gioi_tinh_id: SelectedGender, first_name: first_name, last_name: last_name, birth_day: birth_day
+            }
+
+            dispatch(asyncUpdateUser(submitInfo))
+            .then((res)=>{
+                if(res.data !== null && res.status === 1){
+                    setIsUpadteSuccess(true)
+                    return
+ 
+                }
+
+                setIsUpadteSuccess(false)
+            })
+            .catch(console.log)
+        }else{
+
+        }
+
+    }, [Name, SelectedGender])
+
+
+
+
+      const [isModalVisible, setModalVisible] = useState(false);
+    
+      const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+        setTimeout(function(){ 
+          setModalVisible(false);
+         }, 1000);
+      };
+    
+
 
     return (
         <>
             <Header2 setHeight={setHeight} title="Hồ sơ cá nhân" />
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 36, paddingTop: 78,}]}>
+            <Popup type='success' title='Cập nhật thành công' isModalVisible={isModalVisible}/>
                 
                 <View
                 onLayout={e => setBlockWidth(e.nativeEvent.layout.width)}
@@ -101,7 +179,7 @@ export default function App() {
                 <View style={{paddingTop: 20}}>
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35}}>
                         <Text style={{color: '#fff'}}>Họ và tên</Text>
-                        <TextInput onChangeText={(value) => setName()} placeholder='Nhập họ và tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 35}} />
+                        <TextInput onChangeText={(value) => setName(value)} value={Name} placeholder='Nhập họ và tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 35}} />
                     </View>
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35}}>
                         <Text style={{color: '#fff'}}>Email</Text>
@@ -134,14 +212,20 @@ export default function App() {
 
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35}}>
                         <Text style={{color: '#fff'}}>Ngày sinh</Text>
-                        <TextInput onChangeText={(value) => setDate()} placeholder='Ngày/Tháng/Năm' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 35}} />
+                        <TextInput 
+                            onChangeText={(value) => setBirthday(value)} 
+                            value={Birthday}
+                            placeholder='Ngày/tháng/năm' 
+                            placeholderTextColor='rgba(255,255,255,0.5)' 
+                            style={{color: 'rgba(255,255,255,0.5)', 
+                            paddingLeft: 60}} />
                     </View>
                     
                 </View>
                 
             </View>
 
-            <TouchableOpacity >
+            <TouchableOpacity onPress={() => updateUser(Name, SelectedGender, Birthday)}>
                 <View style={{paddingTop: 150, alignItems: 'center', justifyContent: 'center'}}>
                     <LinearGradient 
                     start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
