@@ -10,6 +10,7 @@ import { useSelector,useDispatch } from 'react-redux'
 import {actChangeScreenHeight, actChangeScreenWidth, asyncGetRouters, asyncLogin} from '../../store/actions'
 
 import Maincomponent from '../Maincontainer'
+import { storage } from '../../helper';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack
@@ -24,20 +25,24 @@ export default function App() {
   const Routers = useSelector(state => state.routers)
 
   const checkRefreshToken = useCallback(async ()=>{
-    var loginTime = JSON.parse(await storage('loginTime').getItem()) 
+    var loginTime = await storage('loginTime').getItem()
     var currTime = new Date().getTime()
     if(currTime - loginTime >= 1200000){
-      var {email, password} = JSON.parse(storage('loginInfo').getItem())
-      dispatch(asyncLogin({email, password}))
-    }
-    setInterval(async () => {
-      var loginTime = JSON.parse(await storage('loginTime').getItem()) 
-      var currTime = new Date().getTime()
-      if(currTime - loginTime >= 1200000){
-        var {email, password} = JSON.parse(storage('loginInfo').getItem())
+      var {email, password} = await storage('loginInfo').getItem()
+      if(email && password){
         dispatch(asyncLogin({email, password}))
       }
-    }, 20000);
+    }
+    setInterval(async () => {
+      var loginTime = await storage('loginTime').getItem()
+      var currTime = new Date().getTime()
+      if(currTime - loginTime >= 1200000){
+        var {email, password} = await storage('loginInfo').getItem()
+        if(email && password){
+          dispatch(asyncLogin({email, password}))
+        }
+      }
+    }, 5000);
   },[])
 
   useMemo(()=>{
@@ -47,7 +52,7 @@ export default function App() {
   
   useEffect(()=>{
     dispatch(actChangeScreenWidth(Dimensions.get('screen').width ))
-    dispatch(actChangeScreenHeight(Dimensions.get('screen').height - top - bottom))
+    dispatch(actChangeScreenHeight(Dimensions.get('screen').height - bottom))
   },[])
     return (
       <SafeAreaView>

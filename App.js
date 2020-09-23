@@ -18,8 +18,10 @@ import {
   RobotoCondensed_300Light
 } from '@expo-google-fonts/roboto-condensed';
 import { storage } from './helper';
+import { setStatusBarHidden } from 'expo-status-bar';
 
 console.disableYellowBox = true;
+setStatusBarHidden(true, 'none')
 export default function App() {
   let [fontsLoaded] = useFonts({
     Roboto_300Light_Italic,
@@ -31,11 +33,9 @@ export default function App() {
   });
 
   useEffect(()=>{
-    // AsyncStorage.removeItem('isNotFirstTime')
+    // AsyncStorage.clear()
     async function setFirstTime(){
       await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
-      
-      
     }setFirstTime()
 
   },[])

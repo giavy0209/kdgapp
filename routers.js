@@ -44,6 +44,7 @@ import Account from './components/Account'
     import WalletManage from './components/Account/WalletManage/WalletManage'
         import SelectCoin from './components/Account/WalletManage/SelectCoin'
         import PrivateKey from './components/Account/WalletManage/PrivateKey'
+    import Reward from './components/Account/Reward/Reward'
     import Ref from './components/Account/Reward/Ref'
     import MyReward  from './components/Account/Reward/MyReward'
     import Rule from './components/Account/Reward/Rule'
@@ -71,15 +72,15 @@ const ROUTERS = [
         needInMain: true,
         isNeedPin : false
     },
-    {
-        name: 'LoginPin',
-        reqLogin: true,
-        title: null,
-        render : LoginPin,
-        needFirstTime: false,
-        needInMain: true,
-        isNeedPin : true
-    },
+    // {
+    //     name: 'LoginPin',
+    //     reqLogin: true,
+    //     title: null,
+    //     render : LoginPin,
+    //     needFirstTime: false,
+    //     needInMain: true,
+    //     isNeedPin : true
+    // },
     {
         name: 'Login',
         reqLogin: false,
@@ -374,6 +375,15 @@ const ROUTERS = [
         reqLogin: true,
         title: '',
         render : PrivateKey,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Reward',
+        reqLogin: true,
+        title: '',
+        render : Reward,
         needFirstTime: false,
         needInMain: true,
         isNeedPin : false

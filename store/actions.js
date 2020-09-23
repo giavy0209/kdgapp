@@ -224,11 +224,13 @@ export function asyncLogin(loginInfo){
                     }
                 })
                 await storage('loginInfo' , loginInfo).setItem()
+                console.log(await storage('loginInfo').getItem());
     
                 await storage('_id' , res.data).setItem();
                 await storage('userData' , res.data).setItem();
                 await storage('isLogin' , true).setItem();
                 await storage('loginTime', new Date().getTime()).setItem()
+                await dispatch(actChangeUserData(res.data))
                 var newRouters = []
                 ROUTERS.forEach((router)=>{
                     if(router.reqLogin){
