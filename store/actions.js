@@ -99,15 +99,14 @@ export function actChangePin(pin){
 export function asyncGetRouters(){
     return async (dispatch) => {
       try {
-        const isLogin = JSON.parse(await AsyncStorage.getItem('isLogin'))
         const userData = JSON.parse(await AsyncStorage.getItem('userData'))
         const isNotFirstTime = JSON.parse(await AsyncStorage.getItem('isNotFirstTime'))
-
         const PIN = JSON.parse(await AsyncStorage.getItem('pin'))
 
         const currency = JSON.parse(await AsyncStorage.getItem('currency'))
         const language = JSON.parse(await AsyncStorage.getItem('language'))
         const display = JSON.parse(await AsyncStorage.getItem('display'))
+        console.log(PIN);
         if(PIN){
             dispatch(actChangePin(PIN))
         }
@@ -135,7 +134,7 @@ export function asyncGetRouters(){
 
         const newRouters = []
         
-        if(isLogin && userData){
+        if(userData){
             ROUTERS.forEach((router)=>{
                 if(router.reqLogin){
                     newRouters.push(router)
@@ -149,18 +148,24 @@ export function asyncGetRouters(){
                     newRouters.push(router)
                 }
             })
-
-            if(isNotFirstTime){
-                newRouters.forEach((el,index)=>{
-                    if(el.needFirstTime){
-                        newRouters.splice(index, 1)
-                    }
-                })
-            }
-
             dispatch(actChangeLoginStatus(false))
         }
-        
+
+        if(isNotFirstTime){
+            newRouters.forEach((el,index)=>{
+                if(el.needFirstTime){
+                    newRouters.splice(index, 1)
+                }
+            })
+        }
+
+        if(!PIN){
+            newRouters.forEach((el,index)=>{
+                if(el.isNeedPin){
+                    newRouters.splice(index, 1)
+                }
+            })
+        }
 
         dispatch(actChangeRouters(newRouters))
 
@@ -190,11 +195,35 @@ export function asyncLogin(loginInfo){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).post('/api/authorize', loginInfo)).data
-            storage('token' , res.jwtToken).setItem();
+            if(res.status === 1){
+                storage('token' , res.jwtToken).setItem();
+                var newRouters = []
+                ROUTERS.forEach((router)=>{
+                    if(router.reqLogin){
+                        newRouters.push(router)
+                    }
+                })
+                await storage('loginInfo' , loginInfo).setItem()
+    
+                await storage('_id' , res.data).setItem();
+                await storage('userData' , res.data).setItem();
+                await storage('isLogin' , true).setItem();
+                await storage('loginTime', new Date().getTime()).setItem()
+                var newRouters = []
+                ROUTERS.forEach((router)=>{
+                    if(router.reqLogin){
+                        newRouters.push(router)
+                    }
+                })
+                
+
+                await dispatch(actChangeRouters(newRouters))
+            }
             return res
 
         } catch (error) {
-            return {ok: false, status: error.response.status}
+            console.log(error);
+            return {ok: false, status: error}
         }
     }
 }
@@ -468,15 +497,17 @@ export function asyncLogout(){
         try {
             dispatch(actChangeLoginStatus(false))
             const newRouters = []
+            
+            // await AsyncStorage.clear();
+            await storage('isNotFirstTime', true).setItem()
 
             ROUTERS.forEach((router)=>{
-                if(!router.reqLogin && !router.needFirstTime){
+                if(!router.reqLogin && !router.needFirstTime && !router.isNeedPin){
                     newRouters.push(router)
                 }
             })
             dispatch(actChangeRouters(newRouters))
 
-            await AsyncStorage.removeItem('isLogin')
             return null
         } catch (error) {
         }

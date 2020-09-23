@@ -111,24 +111,7 @@ export default function App({navigation}) {
                 }
                 if(res.status === 1){
                     setLoading(false)
-                    var newRouters = []
-                    ROUTERS.forEach((router)=>{
-                        if(router.reqLogin){
-                            newRouters.push(router)
-                        }
-                    })
-    
-                    var storageData = {
-                        id: res.data._id
-                        
-                    }
-
-                    storage('loginInfo' , {email : Email , password :Password}).setItem()
-    
-                    storage('_id' , res.data).setItem();
                     
-                    dispatch(actChangeRouters(newRouters))
-                    storage('loginTime', new Date().getTime()).setItem()
                     navigation.replace('Main');
 
                     return

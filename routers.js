@@ -1,4 +1,5 @@
 import Start from './components/Start'
+import LoginPin from './components/LoginPin'
 import Reg from './components/Reg'
 import Login from './components/Login'
 import ForgotPassword from './components/ForgotPassword'
@@ -7,7 +8,6 @@ import Tabs from './components/Tabs'
 import Wallet from './components/Wallet'
     import Notify from './components/Wallet/Notify'
     import News from './components/Wallet/News'
-    // import News from './Webview/News'
     import SetCoins from './components/Wallet/SetCoins'
     import History from './components/Wallet/History/History'
     import HistoryDetail from './components/Wallet/History/HistoryDetail'
@@ -68,7 +68,17 @@ const ROUTERS = [
         title: null,
         render : Start,
         needFirstTime: true,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'LoginPin',
+        reqLogin: true,
+        title: null,
+        render : LoginPin,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : true
     },
     {
         name: 'Login',
@@ -76,7 +86,8 @@ const ROUTERS = [
         title: 'Đăng nhập',
         render : Login,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'ForgotPassword',
@@ -84,7 +95,8 @@ const ROUTERS = [
         title: 'Quên mật khẩu',
         render : ForgotPassword,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Reg',
@@ -92,7 +104,8 @@ const ROUTERS = [
         title: 'Đăng ký',
         render : Reg,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Main',
@@ -100,7 +113,8 @@ const ROUTERS = [
         title: null,
         render : Tabs,
         needFirstTime: false,
-        needInMain: false
+        needInMain: false,
+        isNeedPin : false
     },
     {
         name: 'Notify',
@@ -108,7 +122,8 @@ const ROUTERS = [
         title: 'Thông báo',
         render : Notify,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'News',
@@ -116,7 +131,8 @@ const ROUTERS = [
         title: 'Thông báo',
         render : News,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'SetCoins',
@@ -124,7 +140,8 @@ const ROUTERS = [
         title: 'Add Coins',
         render : SetCoins,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'History',
@@ -132,7 +149,8 @@ const ROUTERS = [
         title: '',
         render : History,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'HistoryDetail',
@@ -140,7 +158,8 @@ const ROUTERS = [
         title: '',
         render : HistoryDetail,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Withdraw',
@@ -148,7 +167,8 @@ const ROUTERS = [
         title: 'Chọn Coins',
         render : Withdraw,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'WithdrawPage2',
@@ -156,7 +176,8 @@ const ROUTERS = [
         title: 'Gửi Coins',
         render : WithdrawPage2,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Deposit',
@@ -164,7 +185,8 @@ const ROUTERS = [
         title: 'Chọn Coins',
         render : Deposit,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'DepositPage2',
@@ -172,7 +194,8 @@ const ROUTERS = [
         title: 'Chọn Coins',
         render : DepositPage2,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Profile',
@@ -180,7 +203,8 @@ const ROUTERS = [
         title: '',
         render : Profile,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Currency',
@@ -188,7 +212,8 @@ const ROUTERS = [
         title: '',
         render : Currency,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Language',
@@ -196,7 +221,8 @@ const ROUTERS = [
         title: '',
         render : Language,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Display',
@@ -204,7 +230,8 @@ const ROUTERS = [
         title: '',
         render : Display,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Secure',
@@ -212,7 +239,8 @@ const ROUTERS = [
         title: '',
         render : Secure,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'ChangePass',
@@ -220,7 +248,8 @@ const ROUTERS = [
         title: '',
         render : ChangePass,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Setting2FA',
@@ -228,7 +257,8 @@ const ROUTERS = [
         title: '',
         render : Setting2FA,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Generate2FACode',
@@ -236,7 +266,8 @@ const ROUTERS = [
         title: '',
         render : Generate2FACode,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Pin',
@@ -244,7 +275,8 @@ const ROUTERS = [
         title: '',
         render : Pin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'SetPin',
@@ -252,7 +284,8 @@ const ROUTERS = [
         title: '',
         render : SetPin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'ChangePin',
@@ -260,7 +293,8 @@ const ROUTERS = [
         title: '',
         render : ChangePin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'RemovePin',
@@ -268,7 +302,8 @@ const ROUTERS = [
         title: '',
         render : RemovePin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     
     {
@@ -277,7 +312,8 @@ const ROUTERS = [
         title: '',
         render : KYC,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'StartKYC',
@@ -285,7 +321,8 @@ const ROUTERS = [
         title: '',
         render : StartKYC,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Upload1',
@@ -293,7 +330,8 @@ const ROUTERS = [
         title: '',
         render : Upload1,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Upload2',
@@ -301,7 +339,8 @@ const ROUTERS = [
         title: '',
         render : Upload2,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Invitation',
@@ -309,7 +348,8 @@ const ROUTERS = [
         title: '',
         render : Invitation,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'WalletManage',
@@ -317,7 +357,8 @@ const ROUTERS = [
         title: '',
         render : WalletManage,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'SelectCoin',
@@ -325,7 +366,8 @@ const ROUTERS = [
         title: '',
         render : SelectCoin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'PrivateKey',
@@ -333,7 +375,8 @@ const ROUTERS = [
         title: '',
         render : PrivateKey,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Reward',
@@ -341,7 +384,8 @@ const ROUTERS = [
         title: '',
         render : Reward,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'MyReward',
@@ -349,7 +393,8 @@ const ROUTERS = [
         title: '',
         render : MyReward,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Rule',
@@ -357,7 +402,8 @@ const ROUTERS = [
         title: '',
         render : Rule,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'StakingHistory',
@@ -365,7 +411,8 @@ const ROUTERS = [
         title: '',
         render : StakingHistory,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'StakingTime',
@@ -373,7 +420,8 @@ const ROUTERS = [
         title: '',
         render : StakingTime,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'StakingJoining',
@@ -381,7 +429,8 @@ const ROUTERS = [
         title: '',
         render : StakingJoining,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Terms',
@@ -389,7 +438,8 @@ const ROUTERS = [
         title: '',
         render : Terms,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
 
     {
@@ -398,7 +448,8 @@ const ROUTERS = [
         title: '',
         render : Terms,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
 ];
 
