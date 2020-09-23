@@ -1,2 +1,7 @@
+
 import History from './History'
-export default History
+import HistoryDetail from './HistoryDetail'
+export {
+    History,
+    HistoryDetail
+}

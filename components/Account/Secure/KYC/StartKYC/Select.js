@@ -6,9 +6,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 const checkSelect = function (type,selected){
-    if(type === 0) return {title: 'QUỐC GIA', list: ['Việt Nam','Quốc gia khác']}
-    if(type === 1) return {title: 'LOẠI GIẤY TỜ', list: ['Số CMND','Bằng lái xe','Hộ chiếu']}
-    if(type === 2) return {title: 'GIỚI TÍNH', list: ['Nam','Nữ']}
+    if(type === 0) return {title: 'QUỐC GIA', list: [
+        { id: 0, name: 'Việt Nam' },
+        { id: 1, name: 'Quốc gia khác' }
+    ]}
+    if(type === 1) return {title: 'LOẠI GIẤY TỜ', list: [
+        { id: 0, name: 'CMND/Bằng lái xe' },
+        { id: 2, name: 'Hộ chiếu' }
+    ]}
+    if(type === 2) return {title: 'GIỚI TÍNH', list: [     
+        { id: 0, name: 'Nam' },
+        { id: 1, name: 'Nữ' }
+    ]}
 
     return null
 }
@@ -41,8 +50,8 @@ export default function App({
                     Select.list.map(select=>{
                         return(
                             <>
-                            <TouchableOpacity onPress={()=>handleSelect(select)} style={{flexDirection: 'row', justifyContent: 'space-between',alignItems: 'center',paddingVertical: 13, paddingHorizontal: 15,}}>
-                                <Text style={Select.selected === select ? {color:'#fac800'} :{ color: '#ddd9d8'}}> {select} </Text>
+                            <TouchableOpacity onPress={()=>handleSelect(select.id)} style={{flexDirection: 'row', justifyContent: 'space-between',alignItems: 'center',paddingVertical: 13, paddingHorizontal: 15,}}>
+                                <Text style={Select.selected === select.id ? {color:'#fac800'} :{ color: '#ddd9d8'}}> {select.name} </Text>
                                 {Select.selected === select && <FontAwesomeIcon color="#fac800" icon={faCheck}/>}
                             </TouchableOpacity>
                             </>

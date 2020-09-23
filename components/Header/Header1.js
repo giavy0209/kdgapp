@@ -1,6 +1,6 @@
-import React, { useState, useCallback,useEffect } from 'react';
+import React, { useState, useCallback,useEffect  } from 'react';
 
-import {View,Text, TouchableOpacity } from 'react-native'
+import {View,Text, TouchableOpacity, BackHandler } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,21 @@ export default function App({title}){
     const navigation = useNavigation();
     const [ArrowHeight,setArrowHeight] = useState(0)
     const [HeaderHeight,setHeaderHeight] = useState(0)
+
+    
+    function handleBackButtonClick() {
+        navigation.goBack();
+        return true;
+      }
+    
+      useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+        return () => {
+          BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+        };
+      }, []);
+
+
     return(
         <>
         <View onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)} style={{width: '100%', height: 68, position: 'relative', backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center'}}>

@@ -7,7 +7,10 @@ import {
     CHANGE_CURRENCY,
     CHANGE_LANGUAGE,
     CHANGE_DISPLAY,
-    CHANGE_PIN
+    CHANGE_COIN_DISPLAY,
+    CHANGE_PIN,
+    CHANGE_COIN_NUMBERS, 
+    CHANGE_SECURE_STATUS
 } from './actions'
 
 const reducers = function (state = {}, action) {
@@ -54,6 +57,21 @@ const reducers = function (state = {}, action) {
         ...action.payload,
       }
     }else if(action.type === CHANGE_DISPLAY){
+      return{
+        ...state,
+        ...action.payload,
+      }
+    }else if(action.type === CHANGE_COIN_DISPLAY){
+      return{
+        ...state,
+        ...action.payload,
+      }
+    }else if(action.type === CHANGE_COIN_NUMBERS){
+      return{
+        ...state,
+        ...action.payload,
+      }
+    }else if(action.type === CHANGE_SECURE_STATUS){
       return{
         ...state,
         ...action.payload,

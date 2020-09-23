@@ -4,6 +4,8 @@ import scannerStyles from './scannerStyles'
 import startScreenStyle from './startScreenStyle'
 import notifyStyles from './notifyStyles'
 import accountStyle from './accountStyle'
+import withdrawStyle from './withdrawStyle'
+import stakingStyle from './stakingStyle'
 
 export {
     mainStyles,
@@ -12,4 +14,7 @@ export {
     startScreenStyle,
     notifyStyles,
     accountStyle,
+    withdrawStyle,
+    stakingStyle
+    
 }

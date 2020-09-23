@@ -19,8 +19,8 @@ export default function App(){
     const [PinBar1Focus, setPinBar1Focus] = useState(false)
 
     const onBlurPinBar1 = useCallback(()=>{
-        setPinBar1Focus(false)
-    },[])
+        (Pin1 + '').length === 0 && setPinBar1Focus(false)
+    },[Pin1])
     const handleSubmit = useCallback(()=>{
         if(Pin1 === PIN){
             dispatch(asyncSetPin(false))

@@ -6,13 +6,14 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         position: 'absolute',
-        top: 5,
+        top: 120,
         right: 5,
         fontSize: 40,
         color: '#ff0000',
         zIndex: 9,
         width: 40,
-        height: 40
+        height: 40,
+        padding: 50
     }
 })
 

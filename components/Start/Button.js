@@ -18,14 +18,13 @@ export default function Button({ScreenWidth, ScreenHeight,ActivePage,setActivePa
                     start={[0,1]}
                     end={[1,0]}
                     colors={['#e3bb4c', '#edda8b']}
-                    style={{  paddingTop: ScreenHeight * 0.01499, paddingBottom: ScreenHeight * 0.01499, alignItems: 'center', borderRadius: 50 ,width: ScreenWidth * 0.4}}>
+                    style={{  paddingTop: ScreenHeight * 0.01499, paddingBottom: ScreenHeight * 0.01499, alignItems: 'center', borderRadius: 20 ,width: ScreenWidth * 0.4}}>
                     <Text
                         style={{
                         backgroundColor: 'transparent',
                         fontSize: 14,
                         color: '#000',
-                        }}>
-                        Đăng nhập
+                        }}>Đăng nhập
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>

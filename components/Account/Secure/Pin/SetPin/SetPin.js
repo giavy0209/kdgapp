@@ -21,12 +21,12 @@ export default function App(){
     const [PinBar2Focus, setPinBar2Focus] = useState(false)
 
     const onBlurPinBar1 = useCallback(()=>{
-        setPinBar1Focus(false)
-    },[])
+        (Pin1 + '').length === 0 && setPinBar1Focus(false)
+    },[Pin1])
 
     const onBlurPinBar2 = useCallback(()=>{
-        setPinBar2Focus(false)
-    },[])
+        (Pin2 + '').length === 0 && setPinBar2Focus(false)
+    },[Pin2])
 
     const handleSubmit = useCallback(()=>{
         if(Pin1.length !== 6){

@@ -1,4 +1,5 @@
 import Start from './components/Start'
+import LoginPin from './components/LoginPin'
 import Reg from './components/Reg'
 import Login from './components/Login'
 import ForgotPassword from './components/ForgotPassword'
@@ -8,9 +9,17 @@ import Wallet from './components/Wallet'
     import Notify from './components/Wallet/Notify'
     import News from './components/Wallet/News'
     import SetCoins from './components/Wallet/SetCoins'
-    import History from './components/Wallet/History'
+    import History from './components/Wallet/History/History'
+    import HistoryDetail from './components/Wallet/History/HistoryDetail'
+    import Withdraw from './components/Wallet/Withdraw/Withdraw'
+    import WithdrawPage2 from './components/Wallet/Withdraw/WithdrawPage2'
+    import Deposit from './components/Wallet/Deposit/Deposit'
+    import DepositPage2 from './components/Wallet/Deposit/DepositPage2'
 
-import Stake from './components/Stake'
+import Staking from './components/Stake'
+    import StakingHistory from './components/Stake/StakingHistory/'
+    import StakingTime from './components/Stake/StakingTime/'
+    import StakingJoining from './components/Stake/StakingJoining/'
 
 import Swap from './components/Swap'
 
@@ -20,6 +29,8 @@ import Account from './components/Account'
     import Language from './components/Account/Language'
     import Display from './components/Account/Display'
     import Secure from './components/Account/Secure'
+        import Setting2FA from './components/Account/Secure/Setting2FA/Setting2FA'
+        import Generate2FACode from './components/Account/Secure/Setting2FA/Generate2FACode'
         import ChangePass from './components/Account/Secure/ChangePass'
         import Pin from './components/Account/Secure/Pin'
             import SetPin from './components/Account/Secure/Pin/SetPin'
@@ -29,13 +40,22 @@ import Account from './components/Account'
             import StartKYC from './components/Account/Secure/KYC/StartKYC'
                 import Upload1 from './components/Account/Secure/KYC/StartKYC/Upload1'
                 import Upload2 from './components/Account/Secure/KYC/StartKYC/Upload2'
+    import Invitation from './components/Account/Invitation'
+    import WalletManage from './components/Account/WalletManage/WalletManage'
+        import SelectCoin from './components/Account/WalletManage/SelectCoin'
+        import PrivateKey from './components/Account/WalletManage/PrivateKey'
+    import Reward from './components/Account/Reward/Reward'
+    import MyReward  from './components/Account/Reward/MyReward'
+    import Rule from './components/Account/Reward/Rule'
         
-
+import Terms from './components/Terms'
 
 import tabWallet from './assets/images/tab-wallet.png'
 import tabWalletActive from './assets/images/tab-wallet-active.png'
 import tabStake from './assets/images/tab-stake.png'
+import tabStakeActive from './assets/images/tab-stake-active.png'
 import tabSwap from './assets/images/tab-swap.png'
+import tabSwapActive from './assets/images/tab-swap-active.png'
 import tabAccount from './assets/images/tab-account.png'
 import tabAccountActive from './assets/images/tab-account-active.png'
 
@@ -48,7 +68,17 @@ const ROUTERS = [
         title: null,
         render : Start,
         needFirstTime: true,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'LoginPin',
+        reqLogin: true,
+        title: null,
+        render : LoginPin,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : true
     },
     {
         name: 'Login',
@@ -56,7 +86,8 @@ const ROUTERS = [
         title: 'Đăng nhập',
         render : Login,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'ForgotPassword',
@@ -64,7 +95,8 @@ const ROUTERS = [
         title: 'Quên mật khẩu',
         render : ForgotPassword,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Reg',
@@ -72,7 +104,8 @@ const ROUTERS = [
         title: 'Đăng ký',
         render : Reg,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Main',
@@ -80,7 +113,8 @@ const ROUTERS = [
         title: null,
         render : Tabs,
         needFirstTime: false,
-        needInMain: false
+        needInMain: false,
+        isNeedPin : false
     },
     {
         name: 'Notify',
@@ -88,7 +122,8 @@ const ROUTERS = [
         title: 'Thông báo',
         render : Notify,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'News',
@@ -96,7 +131,8 @@ const ROUTERS = [
         title: 'Thông báo',
         render : News,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'SetCoins',
@@ -104,7 +140,8 @@ const ROUTERS = [
         title: 'Add Coins',
         render : SetCoins,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'History',
@@ -112,7 +149,53 @@ const ROUTERS = [
         title: '',
         render : History,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'HistoryDetail',
+        reqLogin: true,
+        title: '',
+        render : HistoryDetail,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Withdraw',
+        reqLogin: true,
+        title: 'Chọn Coins',
+        render : Withdraw,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'WithdrawPage2',
+        reqLogin: true,
+        title: 'Gửi Coins',
+        render : WithdrawPage2,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Deposit',
+        reqLogin: true,
+        title: 'Chọn Coins',
+        render : Deposit,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'DepositPage2',
+        reqLogin: true,
+        title: 'Chọn Coins',
+        render : DepositPage2,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Profile',
@@ -120,7 +203,8 @@ const ROUTERS = [
         title: '',
         render : Profile,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Currency',
@@ -128,7 +212,8 @@ const ROUTERS = [
         title: '',
         render : Currency,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Language',
@@ -136,7 +221,8 @@ const ROUTERS = [
         title: '',
         render : Language,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Display',
@@ -144,7 +230,8 @@ const ROUTERS = [
         title: '',
         render : Display,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Secure',
@@ -152,7 +239,8 @@ const ROUTERS = [
         title: '',
         render : Secure,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'ChangePass',
@@ -160,7 +248,26 @@ const ROUTERS = [
         title: '',
         render : ChangePass,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Setting2FA',
+        reqLogin: true,
+        title: '',
+        render : Setting2FA,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Generate2FACode',
+        reqLogin: true,
+        title: '',
+        render : Generate2FACode,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Pin',
@@ -168,7 +275,8 @@ const ROUTERS = [
         title: '',
         render : Pin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'SetPin',
@@ -176,7 +284,8 @@ const ROUTERS = [
         title: '',
         render : SetPin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'ChangePin',
@@ -184,7 +293,8 @@ const ROUTERS = [
         title: '',
         render : ChangePin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'RemovePin',
@@ -192,15 +302,18 @@ const ROUTERS = [
         title: '',
         render : RemovePin,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
+    
     {
         name: 'KYC',
         reqLogin: true,
         title: '',
         render : KYC,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'StartKYC',
@@ -208,7 +321,8 @@ const ROUTERS = [
         title: '',
         render : StartKYC,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Upload1',
@@ -216,7 +330,8 @@ const ROUTERS = [
         title: '',
         render : Upload1,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
     },
     {
         name: 'Upload2',
@@ -224,7 +339,117 @@ const ROUTERS = [
         title: '',
         render : Upload2,
         needFirstTime: false,
-        needInMain: true
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Invitation',
+        reqLogin: true,
+        title: '',
+        render : Invitation,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'WalletManage',
+        reqLogin: true,
+        title: '',
+        render : WalletManage,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'SelectCoin',
+        reqLogin: true,
+        title: '',
+        render : SelectCoin,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'PrivateKey',
+        reqLogin: true,
+        title: '',
+        render : PrivateKey,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Reward',
+        reqLogin: true,
+        title: '',
+        render : Reward,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'MyReward',
+        reqLogin: true,
+        title: '',
+        render : MyReward,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Rule',
+        reqLogin: true,
+        title: '',
+        render : Rule,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'StakingHistory',
+        reqLogin: true,
+        title: '',
+        render : StakingHistory,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'StakingTime',
+        reqLogin: true,
+        title: '',
+        render : StakingTime,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'StakingJoining',
+        reqLogin: true,
+        title: '',
+        render : StakingJoining,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Terms',
+        reqLogin: true,
+        title: '',
+        render : Terms,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+
+    {
+        name: 'Terms2',
+        reqLogin: false,
+        title: '',
+        render : Terms,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
     },
 ];
 
@@ -240,9 +465,9 @@ const TABS = [
     {
         name: 'Staking',
         title: 'Staking',
-        render : Stake,
+        render : Staking,
         logo: tabStake,
-        logoActive: tabStake,
+        logoActive: tabStakeActive,
         reqLogin: true,
     },
     {
@@ -250,7 +475,7 @@ const TABS = [
         title: 'Swap',
         render : Swap,
         logo: tabSwap,
-        logoActive: tabSwap,
+        logoActive: tabSwapActive,
         reqLogin: true,
     },
     {

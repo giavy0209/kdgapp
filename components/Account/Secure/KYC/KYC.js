@@ -12,6 +12,7 @@ export default function App(){
     const [Height, setHeight] =useState(0)
     const [ContentHeight, setContentHeight] =useState(0)
     const [ButtonHeight, setButtonHeight] =useState(0)
+
     return (
         <>
             <Header2 setHeight={setHeight} title="Xác minh danh tính"/>

@@ -1,3 +1,3 @@
-import Stake from './Stake'
+import Staking from './Staking'
 
-export default Stake
+export default Staking
