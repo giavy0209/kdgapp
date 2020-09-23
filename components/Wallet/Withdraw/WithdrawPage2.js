@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../../assets/images/logo.png'
 import coin from '../../../assets/images/coin.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -14,8 +14,17 @@ import { Dimensions } from 'react-native';
 import { storage } from '../../../helper';
 import { asyncGetCoinPrice, asyncWithdraw } from '../../../store/actions'
 import { Camera } from 'expo-camera';
+import ticker from '../../../assets/images/ticker.png'
 
+// ------------------Icon---------------------
+import kdgicon from '../../../assets/images/IconCoin/KDG.png'
+import ethicon from '../../../assets/images/IconCoin/ETH.png'
+import trxicon from '../../../assets/images/IconCoin/TRX.png'
+import usdticon from '../../../assets/images/IconCoin/USDT.png'
+import kncicon from '../../../assets/images/IconCoin/KNC.png'
+import mchicon from '../../../assets/images/IconCoin/MCH.png'
 
+// ------------------------------------------
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -29,7 +38,7 @@ export default function App({setOutScrollView}){
     const navigation = useNavigation();
     const route = useRoute();
     const dispatch = useDispatch();
-
+    const [SelectedType, setSelectedType] = useState(0)
     const [IsScannerOpen, setIsScannerOpen] = useState(false);
     // --------Value Submit----------
     const [ToAddress, setToAddress] = useState('')
@@ -52,9 +61,11 @@ export default function App({setOutScrollView}){
     }
 
 
-    const withdraw = useCallback(async () => {
+    const withdraw = useCallback(async (sel) => {
         var userinfo = await storage('_id').getItem();
-        var withdraw_type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase();
+        var withdraw_type = coinName === 'TRX' ? 'tron' : 
+                            coinName === 'USDT' && sel === 0 ? 'usdt' :  
+                            coinName === 'USDT' && sel === 1 ? 'usdt-trc20' : coinName.toLowerCase();
 
         dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: withdraw_type, toAddress: ToAddress, token: Token}))
         .then((res)=>{
@@ -129,19 +140,51 @@ export default function App({setOutScrollView}){
         toPress={() => openScanner()}
         title={"Gửi " +  coinName}/>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} > 
-        <View style={withdrawStyle.balanceContainer}>
-            <View style={{flexDirection: 'row'}}>
-                <Image source={coin} style={{width: windowWidth*windowHeight/11750, height: windowWidth*windowHeight/11750}} />
-                <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
-                    <Text style={withdrawStyle.coinName}>{coinName}</Text>
-                    <Text style={withdrawStyle.balance}>Số dư: {coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
-                </View>                                   
+
+        <View style={withdrawStyle.numberSendContainer}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View style={{flexDirection: 'row'}}>
+                        <Image source={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : mchicon} style={{width: windowWidth*windowHeight/9000, height: windowWidth*windowHeight/9000}} />
+                        <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
+                            <Text style={withdrawStyle.coinName}>{coinName}</Text>
+                            <Text style={withdrawStyle.balance}>Số dư: {coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
+                        </View>                                   
+                </View>
+
+                <TouchableOpacity onPress={() => navigation.goBack()} style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5}}>Chọn coin</Text>
+                    <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faChevronRight}/>
+                </TouchableOpacity>
+       
             </View>
+
+            {
+              coinName === 'USDT' ?
+              <View style={{flexDirection: 'row' ,paddingHorizontal: 60, width: '100%', paddingTop: 30, justifyContent: 'space-between'}}>
+                  <Text style={{color: 'rgba(255,255,255,0.5)'}}>Chọn loại</Text>
+                  <View style={{flexDirection: 'row'}}>
+                    <TouchableOpacity onPress={() => setSelectedType(0)} style={{backgroundColor: SelectedType === 0 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
+                        {SelectedType === 0 ? <Image source={ticker}/>  : null}
+                    </TouchableOpacity>
+                    <Text style={{color: '#fff', paddingLeft: 10}}>ERC-20</Text>
+                  </View>
+
+                  <View style={{flexDirection: 'row'}}>
+                    <TouchableOpacity onPress={() => setSelectedType(1)} style={{backgroundColor: SelectedType === 1 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
+                        {SelectedType === 1 ? <Image source={ticker}/>  : null}
+                    </TouchableOpacity>
+                    <Text style={{color: '#fff', paddingLeft: 10}}>ERC-20</Text>
+                  </View>
+
+              </View> : null
+            
+            }
+            
         </View>
 
         <View style={withdrawStyle.numberSendContainer}>
             <View style={{width: '100%'}}>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>Số tiền gửi</Text>   
+                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>Số tiền rút</Text>   
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <View style={withdrawStyle.inputNumContainer}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
@@ -218,7 +261,7 @@ export default function App({setOutScrollView}){
         </View>
 
         <TouchableOpacity
-                onPress={withdraw}
+                onPress={() => withdraw(SelectedType)}
             >
                 <View style={{alignItems: 'center', justifyContent: 'center', marginTop: windowHeight/25}}>
                     <LinearGradient 

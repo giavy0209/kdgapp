@@ -415,7 +415,7 @@ useEffect(() => {
     usdt: {
       balance: USDTBalance,
       exchange_rate: CoinPriceUSDT,
-      address: ETHAddress
+      address: ETHAddress,
     },
     knc: {
       balance: KNCBalance,

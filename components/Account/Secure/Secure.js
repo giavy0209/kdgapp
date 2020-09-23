@@ -9,12 +9,15 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector, useDispatch} from 'react-redux'
 import { storage } from '../../../helper'
 import { asyncGetUserbyID } from '../../../store/actions'
+
 export default function App(){
     const navigation = useNavigation()
 
     const dispatch = useDispatch();
 
     const secureStatus = useSelector(state => state.secstatus)
+
+
 
    
     return (
@@ -49,12 +52,12 @@ export default function App(){
                     <View style={accountStyle.maskOpacity} ></View>
                     <Text style={{fontSize: 14, color: '#ddd9d8'}}>Xác minh danh tính (KYC)</Text>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={secureStatus.kyc === '0' ? {color: 'rgba(255,255,255,0.5)'} : 
-                                     secureStatus.kyc === '1' ? {color: 'green'} :  
+                        <Text style={secureStatus.kyc == '0' ? {color: 'rgba(255,255,255,0.5)'} : 
+                                     secureStatus.kyc == '1' ? {color: 'green'} :  
                                      secureStatus.kyc === '2' ? {color: 'rgba(255,255,255,0.5)'} :  {color: 'red'}} >
-                            {secureStatus.kyc === '0' ? 'Chưa xác minh': 
-                             secureStatus.kyc === '1' ? 'Đã xác minh'  : 
-                             secureStatus.kyc === '2' ? 'Đang chờ duyệt' : 'Bị từ chối'}
+                            {secureStatus.kyc == '0' ? 'Chưa xác minh': 
+                             secureStatus.kyc == '1' ? 'Đã xác minh'  : 
+                             secureStatus.kyc == '2' ? 'Đang chờ duyệt' : 'Bị từ chối'}
                         </Text>
                         <FontAwesomeIcon style={secureStatus.kyc === '0' ? {color: 'rgba(255,255,255,0.5)'} : 
                                      secureStatus.kyc === '1' ? {color: 'green'} :  

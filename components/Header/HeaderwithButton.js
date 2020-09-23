@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
 import openscaner from '../../assets/images/openscaner.png'
-export default function App({title,setHeight,toPress }){
+import logout from '../../assets/images/logout.png'
+export default function App({title,setHeight,toPress, type}){
     const navigation = useNavigation();
     const [ArrowHeight,setArrowHeight] = useState(0)
     const [HeaderHeight,setHeaderHeight] = useState(0)
@@ -46,7 +47,7 @@ export default function App({title,setHeight,toPress }){
                   style={{position: 'absolute', right: 20, top: (HeaderHeight / 1) - (ArrowHeight / 2)}} 
                   onPress={toPress}
             >
-                  <Image style={{width: 20,height: 20}} source={openscaner} />
+                  <Image style={{width: 20,height: 20}} source={type === 'logout' ? logout : openscaner} />
             </TouchableOpacity>
         </LinearGradient>
         </>

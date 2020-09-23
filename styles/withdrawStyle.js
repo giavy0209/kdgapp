@@ -71,8 +71,7 @@ const styles = StyleSheet.create({
             borderRadius: 10,
             margin: (windowWidth*windowHeight)/23040,
             padding: (windowWidth*windowHeight)/23040,
-            flexDirection: 'row',
-            backgroundColor: 'rgba(26,36,56, 0.8)',
+            backgroundColor: 'rgba(40, 51, 73, 0.4)',
         },
         nearSymbol: {
             color: 'rgba(241, 243, 244, 0.5)',

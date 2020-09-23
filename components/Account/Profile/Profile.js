@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { Header2 } from '../../Header'
+import { Header2, HeaderwithButton } from '../../Header'
 import { mainStyles, accountStyle } from '../../../styles'
 import defaultAvata from '../../../assets/images/default-avata.webp'
 import defaultAvataPNG from '../../../assets/images/default-avata.png'
@@ -157,7 +157,7 @@ export default function App() {
 
     return (
         <>
-            <Header2 setHeight={setHeight} title="Hồ sơ cá nhân" />
+            <HeaderwithButton toPress={handleLogout} type='logout' setHeight={setHeight} title="Hồ sơ cá nhân" />
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 36, paddingTop: 78,}]}>
             <Popup type='success' title='Cập nhật thành công' isModalVisible={isModalVisible}/>
                 
