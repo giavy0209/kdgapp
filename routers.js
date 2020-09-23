@@ -44,7 +44,7 @@ import Account from './components/Account'
     import WalletManage from './components/Account/WalletManage/WalletManage'
         import SelectCoin from './components/Account/WalletManage/SelectCoin'
         import PrivateKey from './components/Account/WalletManage/PrivateKey'
-    import Reward from './components/Account/Reward/Reward'
+    import Ref from './components/Account/Reward/Ref'
     import MyReward  from './components/Account/Reward/MyReward'
     import Rule from './components/Account/Reward/Rule'
         
@@ -379,10 +379,10 @@ const ROUTERS = [
         isNeedPin : false
     },
     {
-        name: 'Reward',
+        name: 'Ref',
         reqLogin: true,
         title: '',
-        render : Reward,
+        render : Ref,
         needFirstTime: false,
         needInMain: true,
         isNeedPin : false
