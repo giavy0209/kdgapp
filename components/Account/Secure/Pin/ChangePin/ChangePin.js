@@ -28,16 +28,22 @@ export default function App(){
     const [PinBar2Focus, setPinBar2Focus] = useState(false)
 
     const onBlurPinBarOld = useCallback(()=>{
-        setOldPinBarFocus(false)
-    },[])
+        if((OldPin + '').length === 0){
+            setOldPinBarFocus(false)
+        }
+    },[OldPin])
 
     const onBlurPinBar1 = useCallback(()=>{
-        setPinBar1Focus(false)
-    },[])
+        if((Pin1 + '').length === 0){
+            setPinBar1Focus(false)
+        }
+    },[Pin1])
 
     const onBlurPinBar2 = useCallback(()=>{
-        setPinBar2Focus(false)
-    },[])
+        if((Pin2 + '').length === 0){
+            setPinBar2Focus(false)
+        }
+    },[Pin2])
 
     const handleSubmit = useCallback(()=>{
         if(OldPin !== PIN){
