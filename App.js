@@ -33,10 +33,10 @@ export default function App() {
   });
 
   useEffect(()=>{
-    // AsyncStorage.clear()
-    async function setFirstTime(){
-      await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
-    }setFirstTime()
+    AsyncStorage.clear()
+    // async function setFirstTime(){
+    //   await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
+    // }setFirstTime()
 
   },[])
 

@@ -3,14 +3,13 @@ import { View , Text,TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useNavigation } from '@react-navigation/native';
-export default function Button({ScreenWidth, ScreenHeight,ActivePage,setActivePage}){
+export default function Button({ScreenWidth, ScreenHeight}){
     const navigation = useNavigation();
     return(
         <>
         <View 
         style={[
-            {position: 'absolute',top: ScreenHeight * 0.8245,left: ScreenWidth * 0.08, flex: 1, flexDirection: 'row', justifyContent:'space-between',alignContent: 'space-between'},
-            ActivePage !== 3 && {transform: [{ scale: 0 }]}
+            {position: 'absolute',top: ScreenHeight * 0.8245,left: ScreenWidth * 0.08, flex: 1, flexDirection: 'row', justifyContent:'space-between',alignContent: 'space-between'}
         ]}
         >
             <TouchableOpacity onPress={()=>navigation.replace('Login')}>

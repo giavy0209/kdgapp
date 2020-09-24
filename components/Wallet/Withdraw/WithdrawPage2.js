@@ -23,6 +23,8 @@ import trxicon from '../../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../../assets/images/IconCoin/MCH.png'
+import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
+
 
 // ------------------------------------------
 
@@ -144,14 +146,14 @@ export default function App({setOutScrollView}){
         <View style={withdrawStyle.numberSendContainer}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <View style={{flexDirection: 'row'}}>
-                        <Image source={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : mchicon} style={{width: windowWidth*windowHeight/9000, height: windowWidth*windowHeight/9000}} />
+                        <Image source={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : mchicon} style={{width: windowWidth*windowHeight/9000, height: windowWidth*windowHeight/9000}} />
                         <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
                             <Text style={withdrawStyle.coinName}>{coinName}</Text>
                             <Text style={withdrawStyle.balance}>Số dư: {coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
                         </View>                                   
                 </View>
 
-                <TouchableOpacity onPress={() => navigation.goBack()} style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity onPress={() => navigation.navigate('Withdraw')} style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5}}>Chọn coin</Text>
                     <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faChevronRight}/>
                 </TouchableOpacity>
@@ -173,7 +175,7 @@ export default function App({setOutScrollView}){
                     <TouchableOpacity onPress={() => setSelectedType(1)} style={{backgroundColor: SelectedType === 1 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                         {SelectedType === 1 ? <Image source={ticker}/>  : null}
                     </TouchableOpacity>
-                    <Text style={{color: '#fff', paddingLeft: 10}}>ERC-20</Text>
+                    <Text style={{color: '#fff', paddingLeft: 10}}>TRC-20</Text>
                   </View>
 
               </View> : null

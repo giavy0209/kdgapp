@@ -72,15 +72,15 @@ const ROUTERS = [
         needInMain: true,
         isNeedPin : false
     },
-    // {
-    //     name: 'LoginPin',
-    //     reqLogin: true,
-    //     title: null,
-    //     render : LoginPin,
-    //     needFirstTime: false,
-    //     needInMain: true,
-    //     isNeedPin : true
-    // },
+    {
+        name: 'LoginPin',
+        reqLogin: true,
+        title: null,
+        render : LoginPin,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : true
+    },
     {
         name: 'Login',
         reqLogin: false,

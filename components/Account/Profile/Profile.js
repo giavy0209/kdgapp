@@ -44,7 +44,9 @@ export default function App() {
 
     const [UserInfoInServer, setUserInfoInServer] = useState({
     })
+    const [FirstName, setFirstName] = useState('')
     const [Name, setName] = useState('')
+    const [Address, setAddress] = useState('')
     const [Birthday, setBirthday] = useState('')
     const [IsUpadteSuccess, setIsUpadteSuccess] = useState(false)
 
@@ -61,7 +63,9 @@ export default function App() {
             //     Birthday: res.data.birth_day,
             // })
             setSelectedGender(res.data.gioi_tinh_id)
-            setName(res.data.first_name + res.data.last_name)
+            setName(res.data.last_name)
+            setAddress(res.data.address)
+            setFirstName(res.data.first_name)
             setBirthday(
                 (new Date(res.data.birth_day)).getDate().toString()  + "/"   +
                 ((new Date(res.data.birth_day)).getMonth() + 1).toString() + "/"   +
@@ -108,24 +112,23 @@ export default function App() {
     },[])
 
 
-    const updateUser = useCallback(async (name, gender, birthday) => {
-        var last_name = name.substr(name.indexOf(' '))
-        var first_name = name.substr(0,name.indexOf(' '))
+    const updateUser = useCallback(async (first_name, name, gender, birthday, address) => {
         var [day, month, year] = birthday.split('/')
 
         var birth_day = `${month}/${day}/${year}`
 
 
         toggleModal()
-        if(name){
+
             var userinfo = await storage('_id').getItem();
             var submitInfo = 
             {
-                id: userinfo._id, gioi_tinh_id: SelectedGender, first_name: first_name, last_name: last_name, birth_day: birth_day
+                id: userinfo._id, gioi_tinh_id: SelectedGender, first_name: first_name, last_name: name, birth_day: birth_day, address: address
             }
 
             dispatch(asyncUpdateUser(submitInfo))
             .then((res)=>{
+                console.log(res)
                 if(res.data !== null && res.status === 1){
                     setIsUpadteSuccess(true)
                     return
@@ -135,11 +138,8 @@ export default function App() {
                 setIsUpadteSuccess(false)
             })
             .catch(console.log)
-        }else{
 
-        }
-
-    }, [Name, SelectedGender])
+    }, [Name, SelectedGender, Address, FirstName])
 
 
 
@@ -177,17 +177,21 @@ export default function App() {
                 </View>
 
                 <View style={{paddingTop: 20}}>
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35}}>
-                        <Text style={{color: '#fff'}}>Họ và tên</Text>
-                        <TextInput onChangeText={(value) => setName(value)} value={Name} placeholder='Nhập họ và tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 35}} />
+                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: '#fff'}}>Họ</Text>
+                        <TextInput onChangeText={(value) => setFirstName(value)} value={FirstName} placeholder='Nhập họ' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 70}} />
                     </View>
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35}}>
+                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: '#fff'}}>Tên</Text>
+                        <TextInput onChangeText={(value) => setName(value)} value={Name} placeholder='Nhập tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 70}} />
+                    </View>
+                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
                         <Text style={{color: '#fff'}}>Email</Text>
                         <TextInput editable={false} value={email} placeholder='Nhập họ và tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 60}} />
                     </View>
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35}}>
+                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
                         <Text style={{color: '#fff'}}>Giới tính</Text>
-                        <View  style={{flexDirection: 'row', paddingLeft: 40}}>
+                        <View  style={{flexDirection: 'row', paddingLeft: 45}}>
                             <TouchableOpacity onPress={() => setSelectedGender(0)} style={{backgroundColor: '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
                                 {
                                     SelectedGender === 0 ? 
@@ -210,7 +214,7 @@ export default function App() {
          
                     </View>
 
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35}}>
+                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
                         <Text style={{color: '#fff'}}>Ngày sinh</Text>
                         <TextInput 
                             onChangeText={(value) => setBirthday(value)} 
@@ -218,15 +222,20 @@ export default function App() {
                             placeholder='Ngày/tháng/năm' 
                             placeholderTextColor='rgba(255,255,255,0.5)' 
                             style={{color: 'rgba(255,255,255,0.5)', 
-                            paddingLeft: 60}} />
+                            paddingLeft: 35}} />
+                    </View>
+
+                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: '#fff'}}>Địa chỉ</Text>
+                        <TextInput onChangeText={(value) => setAddress(value)} value={Address} placeholder='Địa chỉ' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 50}} />
                     </View>
                     
                 </View>
                 
             </View>
 
-            <TouchableOpacity onPress={() => updateUser(Name, SelectedGender, Birthday)}>
-                <View style={{paddingTop: 150, alignItems: 'center', justifyContent: 'center'}}>
+            <TouchableOpacity style={{marginTop: 80}} onPress={() => updateUser(FirstName, Name, SelectedGender, Birthday, Address)}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <LinearGradient 
                     start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                     colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}

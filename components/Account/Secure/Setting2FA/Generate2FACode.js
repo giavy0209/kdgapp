@@ -35,14 +35,12 @@ export default function App(){
     const route = useRoute();
     const navigation = useNavigation();
     const [Value, setValue] = useState('');
+    const [Password, setPassword] = useState('');
     const dispatch = useDispatch();
     const { userId, gaSecret, email, status2FA } = route.params;
 
     const valueQR = `otpauth://totp/Kingdomgame:${email}?secret=${gaSecret}&issuer=Kingdomgame`;
-    
-    const getValue = (val) => {
-        setValue(val);
-    }
+
 
   
     const verify2FA = useCallback(() => {
@@ -67,10 +65,9 @@ export default function App(){
         })
     }, [userId, Value])
 
-    const disable2FA = useCallback(() => {
-        dispatch(asyncDisable2FA({userId: userId, token: Value}))
+    const disable2FA = useCallback((val, pass) => {
+        dispatch(asyncDisable2FA({userId: userId, token: val, password: pass}))
         .then((res)=>{
-            console.log(res)
             // navigation.navigate('Me')
             if(res.status === 100){
                 setPopupStatus(false)
@@ -88,8 +85,10 @@ export default function App(){
                 navigation.navigate('Secure')
                 return
             }
-            setPopupStatus(false)
-            toggleModal()
+            if(res.status === 104){
+                setPopupStatus(false)
+                toggleModal()
+            }
         })
     }, [userId, Value])
 
@@ -99,7 +98,7 @@ export default function App(){
         <>
             <Header2 setHeight={setHeight} title="Cài đặt 2FA"/>
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 12}]}>
-                <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? 'Thành công' : 'Mã xác thực không chính xác'} isModalVisible={isModalVisible}/>
+                <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? 'Thành công' : 'Xác thực thất bại'} isModalVisible={isModalVisible}/>
                 <View style={{paddingTop: 15, alignItems: 'center'}}>
                 {status2FA === false ?
                 (<View style={{alignItems: 'center'}}>
@@ -134,12 +133,22 @@ export default function App(){
                     <View style={{marginTop: 20, backgroundColor: '#fff', padding: 10, width: '90%', borderRadius: 10}}>
                         <TextInput
                             keyboardType='decimal-pad'
-                            onChangeText={(value) => getValue(value)}
+                            onChangeText={(value) => setValue(value)}
                             placeholder='Nhập mã 2FA trong app của bạn'
                         />
                     </View>
+                    {status2FA === true ?
+                    <View style={{marginTop: 20, backgroundColor: '#fff', padding: 10, width: '90%', borderRadius: 10}}>
+                        <TextInput
+                            secureTextEntry={true}
+                            onChangeText={(value) => setPassword(value)}
+                            placeholder='Nhập mật khẩu'
+                        />
+                    </View>
+                    : null
+                    }
                     <TouchableOpacity 
-                        onPress={status2FA === true ? disable2FA : verify2FA}
+                        onPress={status2FA === true ? () => disable2FA(Value, Password) : verify2FA}
                         style={{width: '100%'}}>
                         <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
                             <LinearGradient 

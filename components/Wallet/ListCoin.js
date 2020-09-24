@@ -128,7 +128,9 @@ export default function App({
                     data.sort(function(a, b){
                         return a.coinPrice.exchange.usd < b.coinPrice.exchange.usd;
                     })
-                    : data
+                    :       data.sort(function(a, b){
+                        return a.coinPrice.exchange.usd > b.coinPrice.exchange.usd;
+                    })
                 }
 
                 renderItem={({item, index}) =>
@@ -169,8 +171,8 @@ export default function App({
                             </View>
                         </View>
                         <View style={walletStyles.coinRight}>
-                            <Text style={walletStyles.quantity}>{VisibleBalance ? hiddenBalance : item.balance}</Text>
-                            <Text style={walletStyles.coinPirce}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? `~$${item.coinPrice.vnd} ₫` :  typeCurrency === 2 ? `~¥${item.coinPrice.cny}` : `~$${item.coinPrice.usd}` }</Text>
+                            <Text style={walletStyles.quantity}>{VisibleBalance ? hiddenBalance : item.balance || !isNaN(item.balance) ?  item.balance :'Loading...'}</Text>
+                            <Text style={walletStyles.coinPirce}>{VisibleBalance ? hiddenBalance : item.coinPrice.usd || !isNaN(item.coinPrice.usd) ? typeCurrency === 1 ? `~${item.coinPrice.vnd} ₫` :  typeCurrency === 2 ? `~¥${item.coinPrice.cny}` : `~$${item.coinPrice.usd}` : 'Loading...'} </Text>
                         </View>
                     </TouchableOpacity>
                 </Swipeable>

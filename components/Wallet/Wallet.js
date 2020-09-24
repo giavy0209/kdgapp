@@ -4,7 +4,7 @@ import {View, Text, TouchableOpacity, Alert, Image, Dimensions,BackHandler,FlatL
 import { Camera } from 'expo-camera';
 import { mainStyles, walletStyles, scannerStyles } from '../../styles/'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBell, faTimes,faEye,faEyeSlash, faSortAmountDown,faPlusCircle, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faTimes,faEye,faEyeSlash, faSortAmountDown,faPlusCircle, faAngleRight, faSortAmountUp } from '@fortawesome/free-solid-svg-icons';
 
 import openscaner from '../../assets/images/openscaner.png'
 import postImage from '../../assets/images/post-image.jpg'
@@ -28,7 +28,7 @@ export default function App({ navigation }) {
 
 
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
-  const [VisibleBalance, setVisibleBalance] = useState(true);
+  const [VisibleBalance, setVisibleBalance] = useState(false);
   const [IsShortCoin, setIsShortCoin] = useState(false);
   const [UserData, setUserData] = useState({});
 
@@ -163,9 +163,10 @@ export default function App({ navigation }) {
 
 
   const handleBarCodeScanned = useCallback(({ type, data }) => {
-      navigation.navigate('Withdraw', {
-        addressScan: data
-      })
+      Alert.alert(
+        'Đã sao chép địa chỉ ví',
+        `${data}`
+      )
       setIsScannerOpen(false)
   }, []);
 
@@ -199,12 +200,11 @@ export default function App({ navigation }) {
   useEffect(() => {
     async function getwalletBlance() {
       var userinfo = await storage('_id').getItem();
-
-      setTRXAddress(userinfo.trx_address);
-      setETHAddress(userinfo.erc_address);
       dispatch(asyncGetUserbyID(userinfo._id))
       .then((res)=>{
         setTOMOAddress(res.data.tomo_address)
+        setTRXAddress(res.data.trx_address);
+        setETHAddress(res.data.erc_address);
         if(res.data.kdg_lock !== undefined){
             setKDGLock(res.data.kdg_lock);
             setUserData(res.data)
@@ -476,7 +476,7 @@ useEffect(() => {
             <View style={walletStyles.balance}>
               <View style={walletStyles.maskOpacity}></View>
               <View style={walletStyles.totalBalanceAndVisible}>
-                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : AvailableBalance.usd === NaN ? '0' : TotalBalance.btc + " BTC"}</Text>
+                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : isNaN(AvailableBalance.usd) ||  AvailableBalance.usd < 0.0000000000000001 ? 'Loading...' : TotalBalance.btc + " BTC"}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
                   <View style={{padding: 13}}>
                     <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
@@ -486,7 +486,7 @@ useEffect(() => {
               <View style={walletStyles.availableAndLock}>
                 <View style={walletStyles.availableAndLockBlock}>
                   <Text style={walletStyles.textAvailableAndLock}>Available balance</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  AvailableBalance.usd === NaN ? '0' :
+                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  isNaN(AvailableBalance.usd) || AvailableBalance.usd < 0.00000000000000001 ? 'Loading...' :
                     typeCurrency === 1 ? 
                     AvailableBalance.vnd + ' ₫' : 
                     typeCurrency === 2 ?  
@@ -511,7 +511,7 @@ useEffect(() => {
               <View style={[walletStyles.listCoinHead, {justifyContent:'flex-end', marginTop: 0}]}>
                 <TouchableOpacity onPress={() => setIsShortCoin(!IsShortCoin)}
                 >
-                  <FontAwesomeIcon style={walletStyles.listCoinHeadColor} icon={faSortAmountDown}/>
+                  <FontAwesomeIcon style={walletStyles.listCoinHeadColor} icon={IsShortCoin ? faSortAmountDown : faSortAmountUp}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>navigation.navigate('SetCoins')}>
                   <FontAwesomeIcon style={[walletStyles.listCoinHeadColor, {marginLeft:15}]} icon={faPlusCircle}/>

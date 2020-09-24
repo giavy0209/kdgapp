@@ -20,6 +20,8 @@ import trxicon from '../../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../../assets/images/IconCoin/MCH.png'
+import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
+
 
 // ------------------------------------------
 
@@ -126,7 +128,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     <TouchableOpacity onPress={() => setSelectedType(1)} style={{backgroundColor: SelectedType === 1 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                         {SelectedType === 1 ? <Image source={ticker}/>  : null}
                     </TouchableOpacity>
-                    <Text style={{color: '#fff', paddingLeft: 10}}>ERC-20</Text>
+                    <Text style={{color: '#fff', paddingLeft: 10}}>TRC-20</Text>
                   </View>
 
               </View> : null
@@ -139,8 +141,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             </View>
             <View>
             <QRCode
-                value={coinAddress}
-                logo={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : mchicon}
+                value={SelectedType === 0 ? coinAddress : coinAddressTRC}
+                logo={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : mchicon}
             />
             </View>
             <View>
