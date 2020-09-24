@@ -126,7 +126,11 @@ export default function App({setOutScrollViewTop}){
                         </LinearGradient>
                         <Text style={styles.textButtom}>Điểm danh</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.blockButton}>
+                    <TouchableOpacity 
+                    onPress={()=>{
+                        navigation.navigate('Spin')
+                    }}
+                    style={styles.blockButton}>
                         <LinearGradient
                         style={styles.iconButton}
                         start={[0,1]}
