@@ -6,7 +6,8 @@ import info from '../../assets/images/info.png'
 import follow from '../../assets/images/follow.png'
 import FollowList from './FollowList'
 import {View, TouchableOpacity} from 'react-native'
-
+import  {checkCurrency,checkDisplay,checkLang} from '../../helper'
+import store from '../../store'
 const List = [
     {
         name: 'CHUNG',
@@ -15,7 +16,12 @@ const List = [
                 icon : currency,
                 textLeft: 'Loại tiền tệ',
                 textRight: 'currency_type',
-                // textRight: typeCurrency === 1 ? 'VND' : typeCurrency === 2 ? 'CNY' : 'USD (Mặc định)',
+                textRight: (state) => {
+                    var type = state.currency
+                    return () => {
+                        return checkCurrency(type)
+                    }
+                },
                 arrow : true,
                 BlockComponent: TouchableOpacity,
                 navigate: 'Currency'
@@ -23,7 +29,12 @@ const List = [
             {
                 icon : language,
                 textLeft: 'Ngôn ngữ',
-                textRight: 'Tiếng Việt',
+                textRight: (state) => {
+                    var type = state.language
+                    return () => {
+                        return checkLang(type)
+                    }
+                },
                 arrow : true,
                 BlockComponent: TouchableOpacity,
                 navigate: 'Language'
@@ -31,7 +42,12 @@ const List = [
             {
                 icon : display,
                 textLeft: 'Hiển thị',
-                textRight: 'Ban Đêm',
+                textRight: (state) => {
+                    var type = state.display
+                    return () => {
+                        return checkDisplay(type)
+                    }
+                },
                 arrow : true,
                 BlockComponent: TouchableOpacity,
                 navigate: 'Display'

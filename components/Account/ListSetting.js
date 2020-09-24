@@ -10,12 +10,12 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux'
 
 export default function App(){
-    console.log(typeCurrency)
-    const typeCurrency = useSelector(state => state.currency)
+    const state = useSelector(state => state)
     const navigation = useNavigation()
     const handlePress = useCallback(route=>{
         navigation.navigate(route)
     },[navigation])
+    
     return (
         <>
         {
@@ -39,10 +39,7 @@ export default function App(){
                 <Text style={accountStyle.settingTextLeft}>{Child.textLeft}</Text>
                 </View>
                 <View style={accountStyle.settingRight}>
-                    <Text style={accountStyle.settingTextRight}>{
-                    Child.textRight === 'currency_type' ? typeCurrency === 1 ? 'VND' : typeCurrency === 2 ? 'CNY' : 'USD (Mặc định)'  : // For child currency
-                        Child.textRight
-                } </Text>
+                    <Text style={accountStyle.settingTextRight}>{typeof Child.textRight === 'function' && Child.textRight(state)() } </Text>
                     {Child.arrow && <FontAwesomeIcon color="#8a8c8e" icon={faAngleRight} />}
                 </View>
             </Child.BlockComponent>

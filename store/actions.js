@@ -584,6 +584,7 @@ export function asyncSetCurrency(currency){
 
 export function asyncSetLanguage(language){
     return async (dispatch) =>{
+        console.log(language);
         try {
             dispatch(actChangeLanguage(language))
             await AsyncStorage.setItem('language', JSON.stringify(language))

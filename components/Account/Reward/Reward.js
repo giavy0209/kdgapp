@@ -20,7 +20,7 @@ import calAPI from '../../../axios'
 
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
-    const language = useSelector(state => state.language === 0 ? 'en' : 'vi')
+    const language = useSelector(state => state.language)
     const [IsRewardToday,setIsRewardToday] = useState(false)
     const [ModalStyle,setModalStyle] = useState('')
     const [ModalMess,setModalMess] = useState('')
