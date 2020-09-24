@@ -16,6 +16,7 @@ export const CHANGE_PIN = 'CHANGE_PIN';
 export const CHANGE_COIN_DISPLAY = 'CHANGE_COIN_DISPLAY';
 export const CHANGE_COIN_NUMBERS = 'CHANGE_COIN_NUMBERS';
 export const CHANGE_SECURE_STATUS = 'CHANGE_SECURE_STATUS';
+export const CHANGE_CHANGE_WALLET_NAME = 'CHANGE_CHANGE_WALLET_NAME';
 
 export function actChangeRouters(routers){
     return {
@@ -71,7 +72,12 @@ export function actChangeCoinNumbers(coinNumbers){
     }
 }
 
-
+export function actChangeWalletName(walletname){
+    return {
+        type: CHANGE_CHANGE_WALLET_NAME,
+        payload: {walletname}
+    }
+}
 
 export function actChangeCurrency(currency){
     return {
@@ -543,6 +549,19 @@ export function asyncSecureStatus(secstatus){
     
             dispatch(actChangeSecureStatus(secstatus))
             await AsyncStorage.setItem('secstatus', JSON.stringify(secstatus))
+        } catch (error) {   
+        }
+    }
+}
+
+
+
+export function asyncSetWalletName(walletname){
+    return async (dispatch) =>{
+        try {
+    
+            dispatch(actChangeWalletName(walletname))
+            await AsyncStorage.setItem('walletname', JSON.stringify(walletname))
         } catch (error) {   
         }
     }

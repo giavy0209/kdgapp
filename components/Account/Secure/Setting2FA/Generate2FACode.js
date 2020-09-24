@@ -6,7 +6,7 @@ import { mainStyles } from '../../../../styles'
 
 import logo from '../../../../assets/images/google-logo.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCopy } from '@fortawesome/free-solid-svg-icons'
+import { faCopy, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import QRCode from '../../../QRGenerate/QRCode'
@@ -93,7 +93,14 @@ export default function App(){
     }, [userId, Value])
 
 
+    const [IsShowPassword, setIsShowPassword] = useState(false)
 
+
+    const ToggleShowPassword = useCallback(() => {
+        setIsShowPassword(!IsShowPassword)
+    }, [IsShowPassword])
+
+    
     return (
         <>
             <Header2 setHeight={setHeight} title="Cài đặt 2FA"/>
@@ -138,22 +145,26 @@ export default function App(){
                         />
                     </View>
                     {status2FA === true ?
-                    <View style={{marginTop: 20, backgroundColor: '#fff', padding: 10, width: '90%', borderRadius: 10}}>
+                    <View style={{marginTop: 20, backgroundColor: '#fff', width: '90%', borderRadius: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 10}}>
                         <TextInput
                             secureTextEntry={true}
                             onChangeText={(value) => setPassword(value)}
                             placeholder='Nhập mật khẩu'
+                            secureTextEntry={!IsShowPassword} 
                         />
+                            <TouchableOpacity onPress={ToggleShowPassword} style={{padding: 20}}>
+                                <FontAwesomeIcon style={{color: '#8a8c8e',}} icon={IsShowPassword ? faEye : faEyeSlash}/>
+                            </TouchableOpacity>
                     </View>
                     : null
                     }
                     <TouchableOpacity 
                         onPress={status2FA === true ? () => disable2FA(Value, Password) : verify2FA}
                         style={{width: '100%'}}>
-                        <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
+                        <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20, }}>
                             <LinearGradient 
                                 colors={['#e5be50', '#ecda8b', '#a47b00']}
-                                style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 20, width: '92%', height: 40}}>
+                                style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 20, width: '92%', height: 50}}>
                                 <Text style={{color: '#111b2d', fontSize: 16,}}>{status2FA === true ? 'Hủy cài đặt 2FA' : 'Xác nhận 2FA'}</Text>
                             </LinearGradient>
                         </View>

@@ -276,6 +276,7 @@ export default function App({ navigation }) {
                 <View style={[styles.inputBlock]}>
                     <Text style={[styles.placeHolderText,{bottom: EmailCodeTextPosition , fontSize: EmailCodeTextSize}, EmailCodeFocus && {color: '#8a8c8e'}]}>Mã xác minh Email</Text>
                     <TextInput 
+                    keyboardType='decimal-pad'
                     onFocus={()=>{EmailCode !== '' || !EmailCodeFocus && setEmailCodeFocus(true)}} 
                     onBlur={()=>{EmailCode ==='' && setEmailCodeFocus(false)}} 
                     onChangeText={value => validateEmailCode(value)}

@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
 
     },
     searchBox: {
-        color: '#8a8c8e'
+        color: '#8a8c8e', 
+        width: '100%'
     },
     iconSearch: {
         padding: (windowWidth*windowHeight)/28000

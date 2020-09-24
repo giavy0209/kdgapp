@@ -14,6 +14,7 @@ import trxicon from '../../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../../assets/images/IconCoin/MCH.png'
+import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
 
 // ------------------------------------------
 export default function App(){
@@ -53,7 +54,7 @@ const data = [
     { isEnabled: isEnabledUSDT, toggle: toggleSwitchUSDT, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
     { isEnabled: isEnabledKNC, toggle: toggleSwitchKNC, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
     { isEnabled: isEnabledMCH, toggle: toggleSwitchMCH, text: 'MCH', icon: mchicon, description: 'MeconCash', key: '6'},
-    { isEnabled: isEnabledTOMO, toggle: toggleSwitchTOMO, text: 'TOMO', icon: mchicon, description: 'TomoChain', key: '7'},
+    { isEnabled: isEnabledTOMO, toggle: toggleSwitchTOMO, text: 'TOMO', icon: tomoicon, description: 'TomoChain', key: '7'},
 ]
 
 
@@ -83,7 +84,7 @@ useEffect(() => {
                     onChangeText={handleSearch}
                     value={Search}
                     placeholderTextColor='rgba(255,255,255, 0.2)'
-                    style={{color: '#8a8c8e',fontSize: 13,backgroundColor: '#2e394f', borderRadius: 20, paddingVertical: 10, paddingLeft: 50}} placeholder="Nhập loại Coin hoặc Địa chỉ hợp đồng"/>
+                    style={{color: '#8a8c8e',fontSize: 13,backgroundColor: '#2e394f', borderRadius: 20, paddingVertical: 10, paddingLeft: 50}} placeholder="Tìm kiếm"/>
                     <TouchableOpacity 
                     onPress={()=>setSearch('')}
                     style={[{position: 'absolute',  top: '50%', right:10,zIndex: 9},{transform: [{translateY: -8}]}

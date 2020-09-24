@@ -3,7 +3,7 @@ import Modal from 'react-native-modal'
 import {View,Text, Platform, TextInput, TouchableOpacity } from 'react-native'
 import { Dimensions } from 'react-native'
 
-export default function App({toChangeText, isModalVisible, toCancel, toSubmit}){
+export default function App({toChangeText, isModalVisible, toCancel, toSubmit, value}){
     const dimen = Dimensions.get('window');
     const [Width , setWidth] = useState(0);
     const isIphoneTaiTho =  Platform.OS === 'ios' &&
@@ -20,7 +20,7 @@ export default function App({toChangeText, isModalVisible, toCancel, toSubmit}){
                             <Text style={{color: '#fff', fontSize: 16, fontWeight: 'bold', paddingBottom: 15, width: '100%'}}>Tên ví</Text>
                             <View style={{backgroundColor: '#fff', width: 220, paddingLeft: 15, borderRadius: 20, padding: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
                                 <View style={{flexDirection: 'row'}}>
-                                    <TextInput onChangeText={toChangeText}  placeholder='Tên ví bạn muốn đổi'/> 
+                                    <TextInput style={{width: '100%'}} value={value} onChangeText={toChangeText}  placeholder='Tên ví bạn muốn đổi'/> 
                                 </View>
 
                             </View>

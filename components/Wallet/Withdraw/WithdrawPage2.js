@@ -215,7 +215,7 @@ export default function App({setOutScrollView}){
                                 style={withdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
-                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>{typeCurrency === 0 ? 'USD' : 'VND'}</Text>
+                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>{typeCurrency === 1 ? 'VND' : typeCurrency === 2 ? 'CNY' : 'USD' }</Text>
                         </View>
                     </View> 
                 </View>      

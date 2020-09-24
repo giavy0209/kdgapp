@@ -2,14 +2,22 @@ import React, { useState, useCallback,useEffect } from 'react';
 import Modal from 'react-native-modal'
 import {View,Text, Platform, TextInput, TouchableOpacity } from 'react-native'
 import { Dimensions } from 'react-native'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
+const isIphoneTaiTho =  Platform.OS === 'ios' &&
+!Platform.isPad &&
+!Platform.isTVOS &&
+((dimen.height === 812 || dimen.width === 812) || (dimen.height === 896 || dimen.width === 896))
 export default function App({toChangeText, isModalVisible, toCancel, toSubmit}){
     const dimen = Dimensions.get('window');
     const [Width , setWidth] = useState(0);
-    const isIphoneTaiTho =  Platform.OS === 'ios' &&
-    !Platform.isPad &&
-    !Platform.isTVOS &&
-    ((dimen.height === 812 || dimen.width === 812) || (dimen.height === 896 || dimen.width === 896))
+    const [IsShowPassword, setIsShowPassword] = useState(false)
+
+
+    const ToggleShowPassword = useCallback(() => {
+        setIsShowPassword(!IsShowPassword)
+    }, [IsShowPassword])
     return(
         <>
         <Modal animationIn='fadeIn'animationOut='fadeOut' animationInTiming={50} isVisible={isModalVisible}>
@@ -19,11 +27,11 @@ export default function App({toChangeText, isModalVisible, toCancel, toSubmit}){
                     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)}  style={{ width: '70%', alignItems: 'center'}}>
                         <View style={{padding: 20, alignItems: 'center'}}>
                             <Text style={{color: '#fff', fontSize: 16, fontWeight: 'bold', paddingBottom: 15, width: '100%'}}>Vui lòng nhập mật khẩu ví</Text>
-                            <View style={{backgroundColor: '#fff', width: 220, paddingLeft: 15, borderRadius: 20, padding: 10}}>
-                
-                                    <TextInput onChangeText={toChangeText} secureTextEntry={true} placeholder='Mật khẩu ví'/> 
-                       
-
+                            <View style={{backgroundColor: '#fff', width: 220, paddingLeft: 15, borderRadius: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <TextInput onChangeText={toChangeText}  secureTextEntry={!IsShowPassword}  placeholder='Mật khẩu ví'/> 
+                                    <TouchableOpacity onPress={ToggleShowPassword} style={{padding: 20}}>
+                                        <FontAwesomeIcon style={{color: '#8a8c8e',}} icon={IsShowPassword ? faEye : faEyeSlash}/>
+                                    </TouchableOpacity>
                             </View>
                             </View>
                         <View style={{width: Width-10, borderTopColor: 'rgba(255,255,255,0.5)', borderTopWidth: 1, marginTop: 10, flexDirection: 'row'}}>

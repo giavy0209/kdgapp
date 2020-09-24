@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import coin from '../../assets/images/IconCoin/KDG.png'
-import { asyncConvertKDGReward } from '../../store/actions'
+import { actChangeSecureStatus, asyncConvertKDGReward } from '../../store/actions'
 import { storage } from '../../helper'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -21,7 +21,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
     const [ValueSwap, setValueSwap] = useState(0);
     const [isSelected, setSelection] = useState(false);
-
+    const secstatus = useSelector(state => state.secstatus )
     const [Loading, setLoading] = useState(false);
     const [Width , setWidth] = useState(0);
     const dispatch = useDispatch();
@@ -31,8 +31,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title="Swap"/>)
     },[ValueSwap])
-
     
+
 
     const Swap = useCallback(async () => {
         setLoading(true)  
@@ -80,6 +80,11 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 "Swap",
                 "Swap thành công",
             )
+            setKDGReward(secstatus.KDGReward)
+            dispatch(actChangeSecureStatus({
+                ...secstatus,
+    
+            }))
             setValueSwap(0)
             return;
           }
@@ -157,7 +162,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 </View>
                 <View style={{padding: 10, flexDirection: 'row'}}>
                     <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.3)', fontWeight: '400'}}>Khả dụng: </Text>
-                    <Text style={{fontSize: 15, color: '#fff', fontWeight: '400'}}>1,000 KDG Reward</Text>
+                    <Text style={{fontSize: 15, color: '#fff', fontWeight: '400'}}>{secstatus.kdg_reward + "  KDG Reward"}</Text>
                 </View>
             </View>
 

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import {View, Text, TouchableOpacity, Alert, Image, Dimensions,BackHandler,FlatList } from 'react-native';
+import {View, Text, TouchableOpacity, Alert, Image, Dimensions,BackHandler,FlatList, Clipboard } from 'react-native';
 import { Camera } from 'expo-camera';
 import { mainStyles, walletStyles, scannerStyles } from '../../styles/'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -163,6 +163,7 @@ export default function App({ navigation }) {
 
 
   const handleBarCodeScanned = useCallback(({ type, data }) => {
+      Clipboard.setString(data)
       Alert.alert(
         'Đã sao chép địa chỉ ví',
         `${data}`
@@ -497,7 +498,7 @@ useEffect(() => {
                   <Text style={walletStyles.textAvailableAndLock}>Locked balance</Text>
                   <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? 
                     CoinPriceKDGLock.vnd + ' ₫' : 
-                    CoinPriceKDGLock === 2 ?  
+                    typeCurrency === 2 ?  
                     '¥' + CoinPriceKDGLock.cny : 
                     '$' + CoinPriceKDGLock.usd}</Text>
                 </View>
