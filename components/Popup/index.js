@@ -1,12 +1,12 @@
 import Popup from './Popup'
 import PopupInput from './PopupInput'
 import PopupInputPassword from './PopupInputPassword'
-import PopupStaking from './PopupStaking'
+import PopupCongras from './PopupCongras'
 export {
     Popup,
     PopupInput,
     PopupInputPassword,
-    PopupStaking
+    PopupCongras,
     
 
 }

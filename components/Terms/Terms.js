@@ -28,6 +28,7 @@ export default function App({setOutScrollViewTop}){
     const navigation = useNavigation();
     const route = useRoute();
 
+    const { id } = route.params ?? {}
     useEffect(()=>{
       var index = lang === 'vi' ? 1 : 0
       injectedJavaScript.current = `document.querySelectorAll('.menu .language li')[${index}].click()`
@@ -44,7 +45,7 @@ export default function App({setOutScrollViewTop}){
             javaScriptEnabled
             style={{ height: isIphoneTaiTho ? (95*windowHeight)/100 : windowHeight+30, width: '100%' }}
             source={{
-              uri: `https://kingdomgame.org/terms-of-service/`,
+              uri: id ? `https://kingdomgame.org/terms-of-service/${id}`  : `https://kingdomgame.org/terms-of-service/`,
             }}
             automaticallyAdjustContentInsets={false}
             injectedJavaScript={injectedJavaScript.current}

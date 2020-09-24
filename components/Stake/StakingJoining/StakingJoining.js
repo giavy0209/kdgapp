@@ -17,7 +17,7 @@ import { asyncStaking } from '../../../store/actions'
 import { storage } from '../../../helper'
 import { useDispatch, useSelector } from 'react-redux'
 import { Value } from 'react-native-reanimated'
-import { PopupStaking } from '../../Popup'
+import { PopupCongras } from '../../Popup'
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -108,7 +108,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         <>
 
 <View style={mainStyles.container}>
-<PopupStaking toPress={() => setModalVisible(false)} isModalVisible={isModalVisible}/>
+<PopupCongras title='Staking thành công !' content='Chúc mừng bạn đã tham gia Staking thành công' toPress={() => setModalVisible(false)} isModalVisible={isModalVisible}/>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
         <View style={{padding: (windowWidth*windowHeight)/29376, backgroundColor: 'rgba(29,37,54,0.8)', marginBottom: 13}}>
             <View style={{alignItems: 'center'}}>
