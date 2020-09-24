@@ -83,8 +83,8 @@ export default html = `
                         this.beginX,
                         this.beginY,
                         this.game.size / 2 - BORDER_SIZE,
-                        this.angle * index  + this.angle / 2,
-                        this.angle * index + this.angle  + this.angle / 2,
+                        this.angle * index  + this.angle / 2 + (this.game.spinDeg * Math.PI / 180),
+                        this.angle * index + this.angle  + this.angle / 2 + (this.game.spinDeg * Math.PI / 180),
                         false
                     )
                     this.game.ctx.closePath();
@@ -92,7 +92,7 @@ export default html = `
                     this.game.ctx.fill()
 
 
-                    var deg = Math.PI * 2 / this.game.total * index
+                    var deg = Math.PI * 2 / this.game.total * index + (this.game.spinDeg * Math.PI / 180)
 
                     var posX = Math.cos(deg) * (this.game.size / 2 - BORDER_SIZE / 2)
 
@@ -144,7 +144,7 @@ export default html = `
                     this.game.ctx.font = '12px Arial'
                     this.game.ctx.fillStyle = element.color
                     this.game.ctx.translate(this.beginX  , this.beginY )
-                    this.game.ctx.rotate(-Math.PI / 2 + this.angle * index);
+                    this.game.ctx.rotate(-Math.PI / 2 + this.angle * index + (this.game.spinDeg * Math.PI / 180));
                     this.game.ctx.fillText(element.vi , 50, 5);
                     this.game.ctx.restore();
                 }
@@ -232,6 +232,12 @@ export default html = `
                 this.height = height
                 this.size = this.width - 20
                 this.total = window.spinInfo.length
+                this.spinDeg = 0
+                this.spinSpeed = 0
+                this.spinAcceleration = 10
+
+                this.spinTarget = 360
+
                 this.canvas = document.createElement('canvas')
                 this.ctx = this.canvas.getContext('2d')
                 this.canvas.width = this.width
@@ -256,7 +262,17 @@ export default html = `
             }
 
             update(){
+                if(this.spinDeg <= this.spinTarget){
+                    var targetFromNow = this.spinDeg  / this.spinTarget 
+                    var accelerationDown = targetFromNow *  20
+                    var currentAcceleration = this.spinAcceleration - accelerationDown
+                    this.spinSpeed += currentAcceleration
+                    alert(currentAcceleration + '    ' + this.spinSpeed, )
 
+                    this.spinDeg += this.spinSpeed
+
+                    
+                }
             }
             
             draw() {
