@@ -45,6 +45,7 @@ import Account from './components/Account'
         import SelectCoin from './components/Account/WalletManage/SelectCoin'
         import PrivateKey from './components/Account/WalletManage/PrivateKey'
     import Reward from './components/Account/Reward/Reward'
+    import Spin from './components/Account/Reward/Spin'
     import Ref from './components/Account/Reward/Ref'
     import MyReward  from './components/Account/Reward/MyReward'
     import Rule from './components/Account/Reward/Rule'
@@ -384,6 +385,15 @@ const ROUTERS = [
         reqLogin: true,
         title: '',
         render : Reward,
+        needFirstTime: false,
+        needInMain: true,
+        isNeedPin : false
+    },
+    {
+        name: 'Spin',
+        reqLogin: true,
+        title: '',
+        render : Spin,
         needFirstTime: false,
         needInMain: true,
         isNeedPin : false
