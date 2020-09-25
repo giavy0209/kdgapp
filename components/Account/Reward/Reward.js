@@ -3,21 +3,17 @@ import { View, Text, TouchableOpacity, Image, Clipboard, Share, StyleSheet} from
 
 import {Header2} from '../../Header'
 import { mainStyles } from '../../../styles'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { useNavigation } from '@react-navigation/native'
 import {  checkLanguage, storage } from '../../../helper'
-import { asyncGetTransaction, asyncGetUserbyID } from '../../../store/actions'
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
 import Popup from '../../Popup/Popup'
 import { LinearGradient } from 'expo-linear-gradient'
-import store from '../../../store'
 
 import RewardBanner from '../../../assets/images/rewardbanner.png'
 import checking from '../../../assets/images/checking.png'
 import spin from '../../../assets/images/spin.png'
 import ref from '../../../assets/images/ref.png'
 import calAPI from '../../../axios'
-
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
     const language = useSelector(state => state.language)
@@ -29,7 +25,7 @@ export default function App({setOutScrollViewTop}){
         setOutScrollViewTop(<Header2 title="Phần thưởng"/>)
     },[])
 
-    const userid = useSelector(state=> state._id)
+    const userid = useSelector(state=> state.userInfo._id)
 
     const getTransaction = useCallback(async()=>{
         const res = (await (await calAPI()).get(`/api/get_transaction?id=${userid}&skip=0&take=7&type=lucky-spin-daily`)).data 
@@ -100,7 +96,9 @@ export default function App({setOutScrollViewTop}){
     return (
         <>
             <Popup type={ModalStyle} title={ModalMess} isModalVisible={isModalVisible}/>
-            <View style={[mainStyles.container]}>
+            <View 
+            onLayout={e=>console.log(e)}
+            style={[mainStyles.container]}>
                 <View style={styles.blockImgText}>
                     <View style={styles.blockImg}>
                         <Image style={styles.img} source={RewardBanner} />
