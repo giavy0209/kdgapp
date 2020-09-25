@@ -160,6 +160,7 @@ export default function App ({setBackGround}) {
     const [isModalVisible,setModalVisible] = useState(false)
     const [ModalStyle,setModalStyle] = useState('')
     const [ModalMess,setModalMess] = useState('')
+    const IsRefreshData = useRef(false)
 
     const language = useSelector(state => state.language)
     const user = useSelector(state => state.userInfo)
@@ -192,8 +193,8 @@ export default function App ({setBackGround}) {
 
     const injectValue = useCallback(async ()=>{
         var res = (await (await calAPI()).post('/api/get_lucky_spin', { userId: user._id})).data
-        console.log(res);
         if(res.status === 1){
+            IsRefreshData.current = false
             webview.current.injectJavaScript(`window.spinValue = ${res.spin_value}`)
         }
         if(res.status === 0) {
@@ -201,8 +202,13 @@ export default function App ({setBackGround}) {
         }
     },[user])
 
-    const refreshUserData = useCallback(async () => {
-        dispatch(asyncGetUserbyID(user._id))
+    const refreshUserData = useCallback(async (e) => {
+        if(!IsRefreshData.current){
+            dispatch(asyncGetUserbyID(user._id))
+            .then(res=>{
+                IsRefreshData.current = true
+            })
+        }
     },[user])
     return (
         <>
@@ -223,12 +229,11 @@ export default function App ({setBackGround}) {
                 source={{ html}}
                 onLoad={inject}
                 onMessage={e => {
-                    console.log(e.nativeEvent.data);
                     if(e.nativeEvent.data === 'req-spin-value'){
-                        injectValue()
+                        injectValue(e)
                     }
                     if(e.nativeEvent.data === 'spin-done'){
-                        refreshUserData()
+                        refreshUserData(e)
                     }
                 }}
             />

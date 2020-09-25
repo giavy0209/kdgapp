@@ -47,7 +47,7 @@ export default function App() {
 
   useMemo(()=>{
     dispatch(asyncGetRouters())
-    checkRefreshToken()
+    // checkRefreshToken()
   },[])
   
   useEffect(()=>{
