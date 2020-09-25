@@ -1,44 +1,25 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import {ImageBackground, ScrollView,} from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage';
+import React, { useMemo, useState } from 'react'
+import {ImageBackground, ScrollView, } from 'react-native'
 
 import bg from '../assets/images/bg.jpg'
 import { mainStyles } from '../styles/'
-import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { asyncGetSettings } from '../store/actions';
 export default function Maincontainer({Component,route ,reqLogin, ...restProps}){
     const {bottom} = useSafeAreaInsets()
-    const isLogin = useSelector(state=>state.isLogin)
-    const navigation = useNavigation()
+    const dispatch = useDispatch()
     
     const [OutScrollView, setOutScrollView] = useState(null)
+    const [OutScrollViewTop, setOutScrollViewTop] = useState(null)
+    const [BackGround, setBackGround] = useState(bg)
 
-    // const checkLogin = useCallback(async ()=>{
-    //   if(isLogin){
-    //     if(!reqLogin){
-    //       navigation.replace('Main')
-    //     }
-    //   }else{
-    //     const isLoginInStorage = await AsyncStorage.getItem('isLogin')
-    //     if(isLoginInStorage){
-    //       if(!reqLogin){
-    //         navigation.replace('Main')
-    //       }
-    //     }else{
-    //       if(reqLogin){
-    //         navigation.replace('Login')
-    //       }
-    //     }
-    //   }
-    // },[])
-    // useMemo(()=>{
-    //   checkLogin()
-    // },[])
     return (
-      <ImageBackground source={bg} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
-        <ScrollView style={{ paddingBottom: bottom}}>
-          <Component setOutScrollView={setOutScrollView} {...restProps}/>
+      <ImageBackground source={BackGround} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
+        {OutScrollViewTop && OutScrollViewTop}
+        <ScrollView 
+          style={{ paddingBottom: bottom}}>
+          <Component setOutScrollViewTop={setOutScrollViewTop} setOutScrollView={setOutScrollView} setBackGround={setBackGround} {...restProps}/>
         </ScrollView>
         {OutScrollView && OutScrollView}
       </ImageBackground>

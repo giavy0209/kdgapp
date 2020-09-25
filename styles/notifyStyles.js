@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // alignContent: 'flex-start',
         // justifyContent: 'flex-start',
-        width: '100%'
+        width: '100%',
+        paddingBottom: 10
     }
 })
 

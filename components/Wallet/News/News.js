@@ -1,26 +1,70 @@
-import React, {useState} from 'react'
-import {View, Text, Image} from 'react-native'
-import { mainStyles } from '../../../styles/'
-import {Header2} from '../../Header'
-import postImage from '../../../assets/images/post-image.jpg'
-export default function App(){
-    const [Width , setWidth] = useState(0)
+import React, {useState, useEffect, useRef } from 'react'
+import {View, Text, Platform, Image, TouchableOpacity} from 'react-native'  
+import WebView from 'react-native-webview'
+import { Dimensions } from 'react-native'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import logo from '../../../assets/logo.png'
+import { useNavigation, useRoute } from '@react-navigation/native'
+
+
+    const dimen = Dimensions.get('window');
+    const isIphoneTaiTho =  Platform.OS === 'ios' &&
+    !Platform.isPad &&
+    !Platform.isTVOS &&
+    ((dimen.height === 812 || dimen.width === 812) || (dimen.height === 896 || dimen.width === 896))
+
+const windowHeight = Dimensions.get('window').height;
+export default function App({setOutScrollViewTop}){
+    const navigation = useNavigation();
+    const route = useRoute();
+    const [lang, setlang] = useState('vi')
+
+    const {NewsID} = route.params ?? {}
+
+    const injectedJavaScript = useRef( `
+    document.querySelectorAll('.menu .language li')[1].click()
+    `)
+
+    const webview = useRef('')
+
+    useEffect(()=>{
+      var index = lang === 'vi' ? 1 : 0
+      injectedJavaScript.current = `document.querySelectorAll('.menu .language li')[${index}].click()`
+      if(webview.current.reload ){
+        webview.current.reload()
+      }
+    },[lang])
+ 
     return (
         <>
-        <View style={mainStyles.container}>
-            <Header2 title="Tin tức"/>
-            <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} style={{marginHorizontal: 15,}}>
-                <View style={{marginTop:10,flexDirection: 'column'}}>
-                    <View>
-                        <Image source={postImage} style={{width: '100%',resizeMode:'cover',backgroundColor: '#fff', borderTopLeftRadius: 5,borderTopRightRadius: 5, overflow: 'hidden'}}/>
-                        <View style={{backgroundColor: '#1d2436',padding: 15, borderBottomLeftRadius: 5, borderBottomRightRadius: 5}}>
-                            <Text style={{color: '#fac800', fontFamily: 'Roboto_500Medium'}}>Tháng 8 bùng nổ với chính sách Hoàn đậm 50%</Text>
-                            <Text style={{color: '#8a8c8e'}}>Quy định mới về kinh doanh vận tải bằng xe ô tô; tung tin giả mạo, sai sự thật trên mạng xã hội bị phạt đến 20 triệu đồng; ưu đãi trong lựa chọn nhà đầu tư thực hiện ...</Text>
-                        </View>
-                    </View>
-                </View>
+          <WebView
+            ref={ref => webview.current = ref}
+            scalesPageToFit={true}
+            bounces={false}
+            javaScriptEnabled
+            style={{ height: isIphoneTaiTho ? (95*windowHeight)/100 : windowHeight+30, width: '100%' }}
+            source={{
+              uri: NewsID === undefined ? 'https://kingdomgame.org/kdg-news' : `https://kingdomgame.org/news/${NewsID}`,
+            }}
+            automaticallyAdjustContentInsets={false}
+            injectedJavaScript={injectedJavaScript.current}
+          />
+          <View style={{width: '100%', backgroundColor: '#2c3040', position: 'absolute', height: 80}}>
+            <TouchableOpacity 
+              onPress={()=>{navigation.navigate('Wallet')}}
+              style={{position:'absolute', top: 10, left: 15, padding: 20, zIndex: 9999}}>
+              <FontAwesomeIcon color='#fff' size={20} icon={faChevronLeft} />
+            </TouchableOpacity>
+            <View style={{paddingTop: 20, justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={()=>{navigation.navigate('News')}}
+            >
+              <Image source={logo}/>
+            </TouchableOpacity>
             </View>
-        </View>
+          </View>
+
         </>
     )
 }

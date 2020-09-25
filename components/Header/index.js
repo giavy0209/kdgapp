@@ -1,8 +1,10 @@
 import Header1 from './Header1'
 import Header2 from './Header2'
-import Header3 from './Header3'
+import HeaderStaking from './HeaderStaking'
+import HeaderwithButton from './HeaderwithButton'
 export {
     Header1,
     Header2,
-    Header3,
+    HeaderStaking,
+    HeaderwithButton
 }

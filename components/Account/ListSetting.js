@@ -7,12 +7,15 @@ import {  faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import {accountStyle} from '../../styles'
 import List from './settingList'
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux'
 
 export default function App(){
+    const state = useSelector(state => state)
     const navigation = useNavigation()
     const handlePress = useCallback(route=>{
         navigation.navigate(route)
     },[navigation])
+    
     return (
         <>
         {
@@ -36,7 +39,7 @@ export default function App(){
                 <Text style={accountStyle.settingTextLeft}>{Child.textLeft}</Text>
                 </View>
                 <View style={accountStyle.settingRight}>
-                    <Text style={accountStyle.settingTextRight}>{Child.textRight} </Text>
+                    <Text style={accountStyle.settingTextRight}>{typeof Child.textRight === 'function' && Child.textRight(state)() } </Text>
                     {Child.arrow && <FontAwesomeIcon color="#8a8c8e" icon={faAngleRight} />}
                 </View>
             </Child.BlockComponent>

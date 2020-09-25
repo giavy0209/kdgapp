@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       display: 'flex',
       flexDirection: 'row',
-      marginTop:45
+      marginTop: 30
     },
     placeHolderText : {
       position: "absolute",

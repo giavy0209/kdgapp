@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import {View} from 'react-native'
+import {View, SafeAreaView, AppState} from 'react-native'
 import { Provider} from 'react-redux'
 import store from './store'
 import Navigation from './components/Navigation'
@@ -17,8 +17,11 @@ import {
 import {
   RobotoCondensed_300Light
 } from '@expo-google-fonts/roboto-condensed';
+import { storage } from './helper';
+import { setStatusBarHidden } from 'expo-status-bar';
 
 console.disableYellowBox = true;
+setStatusBarHidden(true, 'none')
 export default function App() {
   let [fontsLoaded] = useFonts({
     Roboto_300Light_Italic,
@@ -33,17 +36,19 @@ export default function App() {
     async function setFirstTime(){
       await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
     }setFirstTime()
+
   },[])
+
 
   if (fontsLoaded) {
     return (
+
     <SafeAreaProvider>
-      <Provider store={store}>
-        
-        <Navigation/>  
-      
+      <Provider store={store}> 
+        <Navigation/>      
       </Provider>
     </SafeAreaProvider>
+   
     )
   }else{
     return (<View></View>)

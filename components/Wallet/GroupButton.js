@@ -6,19 +6,26 @@ import stake from '../../assets/images/stake.png'
 import swap from '../../assets/images/swap.png'
 import { walletStyles } from '../../styles/'
 import { useNavigation } from '@react-navigation/native';
-export default function App(){
+export default function App({}){
     const navigation = useNavigation()
     return (
         <View style={walletStyles.groupButton}>
-            <TouchableOpacity  onPress={()=>navigation.navigate('Withdraw')} style={walletStyles.buttonBlock} style={walletStyles.buttonBlock}>
+            <TouchableOpacity  
+                onPress={()=>navigation.navigate('Withdraw',{
+
+                })} 
+                style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={withdraw}/>
-                <Text style={walletStyles.buttonText}>Gửi</Text>
+                <Text style={walletStyles.buttonText}>Rút</Text>
             </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={walletStyles.buttonBlock}>
+            <TouchableOpacity  
+                onPress={()=>navigation.navigate('Deposit', {
+                })}  
+                style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={deposit}/>
@@ -26,18 +33,22 @@ export default function App(){
             </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={walletStyles.buttonBlock}>
+            <TouchableOpacity 
+                onPress={()=>navigation.navigate('Staking')}
+                style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
-                <Image source={stake}/>
+                <Image style={{marginTop: 5}} source={stake}/>
                 <Text style={walletStyles.buttonText}>Staking</Text>
             </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={walletStyles.buttonBlock}>
+            <TouchableOpacity 
+                onPress={()=>navigation.navigate('Swap')}
+                style={walletStyles.buttonBlock}>
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
-                <Image source={swap}/>
+                <Image style={{marginTop: 5}}  source={swap}/>
                 <Text style={walletStyles.buttonText}>Swap</Text>
             </View>
             </TouchableOpacity>
