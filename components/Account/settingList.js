@@ -6,15 +6,20 @@ import info from '../../assets/images/info.png'
 import follow from '../../assets/images/follow.png'
 import FollowList from './FollowList'
 import {View, TouchableOpacity} from 'react-native'
-import  {checkCurrency,checkDisplay,checkLang} from '../../helper'
+import  {checkCurrency,checkDisplay,checkLang, checkLanguage} from '../../helper'
 import store from '../../store'
+
 const List = [
     {
-        name: 'CHUNG',
+        name: (language) => {
+            return checkLanguage({vi: 'Chung', en: 'General'}, language)
+        },
         child:[
             {
                 icon : currency,
-                textLeft: 'Loại tiền tệ',
+                textLeft: (language) => {
+                    return checkLanguage({vi: 'Loại tiền tệ', en: 'Currency'}, language)
+                },
                 textRight: 'currency_type',
                 textRight: (state) => {
                     var type = state.currency
@@ -28,7 +33,9 @@ const List = [
             },
             {
                 icon : language,
-                textLeft: 'Ngôn ngữ',
+                textLeft: (language) => {
+                    return checkLanguage({vi: 'Ngôn ngữ', en: 'Language'}, language)
+                },
                 textRight: (state) => {
                     var type = state.language
                     return () => {
@@ -41,7 +48,9 @@ const List = [
             },
             {
                 icon : display,
-                textLeft: 'Hiển thị',
+                textLeft: (language) => {
+                    return checkLanguage({vi: 'Hiển thị', en: 'Display'}, language)
+                },
                 textRight: (state) => {
                     var type = state.display
                     return () => {
@@ -55,11 +64,15 @@ const List = [
         ]
     },
     {
-        name: 'Bảo mật',
+        name: (language) => {
+            return checkLanguage({vi: 'Bảo mật', en: 'Security'}, language)
+        },
         child:[
             {
                 icon : lock,
-                textLeft: 'Cài đặt bảo mật',
+                textLeft: (language) => {
+                    return checkLanguage({vi: 'Cài đặt bảo mật', en: 'Security Settings'}, language)
+                },
                 textRight: '',
                 arrow : true,
                 BlockComponent: TouchableOpacity,
@@ -68,11 +81,15 @@ const List = [
         ]
     },
     {
-        name: 'Khác',
+        name: (language) => {
+            return checkLanguage({vi: 'Khác', en: 'Others'}, language)
+        },
         child:[
             {
                 icon : info,
-                textLeft: 'Về chúng tôi',
+                textLeft: (language) => {
+                    return checkLanguage({vi: 'Về chúng tôi', en: 'About King Wallet'}, language)
+                },
                 textRight: '',
                 arrow : true,
                 BlockComponent: TouchableOpacity,
@@ -80,7 +97,9 @@ const List = [
             },
             {
                 icon : follow,
-                textLeft: 'Theo dõi',
+                textLeft: (language) => {
+                    return checkLanguage({vi: 'Theo dõi', en: 'Follow us'}, language)
+                },
                 textRight: '',
                 arrow : false,
                 BlockComponent: View,

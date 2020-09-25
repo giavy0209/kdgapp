@@ -166,7 +166,7 @@ export default function App({ navigation }) {
   const handleBarCodeScanned = useCallback(({ type, data }) => {
       Clipboard.setString(data)
       Alert.alert(
-        'Đã sao chép địa chỉ ví',
+        checkLanguage({vi: 'Bạn đã sao chép địa chỉ ví', en: 'You have copied the wallet address to the clipboard'},language),
         `${data}`
       )
       setIsScannerOpen(false)
@@ -178,8 +178,8 @@ export default function App({ navigation }) {
       setIsScannerOpen(true)
     } else {
       Alert.alert(
-        'Cấp quyền',
-        'Bạn phải cấp quyền camera để sử dụng tính năng này'
+        checkLanguage({vi: 'Cấp quyền?', en: 'Allowing access?'},language),
+        checkLanguage({vi: 'Bạn phải cấp quyền camera để sử dụng tính năng này' , en: 'You need to allow "King Wallet" to access your camera to use this feature'},language),
       )
     }
   }, [])

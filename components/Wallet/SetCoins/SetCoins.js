@@ -3,7 +3,7 @@ import {View, Text, Image, TextInput,TouchableOpacity,Switch, FlatList} from 're
 import { mainStyles } from '../../../styles'
 import {Header2} from '../../Header'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faLink, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useDispatch } from 'react-redux'
 import {asyncSetCoin} from '../../../store/actions'
 
@@ -118,11 +118,12 @@ useEffect(() => {
                                         </View>
                                     </View>
                                     <Switch
+                                        disabled={item.text === 'KDG' ? true : false}
                                         trackColor={{ false: "#767577", true: '#FFFF99' }}
-                                        thumbColor={item.isEnabled ? "#fac800" : "#f4f3f4"}
+                                        thumbColor={item.text === 'KDG' ? true : item.isEnabled ? "#fac800" : "#f4f3f4"}
                                         ios_backgroundColor="#3e3e3e"
                                         onValueChange={item.toggle}
-                                        value={item.isEnabled}
+                                        value={item.text === 'KDG' ? true : item.isEnabled}
                                     />
                                 </View>
                             </View>
@@ -151,11 +152,12 @@ useEffect(() => {
                                     </View>
                                 </View>
                                 <Switch
+                                    disabled={item.text === 'KDG' ? true : false}
                                     trackColor={{ false: "#767577", true: '#FFFF99' }}
-                                    thumbColor={item.isEnabled ? "#fac800" : "#f4f3f4"}
+                                    thumbColor={item.text === 'KDG' ? true : item.isEnabled ? "#fac800" : "#f4f3f4"}
                                     ios_backgroundColor="#3e3e3e"
                                     onValueChange={item.toggle}
-                                    value={item.isEnabled}
+                                    value={item.text === 'KDG' ? true : item.isEnabled}
                                 />
                             </View>
                         </View>

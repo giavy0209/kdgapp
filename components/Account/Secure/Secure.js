@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useSelector, useDispatch} from 'react-redux'
-import { storage } from '../../../helper'
+import { storage, checkLanguage } from '../../../helper'
 import { asyncGetUserbyID } from '../../../store/actions'
 
 
@@ -19,7 +19,7 @@ export default function App(){
 
     const isFocused = useIsFocused();
 
-
+    const language = useSelector(state => state.language)
     const [Is2FA, setIs2FA] = useState()
     
     const [KYCType, setKYCType] = useState()
@@ -42,13 +42,13 @@ export default function App(){
 
     return (
         <>
-            <Header2 title="Bảo mật"/>
+            <Header2 title={checkLanguage({vi: 'Bảo mật', en: 'Security'},language)}/>
             <View style={[mainStyles.container,]}>
                 <TouchableOpacity 
                 onPress={()=>navigation.navigate('ChangePass')}
                 style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative'}}>
                     <View style={accountStyle.maskOpacity} ></View>
-                    <Text style={{fontSize: 14, color: '#ddd9d8'}}>Thay đổi mật khẩu</Text>
+                    <Text style={{fontSize: 14, color: '#ddd9d8'}}>{checkLanguage({vi: 'Thay đổi mật khẩu', en: 'Change password'},language)}</Text>
                     <FontAwesomeIcon color="#8a8c8e" icon={faAngleRight}/>
                 </TouchableOpacity>
                 
@@ -59,9 +59,9 @@ export default function App(){
 })}
                 style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative',borderTopColor: '#3b3f49', borderTopWidth: 1}}>
                     <View style={accountStyle.maskOpacity} ></View>
-                    <Text style={{fontSize: 14, color: '#ddd9d8'}}>Cài đặt 2FA</Text>
+                    <Text style={{fontSize: 14, color: '#ddd9d8'}}>{checkLanguage({vi: 'Cài đặt 2FA', en: 'Activate 2FA'},language)}</Text>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{color: 'rgba(255,255,255,0.5)'}}>{Is2FA === true ? 'Đã kích hoạt' : Is2FA === false ?  'Chưa kích hoạt' : ''}</Text>
+                        <Text style={{color: 'rgba(255,255,255,0.5)'}}>{Is2FA === true ? checkLanguage({vi: 'Đã kích hoạt', en: 'Activated'},language) : Is2FA === false ?  checkLanguage({vi: 'Chưa kích hoạt', en: 'Inactivated'},language) : ''}</Text>
                         <FontAwesomeIcon color="#8a8c8e" icon={faAngleRight}/>
                     </View>
                     
@@ -71,16 +71,16 @@ export default function App(){
                 onPress={()=>navigation.navigate('KYC')}
                 style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative',borderTopColor: '#3b3f49', borderTopWidth: 1}}>
                     <View style={accountStyle.maskOpacity} ></View>
-                    <Text style={{fontSize: 14, color: '#ddd9d8'}}>Xác minh danh tính (KYC)</Text>
+                    <Text style={{fontSize: 14, color: '#ddd9d8'}}>{checkLanguage({vi: 'Xác minh danh tính (KYC)', en: 'KYC'},language)}</Text>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={KYCType == 0 ? {color: 'rgba(255,255,255,0.5)'} : 
                                      KYCType == 1 ? {color: 'green'} :  
                                      KYCType == 2 ? {color: 'rgba(255,255,255,0.5)'} : 
                                      KYCType == 3 ?  {color: 'red'} : {color: 'rgba(255,255,255,0.5)'}} >
-                            {KYCType == 0 ? 'Chưa xác minh': 
-                             KYCType == 1 ? 'Đã xác minh'  : 
-                             KYCType == 2 ? 'Đang chờ duyệt' : 
-                             KYCType == 3 ? 'Bị từ chối' : ''}
+                            {KYCType == 0 ? checkLanguage({vi: 'Chưa xác minh', en: 'Not verified'},language): 
+                             KYCType == 1 ? checkLanguage({vi: 'Đã xác minh', en: 'Confirmed'},language)  : 
+                             KYCType == 2 ? checkLanguage({vi: 'Đang chờ duyệt', en: 'Pending'},language) : 
+                             KYCType == 3 ? checkLanguage({vi: 'Bị từ chối  ', en: 'Rejected'},language) : ''}
                         </Text>
                         <FontAwesomeIcon style={
                            KYCType == 0 ? {color: 'rgba(255,255,255,0.5)'} : 
@@ -93,7 +93,7 @@ export default function App(){
                 onPress={()=>navigation.navigate('Pin')}
                 style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative',borderTopColor: '#3b3f49', borderTopWidth: 1}}>
                     <View style={accountStyle.maskOpacity} ></View>
-                    <Text style={{fontSize: 14, color: '#ddd9d8'}}>Cài đặt Unlock PIN</Text>
+                    <Text style={{fontSize: 14, color: '#ddd9d8'}}>{checkLanguage({vi: 'Cài đặt Unlock PIN', en: 'Unlock PIN '},language)}</Text>
                     <FontAwesomeIcon color="#8a8c8e" icon={faAngleRight}/>
                 </TouchableOpacity>
             </View>

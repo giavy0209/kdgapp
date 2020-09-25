@@ -12,7 +12,7 @@ import invitation from '../../assets/images/invitation-account.png'
 import defaultAvata from '../../assets/images/default-avata.webp'
 import defaultAvataPNG from '../../assets/images/default-avata.png'
 import List from './ListSetting'
-import { storage } from '../../helper'
+import { storage, checkLanguage } from '../../helper'
 
 import { useSelector } from 'react-redux'
 
@@ -20,6 +20,8 @@ export default function App({navigation}){
 
   const [UserName, setUserName] = useState('')
   const [UserEmail, setUserEmail] = useState('')
+
+  const language = useSelector(state => state.language)
 
   useEffect(() => {
     async function getUserInfo() {
@@ -35,7 +37,7 @@ export default function App({navigation}){
         <View style={[mainStyles.container,]}>
             <ImageBackground style={{width: '100%'}} source={image}>
                 <View style={accountStyle.backgroundHead}>
-                    <Text style={accountStyle.title}>Tài khoản</Text>
+                    <Text style={accountStyle.title}>{checkLanguage({vi: 'Tài khoản', en: 'Profile'},language)}</Text>
                     <View style={accountStyle.rowHeader}>
                         <View style={accountStyle.itemHeader}>
                             <TouchableOpacity 
@@ -43,12 +45,12 @@ export default function App({navigation}){
                                 onPress={() => {navigation.navigate('WalletManage')}}
                             >
                                 <Image source={wallet}/>
-                                <Text style={accountStyle.textHeader}>Quản lý ví</Text>
+                                <Text style={accountStyle.textHeader}>{checkLanguage({vi: 'Quản lý ví', en: 'Manage Wallet'},language)}</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={accountStyle.itemHeader}>
                             <Image source={support}/>
-                            <Text style={accountStyle.textHeader}>Hỗ trợ</Text>
+                            <Text style={accountStyle.textHeader}>{checkLanguage({vi: 'Hỗ trợ', en: 'Support'},language)}</Text>
                         </View>
            
                         <View style={accountStyle.itemHeader}>
@@ -57,7 +59,7 @@ export default function App({navigation}){
                                 onPress={() => {navigation.navigate('Reward')}}
                             >
                                 <Image source={invitation}/>
-                                <Text style={accountStyle.textHeader}>Phần thưởng</Text>
+                                <Text style={accountStyle.textHeader}>{checkLanguage({vi: 'Phần thưởng', en: 'Reward'},language)}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

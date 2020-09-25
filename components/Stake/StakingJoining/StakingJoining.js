@@ -120,9 +120,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 <Text style={stakingStyle.coinName}>KDG</Text>
                 <View>
                     <View style={stakingStyle.timeContainer}>
-                        <Text style={{...stakingStyle.timeName, textAlign: 'left'}}>Thời gian bắt đầu</Text>
-                        <Text style={{...stakingStyle.timeName, textAlign: 'center'}}>Thời gian mở khóa</Text>
-                        <Text style={{...stakingStyle.timeName, textAlign: 'right'}}>Thời gian phân bố gốc và lãi</Text>
+                        <Text style={{...stakingStyle.timeName, textAlign: 'left'}}>{checkLanguage({vi: 'Thời gian bắt đầu', en: 'Locking start time'},language)}</Text>
+                        <Text style={{...stakingStyle.timeName, textAlign: 'center'}}>{checkLanguage({vi: 'Thời gian mở khoá', en: 'Unlocking time'},language)}</Text>
+                        <Text style={{...stakingStyle.timeName, textAlign: 'right'}}>{checkLanguage({vi: 'Thời gian phân bổ gốc và lãi', en: 'Time to allocate principal and interest'},language)}</Text>
                     </View>
                         <Image
                             resizeMode={'cover'}
@@ -144,7 +144,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     <View style={stakingStyle.numberOrderContainer}>
                         <Text style={{color: '#fff'}}>1</Text>
                     </View>
-                    <Text style={{paddingLeft: 10, color: '#fff'}}>Số tiền Staking</Text>
+                    <Text style={{paddingLeft: 10, color: '#fff'}}>{checkLanguage({vi: 'Số tiền staking', en: 'Staking quantity'},language)}</Text>
                 </View>
 
 
@@ -192,13 +192,13 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     <View style={stakingStyle.numberOrderContainer}>
                         <Text style={{color: '#fff'}}>2</Text>
                     </View>
-                    <Text style={{paddingLeft: 10, color: '#fff'}}>Lãi suất tham chiếu năm</Text>
+                    <Text style={{paddingLeft: 10, color: '#fff'}}>{checkLanguage({vi: 'Lãi suất tham chiếu năm', en: 'Estimated annual interest rate'},language)}</Text>
                 </View>
                 <Text style={{color: '#fff', paddingLeft: 10, fontSize: 20}}>30%</Text>
             </View>
             <View style={stakingStyle.interestReceiveContainer}>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={stakingStyle.interestReceive}>Số tiền lãi và gốc nhận được</Text>
+                    <Text style={stakingStyle.interestReceive}>{checkLanguage({vi: 'Số tiền lãi và gốc nhận được', en: 'The amount of interest and principal received'},language)}</Text>
                     <Text style={stakingStyle.interestReceiveUnit}>{(1.05*ValueStaking).toFixed(2)} KDG</Text>
                 </View>
             </View>
@@ -206,15 +206,15 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         <View style={{padding: (windowWidth*windowHeight)/29376}}>
             <View style={stakingStyle.iconInfoContainer}>
                 <FontAwesomeIcon size={20} color="#cb0d0d" icon={faInfoCircle}/>
-                <Text style={stakingStyle.iconInfo}>Vui lòng đọc kĩ trước khi tham gia</Text>
+                <Text style={stakingStyle.iconInfo}>{checkLanguage({vi: 'Vui lòng đọc quỹ quy tắc trước khi tham gia', en: 'Please read the following Staking rules carefully before join'},language)}</Text>
             </View>
             <View>
             <FlatList
                 data={[
-                    {key: '(1) Số lượng tham gia Staking tối thiếu là 200 KDG, thời gian khóa tối thiểu là 60 ngày'},
-                    {key: '(2) Lãi suất sẽ được tính sau hai ngày kể từ khi bạn tham gia Staking'},
-                    {key: '(3) Bạn không thể rút, giao dịch hay sử dụng số lượng KDG trong thời gian tham gia Staking'},
-                    {key: '(4) Khi thời gian tham gia Staking kết thúc, cả gốc và lãi sẽ được mở khóa vào tài khoản của bạn'},
+                    {key: `(1) ${checkLanguage({vi: 'Số lượng tham gia Staking tối thiếu là 200 KDG, thời gian khóa tối thiểu là 60 ngày', en: 'Minimum investment amount is 200KDG, Minimum locked days is 60days'},language)}`},
+                    {key: `(2) ${checkLanguage({vi: 'Lãi suất sẽ được tính sau 2 ngày kể từ khi bạn tham gia Staking', en: 'The yield starts to be counted from two days after you participate in Staking'},language)}`},
+                    {key: `(3) ${checkLanguage({vi: 'Bạn không thể rút, giao dịch hay sử dụng số lượng KDG trong thời gian tham gia Staking', en: 'Trade, withdrawal and pre-unlocking are unvailable during locking period'},language)}`},
+                    {key: `(4) ${checkLanguage({vi: 'Khi thời gian tham gia Staking kết thúc, cả gốc và lãi sẽ được mở khóa vào tài khoản của bạn', en: 'When the Staking period ends, both principal and interest will be unlocked to your account'},language)}`},
                 ]}
                 renderItem={({item}) => <View style={{paddingLeft: windowWidth/19}}><Text style={stakingStyle.termContent}>{item.key}</Text></View>}
             />
@@ -223,15 +223,15 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     <View style={[stakingStyle.checkBox,ToggleCheckBox && {backgroundColor: '#fac800'}]}><Image style={[stakingStyle.checkBoxTick,!ToggleCheckBox && {opacity: 0}]} source={ticker}/></View>
                 </TouchableOpacity>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={stakingStyle.termCheckboxTitle}>Tôi đã đọc và hiểu</Text>
+                    <Text style={stakingStyle.termCheckboxTitle}>{checkLanguage({vi: 'Tôi đã đọc và hiểu rõ', en: 'I have read and understood'},language)}</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('Terms', {
                             id: 1,
                         })}
                     >
-                        <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: '#fff', paddingHorizontal: 5}}>cảnh báo rủi ro</Text>
+                        <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: '#fff', paddingHorizontal: 5}}>{checkLanguage({vi: 'cảnh báo rủi ro', en: ' the risk warning '},language)}</Text>
                     </TouchableOpacity>
-                    <Text style={stakingStyle.termCheckboxTitle}> trước khi tham gia</Text>
+                    <Text style={stakingStyle.termCheckboxTitle}>{checkLanguage({vi: ' trước khi tham gia', en: ' before joining'},language)}</Text>
                 </View>
                 
             </View>

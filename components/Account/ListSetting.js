@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux'
 
 export default function App(){
     const state = useSelector(state => state)
+    const language = useSelector(state => state.language)
     const navigation = useNavigation()
     const handlePress = useCallback(route=>{
         navigation.navigate(route)
@@ -23,7 +24,7 @@ export default function App(){
         return (
 
         <View key={index+ 'a'} style={accountStyle.blockSetting}>
-            <Text style={accountStyle.settingTitle}>{el.name.toUpperCase()}</Text>
+            <Text style={accountStyle.settingTitle}>{typeof el.name === 'function' ? el.name(language) : el.name.toUpperCase()}</Text>
 
             {
             el.child.map((Child, index)=>{
@@ -36,7 +37,7 @@ export default function App(){
                     <View style={accountStyle.iconBlock}>
                         <Image source={Child.icon} style={accountStyle.icon}/>
                     </View>
-                <Text style={accountStyle.settingTextLeft}>{Child.textLeft}</Text>
+                <Text style={accountStyle.settingTextLeft}>{typeof Child.textLeft === 'function' ? Child.textLeft(language) : Child.textLeft }</Text>
                 </View>
                 <View style={accountStyle.settingRight}>
                     <Text style={accountStyle.settingTextRight}>{typeof Child.textRight === 'function' && Child.textRight(state)() } </Text>

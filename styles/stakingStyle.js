@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
         interestReceive: {
             color: 'rgba(0,0,0,0.4)', 
             fontSize: 15, 
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            textAlign: 'center'
         },
         interestReceiveUnit: {
             paddingTop: 5, 
