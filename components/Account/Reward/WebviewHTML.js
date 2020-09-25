@@ -324,7 +324,7 @@ export default html = `
                             this.spinSpeed --
                         }
                     }
-                    if(percentSpined >= .9999 ){
+                    if(percentSpined >= .9 ){
                         window.ReactNativeWebView.postMessage('spin-done')
                         
                     }
