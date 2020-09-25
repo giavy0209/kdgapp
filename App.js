@@ -34,7 +34,7 @@ export default function App() {
 
   useEffect(()=>{
     async function setFirstTime(){
-      // await AsyncStorage.clear()
+      var isHaveFirstTime = storage('isNotFirstTime').getItem()
       if(isHaveFirstTime){
         AsyncStorage.removeItem('isNotFirstTime')
         return
