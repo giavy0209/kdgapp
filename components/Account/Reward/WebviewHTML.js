@@ -274,11 +274,11 @@ export default html = `
                 
                 this.canvas.onclick =async () => {
                     if(!this.isSpining){
+                        this.isSpining = true
                         window.ReactNativeWebView.postMessage('req-spin-value')
                         var value = await checkHaveValue()
                         this.calcSpinTarget(value, this.lastReward)
                         this.spinSpeed = 0
-                        this.isSpining = true
                         this.startDeg = this.spinDeg
                         window.spinValue = null
                     }
@@ -323,6 +323,10 @@ export default html = `
                         if(this.spinSpeed > 3 ){
                             this.spinSpeed --
                         }
+                    }
+                    if(percentSpined >= .9999 ){
+                        window.ReactNativeWebView.postMessage('spin-done')
+                        
                     }
                 }else{
                     this.isSpining = false
