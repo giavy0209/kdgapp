@@ -21,6 +21,19 @@ export default html = `
     </body>
 
     <script>
+        function checkHaveValue () {
+            return new Promise((resolve, reject)=>{
+                var interval = setInterval(() => {
+                    if(window.spinValue) {
+                        clearInterval(interval)
+                        resolve(spinValue)
+                    }
+                }, 50);
+            })
+        }
+    </script>
+
+    <script>
         const BORDER_SIZE = 22
         const LIGHT_WIDTH = 7
     </script>
@@ -92,6 +105,7 @@ export default html = `
                     this.game.ctx.fill()
 
 
+                    //light
                     var deg = Math.PI * 2 / this.game.total * index + (this.game.spinDeg * Math.PI / 180)
 
                     var posX = Math.cos(deg) * (this.game.size / 2 - BORDER_SIZE / 2)
@@ -121,7 +135,8 @@ export default html = `
                         false
                     )
                     this.game.ctx.closePath();
-                    this.game.ctx.fillStyle = this.active === index ? '#ff0000' : '#fff';
+                    var activeColor = this.game.isSpining ? '#ff0000'  : '#fff'
+                    this.game.ctx.fillStyle = this.active === index ? activeColor : '#ffe528';
                     this.game.ctx.fill()
                 }
             }
@@ -232,11 +247,16 @@ export default html = `
                 this.height = height
                 this.size = this.width - 20
                 this.total = window.spinInfo.length
-                this.spinDeg = 0
-                this.spinSpeed = 0
-                this.spinAcceleration = 10
 
-                this.spinTarget = 360
+                this.lastReward = 1
+                this.spinDeg = 0
+                this.startDeg = this.spinDeg
+
+                this.spinSpeed = 1
+
+                this.spinTarget = 0
+
+                this.isSpining = false
 
                 this.canvas = document.createElement('canvas')
                 this.ctx = this.canvas.getContext('2d')
@@ -248,30 +268,64 @@ export default html = `
                 this.reward = new reward(this)
                 this.rewardText = new rewardText(this)
                 this.button = new button(this)
-
                 
                 this.loop()
+
+                
+                this.canvas.onclick =async () => {
+                    if(!this.isSpining){
+                        window.ReactNativeWebView.postMessage('req-spin-value')
+                        var value = await checkHaveValue()
+                        this.calcSpinTarget(value, this.lastReward)
+                        this.spinSpeed = 0
+                        this.isSpining = true
+                        this.startDeg = this.spinDeg
+                        window.spinValue = null
+                    }
+                }
             }
 
             loop(){
                 this.update()
                 this.draw()
-                setTimeout(() => {
+                setTimeout(() => {  
                     this.loop()
                 }, 1000/30);
             }
 
+            calcSpinTarget (reward, lastReward) {
+                var listReward = window.spinInfo
+                var indexReward = listReward.findIndex(o => o.reward === reward)
+
+                var indexLastReward = listReward.findIndex(o => o.reward === lastReward)
+
+                var degPerReward = 360 / this.total
+
+                var totalRewardNeedSpin = indexReward - indexLastReward
+                this.spinTarget +=( totalRewardNeedSpin * degPerReward + 10800) *(-1)
+                this.lastReward = reward
+            }
+
             update(){
-                if(this.spinDeg <= this.spinTarget){
-                    var targetFromNow = this.spinDeg  / this.spinTarget 
-                    var accelerationDown = targetFromNow *  20
-                    var currentAcceleration = this.spinAcceleration - accelerationDown
-                    this.spinSpeed += currentAcceleration
-                    alert(currentAcceleration + '    ' + this.spinSpeed, )
-
-                    this.spinDeg += this.spinSpeed
-
+                if(this.spinDeg >= this.spinTarget ){
                     
+                    var degNeedSpin = this.spinTarget - this.startDeg  
+                    var degSpined =  this.spinTarget - this.spinDeg
+                    
+                    var percentSpined = (this.spinDeg - this.startDeg) / degNeedSpin
+                    
+
+                    this.spinDeg -= this.spinSpeed
+
+                    if(percentSpined < .484){
+                        this.spinSpeed ++
+                    }else{
+                        if(this.spinSpeed > 3 ){
+                            this.spinSpeed --
+                        }
+                    }
+                }else{
+                    this.isSpining = false
                 }
             }
             

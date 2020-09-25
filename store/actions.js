@@ -41,7 +41,13 @@ export function actChangeScreenHeight(height){
 export function actChangeUserData(userData){
     return {
         type: CHANGE_USER_DATA,
-        payload: {...userData}
+        payload: {userData}
+    }
+}
+export function actChangeUserInfo(userInfo){
+    return {
+        type: CHANGE_USER_DATA,
+        payload: {userInfo}
     }
 }
 export function actChangeLoginStatus(status){
@@ -148,12 +154,12 @@ export function asyncGetRouters(){
         const newRouters = []
         
         if(userData){
+            dispatch(asyncGetUserbyID(userData._id))
             ROUTERS.forEach((router)=>{
                 if(router.reqLogin){
                     newRouters.push(router)
                 }
             })
-            dispatch(actChangeUserData(userData))
             dispatch(actChangeLoginStatus(true))
         }else{
             ROUTERS.forEach((router)=>{
@@ -230,13 +236,12 @@ export function asyncLogin(loginInfo){
                     }
                 })
                 await storage('loginInfo' , loginInfo).setItem()
-                console.log(await storage('loginInfo').getItem());
     
                 await storage('_id' , res.data).setItem();
                 await storage('userData' , res.data).setItem();
                 await storage('isLogin' , true).setItem();
                 await storage('loginTime', new Date().getTime()).setItem()
-                await dispatch(actChangeUserData(res.data))
+                await dispatch(asyncGetUserbyID(res.data._id))
                 var newRouters = []
                 ROUTERS.forEach((router)=>{
                     if(router.reqLogin){
@@ -250,7 +255,6 @@ export function asyncLogin(loginInfo){
             return res
 
         } catch (error) {
-            console.log(error);
             return {ok: false, status: error}
         }
     }
@@ -386,9 +390,10 @@ export function asyncGetUserbyID(userId){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).get(`/api/user/${userId}`)).data
+            dispatch(actChangeUserInfo(res.data))
             return res
         } catch (error) {
-            return {ok: false, status: error.response.status}
+            console.log(error);
         }
     }
 }
@@ -603,7 +608,6 @@ export function asyncSetCurrency(currency){
 
 export function asyncSetLanguage(language){
     return async (dispatch) =>{
-        console.log(language);
         try {
             dispatch(actChangeLanguage(language))
             await AsyncStorage.setItem('language', JSON.stringify(language))

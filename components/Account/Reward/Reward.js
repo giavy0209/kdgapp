@@ -189,11 +189,12 @@ const styles = StyleSheet.create({
         textAlign : 'center',
     },
     groupButton: {
-        marginTop : 20,
-        paddingHorizontal: 10,
+        paddingTop : 20,
+        marginHorizontal: 10,
         display : 'flex',
         flexDirection : 'row',
-        justifyContent : 'space-between'
+        justifyContent : 'space-between',
+        backgroundColor : 'rgba(40,51,73,.4)'
     },
     blockButton: {
         display : 'flex',
