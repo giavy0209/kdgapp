@@ -7,12 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBell, faTimes,faEye,faEyeSlash, faSortAmountDown,faPlusCircle, faAngleRight, faSortAmountUp } from '@fortawesome/free-solid-svg-icons';
 
 import openscaner from '../../assets/images/openscaner.png'
-import postImage from '../../assets/images/post-image.jpg'
 
 import GroupButton from './GroupButton'
 import ListCoin from './ListCoin'
-import AsyncStorage from '@react-native-community/async-storage';
-import calAPI from '../../axios';
 import { storage, checkLanguage } from '../../helper';
 import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus } from '../../store/actions'
 
@@ -213,7 +210,6 @@ export default function App({ navigation }) {
             return
         }
       })
-      .catch(console.log)
       dispatch(asyncGetBalanceDouble(userinfo.erc_address, userinfo.trx_address))
       .then(({resETH, resTRX})=>{
         setKDGBalance(resTRX.data.kdg_balance)
@@ -221,13 +217,11 @@ export default function App({ navigation }) {
         setETHBalance(resETH.data.eth_balance)
         setUSDTBalance(resETH.data.usdt_balance)
       })     
-      .catch(console.log)
 
       dispatch(asyncGetBalance('knc',userinfo.erc_address))
       .then((res)=>{
         setKNCBalance(res.balance)
       })     
-      .catch(console.log)
 
       dispatch(asyncGetBalance('mch',userinfo.erc_address))
       .then((res)=>{
@@ -238,7 +232,6 @@ export default function App({ navigation }) {
       .then((res)=>{
         setTOMOBalance(res.balance)
       })      
-      .catch(console.log)
     }
 
     getwalletBlance()
