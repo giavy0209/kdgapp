@@ -13,8 +13,9 @@ import GroupButton from './GroupButton'
 import ListCoin from './ListCoin'
 import AsyncStorage from '@react-native-community/async-storage';
 import calAPI from '../../axios';
-import { storage } from '../../helper';
-import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus } from '../../store/actions';
+import { storage, checkLanguage } from '../../helper';
+import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus } from '../../store/actions'
+
 
 const hiddenBalance = "******"
 export default function App({ navigation }) {
@@ -25,7 +26,7 @@ export default function App({ navigation }) {
 
   const coinDisplay = useSelector(state => state.coin)
 
-
+  const language = useSelector(state => state.language)
 
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
   const [VisibleBalance, setVisibleBalance] = useState(false);
@@ -486,7 +487,7 @@ useEffect(() => {
               </View>
               <View style={walletStyles.availableAndLock}>
                 <View style={walletStyles.availableAndLockBlock}>
-                  <Text style={walletStyles.textAvailableAndLock}>Available balance</Text>
+                  <Text style={walletStyles.textAvailableAndLock}>{checkLanguage({vi: 'Tài sản sẵn có', en: 'Available Asset'},language)}</Text>
                   <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  isNaN(AvailableBalance.usd) || AvailableBalance.usd < 0.00000000000000001 ? 'Loading...' :
                     typeCurrency === 1 ? 
                     AvailableBalance.vnd + ' ₫' : 
@@ -495,7 +496,7 @@ useEffect(() => {
                     '$' + AvailableBalance.usd}</Text>
                 </View>
                 <View style={walletStyles.availableAndLockBlock}>
-                  <Text style={walletStyles.textAvailableAndLock}>Locked balance</Text>
+                  <Text style={walletStyles.textAvailableAndLock}>{checkLanguage({vi: 'Tài sản bị khoá', en: 'Locked Asset'},language)}</Text>
                   <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? 
                     CoinPriceKDGLock.vnd + ' ₫' : 
                     typeCurrency === 2 ?  
@@ -508,7 +509,7 @@ useEffect(() => {
             <GroupButton />
             
             <View style={walletStyles.listCoinHead}>
-              <Text style={walletStyles.listCoinHeadColor}>Total Assets</Text>
+              <Text style={walletStyles.listCoinHeadColor}>{checkLanguage({vi: 'Tổng tài sản', en: 'Total Asset'},language)}</Text>
               <View style={[walletStyles.listCoinHead, {justifyContent:'flex-end', marginTop: 0}]}>
                 <TouchableOpacity onPress={() => setIsShortCoin(!IsShortCoin)}
                 >
@@ -546,40 +547,71 @@ useEffect(() => {
             />
 
             <View style={walletStyles.listPostHead}>
-              <Text style={walletStyles.listPostHeadText}>Tin tức</Text>
+              <Text style={walletStyles.listPostHeadText}>{checkLanguage({vi: 'Tin tức', en: 'News'},language)}</Text>
               <TouchableOpacity onPress={()=>navigation.navigate('News')} style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={walletStyles.listPostHeadViewMore}>Xem thêm </Text>
+                <Text style={walletStyles.listPostHeadViewMore}>{checkLanguage({vi: 'Xem thêm', en: 'See more'},language)}</Text>
                 <FontAwesomeIcon style={walletStyles.listPostHeadViewMore} icon={faAngleRight}/>
               </TouchableOpacity>
             </View>
 
 
               <View style={walletStyles.listPostScroll}>
-              <FlatList
-                horizontal={true}
-                data={NewsData}
-                renderItem={({item}) => {
+                  {            
+                          checkLanguage({
+                            vi: (
+                                <FlatList
+                                horizontal={true}
+                                data={NewsData}
+                                renderItem={({item}) => {
 
-                  if(item.content_vi !== undefined){
-                    return <View style={walletStyles.post}>
-                    <TouchableOpacity
-                      onPress={()=>navigation.navigate('News', {
-                        NewsID: item._id
-                      })}
-                    >
-                      <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}>
-                        <Image style={walletStyles.postImage} source={{ uri: item.thumbURL_vi}}/></View>
-                      <Text style={walletStyles.postTitle}>{item.title_vi}</Text>
-                    </TouchableOpacity>
-                  </View>  
-                    
+                                    if(item.content_vi !== undefined){
+                                      return <View style={walletStyles.post}>
+                                      <TouchableOpacity
+                                        onPress={()=>navigation.navigate('News', {
+                                          NewsID: item._id
+                                        })}
+                                      >
+                                        <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}>
+                                          <Image style={walletStyles.postImage} source={{ uri: item.thumbURL_vi}}/></View>
+                                        <Text style={walletStyles.postTitle}>{item.title_vi}</Text>
+                                      </TouchableOpacity>
+                                    </View>  
+                                      
+                                    }
+                                  }
+                                
+                      
+                                }
+                                />
+                          ), 
+                          en: (
+                            <FlatList
+                            horizontal={true}
+                            data={NewsData}
+                            renderItem={({item}) => {
+
+                              if(item.content_en !== undefined){
+                                return <View style={walletStyles.post}>
+                                <TouchableOpacity
+                                  onPress={()=>navigation.navigate('News', {
+                                    NewsID: item._id
+                                  })}
+                                >
+                                  <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}>
+                                    <Image style={walletStyles.postImage} source={{ uri: item.thumbURL_en}}/></View>
+                                  <Text style={walletStyles.postTitle}>{item.title_en}</Text>
+                                </TouchableOpacity>
+                              </View>  
+                                
+                              }
+                            }
+                          
+                
+                          }
+                        />
+                          )},language)
+                            
                   }
-                }
-              
-    
-               }
-            />
-   
               </View>        
 
 

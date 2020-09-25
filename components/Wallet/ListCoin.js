@@ -6,7 +6,8 @@ import { RectButton, TouchableOpacity, FlatList } from 'react-native-gesture-han
 import depositwhite from '../../assets/images/depositwhite.png'
 import withdrawwhite from '../../assets/images/withdrawwhite.png'
 import { useNavigation } from '@react-navigation/native'
-
+import { checkLanguage } from '../../helper';
+import { useSelector } from 'react-redux'
 // ------------------Icon---------------------
 import kdgicon from '../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../assets/images/IconCoin/ETH.png'
@@ -15,7 +16,6 @@ import usdticon from '../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../assets/images/IconCoin/MCH.png'
 import tomoicon from '../../assets/images/IconCoin/TOMO.png'
-import { useSelector } from 'react-redux';
 // ------------------------------------------
 
 
@@ -48,7 +48,7 @@ export default function App({
     const [SwipeList, setSwipeList] = useState([])
     const typeCurrency = useSelector(state => state.currency)
  
-
+    const language = useSelector(state => state.language)
     // if (typeof isDisplay) {
     //     console.log(coinDisplay)
     // }
@@ -74,7 +74,7 @@ export default function App({
                     style={[walletStyles.coinSwipeRight, 
                     {height: CoinHeight}]}>
                     <Image source={depositwhite}/>
-                    <Text style={{color: '#fff', fontSize: 12}}>Nạp</Text>
+                    <Text style={{color: '#fff', fontSize: 12}}>{checkLanguage({vi: 'Nạp', en: 'Deposit'},language)}</Text>
                 </TouchableOpacity>
             </Animated.View>
           </RectButton>
@@ -93,7 +93,7 @@ export default function App({
                     style={[walletStyles.coinSwipeLeft, 
                     {height: CoinHeight}]}>
                     <Image source={withdrawwhite}/>
-                    <Text style={{color: '#fff', fontSize: 12}}>Rút</Text>
+                    <Text style={{color: '#fff', fontSize: 12}}>{checkLanguage({vi: 'Rút', en: 'Withdraw'},language)}</Text>
                 </TouchableOpacity>
             </Animated.View>
           </RectButton>
@@ -171,8 +171,8 @@ export default function App({
                             </View>
                         </View>
                         <View style={walletStyles.coinRight}>
-                            <Text style={walletStyles.quantity}>{VisibleBalance ? hiddenBalance : item.balance || !isNaN(item.balance) ?  item.balance :'Loading...'}</Text>
-                            <Text style={walletStyles.coinPirce}>{VisibleBalance ? hiddenBalance : item.coinPrice.usd || !isNaN(item.coinPrice.usd) ? typeCurrency === 1 ? `~${item.coinPrice.vnd} ₫` :  typeCurrency === 2 ? `~¥${item.coinPrice.cny}` : `~$${item.coinPrice.usd}` : 'Loading...'} </Text>
+                            <Text style={walletStyles.quantity}>{VisibleBalance ? hiddenBalance : item.balance !== undefined && !isNaN(item.balance) ?  item.balance :'Loading...'}</Text>
+                            <Text style={walletStyles.coinPirce}>{VisibleBalance ? hiddenBalance : item.coinPrice.usd !== undefined && !isNaN(item.coinPrice.usd) ? typeCurrency === 1 ? `~${item.coinPrice.vnd} ₫` :  typeCurrency === 2 ? `~¥${item.coinPrice.cny}` : `~$${item.coinPrice.usd}` : 'Loading...'} </Text>
                         </View>
                     </TouchableOpacity>
                 </Swipeable>

@@ -7,7 +7,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 
-
+import { checkLanguage } from '../../helper'
+import { useSelector } from 'react-redux'
 // ------------------Icon---------------------
 import kdgicon from '../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../assets/images/IconCoin/ETH.png'
@@ -21,9 +22,10 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function App({setOutScrollViewTop, setOutScrollView}){
     const [Width , setWidth] = useState(0);
+    const language = useSelector(state => state.language)
     const btnActive = (
     <JoinButton
-    title="Tham gia ngay" 
+    title={checkLanguage({vi: 'Tham gia ngay', en: 'Join now'},language)}
     titleColor="#fac800"
     tintColor="#fac800"
     iconColor="#fff"
@@ -32,7 +34,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     />)
     const btnInActive = 
 (    <JoinButton
-    title="Tham gia ngay" 
+    title={checkLanguage({vi: 'Tham gia ngay', en: 'Join now'},language)}
     titleColor="red"
     borderTintColor='#707582'
     borderTintWidth={1}
@@ -40,17 +42,17 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     />)
     const btnDisable = 
 (    <JoinButton
-    title="Tham gia ngay" 
+    title={checkLanguage({vi: 'Tham gia ngay', en: 'Join now'},language)}
     titleColor="#707582"
     tintColor="#707582"
     iconColor="#fff"
     />)
 
     const list = [
-        {icon: kdgicon, token: 'KDG ', time: '60 ngày', ratio: '30%', btn: btnActive},
-        {icon: ethicon, token: 'ETH ', time: '60 ngày', ratio: '30%', btn: btnDisable},
-        {icon: trxicon, token: 'TRX ', time: '60 ngày', ratio: '30%', btn: btnDisable},
-        {icon: usdticon, token: 'USDT', time: '60 ngày', ratio: '30%', btn: btnDisable},
+        {icon: kdgicon, token: 'KDG ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnActive},
+        {icon: ethicon, token: 'ETH ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnDisable},
+        {icon: trxicon, token: 'TRX ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnDisable},
+        {icon: usdticon, token: 'USDT', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnDisable},
         
       ];
 
@@ -78,7 +80,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     onPress={() => 
                     navigation.navigate('StakingHistory')} 
                 >
-                    <Text style={{color: '#d7ae07', fontSize: 13 }}>Lịch sử staking ></Text>
+                    <Text style={{color: '#d7ae07', fontSize: 13 }}>{checkLanguage({vi: 'Lịch sử Staking >', en: 'Staking history >'},language)}</Text>
                 </TouchableOpacity>
             </View>
             <View style={stakingStyle.tableContainer}>
@@ -88,10 +90,10 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                         <Text style={stakingStyle.titleHeader} >Token</Text>
                     </View>
                     <View style={{width: '24%'}}>
-                        <Text style={stakingStyle.titleHeader} >Thời gian khoá tối thiểu</Text>
+                        <Text style={stakingStyle.titleHeader} >{checkLanguage({vi: 'Thời gian khoá', en: 'Locking time'},language)}</Text>
                     </View>
                     <View style={{width: '26%'}}>
-                        <Text style={stakingStyle.titleHeader} >Tỷ lệ lợi nhuận hàng năm dự kiến</Text>
+                        <Text style={stakingStyle.titleHeader} >{checkLanguage({vi: 'Tỷ lệ lợi nhuận hàng năm dự kiến', en: 'Expected annual rate of return'},language)}</Text>
                     </View>
                     <View style={{width: '26%'}}> 
                         <Text style={stakingStyle.titleHeader} ></Text>

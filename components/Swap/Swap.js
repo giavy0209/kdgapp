@@ -7,7 +7,7 @@ import { Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import coin from '../../assets/images/IconCoin/KDG.png'
 import { actChangeSecureStatus, asyncConvertKDGReward } from '../../store/actions'
-import { storage } from '../../helper'
+import { storage, checkLanguage } from '../../helper'
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -162,7 +162,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 </View>
                 <View style={{padding: 10, flexDirection: 'row'}}>
                     <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.3)', fontWeight: '400'}}>Khả dụng: </Text>
-                    <Text style={{fontSize: 15, color: '#fff', fontWeight: '400'}}>{secstatus.kdg_reward + "  KDG Reward"}</Text>
+                    <Text style={{fontSize: 15, color: '#fff', fontWeight: '400'}}>{secstatus.kdg_reward === undefined ? 'Loading...' : secstatus.kdg_reward + "  KDG Reward"}</Text>
                 </View>
             </View>
 

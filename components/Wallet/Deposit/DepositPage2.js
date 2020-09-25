@@ -12,7 +12,9 @@ import { faCheck, faChevronRight, faCopy } from '@fortawesome/free-solid-svg-ico
 import QRCode from '../../QRGenerate/QRCode'
 import Popup from '../../Popup/Popup'
 import ticker from '../../../assets/images/ticker.png'
+import { checkLanguage } from '../../../helper'
 
+import { useSelector } from 'react-redux'
 // ------------------Icon---------------------
 import kdgicon from '../../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../../assets/images/IconCoin/ETH.png'
@@ -29,7 +31,7 @@ import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollView, setOutScrollViewTop}){
-
+    const language = useSelector(state => state.language)
 
     const [Width , setWidth] = useState(0);
   
@@ -46,7 +48,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
     
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title={"Nhận " +  coinName}/>)
+        setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Nạp ', en: 'Deposit '},language) +  coinName}/>)
     },[])
 
     useEffect(()=>{
@@ -56,7 +58,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                 <LinearGradient 
                     colors={['#e5be50', '#ecda8b', '#a47b00']}
                     style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>
-                    <Text style={{color: '#111b2d', fontSize: 16}}>Chia sẻ địa chỉ</Text>
+                    <Text style={{color: '#111b2d', fontSize: 16}}>{checkLanguage({vi: 'Chia sẻ địa chỉ', en: 'Share your address'},language)}</Text>
                 </LinearGradient>
             </View>
         </TouchableOpacity>
@@ -108,7 +110,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             <View style={{flexDirection: 'row' ,backgroundColor: 'rgba(40,51,73,0.8)', width: '90%', padding: 20, borderRadius: 5, justifyContent: 'space-between'}}>
                 <Text style={{color: '#fff'}}>{coinName}</Text>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5 }}>Chọn coin</Text>
+                  <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5 }}>{checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}</Text>
                   <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faChevronRight}/>
                 </TouchableOpacity>
             </View>
@@ -116,7 +118,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             {
               coinName === 'USDT' ?
               <View style={{flexDirection: 'row' ,paddingHorizontal: 60, width: '100%', paddingTop: 30, justifyContent: 'space-between'}}>
-                  <Text style={{color: 'rgba(255,255,255,0.5)'}}>Chọn loại</Text>
+                  <Text style={{color: 'rgba(255,255,255,0.5)'}}>{checkLanguage({vi: 'Chọn loại', en: 'Select type'},language)}</Text>
                   <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={() => setSelectedType(0)} style={{backgroundColor: SelectedType === 0 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                         {SelectedType === 0 ? <Image source={ticker}/>  : null}
@@ -137,7 +139,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
             
             <View style={{paddingTop: 35}}>
-                <Text style={{color: 'rgba(255,255,255,0.7)'}}>Scan tại đây để nạp</Text>
+                <Text style={{color: 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Scan tại đây để nạp', en: 'Scan here to deposit'},language)}</Text>
             </View>
             <View>
             <QRCode
@@ -146,7 +148,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             />
             </View>
             <View>
-                <Text style={{color: 'rgba(255,255,255,0.7)'}}>Hoặc sao chép mã tại đây</Text>
+                <Text style={{color: 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Hoặc sao chép mã tại đây', en: 'Or copy the code here'},language)}</Text>
             </View>
             <View>
                 <TouchableOpacity 

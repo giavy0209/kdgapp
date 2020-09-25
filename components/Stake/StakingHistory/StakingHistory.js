@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { asyncGetStakingTransaction  } from '../../../store/actions'
-import { storage } from '../../../helper'
+import { storage, checkLanguage } from '../../../helper'
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -20,6 +20,7 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function App({setOutScrollViewTop}){
     const dispatch = useDispatch();
+    const language = useSelector(state => state.language)
     const [Width , setWidth] = useState(0);
     const [RightColumnn,setRightColumn] = useState(0);
     // const list = [
@@ -30,7 +31,7 @@ export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
 
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title="Lịch sử Staking"/>)
+        setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Lịch sử Staking', en: 'Staking history'},language)}/>)
     },[])
 
 
@@ -95,16 +96,16 @@ export default function App({setOutScrollViewTop}){
                         {/* -----S-Header------ */}
                         <View style={stakingStyle.tableHeaderContainer}>
                             <View style={{width: '20%'}}>
-                                <Text style={stakingStyle.titleHeaderStakingHistory} >Thời gian bắt đầu</Text>
+                                <Text style={stakingStyle.titleHeaderStakingHistory} >{checkLanguage({vi: 'Thời gian bắt đầu khoá', en: 'Locking start time'},language)}</Text>
                             </View>
                             <View style={{width: '20%'}}>
-                                <Text style={stakingStyle.titleHeaderStakingHistory} >Thời gian mở khóa</Text>
+                                <Text style={stakingStyle.titleHeaderStakingHistory} >{checkLanguage({vi: 'Thời gian mở khoá', en: 'Unlocking time'},language)}</Text>
                             </View>
                             <View style={{width: '20%'}}> 
-                                <Text style={stakingStyle.titleHeaderStakingHistory} >Số tiền staking</Text>
+                                <Text style={stakingStyle.titleHeaderStakingHistory} >{checkLanguage({vi: 'Số lượng khoá', en: 'Locking quantity'},language)}</Text>
                             </View>
                             <View style={{width: '20%'}}> 
-                                <Text style={stakingStyle.titleHeaderStakingHistory} >Tỷ lệ lợi nhuận hàng năm dự kiến</Text>
+                                <Text style={stakingStyle.titleHeaderStakingHistory} >{checkLanguage({vi: 'Tỷ lệ lợi nhuận hàng năm dự kiến', en: 'Expected annual rate of return'},language)}</Text>
                             </View>
                         </View>
                         {/* -----E-Header------ */}

@@ -14,7 +14,7 @@ import Slider from '@react-native-community/slider';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { asyncStaking } from '../../../store/actions'
-import { storage } from '../../../helper'
+import { storage, checkLanguage } from '../../../helper'
 import { useDispatch, useSelector } from 'react-redux'
 import { Value } from 'react-native-reanimated'
 import { PopupCongras } from '../../Popup'
@@ -28,6 +28,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const dispatch = useDispatch();
     const [ValueStaking, setValueStaking] = useState(0);
     const [isSelected, setSelection] = useState(false);
+    const language = useSelector(state => state.language)
+
     const [ToggleCheckBox, setToggleCheckBox] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -46,7 +48,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const navigation = useNavigation()
 
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title="Tham gia Staking"/>)
+        setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Tham gia Staking', en: 'Join Staking'},language)}/>)
         setOutScrollView(                
            
         )
@@ -63,8 +65,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             setToggleCheckBox(false)
             setLoading(false)
             Alert.alert(
-                "Staking",
-                "Không đủ KDG để Staking",
+                checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                checkLanguage({vi: 'Không đủ KDG Staking', en: 'Not enough KDG Staking'},language),
             )
             return;
           }
@@ -76,8 +78,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
           }
           setToggleCheckBox(false)
           Alert.alert(
-            "Staking",
-            "Đã có lỗi xảy ra",
+            checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+            checkLanguage({vi: 'Đã có lỗi xảy ra', en: 'An error has occurredg'},language)
         )
         })
         
@@ -108,7 +110,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         <>
 
 <View style={mainStyles.container}>
-<PopupCongras title='Staking thành công !' content='Chúc mừng bạn đã tham gia Staking thành công' toPress={() => setModalVisible(false)} isModalVisible={isModalVisible}/>
+<PopupCongras title={checkLanguage({vi: 'Chúc mừng!', en: 'Congrats!'},language)} content={checkLanguage({vi: 'Chúc mừng bạn đã tham gia Staking thành công', en: `You've joined KDG Staking successfully!`},language)} toPress={() => setModalVisible(false)} isModalVisible={isModalVisible}/>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
         <View style={{padding: (windowWidth*windowHeight)/29376, backgroundColor: 'rgba(29,37,54,0.8)', marginBottom: 13}}>
             <View style={{alignItems: 'center'}}>

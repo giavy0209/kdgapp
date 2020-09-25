@@ -119,8 +119,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                 <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
                 <View style={{flexDirection: 'row',justifyContent: 'center', paddingVertical: 20}}>
                    <View> 
-                        <Text style={{color: '#fff', fontSize: 25, textAlign: 'center'}}>{'$'+ coinNumbers[coinName.toLowerCase()].exchange_rate.usd}</Text>
-                        <Text style={{color: percent24h < 0  ? 'red' : '#26a65b', fontSize: 12, textAlign: 'center'}}>{`$${coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.usd} (${percent24h}%)`}</Text>
+                        <Text style={{color: percent24h < 0  ? 'red' : '#26a65b', fontSize: 16, textAlign: 'center'}}>{`$${coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.usd} (${percent24h}%)`}</Text>
                    </View>
                    {/* <View style={{position: 'absolute', top: 25, right: 25}}>
                        <TouchableOpacity 

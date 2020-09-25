@@ -5,9 +5,13 @@ import deposit from '../../assets/images/deposit.png'
 import stake from '../../assets/images/stake.png'
 import swap from '../../assets/images/swap.png'
 import { walletStyles } from '../../styles/'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
+import { checkLanguage } from '../../helper'
+import { useSelector } from 'react-redux'
+
 export default function App({}){
     const navigation = useNavigation()
+    const language = useSelector(state => state.language)
     return (
         <View style={walletStyles.groupButton}>
             <TouchableOpacity  
@@ -18,7 +22,7 @@ export default function App({}){
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={withdraw}/>
-                <Text style={walletStyles.buttonText}>Rút</Text>
+                <Text style={walletStyles.buttonText}>{checkLanguage({vi: 'Rút', en: 'Withdraw'},language)}</Text>
             </View>
             </TouchableOpacity>
 
@@ -29,7 +33,7 @@ export default function App({}){
             <View style={walletStyles.button}>
                 <View style={walletStyles.maskOpacity}></View>
                 <Image source={deposit}/>
-                <Text style={walletStyles.buttonText}>Nạp</Text>
+                <Text style={walletStyles.buttonText}>{checkLanguage({vi: 'Nạp', en: 'Deposit'},language)}</Text>
             </View>
             </TouchableOpacity>
 

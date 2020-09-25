@@ -11,7 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Dimensions } from 'react-native';
-import { storage } from '../../../helper';
+import { storage, checkLanguage } from '../../../helper';
 import { asyncGetCoinPrice, asyncWithdraw } from '../../../store/actions'
 import { Camera } from 'expo-camera';
 import ticker from '../../../assets/images/ticker.png'
@@ -34,7 +34,7 @@ export default function App({setOutScrollView}){
     
     const typeCurrency = useSelector(state => state.currency)
     const coinNumbers = useSelector(state => state.coinNumbers)
-    
+    const language = useSelector(state => state.language)
     const [Width , setWidth] = useState(0);
 
     const navigation = useNavigation();
@@ -52,7 +52,7 @@ export default function App({setOutScrollView}){
 
     // const {id} = route.params;
     const coinName = route.params.id;
-    const { addressScan } = route.params ?? {}
+
 
 
 
@@ -73,8 +73,8 @@ export default function App({setOutScrollView}){
         .then((res)=>{
             if(res.status === 1 ){
                 Alert.alert(
-                    "Thông báo",
-                    `Đã chuyển thành công ${ValueSend} ${coinName}`,
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    `${checkLanguage({vi: 'Rút thành công', en: 'Withdraw successfully'},language)} ${ValueSend} ${coinName}`,
                 )
 
                 setValueSend('')
@@ -83,14 +83,14 @@ export default function App({setOutScrollView}){
                 return
             }else if(res.status === 100){
                 Alert.alert(
-                    "Thông báo",
-                    `Mã 2FA không đúng`,
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'Mã 2fa không chính xác', en: 'The 2fa code is failed'},language),
                 )
               
             }else{
                 Alert.alert(
-                    "Thông báo",
-                    `Giao dịch thất bại`,
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'Giao dịch thất bại', en: 'Transaction failed'},language),
                 )
             }
 
@@ -128,11 +128,6 @@ export default function App({setOutScrollView}){
     
       },[])
 
-      useEffect(()=>{
-        if(addressScan !== undefined){
-            setToAddress(addressScan)
-        }
-      },[])
 
     return (
         <>
@@ -140,7 +135,7 @@ export default function App({setOutScrollView}){
 <View style={mainStyles.container}>
     <HeaderwithButton 
         toPress={() => openScanner()}
-        title={"Gửi " +  coinName}/>
+        title={checkLanguage({vi: 'Rút ', en: 'Withdraw '},language) +  coinName}/>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} > 
 
         <View style={withdrawStyle.numberSendContainer}>
@@ -149,12 +144,12 @@ export default function App({setOutScrollView}){
                         <Image source={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : mchicon} style={{width: windowWidth*windowHeight/9000, height: windowWidth*windowHeight/9000}} />
                         <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
                             <Text style={withdrawStyle.coinName}>{coinName}</Text>
-                            <Text style={withdrawStyle.balance}>Số dư: {coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
+                            <Text style={withdrawStyle.balance}>{checkLanguage({vi: 'Số dư: ', en: 'Balance: '},language)  + coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
                         </View>                                   
                 </View>
 
                 <TouchableOpacity onPress={() => navigation.navigate('Withdraw')} style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5}}>Chọn coin</Text>
+                    <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5}}>{checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}</Text>
                     <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faChevronRight}/>
                 </TouchableOpacity>
        
@@ -163,7 +158,7 @@ export default function App({setOutScrollView}){
             {
               coinName === 'USDT' ?
               <View style={{flexDirection: 'row' ,paddingHorizontal: 60, width: '100%', paddingTop: 30, justifyContent: 'space-between'}}>
-                  <Text style={{color: 'rgba(255,255,255,0.5)'}}>Chọn loại</Text>
+                  <Text style={{color: 'rgba(255,255,255,0.5)'}}>{checkLanguage({vi: 'Chọn loại', en: 'Select type'},language)}</Text>
                   <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={() => setSelectedType(0)} style={{backgroundColor: SelectedType === 0 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                         {SelectedType === 0 ? <Image source={ticker}/>  : null}
@@ -186,7 +181,7 @@ export default function App({setOutScrollView}){
 
         <View style={withdrawStyle.numberSendContainer}>
             <View style={{width: '100%'}}>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>Số tiền rút</Text>   
+                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Số tiền rút', en: 'Withdrawal amount'},language)}</Text>   
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <View style={withdrawStyle.inputNumContainer}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
@@ -224,12 +219,12 @@ export default function App({setOutScrollView}){
 
         <View style={withdrawStyle.numberSendContainer}>
             <View>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>Gửi đến</Text>   
+                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Rút về', en: 'Withdraw to'},language)}</Text>   
                 <View style={{flexDirection: 'row'}}>
                     <View style={withdrawStyle.inputNumContainer2}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
                             <TextInput
-                            placeholder="Nhập địa chỉ cần nhận tiền"
+                            placeholder={checkLanguage({vi: 'Nhập địa chỉ nhận tiền', en: 'Enter receiving address'},language)}
                             placeholderTextColor = "#8a8c8e"
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
@@ -244,13 +239,13 @@ export default function App({setOutScrollView}){
 
         <View style={withdrawStyle.numberSendContainer}>
             <View>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>Mã xác thực 2FA</Text>   
+                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Mã xác thực 2FA', en: '2FA code'},language)}</Text>   
                 <View style={{flexDirection: 'row'}}>
                     <View style={withdrawStyle.inputNumContainer2}>
                         <View style={{padding: (windowWidth*windowHeight)/23040}}>
                             <TextInput
                             keyboardType='decimal-pad'
-                            placeholder="Xác thực 2FA"
+                            placeholder={checkLanguage({vi: 'Xác thực 2FA', en: '2FA Authentication'},language)}
                             placeholderTextColor = "#8a8c8e"
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
@@ -269,7 +264,7 @@ export default function App({setOutScrollView}){
                     <LinearGradient 
                         colors={['#e5be50', '#ecda8b', '#a47b00']}
                         style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>
-                        <Text style={{color: '#111b2d', fontSize: 16}}>Gửi</Text>
+                        <Text style={{color: '#111b2d', fontSize: 16}}>{checkLanguage({vi: 'Rút', en: 'Withdraw'},language)}</Text>
                     </LinearGradient>
                 </View>
         </TouchableOpacity>

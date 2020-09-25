@@ -10,8 +10,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Dimensions } from 'react-native';
 import { asyncGetBalance, asyncGetBalanceDouble, asyncGetCoinPrice } from '../../../store/actions'
-import { storage } from '../../../helper'
+import { storage, checkLanguage} from '../../../helper'
 import { useDispatch, useSelector } from 'react-redux'
+
 // ------------------Icon---------------------
 import kdgicon from '../../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../../assets/images/IconCoin/ETH.png'
@@ -30,6 +31,7 @@ const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollViewTop}){
     const [Width , setWidth] = useState(0);
     const dispatch = useDispatch();
+    const language = useSelector(state => state.language)
     const coinNumbers = useSelector(state => state.coinNumbers)
     const route = useRoute();
     
@@ -37,12 +39,11 @@ export default function App({setOutScrollViewTop}){
     const [searchVal, setSearchVal] = useState();
     const navigation = useNavigation()
 
-    const { addressScan } = route.params ?? {}
 
 
 
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title="Chọn Coins"/>)
+        setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}/>)
     },[])
 
 
@@ -60,14 +61,14 @@ export default function App({setOutScrollViewTop}){
       ];
 
 
-      useEffect(()=>{
-        if(addressScan !== undefined){
-            Alert.alert(
-                'Địa chỉ ví',
-                 addressScan
-              )
-        }
-      },[])
+    //   useEffect(()=>{
+    //     if(addressScan !== undefined){
+    //         Alert.alert(
+    //             'Wallet address',
+    //              addressScan
+    //           )
+    //     }
+    //   },[])
 
     return (
         
@@ -82,7 +83,7 @@ export default function App({setOutScrollViewTop}){
                     <FontAwesomeIcon color="#8a8c8e" icon={faSearch}/>
                 </View>
                 <TextInput
-                placeholder="Tìm kiếm" 
+                placeholder={checkLanguage({vi: 'Tìm kiếm', en: 'Search'},language)}
                 placeholderTextColor = "#8a8c8e"
                 onFocus={()=>{}} 
                 onBlur={()=>{}} 
@@ -107,7 +108,7 @@ export default function App({setOutScrollViewTop}){
                                 navigation.navigate('WithdrawPage2', {
                                     id: item.text,
                                     balance: item.balance, 
-                                    addressScan: addressScan
+                 
                                 })}>
                                     <View style={{flexDirection: 'row'}}>
                                         <Image source={item.icon} style={{width: 35, height: 35}} />
@@ -142,7 +143,6 @@ export default function App({setOutScrollViewTop}){
                                 navigation.navigate('WithdrawPage2', {
                                     id: item.text,
                                     balance: item.balance,
-                                    addressScan: addressScan
                                 })} >
                                 <View style={{flexDirection: 'row'}}>
                                     <Image source={item.icon} style={{width: 35, height: 35}} />

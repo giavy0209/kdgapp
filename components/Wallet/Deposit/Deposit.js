@@ -7,7 +7,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
-import { storage } from '../../../helper'
+import { storage, checkLanguage } from '../../../helper'
 import { asyncGetBalanceDouble } from '../../../store/actions'
 import { useDispatch, useSelector } from 'react-redux'
 // ------------------Icon---------------------
@@ -29,6 +29,7 @@ export default function App({setOutScrollViewTop}){
     const coinNumbers = useSelector(state => state.coinNumbers)
     const [Width , setWidth] = useState(0);
     const dispatch = useDispatch();
+    const language = useSelector(state => state.language)
 
     const list = [
         {address: coinNumbers.kdg.address , exchange_rate: coinNumbers.kdg.exchange_rate, balance: coinNumbers.kdg.balance, text: 'KDG', icon: kdgicon, description: 'Kingdom Game 4.0', key: '1'},
@@ -46,7 +47,7 @@ export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
 
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title="Chọn Coins"/>)
+        setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}/>)
     },[])
 
 
@@ -64,7 +65,7 @@ export default function App({setOutScrollViewTop}){
                     <FontAwesomeIcon color="#8a8c8e" icon={faSearch}/>
                 </View>
                 <TextInput
-                placeholder="Tìm kiếm" 
+                placeholder={checkLanguage({vi: 'Tìm kiếm', en: 'Search'},language)}
                 placeholderTextColor = "#8a8c8e"
                 onFocus={()=>{}} 
                 onBlur={()=>{}} 
