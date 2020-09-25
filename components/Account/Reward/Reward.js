@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     },
     groupButton: {
         paddingTop : 20,
-        marginHorizontal: 10,
+        marginHorizontal: 10, 
         display : 'flex',
         flexDirection : 'row',
         justifyContent : 'space-between',
