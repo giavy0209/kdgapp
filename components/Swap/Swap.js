@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import {View, Text, TouchableOpacity, Image, Alert, TextInput, ActivityIndicator} from 'react-native'
 import { mainStyles } from '../../styles'
 import {Header2} from '../Header'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import coin from '../../assets/images/IconCoin/KDG.png'
@@ -28,6 +28,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const dispatch = useDispatch();
     const language = useSelector(state => state.language)
 
+    const isFocused = useIsFocused();
     const navigation = useNavigation()
 
     useEffect(()=>{
@@ -40,7 +41,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
           var userinfo = await storage('_id').getItem();
           dispatch(asyncGetUserbyID(userinfo._id))
           .then((res)=>{
-              console.log(res.data.kdg_reward)
+
             if(res.data.kdg_reward){
                 setKDGReward((res.data.kdg_reward).toString())
             }else{
@@ -54,7 +55,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         getKDG_Reward()
     
     
-      },[KDGReward])
+      },[KDGReward, isFocused])
     
 
     const Swap = useCallback(async () => {
@@ -65,7 +66,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
         dispatch(asyncConvertKDGReward({userId: userinfo._id, value: ValueSwap}))
         .then((res)=>{
-            console.log(res)
+
           if(res.status === 104){
             setLoading(false)
             Alert.alert(
