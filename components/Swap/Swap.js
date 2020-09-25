@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import coin from '../../assets/images/IconCoin/KDG.png'
-import { actChangeSecureStatus, asyncConvertKDGReward } from '../../store/actions'
+import { actChangeSecureStatus, asyncConvertKDGReward, asyncGetUserbyID } from '../../store/actions'
 import { storage, checkLanguage } from '../../helper'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -24,6 +24,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const secstatus = useSelector(state => state.secstatus )
     const [Loading, setLoading] = useState(false);
     const [Width , setWidth] = useState(0);
+    const [KDGReward, setKDGReward] = useState('Loading...')
     const dispatch = useDispatch();
     const language = useSelector(state => state.language)
 
@@ -34,11 +35,33 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     },[ValueSwap])
     
 
+    useEffect(() => {
+        async function getKDG_Reward() {
+          var userinfo = await storage('_id').getItem();
+          dispatch(asyncGetUserbyID(userinfo._id))
+          .then((res)=>{
+              console.log(res.data.kdg_reward)
+            if(res.data.kdg_reward){
+                setKDGReward((res.data.kdg_reward).toString())
+            }else{
+                setKDGReward('0')
+            }
+           
+          })      
+          .catch(console.log)
+        }
+    
+        getKDG_Reward()
+    
+    
+      },[KDGReward])
+    
 
     const Swap = useCallback(async () => {
         setLoading(true)  
 
         var userinfo = await storage('_id').getItem();
+
 
         dispatch(asyncConvertKDGReward({userId: userinfo._id, value: ValueSwap}))
         .then((res)=>{
@@ -73,9 +96,10 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
                 checkLanguage({vi: 'Swap thành công', en: `Swap successfully`},language),
             )
-            setKDGReward(secstatus.KDGReward)
+            setKDGReward(KDGReward - ValueSwap)
             dispatch(actChangeSecureStatus({
                 ...secstatus,
+                kdg_reward: KDGReward
     
             }))
             setValueSwap(0)
@@ -155,7 +179,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 </View>
                 <View style={{padding: 10, flexDirection: 'row'}}>
                     <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.3)', fontWeight: '400'}}>{checkLanguage({vi: 'Khả dụng: ', en: 'Available: '},language)}</Text>
-                    <Text style={{fontSize: 15, color: '#fff', fontWeight: '400'}}>{secstatus.kdg_reward === undefined ? 'Loading...' : secstatus.kdg_reward + "  KDG Reward"}</Text>
+                    <Text style={{fontSize: 15, color: '#fff', fontWeight: '400'}}>{" " + KDGReward}</Text>
                 </View>
             </View>
 
