@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import WebView from 'react-native-webview'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import bg from '../../../assets/images/spinbg.png'
 import calAPI from '../../../axios'
 import { checkLanguage } from '../../../helper'
@@ -13,6 +13,7 @@ import kdgcoin from '../../../assets/images/kdg-coin.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { useNavigation } from '@react-navigation/native'
+import { asyncGetUserbyID } from '../../../store/actions'
 const {width,height} = Dimensions.get('screen')
 var getSpinRate = async() =>{
 
@@ -151,6 +152,7 @@ const styles = StyleSheet.create({
 export default function App ({setBackGround}) {
     const webview = useRef()
     const navigation = useNavigation()
+    const dispatch = useDispatch()
     useMemo(()=>{
         setBackGround(bg)
     },[])
@@ -198,6 +200,10 @@ export default function App ({setBackGround}) {
             message.error(checkLanguage({vi: 'Bạn không đủ KDG Reward', en : 'You dont have enough KDG Reward'}, language))
         }
     },[user])
+
+    const refreshUserData = useCallback(async () => {
+        dispatch(asyncGetUserbyID(user._id))
+    },[user])
     return (
         <>
             <View style={styles.container}>
@@ -217,8 +223,12 @@ export default function App ({setBackGround}) {
                 source={{ html}}
                 onLoad={inject}
                 onMessage={e => {
+                    console.log(e.nativeEvent.data);
                     if(e.nativeEvent.data === 'req-spin-value'){
                         injectValue()
+                    }
+                    if(e.nativeEvent.data === 'spin-done'){
+                        refreshUserData()
                     }
                 }}
             />
