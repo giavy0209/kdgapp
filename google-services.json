@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "804941741384",
+    "firebase_url": "https://my-project-1576173575312.firebaseio.com",
+    "project_id": "my-project-1576173575312",
+    "storage_bucket": "my-project-1576173575312.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804941741384:android:1c06d996b4570d15afc77d",
+        "android_client_info": {
+          "package_name": "kingwallet.kingdomgame.org"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804941741384-t1rc8tumr19em7krkpbiv0ajnrq96ukg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsO8pwDRglDK8Cm5Zd68V-68lkFEX43Zg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804941741384-t1rc8tumr19em7krkpbiv0ajnrq96ukg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

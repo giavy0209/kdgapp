@@ -21,13 +21,22 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.kingdomgame.kingwallet",
+      "bundleIdentifier": "kingwallet.kingdomgame.org",
       "buildNumber": "1.0.0"
     },
     "android": {
       "useNextNotificationsApi": true,
-      "package": "com.kingdomgame.kingwallet",
-      "versionCode": 1
+      "package": "kingwallet.kingdomgame.org",
+      "versionCode": 1,
+      "googleServicesFile" : "./google-services.json",
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyAsO8pwDRglDK8Cm5Zd68V-68lkFEX43Zg"
+        },
+        "googleMaps" : {
+          "apiKey" : "AIzaSyAsO8pwDRglDK8Cm5Zd68V-68lkFEX43Zg"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
