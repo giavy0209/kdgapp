@@ -8,6 +8,7 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import Notification from './Notification'
 import { storage } from '../../../helper'
 import { useRoute } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 
 export default function App(){
     const [Width , setWidth] = useState(0)
@@ -15,21 +16,30 @@ export default function App(){
     const route = useRoute();
 
     const {NewsData} = route.params ?? {}
-
-
-    var listnoti = [
-        { title: 'Chúc mừng bạn đã tham gia King Wallet', 
-          content: 'Bạn đã đăng ký thành công Bạn đã đăng ký thành công. Nếu đủ điểm bạn sẽ được thưởng nhiều quà tăng. Giữ vững phong độ nhé!',
-          datetime: CreateDate,
-          status: true,
-        },
-    ]
-
+    const listnoti = useSelector(state => state.notify)
     return (
         <>
         <View style={mainStyles.container}>
             <Header2 title="Thông báo"/>
             <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} style={notifyStyles.listNotify}>
+                {listnoti.map((item) => {
+                    console.log(item);
+                    return (
+                        <Notification
+                            title={item.title}
+                            content={item.content}
+                            datetime={
+                                (new Date(item.datetime)).getHours().toString()  + ":" +
+                                (new Date(item.datetime)).getMinutes().toString()  + ":" +
+                                (new Date(item.datetime)).getSeconds().toString()  + " - " +
+                                (new Date(item.datetime)).getDate().toString()  + "/"   +
+                                ((new Date(item.datetime)).getMonth() + 1).toString() + "/"   +
+                                (new Date(item.datetime)).getFullYear().toString()
+                            }
+                        />
+    
+                    )
+                })}
                 {NewsData.slice(0,4).map((item) =>{
                     if(item.content_vi !== undefined && item.meta_vi !== undefined){
                        return (
@@ -64,15 +74,6 @@ export default function App(){
 
 
                 })}
-                {listnoti.map((item) => (
-                    <Notification
-                        title={item.title}
-                        content={item.content}
-                        datetime=''
-                    />
-
-                ))}
-              
             </View>
         </View>
         </>

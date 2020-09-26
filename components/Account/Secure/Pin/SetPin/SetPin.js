@@ -9,6 +9,8 @@ import { LinearGradient } from 'expo-linear-gradient'
 import {asyncSetPin} from '../../../../../store/actions'
 import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 export default function App(){
     const dispatch = useDispatch()
@@ -36,9 +38,9 @@ export default function App(){
         if(Pin1 === Pin2){
             dispatch(asyncSetPin(Pin1))
             .then(()=>{
-                Alert.alert('Unlock PIN', 'Mã PIN được cài đặt thành công')
-                navigation.goBack()
             })
+            Alert.alert('Unlock PIN', 'Mã PIN được cài đặt thành công')
+            navigation.goBack()
         }else{
             Alert.alert('Đổi mã pin', 'Nhập lại mã pin không chính xác')
         }
@@ -51,11 +53,28 @@ export default function App(){
             <Text style={{marginTop:25,color: '#ddd9d8', fontSize: 13,textAlign:'center'}}>Tạo mật khẩu 6 số để bảo vệ an toàn Ví King của bạn</Text>
             <Text style={{color: '#ddd9d8', fontSize: 13,textAlign:'center'}}>Mã PIN dùng để mở khóa ví tiền và gửi tiền</Text>
 
-            <TouchableOpacity disabled={PinBar1Focus} activeOpacity={false} onPress={()=>{PinBar1.focus(); setPinBar1Focus(true)}} style={{position:'relative',backgroundColor: '#1d2536', height: 55, flex: 1, justifyContent: 'center', alignItems: 'center',width: '100%', borderRadius: 40, marginTop:32}}>
+            <TouchableOpacity 
+            disabled={PinBar1Focus} 
+            activeOpacity={false} 
+            onPress={()=>{PinBar1.focus(); setPinBar1Focus(true)}} 
+            style={{position:'relative',backgroundColor: '#1d2536',display: 'flex', height: 55, flex: 1, justifyContent: 'center', alignItems: 'center',width: '100%', borderRadius: 40, marginTop:32}}>
                 <Image style={{position: 'absolute', left: 19, top: 22}} source={Lock}/>
+                <TouchableOpacity 
+                onPress={()=>{
+                    setPin1('')
+                    setPinBar1Focus(false)
+                }}
+                style={{position : 'absolute', right: 19, padding: 10}}  >
+                    <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
+                </TouchableOpacity>
                 <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar1Focus ? 0 : 1}}>Nhập mã PIN</Text>
 
-                <View style={{opacity: PinBar1Focus ? 1 : 0,top: PinBar1Focus? 0 : -10000 ,position: 'absolute', width: '100%' , height : '100%',  left: 0, alignItems: 'center', justifyContent: 'center'}}>
+                <View 
+                style={{
+                    opacity: PinBar1Focus ? 1 : 0,
+                    top: PinBar1Focus? 0 : -10000 ,
+                    position: 'absolute', width: '60%' , height : '100%', alignItems: 'center', justifyContent: 'center'
+                }}>
                     <SmoothPinCodeInput
                     placeholder={<View style={{
                         width: 10,
@@ -86,10 +105,23 @@ export default function App(){
             </TouchableOpacity>
 
             <TouchableOpacity disabled={PinBar2Focus} onPress={()=>{PinBar2.focus(); setPinBar2Focus(true)}} style={{position:'relative',backgroundColor: '#1d2536', height: 55, flex: 1, justifyContent: 'center', alignItems: 'center',width: '100%', borderRadius: 40, marginTop:10}}>
+                <TouchableOpacity 
+                onPress={()=>{
+                    setPin2('')
+                    setPinBar2Focus(false)
+                }}
+                style={{position : 'absolute', right: 19, padding: 10}}  >
+                    <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
+                </TouchableOpacity>
                 <Image style={{position: 'absolute', left: 19, top: 22}} source={Lock}/>
                 <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar2Focus ? 0 : 1}}>Nhập lại mã PIN</Text>
 
-                <View style={{opacity: PinBar2Focus ? 1 : 0,top: PinBar2Focus? 0 : -10000 ,position: 'absolute', width: '100%' , height : '100%',  left: 0, alignItems: 'center', justifyContent: 'center'}}>
+                <View 
+                style={{
+                    opacity: PinBar2Focus ? 1 : 0,
+                    top: PinBar2Focus? 0 : -10000 ,
+                    position: 'absolute', width: '60%' , height : '100%', alignItems: 'center', justifyContent: 'center'
+                }}>
                     <SmoothPinCodeInput
                     placeholder={<View style={{
                         width: 10,

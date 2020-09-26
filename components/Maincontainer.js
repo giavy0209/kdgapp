@@ -10,7 +10,6 @@ import { asyncGetSettings } from '../store/actions';
 import checkDisplays from '../helper/checkDisplays';
 export default function Maincontainer({Component,route ,reqLogin, ...restProps}){
     const {bottom} = useSafeAreaInsets()
-    const dispatch = useDispatch()
     
     const display = useSelector(state => state.display)
     const [OutScrollView, setOutScrollView] = useState(null)

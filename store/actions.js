@@ -5,6 +5,7 @@ import { storage } from '../helper';
 
 export const GET_ROUTERS = 'GET_ROUTERS';
 export const CHANGE_ROUTER = 'CHANGE_ROUTER';
+export const CHANGE_NOTIFY = 'CHANGE_NOTIFY';
 export const CHANGE_SCREEN_WIDTH = 'CHANGE_SCREEN_WIDTH';
 export const CHANGE_SCREEN_HEIGHT = 'CHANGE_SCREEN_HEIGHT';
 export const CHANGE_USER_DATA = 'CHANGE_USER_DATA';
@@ -22,6 +23,13 @@ export function actChangeRouters(routers){
     return {
         type: CHANGE_ROUTER,
         payload: {routers}
+    }
+}
+
+export function actChangeNotify(notify){
+    return {
+        type: CHANGE_NOTIFY,
+        payload: {notify}
     }
 }
 
@@ -126,6 +134,12 @@ export function asyncGetRouters(){
         const currency = JSON.parse(await AsyncStorage.getItem('currency'))
         const language = JSON.parse(await AsyncStorage.getItem('language'))
         const display = JSON.parse(await AsyncStorage.getItem('display'))
+        var noti = JSON.parse(await AsyncStorage.getItem('noti'))
+        if(!noti){
+            JSON.stringify(await AsyncStorage.setItem('noti', JSON.stringify([])))
+            noti = []
+        }
+        dispatch(actChangeNotify(noti))
         if(PIN){
             dispatch(actChangePin(PIN))
         }
