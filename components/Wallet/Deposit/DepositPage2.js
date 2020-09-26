@@ -43,8 +43,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const route = useRoute();
     const [isModalVisible, setModalVisible] = useState(false);
     const coinName = route.params.id;
-    const coinAddress = route.params.address;
-    const coinAddressTRC = route.params.addressTRC;
+    const coinAddress = route.params.address ?? {};
+    const coinAddressTRC = route.params.addressTRC ?? {};
 
     
     useEffect(()=>{

@@ -58,7 +58,7 @@ export default function App({setOutScrollViewTop}){
             </TouchableOpacity>
             <View style={{paddingTop: 20, justifyContent: 'center', alignItems: 'center'}}>
             <TouchableOpacity
-              onPress={()=>{navigation.navigate('News')}}
+              onPress={()=>{navigation.goBack()}}
             >
               <Image source={logo}/>
             </TouchableOpacity>

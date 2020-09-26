@@ -5,6 +5,7 @@ import {mainStyles} from '../../../../styles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
+import {  checkLanguage } from '../../../../helper';
 export default function App(){
     const navigation = useNavigation()
 
@@ -12,15 +13,15 @@ export default function App(){
     const [Height, setHeight] =useState(0)
     const [ContentHeight, setContentHeight] =useState(0)
     const [ButtonHeight, setButtonHeight] =useState(0)
-
+    const language = useSelector(state => state.language)
     return (
         <>
-            <Header2 setHeight={setHeight} title="Xác minh danh tính"/>
+            <Header2 setHeight={setHeight} title={checkLanguage({vi: 'Xác minh danh tính', en: 'KYC'},language)}/>
             <View 
             onLayout={e=>setContentHeight(e.nativeEvent.layout.height)}
             style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 8}]}>
-                <Text style={[mainStyles.color1,mainStyles.fontsize13]}>Để bắt đầu quá trình xác minh, vui lòng chuẩn bị sẵn các tài liệu nhận dạng chính thức của bạn</Text>
-                <Text style={[mainStyles.color1,mainStyles.fontsize13,{marginTop: 13,marginBottom:23}]}>CMND/Bằng lái xe/ Hộ chiếu</Text>
+                <Text style={[mainStyles.color1,mainStyles.fontsize13]}>{checkLanguage({vi: 'Để bắt đầu quá trình xác minh, vui lòng chuẩn bị sẵn các tài liệu nhận dạng chính thức của bạn', en: 'To start the KYC process, please have your official identification documents ready'},language)}</Text>
+                <Text style={[mainStyles.color1,mainStyles.fontsize13,{marginTop: 13,marginBottom:23}]}>{checkLanguage({vi: 'CMND/ Bằng lái xe/ Hộ chiếu', en: `ID card / Driver's license / Passport`},language)}</Text>
                 <View style={{flexDirection:'row', alignItems: 'center'}}>
                     <LinearGradient
                      start={[0,1]}
@@ -30,7 +31,7 @@ export default function App(){
                     >
                         <Text style={{color: '#111b2d'}}>1</Text>
                     </LinearGradient>
-                    <Text style={[mainStyles.fontsize14, mainStyles.color2]}>Thông tin cá nhân</Text>
+                    <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{checkLanguage({vi: 'Thông tin cá nhân', en: `Personal information`},language)}</Text>
                 
                 </View>
                 <View style={{flexDirection:'row', alignItems: 'center',marginTop: 14}}>
@@ -42,7 +43,7 @@ export default function App(){
                     >
                         <Text style={{color: '#111b2d'}}>2</Text>
                     </LinearGradient>
-                    <Text style={[mainStyles.fontsize14, mainStyles.color2,]}>Upload ảnh CMND/Bằng lái xe/Hộ chiếu</Text>
+                    <Text style={[mainStyles.fontsize14, mainStyles.color2,]}>{checkLanguage({vi: 'Upload ảnh CMND/ Bằng lái xe/ Hộ chiếu', en: `Upload photo ID card / Driver's license / Passportn`},language)}</Text>
                 
                 </View>
 
@@ -59,7 +60,7 @@ export default function App(){
                 colors={['#a47b00','#edda8b', '#d6b039', '#edda8b', '#a47b00']}
                 style={{width: '100%',height: 47, justifyContent: 'center', alignItems: 'center'}}
                 >
-                    <Text style={{color: '#111b2d', fontSize: 14}}>BẮT ĐẦU</Text>
+                    <Text style={{color: '#111b2d', fontSize: 14}}>{checkLanguage({vi: 'BẮT ĐẦU', en: `START`},language)}</Text>
                 </LinearGradient>
             </TouchableOpacity>
         </>

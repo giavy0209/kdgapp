@@ -45,7 +45,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const [SelectedTime, setSelectedTime] = useState('1 ngày')
 
     const coinName = route.params.id;
-    const coinAddress = route.params.address;
+    const coinAddress = route.params.address ?? {};
+    const coinAddressTRC = route.params.addressTRC ?? {};
     const coinBalance = route.params.balance;
     const coinPrice = route.params.coinPrice;
 
@@ -191,7 +192,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     <TouchableOpacity 
                         onPress={() => navigation.navigate('DepositPage2', {
                             id: coinName,
-                            address: coinAddress
+                            address: coinAddress,
+                            addressTRC: coinAddressTRC ?  coinAddressTRC : ''
                         })}
                         style={{width: windowWidth/2.3}}>
                         <LinearGradient 

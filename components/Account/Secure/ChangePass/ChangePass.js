@@ -7,10 +7,10 @@ import LockIcon from '../../../../assets/images/lock-icon.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useSelector } from 'react-redux'
-import { storage } from '../../../../helper'
+import { useSelector,useDispatch } from 'react-redux'
+import { storage, checkLanguage } from '../../../../helper'
 import { asyncChangePassword } from '../../../../store/actions'
-import { useDispatch } from 'react-redux'
+
 
 export default function App(){
     const screenHeight = useSelector(state=>state.height)
@@ -28,6 +28,9 @@ export default function App(){
     const [ReNewPassValidate, setReNewPassValidate] = useState(<Text></Text>)
     const [ReNewPassVisible, setReNewPassVisible] = useState(false)
 
+    const language = useSelector(state => state.language)
+    
+
     
     const [CheckValidate, setCheckValidate] = useState(false);
 
@@ -41,13 +44,13 @@ export default function App(){
             //     return
             // }
             if(res.status === 100 && res.msg === 'wrong old password'){
-                setOldPassValidate(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu cũ không đúng</Text>)
+                setOldPassValidate(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Mật khẩu không đúng', en: 'Invalid password'},language)}</Text>)
                 return
             }
             if(res.status === 1 && res.msg === 'change password success'){
                 Alert.alert(
-                    "Đổi mật khẩu",
-                    "Đổi mật khẩu thành công",
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'Đổi password thành công', en: 'You have Successfully changed your Password'},language),
                 )
                 setOldPass('')
                 setNewPass('')
@@ -68,7 +71,7 @@ export default function App(){
             setOldPassValidate(null)
         }else{
             setOldPassValidate(
-                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu phải ít nhất 8 ký tự cả chữ và số</Text>
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Mật khẩu phải ít nhất 8 ký tự cả chữ và số', en: 'At least 8 digits, include word and number'},language)}</Text>
             )
         }
     }
@@ -79,17 +82,18 @@ export default function App(){
             setNewPassValidate(null)
         }else{
             setNewPassValidate(
-                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu phải ít nhất 8 ký tự cả chữ và số</Text>
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Mật khẩu phải ít nhất 8 ký tự cả chữ và số', en: 'At least 8 digits, include word and number'},language)}</Text>
             )
         }
     }
     const validateReNewPassword = (val) => {
         setReNewPass(val);
+
         if(val === NewPass){
             setReNewPassValidate(null)
         }else{
             setReNewPassValidate(
-                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu không khớp</Text>
+                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Mật khẩu không khớp', en: 'Password not match'},language)}</Text>
             )
         }
     }
@@ -106,10 +110,10 @@ export default function App(){
     
     return (
         <>
-            <Header2 setHeight={setHeight} title="Thay đổi mật khẩu"/>
+            <Header2 setHeight={setHeight} title={checkLanguage({vi: 'Thay đổi mật khẩu', en: 'Change password'},language)}/>
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 8}]}>
-                <Text style={{color: '#ddd9d8', fontSize: 14}}> Để cập nhật mật khẩu, đầu tiên nhập mật khẩu hiện tại của bạn và sau đó nhập mật khẩu mới 2 lần</Text>
-                <Text style={{marginTop: 28, color: '#8a8c8e' ,fontSize: 13}}>Mật khẩu hiện tại</Text>
+                <Text style={{color: '#ddd9d8', fontSize: 14}}> {checkLanguage({vi: 'Để cập nhật mật khẩu, đầu tiên nhập mật khẩu hiện tại của bạn và sau đó nhập mật khẩu mới 2 lần', en: 'To change your password, first enter your current password and then enter your new password twice'},language)}</Text>
+                <Text style={{marginTop: 28, color: '#8a8c8e' ,fontSize: 13}}>{checkLanguage({vi: 'Mật khẩu hiện tại', en: 'Current password'},language)}</Text>
                 <View style={{flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent:'flex-start', alignContent: 'center',marginTop: 8,position: 'relative'}}>
                     <View style={{width:46,backgroundColor: '#333f57',height: '100%', alignItems:'center', alignContent: 'center', justifyContent: 'center', borderTopLeftRadius: 5, borderBottomLeftRadius: 5 }}>
                         <Image source={LockIcon} />
@@ -118,7 +122,7 @@ export default function App(){
                     secureTextEntry={!OldPassVisible} 
                     value={OldPass} 
                     onChangeText={value => validateOldPassword(value)} 
-                    placeholder='Mật khẩu hiện tại'
+                    placeholder={checkLanguage({vi: 'Mật khẩu hiện tại', en: 'Current password'},language)}
                     placeholderTextColor='rgba(255,255,255,0.4)'
                     style={{paddingVertical: 5, borderTopRightRadius:5,borderBottomRightRadius: 5,flex: 1,width: '100%', paddingHorizontal: 13,paddingLeft: 9, paddingRight: 40, color: '#ddd9d8', fontSize: 14 ,backgroundColor: '#2e394f',}}/>
                     <TouchableOpacity onPress={()=>setOldPassVisible(!OldPassVisible)} style={{position: 'absolute', right: 16, top: '50%', transform: [{translateY: -8}]}}><FontAwesomeIcon color='#8a8c8e' icon={OldPassVisible ? faEye : faEyeSlash} /></TouchableOpacity>
@@ -127,7 +131,7 @@ export default function App(){
                 <View style={{padding: 2}}>
                         {OldPassValidate}
                 </View>
-                <Text style={{marginTop: 22, color: '#8a8c8e' ,fontSize: 13}}>Mật khẩu mới</Text>
+                <Text style={{marginTop: 22, color: '#8a8c8e' ,fontSize: 13}}>{checkLanguage({vi: 'Mật khẩu mới', en: 'New password'},language)}</Text>
                 <View style={{flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent:'flex-start', alignContent: 'center',marginTop: 8,position: 'relative'}}>
                     <View style={{width:46,backgroundColor: '#333f57',height: '100%', alignItems:'center', alignContent: 'center', justifyContent: 'center', borderTopLeftRadius: 5, borderBottomLeftRadius: 5 }}>
                         <Image source={LockIcon} />
@@ -136,7 +140,7 @@ export default function App(){
                     secureTextEntry={!NewPassVisible} 
                     value={NewPass} 
                     onChangeText={value => validateNewPassword(value)} 
-                    placeholder='Mật khẩu mới'
+                    placeholder={checkLanguage({vi: 'Mật khẩu mới', en: 'New password'},language)}
                     placeholderTextColor='rgba(255,255,255,0.4)'
                     style={{paddingVertical: 5, borderTopRightRadius:5,borderBottomRightRadius: 5,flex: 1,width: '100%', paddingHorizontal: 13,paddingLeft: 9, paddingRight: 40, color: '#ddd9d8', fontSize: 14 ,backgroundColor: '#2e394f',}}/>
                     <TouchableOpacity onPress={()=>setNewPassVisible(!NewPassVisible)} style={{position: 'absolute', right: 16, top: '50%', transform: [{translateY: -8}]}}><FontAwesomeIcon color='#8a8c8e' icon={NewPassVisible ? faEye : faEyeSlash} /></TouchableOpacity>
@@ -144,7 +148,7 @@ export default function App(){
                 <View style={{padding: 2}}>
                         {NewPassValidate}
                 </View>
-                <Text style={{marginTop: 22, color: '#8a8c8e' ,fontSize: 13}}>Xác nhận mật khẩu</Text>
+                <Text style={{marginTop: 22, color: '#8a8c8e' ,fontSize: 13}}>{checkLanguage({vi: 'Xác nhận mật khẩu', en: 'Confirm password'},language)}</Text>
                 <View style={{flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent:'flex-start', alignContent: 'center',marginTop: 8,position: 'relative'}}>
                     <View style={{width:46,backgroundColor: '#333f57',height: '100%', alignItems:'center', alignContent: 'center', justifyContent: 'center', borderTopLeftRadius: 5, borderBottomLeftRadius: 5 }}>
                         <Image source={LockIcon} />
@@ -153,7 +157,7 @@ export default function App(){
                     secureTextEntry={!ReNewPassVisible} 
                     value={ReNewPass} 
                     onChangeText={value => validateReNewPassword(value)} 
-                    placeholder='Xác nhận mật khẩu'
+                    placeholder={checkLanguage({vi: 'Xác nhận mật khẩu', en: 'Confirm password'},language)}
                     placeholderTextColor='rgba(255,255,255,0.4)'
                     style={{paddingVertical: 5, borderTopRightRadius:5,borderBottomRightRadius: 5,flex: 1,width: '100%', paddingHorizontal: 13,paddingLeft: 9, paddingRight: 40, color: '#ddd9d8', fontSize: 14 ,backgroundColor: '#2e394f',}}/>
                     <TouchableOpacity onPress={()=>setReNewPassVisible(!ReNewPassVisible)} style={{position: 'absolute', right: 16, top: '50%', transform: [{translateY: -8}]}}><FontAwesomeIcon color='#8a8c8e' icon={ReNewPassVisible ? faEye : faEyeSlash} /></TouchableOpacity>
@@ -180,7 +184,7 @@ export default function App(){
                 colors={['#e5be50', '#ecda8b', '#a47b00']}
                 style={{paddingVertical: 15}}
                 >
-                    <Text style={{textAlign: 'center', color: '#111b2d'}}>THAY ĐỔI MẬT KHẨU</Text>
+                    <Text style={{textAlign: 'center', color: '#111b2d'}}>{checkLanguage({vi: 'THAY ĐỔI MẬT KHẨU', en: 'CHANGE'},language)}</Text>
                 </LinearGradient>
             </TouchableOpacity>
         </>

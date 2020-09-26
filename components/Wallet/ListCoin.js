@@ -42,6 +42,7 @@ export default function App({
     coinPriceTOMO,
     coinDisplay,
     isShortCoin,
+    isTapSort
     }){
     const navigation = useNavigation()
     const [CoinHeight, setCoinHeight] = useState(0)
@@ -56,20 +57,23 @@ export default function App({
         {coinPrice: coinPriceKDG, isDisplay: coinDisplay ? coinDisplay.kdg : true, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
         {coinPrice: coinPriceETH, isDisplay: coinDisplay ? coinDisplay.eth : true, key: 2, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
         {coinPrice: coinPriceTRX, isDisplay: coinDisplay ? coinDisplay.trx : true, key: 3, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
-        {coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH},
+        {coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH, addressTRC: addressTRX},
         {coinPrice: coinPriceKNC, isDisplay: coinDisplay ? coinDisplay.knc : true, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
         {coinPrice: coinPriceMCH, isDisplay: coinDisplay ? coinDisplay.mch : true, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
         {coinPrice: coinPriceTOMO, isDisplay: coinDisplay ? coinDisplay.tomo : true, key: 7, coinName: 'TOMO', icon: tomoicon, balance: balanceTOMO, address: addressTOMO},
     ]
 
-    const renderLeftActions = useCallback((id, balance, address) => {
+    const renderLeftActions = useCallback((id, balance, address, addressTRC) => {
         return (
           <RectButton>
             <Animated.View>
                 <TouchableOpacity 
                     onPress={() => {navigation.navigate('DepositPage2', {
                         id: id,
-                        address: address
+                        address: address,
+                        addressTRC: addressTRC
+                        
+                        
                     })}}
                     style={[walletStyles.coinSwipeRight, 
                     {height: CoinHeight}]}>
@@ -124,12 +128,12 @@ export default function App({
         <View style={walletStyles.listCoin}>
             <View style={walletStyles.maskOpacity}></View>
             <FlatList
-                data={isShortCoin === true ? 
+                data={isTapSort === false ? data : isShortCoin === true ? 
                     data.sort(function(a, b){
-                        return a.coinPrice.exchange.usd < b.coinPrice.exchange.usd;
+                        return a.coinPrice.usd < b.coinPrice.usd;
                     })
                     :       data.sort(function(a, b){
-                        return a.coinPrice.exchange.usd > b.coinPrice.exchange.usd;
+                        return a.coinPrice.usd > b.coinPrice.usd;
                     })
                 }
 
@@ -150,11 +154,12 @@ export default function App({
                         });
                     }}
                     renderRightActions={()=>renderRightActions(item.coinName, item.balance)} 
-                    renderLeftActions={()=>renderLeftActions(item.coinName, item.balance, item.address)}>
+                    renderLeftActions={()=>renderLeftActions(item.coinName, item.balance, item.address, item.addressTRC ? item.addressTRC : '',)}>
                     <TouchableOpacity 
                     onPress={()=>navigation.navigate('History', {
                         id: item.coinName,
                         address: item.address,
+                        addressTRC: item.addressTRC ? item.addressTRC : '',
                         balance: item.balance,
                         coinPrice: item.coinPrice
                     })}

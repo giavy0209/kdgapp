@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import Select from './Select'
 import Confirm from './Confirm'
 import { Popup } from '../../../../Popup'
+import {  checkLanguage } from '../../../../../helper';
 export default function App({setOutScrollView}){
     const navigation = useNavigation()
     const [isModalVisible, setModalVisible] = useState(false);
@@ -17,7 +18,7 @@ export default function App({setOutScrollView}){
     const [SelectedCountry, setSelectedCountry] = useState(0)
     const [SelectedID, setSelectedID] = useState(0)
     const [SelectedSex, setSelectedSex] = useState(0)
-
+    const language = useSelector(state => state.language)
     const [Name, setName] = useState('')
     const [IDNumber, setIDNumber] = useState('')
 
@@ -62,20 +63,20 @@ export default function App({setOutScrollView}){
 
     return (
         <>
-            <Header2 setHeight={setHeight} title="Xác minh danh tính"/>
-            <Popup type='failed' title='Vui lòng nhập đầy đủ thông tin' isModalVisible={isModalVisible}/>
+            <Header2 setHeight={setHeight} title={checkLanguage({vi: 'Xác minh danh tính', en: 'KYC'},language)}/>
+            <Popup type='failed' title={checkLanguage({vi: 'Vui lòng nhập đầy đủ thông tin', en: 'Please enter your details below'},language)} isModalVisible={isModalVisible}/>
             <View 
             onLayout={e=>setContentHeight(e.nativeEvent.layout.height)}
             style={[mainStyles.container, {marginHorizontal: 14, marginVertical: 8}]}>
-                <Text style={[mainStyles.color1, mainStyles.fontsize13,{marginBottom: 7}]}>Chỉ mất khoảng hơn 2 phút. Vui lòng cung cấp thông tin cá nhân đầy đủ của bạn để tiếp tục</Text>
+                <Text style={[mainStyles.color1, mainStyles.fontsize13,{marginBottom: 7}]}>{checkLanguage({vi: 'Chỉ mất khoảng hơn 2 phút. Vui lòng cung cấp thông tin cá nhân đầy đủ bạn để tiếp tục.', en: 'It only takes about 2 minutes. Please provide your personal information to continue.'},language)}</Text>
 
-                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>QUỐC GIA</Text>
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{checkLanguage({vi: 'QUỐC GIA', en: 'NATION'},language)}</Text>
                 <TouchableOpacity 
                 style={{marginTop: 8}}
                 onPress={()=>setSelectType(0)}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedCountry === 0 ? 'Việt Nam' : 'Quốc gia khác'}</Text>
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedCountry === 0 ? checkLanguage({vi: 'Việt Nam', en: 'Vietnamese'},language) : checkLanguage({vi: 'Quốc gia khác', en: 'Others'},language)}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'
@@ -84,13 +85,13 @@ export default function App({setOutScrollView}){
                     </View>
                 </TouchableOpacity>
 
-                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>LOẠI GIẤY TỜ</Text>
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{checkLanguage({vi: 'LOẠI GIẤY TỜ', en: 'DOCUMENT TYPE'},language)}</Text>
                 <TouchableOpacity 
                 style={{marginTop: 8}}
                 onPress={()=>setSelectType(1)}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedID === 0 ? 'CMND/Bằng lái xe' : 'Hộ chiếu'}</Text>
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedID === 0 ? checkLanguage({vi: 'CMND/ Bằng lái xe', en: `ID card / Driver's license`},language) : checkLanguage({vi: 'Hộ chiếu', en: `Passport`},language)}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'
@@ -98,23 +99,23 @@ export default function App({setOutScrollView}){
                         icon={faSort}/>
                     </View>
                 </TouchableOpacity>
-                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>TÊN</Text>
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{checkLanguage({vi: 'TÊN', en: 'NAME'},language)}</Text>
                 <View 
                 style={{marginTop: 8}}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
                         {/* <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text> */}
-                        <TextInput onChangeText={(value) => setName(value)}  placeholder='Nhập Tên' placeholderTextColor='#fff' style={[mainStyles.fontsize14, mainStyles.color2]}/>
+                        <TextInput onChangeText={(value) => setName(value)}  placeholder={checkLanguage({vi: 'Nhập tên', en: 'Enter your name'},language)} placeholderTextColor='#fff' style={[mainStyles.fontsize14, mainStyles.color2]}/>
                     </View>
                 </View>
                 
-                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>GIỚI TÍNH</Text>
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{checkLanguage({vi: 'GIỚI TÍNH', en: 'GENDER'},language)}</Text>
                 <TouchableOpacity 
                 style={{marginTop: 8}}
                 onPress={()=>setSelectType(2)}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text>
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? checkLanguage({vi: 'Nam', en: 'Male'},language) : checkLanguage({vi: 'Nữ', en: 'Female'},language)}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'
@@ -122,13 +123,13 @@ export default function App({setOutScrollView}){
                         icon={faSort}/>
                     </View>
                 </TouchableOpacity>
-                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{SelectedID === 0 ? 'SỐ CMND/BẰNG LÁI XE' : 'HỘ CHIẾU'}</Text>
+                <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{SelectedID === 0 ? checkLanguage({vi: 'SỐ CMND/BẰNG LÁI XE', en: `ID CARD / DRIVER'S LICENSE NUMBER`},language) : checkLanguage({vi: 'HỘ CHIẾU', en: 'PASSPORT'},language)}</Text>
                 <View
                 style={{marginTop: 8}}>
                     <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
                         <View style={walletStyles.maskOpacity}></View>
                         {/* <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text> */}
-                        <TextInput onChangeText={(value) => setIDNumber(value)} placeholder={SelectedID === 0 ? 'Nhập Số CMND/Bằng lái xe' : 'Nhập Hộ Chiếu'} placeholderTextColor='#fff'  style={[mainStyles.fontsize14, mainStyles.color2]}/>
+                        <TextInput onChangeText={(value) => setIDNumber(value)} placeholder={SelectedID === 0 ? checkLanguage({vi: 'Nhập Số CMND/Bằng lái xe', en: `Enter ID card / Driver's license number`},language) : checkLanguage({vi: 'Hộ chiếu', en: `Passport`},language)} placeholderTextColor='#fff'  style={[mainStyles.fontsize14, mainStyles.color2]}/>
                     </View>
                 </View>
                 
@@ -149,7 +150,7 @@ export default function App({setOutScrollView}){
                 colors={['#a47b00','#edda8b', '#d6b039', '#edda8b', '#a47b00']}
                 style={{width: '100%',height: 47, justifyContent: 'center', alignItems: 'center'}}
                 >
-                    <Text style={{color: '#111b2d', fontSize: 14}}>Tiếp theo</Text>
+                    <Text style={{color: '#111b2d', fontSize: 14}}>{checkLanguage({vi: 'Tiếp theo', en: 'Continue'},language)}</Text>
                 </LinearGradient>
             </TouchableOpacity>}
 

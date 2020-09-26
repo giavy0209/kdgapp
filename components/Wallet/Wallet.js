@@ -12,12 +12,16 @@ import GroupButton from './GroupButton'
 import ListCoin from './ListCoin'
 import { storage, checkLanguage } from '../../helper';
 import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus } from '../../store/actions'
+import { useIsFocused } from '@react-navigation/native';
 
 
 const hiddenBalance = "******"
 export default function App({ navigation }) {
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.isLogin);
+
+
+  const isFocused = useIsFocused();
 
   const typeCurrency = useSelector(state => state.currency)
 
@@ -28,6 +32,8 @@ export default function App({ navigation }) {
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
   const [VisibleBalance, setVisibleBalance] = useState(false);
   const [IsShortCoin, setIsShortCoin] = useState(false);
+  const [IsTapShortCoin, setIsTapShortCoin] = useState(false);
+
   const [UserData, setUserData] = useState({});
 
 
@@ -237,7 +243,7 @@ export default function App({ navigation }) {
     getwalletBlance()
 
 
-  }, [TOMOBalance, TOMOAddress])
+  }, [TOMOBalance, TOMOAddress, isFocused])
 
 
 useEffect(() => {
@@ -447,6 +453,12 @@ useEffect(() => {
 
 ])
 
+const sortHandler = (isSort, isTapSort) => {
+  setIsShortCoin(!isSort)
+  setIsTapShortCoin(true)
+
+}
+
   return (
     <>
       {!IsScannerOpen && 
@@ -504,7 +516,7 @@ useEffect(() => {
             <View style={walletStyles.listCoinHead}>
               <Text style={walletStyles.listCoinHeadColor}>{checkLanguage({vi: 'Tổng tài sản', en: 'Total Asset'},language)}</Text>
               <View style={[walletStyles.listCoinHead, {justifyContent:'flex-end', marginTop: 0}]}>
-                <TouchableOpacity onPress={() => setIsShortCoin(!IsShortCoin)}
+                <TouchableOpacity onPress={() => sortHandler(IsShortCoin, IsTapShortCoin)}
                 >
                   <FontAwesomeIcon style={walletStyles.listCoinHeadColor} icon={IsShortCoin ? faSortAmountDown : faSortAmountUp}/>
                 </TouchableOpacity>
@@ -536,6 +548,7 @@ useEffect(() => {
               coinPriceTOMO={CoinPriceTOMO}
               coinDisplay={coinDisplay}
               isShortCoin={IsShortCoin}
+              isTapSort={IsTapShortCoin}
          
             />
 

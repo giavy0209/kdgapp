@@ -13,24 +13,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import Popup from '../../Popup/Popup'
 import { LinearGradient } from 'expo-linear-gradient'
 import store from '../../../store'
-var RefCode = ''
 
-const handleGetStore = () =>{
-    RefCode = store.getState().ref_code
-}
 
-const copyHandler1 = (toggleModal) => {
-    Clipboard.setString(`https://www.kingdomgame.org/reg/${RefCode}`)
-    toggleModal()
-}
-
-const copyHandler2 = (toggleModal) => {
-    Clipboard.setString(RefCode)
-    toggleModal()
-}
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
     const [KDGReward, setKDGReward] = useState(0)
+    const [RefCode, setRefCode] = useState('')
     const [RewardData, setRewardData] = useState([]);
     const dispatch = useDispatch();
     const [isModalVisible, setModalVisible] = useState(false);
@@ -48,10 +36,11 @@ export default function App({setOutScrollViewTop}){
          dispatch(asyncGetUserbyID(userinfo._id))
           .then((res)=>{
             setKDGReward(res.data ? (res.data.kdg_reward ? res.data.kdg_reward : 0 ): 0 )
+            setRefCode(res.data ? (res.data.ref_code ? res.data.ref_code : '' ): '' )
           })
           .catch(console.log)
          }
-         getUserInfo()
+         getUserInfo()  
     
       }, [])
     
@@ -59,12 +48,23 @@ export default function App({setOutScrollViewTop}){
         setOutScrollViewTop(<Header2 title="Giới thiệu"/>)
     },[])
 
-    const toggleModal = useCallback(() => {
+
+    const copyHandler1 = (val) => {
+        Clipboard.setString(`https://www.kingdomgame.org/reg/${val}`)
+        toggleModal()
+    }
+    
+    const copyHandler2 = (val) => {
+        Clipboard.setString(val)
+        toggleModal()
+
+    }
+    const toggleModal = () => {
         setModalVisible(!isModalVisible);
         setTimeout(function(){ 
           setModalVisible(false);
          }, 1000);
-    },[isModalVisible])
+    }
     
 
     const onShare = async () => {
@@ -123,14 +123,14 @@ export default function App({setOutScrollViewTop}){
                       </View>
                       <View style={{flexDirection: 'row', paddingBottom: 15}}>
                           <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>Link giới thiệu:</Text>
-                          <TouchableOpacity onPress={()=>copyHandler1(toggleModal)} style={{flexDirection: 'row'}}>
+                          <TouchableOpacity onPress={()=>copyHandler1(RefCode)} style={{flexDirection: 'row'}}>
                             <Text style={{paddingHorizontal: 10, fontSize: 15, color: '#0687d7', paddingLeft: 60}}>{`https://www.kingdomgame.\norg/reg/${RefCode}`}</Text>
                             <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                           </TouchableOpacity>
                       </View>
                       <View style={{flexDirection: 'row', paddingBottom: 15}}>
                           <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>Mã giới thiệu:</Text>
-                          <TouchableOpacity onPress={()=>copyHandler2(toggleModal)} style={{flexDirection: 'row'}}>
+                          <TouchableOpacity onPress={()=>copyHandler2(RefCode)} style={{flexDirection: 'row'}}>
                             <Text style={{paddingHorizontal: 10, fontSize: 15, color: '#fff', paddingLeft: 70}}>{RefCode}</Text>
                             <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                           </TouchableOpacity>

@@ -34,6 +34,7 @@ export default function App(){
                     if(item.content_vi !== undefined && item.meta_vi !== undefined){
                        return (
                             <Notification
+                                idnews={item._id}
                                 title={item.title_vi}
                                 content={item.meta_vi  + '...'}
                                 datetime={

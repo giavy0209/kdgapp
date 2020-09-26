@@ -93,6 +93,7 @@ export default function App() {
                 }
                 // renderItem={item => renderItem(item)}
                 activeDotStyle={{backgroundColor: '#fac800'}}
+                dotStyle={{backgroundColor: 'rgba(255,255,255,0.5)'}}
                 renderItem={(item) => renderItem(item)}
 
             

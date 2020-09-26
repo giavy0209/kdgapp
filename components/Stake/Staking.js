@@ -50,9 +50,11 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
     const list = [
         {icon: kdgicon, token: 'KDG ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnActive},
-        {icon: ethicon, token: 'ETH ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnDisable},
-        {icon: trxicon, token: 'TRX ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnDisable},
-        {icon: usdticon, token: 'USDT', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnDisable},
+        {icon: ethicon, token: 'ETH ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '8%', btn: btnDisable},
+        {icon: trxicon, token: 'TRX ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '10%', btn: btnDisable},
+        {icon: usdticon, token: 'USDT', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '6%', btn: btnDisable},
+        {icon: usdticon, token: 'MCH', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '15%', btn: btnDisable},
+        {icon: usdticon, token: 'TOMO', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '15%', btn: btnDisable},
         
       ];
 

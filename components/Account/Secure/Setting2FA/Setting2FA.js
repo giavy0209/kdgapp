@@ -7,7 +7,7 @@ import { mainStyles } from '../../../../styles'
 import logo from '../../../../assets/images/google-logo.png'
 import { useSelector, useDispatch} from 'react-redux'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { storage } from '../../../../helper';
+import { storage, checkLanguage } from '../../../../helper';
 import { async2FA } from '../../../../store/actions'
 
 export default function App(){
@@ -18,7 +18,8 @@ export default function App(){
     const [ContentHeight, setContentHeight] = useState(0)
     const navigation = useNavigation()
 
-    
+    const language = useSelector(state => state.language)
+
     const { status2FA } = route.params;
  
 
@@ -37,13 +38,14 @@ export default function App(){
     }, [])
     return (
         <>
-            <Header2 setHeight={setHeight} title="Cài đặt 2FA"/>
+            <Header2 setHeight={setHeight} title={checkLanguage({vi: 'Cài đặt 2FA', en: '2FA Authentication'},language)}/>
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 8}]}>
                 <View>
                     <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 16}}></Text>
                 </View>
                 <View style={{alignItems: 'center', paddingTop: 10}}>
-                    <Text style={{color: 'rgba(255,255,255,0.5)'}}>{status2FA === true ? 'Bạn đã cài đặt 2FA, muốn hủy vui lòng xác nhận dưới đây' : 'Để cài đặt bảo vệ tài khoản, bạn nên cài đặt 2FA'}</Text>
+                    <Text style={{color: 'rgba(255,255,255,0.5)'}}>{status2FA === true ? checkLanguage({vi: 'Bạn đã cài đặt 2FA, muốn huỷ vui lòng xác nhận dưới đây', en: 'You have 2FA settings. If you want to cancel, please confirm below'},language) : 
+                    checkLanguage({vi: 'Bạn chưa cài đặt 2FA, vui lòng nhấn nút dưới đây để kích hoạt', en: 'You do not have 2FA settings, please press the button below to activate'},language)}</Text>
                 </View>
                 <TouchableOpacity
                     onPress={generate2FACode}
@@ -51,7 +53,7 @@ export default function App(){
                     <View style={{alignItems: 'center', paddingTop: 20}}>
                         <View style={{flexDirection: 'row', alignItems:'center', backgroundColor: '#fff', paddingVertical: 10, paddingHorizontal: 50, borderRadius: 10}}>
                             <Image source={logo} style={{width: 35, height: 35}} />
-                            <Text style={{paddingLeft: 10}}>{status2FA === true ? 'Hủy cài đặt 2FA' : 'Cài đặt 2FA'}</Text>
+                            <Text style={{paddingLeft: 10}}>{status2FA === true ? checkLanguage({vi: 'Hủy cài đặt 2FA', en: 'Disable 2FA'},language) :  checkLanguage({vi: 'Cài đặt 2FA', en: 'Enable 2FA'},language)}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>

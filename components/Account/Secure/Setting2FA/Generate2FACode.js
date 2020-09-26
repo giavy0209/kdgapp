@@ -13,11 +13,15 @@ import QRCode from '../../../QRGenerate/QRCode'
 import { LinearGradient } from 'expo-linear-gradient'
 import { asyncVerify2FA , asyncDisable2FA, asyncSecureStatus} from '../../../../store/actions'
 import Popup from '../../../Popup/Popup'
+import {  checkLanguage } from '../../../../helper';
 
 export default function App(){
 
     const [PopupStatus, setPopupStatus] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isModalVisible2, setModalVisible2] = useState(false);
+
+    const language = useSelector(state => state.language)
   
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
@@ -26,6 +30,18 @@ export default function App(){
        }, 1000);
     };
 
+    const toggleModal2 = () => {
+        setModalVisible2(!isModalVisible2);
+        setTimeout(function(){ 
+            setModalVisible2(false);
+         }, 1000);
+      };
+  
+
+    const copyHandler = (value) =>{
+        Clipboard.setString(value)
+        toggleModal2()
+    }
     const screenHeight = useSelector(state=>state.height)
 
     const secureStatus = useSelector(state => state.secstatus)
@@ -103,14 +119,15 @@ export default function App(){
     
     return (
         <>
-            <Header2 setHeight={setHeight} title="Cài đặt 2FA"/>
+            <Header2 setHeight={setHeight} title={checkLanguage({vi: 'Cài đặt 2FA', en: '2FA Authentication'},language)}/>
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 12}]}>
-                <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? 'Thành công' : 'Xác thực thất bại'} isModalVisible={isModalVisible}/>
+                <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? checkLanguage({vi: 'Thành công', en: 'Successful'},language) : checkLanguage({vi: 'Thất bại', en: 'Failed'},language)} isModalVisible={isModalVisible}/>
+                <Popup type='success' title='Đã copy' isModalVisible={isModalVisible2}/>
                 <View style={{paddingTop: 15, alignItems: 'center'}}>
                 {status2FA === false ?
                 (<View style={{alignItems: 'center'}}>
                     <View>
-                        <Text style={{color: 'rgba(255,255,255,0.7)'}}>Scan tại đây để xác thực</Text>
+                        <Text style={{color: 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Scan tại đây để xác thực', en: 'Scan here to authenticate'},language)}</Text>
                     </View>
                     <View>
                     <QRCode
@@ -119,12 +136,12 @@ export default function App(){
                     />
                     </View>
                     <View>
-                        <Text style={{color: 'rgba(255,255,255,0.7)'}}>Hoạt sao chép mã tại đây</Text>
+                        <Text style={{color: 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Hoặc sao chép mã tại đây', en: 'Or copy the code here'},language)}</Text>
                     </View>
                     
                     <View>
                         <TouchableOpacity 
-                            onPress={() => Clipboard.setString(gaSecret)}
+                            onPress={() => copyHandler(gaSecret)}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center'}}>
                                 <Text style={{color: 'rgba(84,86,89, 0.9)', paddingRight: 5}}>{gaSecret}</Text>
@@ -141,7 +158,7 @@ export default function App(){
                         <TextInput
                             keyboardType='decimal-pad'
                             onChangeText={(value) => setValue(value)}
-                            placeholder='Nhập mã 2FA trong app của bạn'
+                            placeholder={checkLanguage({vi: 'Nhập mã 2FA trong app của bạn', en: 'Enter the 2FA code in your app'},language)}
                         />
                     </View>
                     {status2FA === true ?
@@ -149,7 +166,7 @@ export default function App(){
                         <TextInput
                             secureTextEntry={true}
                             onChangeText={(value) => setPassword(value)}
-                            placeholder='Nhập mật khẩu'
+                            placeholder={checkLanguage({vi: 'Nhập mật khẩu', en: 'Enter your password'},language)}
                             secureTextEntry={!IsShowPassword} 
                         />
                             <TouchableOpacity onPress={ToggleShowPassword} style={{padding: 20}}>
@@ -165,7 +182,7 @@ export default function App(){
                             <LinearGradient 
                                 colors={['#e5be50', '#ecda8b', '#a47b00']}
                                 style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 20, width: '92%', height: 50}}>
-                                <Text style={{color: '#111b2d', fontSize: 16,}}>{status2FA === true ? 'Hủy cài đặt 2FA' : 'Xác nhận 2FA'}</Text>
+                                <Text style={{color: '#111b2d', fontSize: 16,}}>{status2FA === true ? checkLanguage({vi: 'Hủy 2FA', en: 'Disable 2FA'},language) : checkLanguage({vi: 'Cài đặt 2FA', en: 'Enable 2FA'},language)}</Text>
                             </LinearGradient>
                         </View>
                 </TouchableOpacity>
