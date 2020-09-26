@@ -9,6 +9,8 @@ import { LinearGradient } from 'expo-linear-gradient'
 import {asyncSetPin} from '../../../../../store/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 export default function App(){
     const dispatch = useDispatch()
@@ -19,6 +21,7 @@ export default function App(){
     const [PinBar1Focus, setPinBar1Focus] = useState(false)
 
     const onBlurPinBar1 = useCallback(()=>{
+        console.log((Pin1 + '').length);
         (Pin1 + '').length === 0 && setPinBar1Focus(false)
     },[Pin1])
     const handleSubmit = useCallback(()=>{
@@ -41,9 +44,22 @@ export default function App(){
 
             <TouchableOpacity disabled={PinBar1Focus} activeOpacity={false} onPress={()=>{PinBar1.focus(); setPinBar1Focus(true)}} style={{position:'relative',backgroundColor: '#1d2536', height: 55, flex: 1, justifyContent: 'center', alignItems: 'center',width: '100%', borderRadius: 40, marginTop:32}}>
                 <Image style={{position: 'absolute', left: 19, top: 22}} source={Lock}/>
+                <TouchableOpacity 
+                onPress={()=>{
+                    setPin1('')
+                    setPinBar1Focus(false)
+                }}
+                style={{position : 'absolute', right: 19, padding: 10}}  >
+                    <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
+                </TouchableOpacity>
                 <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar1Focus ? 0 : 1}}>Nhập mã PIN</Text>
 
-                <View style={{opacity: PinBar1Focus ? 1 : 0,top: PinBar1Focus? 0 : -10000 ,position: 'absolute', width: '100%' , height : '100%',  left: 0, alignItems: 'center', justifyContent: 'center'}}>
+                <View 
+                style={{
+                    opacity: PinBar1Focus ? 1 : 0,
+                    top: PinBar1Focus? 0 : -10000 ,
+                    position: 'absolute', width: '60%' , height : '100%', alignItems: 'center', justifyContent: 'center'
+                }}>
                     <SmoothPinCodeInput
                     placeholder={<View style={{
                         width: 10,

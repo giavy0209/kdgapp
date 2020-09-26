@@ -1,10 +1,14 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
-import {View, SafeAreaView, AppState} from 'react-native'
+//pushnoti
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
+import React, { useEffect, useRef } from 'react';
+import {View,Platform } from 'react-native'
 import { Provider} from 'react-redux'
 import store from './store'
 import Navigation from './components/Navigation'
-import AsyncStorage from '@react-native-community/async-storage';
 import { SafeAreaProvider} from 'react-native-safe-area-context';
 import {
   useFonts,
@@ -17,11 +21,37 @@ import {
 import {
   RobotoCondensed_300Light
 } from '@expo-google-fonts/roboto-condensed';
-import { storage } from './helper';
 import { setStatusBarHidden } from 'expo-status-bar';
+import calAPI from './axios';
+import AsyncStorage from '@react-native-community/async-storage';
+import { storage } from './helper';
+import { actChangeNotify } from './store/actions';
+
 
 console.disableYellowBox = true;
 setStatusBarHidden(true, 'none')
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+registerForPushNotificationsAsync().then( async token => {
+  console.log(token);
+  (await calAPI()).post('/token',{token})
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(res => {
+    console.log(res);
+  })
+});
+
+
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     Roboto_300Light_Italic,
@@ -34,10 +64,29 @@ export default function App() {
 
   useEffect(()=>{
     async function setFirstTime(){
-      await AsyncStorage.clear()
+      
+      // await AsyncStorage.clear()
     }setFirstTime()
 
   },[])
+
+  React.useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(async notification => {
+      const {title,body} = notification.request.content
+      var noti = await storage('noti').getItem()
+      noti.unshift({
+        title,
+        content : body,
+        datetime : new Date(),
+        status: true,
+      })
+
+      await storage('noti', noti).setItem()
+
+      store.dispatch(actChangeNotify(noti))
+    });
+    return () => subscription.remove();
+  }, []);
 
 
   if (fontsLoaded) {
@@ -54,81 +103,32 @@ export default function App() {
     return (<View></View>)
   }
 }
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      // alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+  } else {
+    // alert('Must use physical device for Push Notifications');
+  }
 
-// import React, { useRef, useState } from "react";
-// import { Animated, Text, View, StyleSheet, Button } from "react-native";
-// console.disableYellowBox = true;
-// export default function App() {
-//   // fadeAnim will be used as the value for opacity. Initial Value: 0
-//   const [Index, setIndex] = useState(0)
-//   const fadeAnim = useRef(new Animated.Value(0)).current;
-//   const fadeIn = () => {
-//     Animated.timing(fadeAnim, {
-//       toValue: Index + 5,
-//       duration: 300,
-//       useNativeDriver: false
-//     }).start();
-//     setIndex(Index + 5)
-//   };
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
 
-//   const fadeOut = () => {
-//     // Will change fadeAnim value to 0 in 5 seconds
-//     Animated.timing(fadeAnim, {
-//       toValue: Index - 5,
-//       duration: 300,
-//       useNativeDriver: false
-//     }).start();
-//     setIndex(Index  - 5)
-//   };
-//   return (
-//     <View style={styles.container}>
-//       <Animated.View
-//         style={[
-//           styles.fadingContainer,
-//           {
-//             left: fadeAnim // Bind opacity to animated value
-//           }
-//         ]}
-//       >
-//         <Text style={styles.fadingText}>Fading View!</Text>
-//       </Animated.View>
-
-//       <Animated.View
-//         style={[
-//           styles.fadingContainer,
-//           {
-//             left: fadeAnim // Bind opacity to animated value
-//           }
-//         ]}
-//       >
-//         <Text style={styles.fadingText}>Fading View2</Text>
-//       </Animated.View>
-//       <View style={styles.buttonRow}>
-//         <Button title="Fade In" onPress={fadeIn} />
-//         <Button title="Fade Out" onPress={fadeOut} />
-//       </View>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: "center",
-//     justifyContent: "center"
-//   },
-//   fadingContainer: {
-//     paddingVertical: 8,
-//     paddingHorizontal: 16,
-//     backgroundColor: "powderblue"
-//   },
-//   fadingText: {
-//     fontSize: 28,
-//     textAlign: "center",
-//     margin: 10
-//   },
-//   buttonRow: {
-//     flexDirection: "row",
-//     marginVertical: 16
-//   }
-// });
+  return token;
+}

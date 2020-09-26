@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         // alignContent: 'flex-start',
         // justifyContent: 'flex-start',
         width: '100%',
-        paddingBottom: 10
+        paddingBottom: 10,
     }
 })
 

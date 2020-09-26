@@ -18,23 +18,17 @@ export default function App(){
     },[ActivePin])
 
     useEffect(()=>{
-        setTimeout(() => {
             if(PIN && !ActivePin){
                 setActivePin(true)
             }else if(!PIN && ActivePin){
                 setActivePin(false)
             }
-        }, 300);
     },[PIN,ActivePin])
 
-    useEffect(()=>{
-        if(ActivePin && !PIN){
-            navigation.navigate('SetPin')
-        }
-        if(!ActivePin && PIN){
-            navigation.navigate('RemovePin')
-        }
-    },[ActivePin,PIN])
+    const handleSwitch = useCallback(value =>{
+        if(value) navigation.navigate('SetPin')
+        if(!value) navigation.navigate('RemovePin')
+    },[] )
     return (
         <>
             <Header2 title="Cài đặt Unlock PIN"/>
@@ -43,7 +37,7 @@ export default function App(){
                     <Text style={{color: '#ddd9d8', fontSize: 14}}>Cài đặt Unlock PIN</Text>
                     <Switch 
                     value={ActivePin}
-                    onValueChange={value=>setActivePin(value)}
+                    onValueChange={handleSwitch}
                     thumbColor={ThumbSwitchColor}
                     trackColor={{true: '#fff8da', false: '#8a8c8e'}}
                     />

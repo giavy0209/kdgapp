@@ -25,6 +25,7 @@
       "buildNumber": "1.0.0"
     },
     "android": {
+      "useNextNotificationsApi": true,
       "package": "com.kingdomgame.kingwallet",
       "versionCode": 1
     },

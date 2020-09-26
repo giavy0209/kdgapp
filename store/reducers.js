@@ -87,8 +87,12 @@ const reducers = function (state = {}, action) {
         ...state,
         ...action.payload,
       }
+    }else{
+      return{
+        ...state,
+        ...action.payload,
+      }
     }
-    return state
 }
 
 export default reducers

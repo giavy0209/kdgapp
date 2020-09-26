@@ -1,3 +1,5 @@
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { useNavigation } from '@react-navigation/native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -10,7 +12,7 @@ const comparePin = async inputPin=>{
     if(inputPin === storagePin) return true
     else return false
 }
-const shakeTime = 100
+const shakeTime = 50
 export default function App () {
     const navigation = useNavigation()
     const PinBar1 = useRef()
@@ -76,9 +78,22 @@ export default function App () {
                 style={styles.inputPinBlock}
                 >
                     <Image style={{position: 'absolute', left: 19, top: 22}} source={Lock}/>
+                    <TouchableOpacity 
+                    onPress={()=>{
+                        setPin1('')
+                        setPinBar1Focus(false)
+                    }}
+                    style={{position : 'absolute', right: 19, padding: 10}}  >
+                        <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
+                    </TouchableOpacity>
                     <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar1Focus ? 0 : 1}}>Nhập mã PIN</Text>
 
-                    <View style={{opacity: PinBar1Focus ? 1 : 0,top: PinBar1Focus? 0 : -10000 ,position: 'absolute', width: '100%' , height : '100%',  left: 0, alignItems: 'center', justifyContent: 'center'}}>
+                    <View 
+                    style={{
+                        opacity: PinBar1Focus ? 1 : 0,
+                        top: PinBar1Focus? 0 : -10000 ,
+                        position: 'absolute', width: '60%' , height : '100%', alignItems: 'center', justifyContent: 'center'
+                    }}>
                         <SmoothPinCodeInput
                         placeholder={<View style={{
                             width: 10,

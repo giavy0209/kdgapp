@@ -27,19 +27,19 @@ export default function App() {
   const checkRefreshToken = useCallback(async ()=>{
     var loginTime = await storage('loginTime').getItem()
     var currTime = new Date().getTime()
-    if(currTime - loginTime >= 1200000){
-      var {email, password} = await storage('loginInfo').getItem()
-      if(email && password){
-        dispatch(asyncLogin({email, password}))
+    if(loginTime && currTime - loginTime >= 1200000){
+      var loginInfo = await storage('loginInfo').getItem()
+      if(loginInfo.email && loginInfo.password){
+        dispatch(asyncLogin(loginInfo))
       }
     }
     setInterval(async () => {
       var loginTime = await storage('loginTime').getItem()
       var currTime = new Date().getTime()
-      if(currTime - loginTime >= 1200000){
-        var {email, password} = await storage('loginInfo').getItem()
-        if(email && password){
-          dispatch(asyncLogin({email, password}))
+      if(loginTime && currTime - loginTime >= 1200000){
+        var loginInfo = await storage('loginInfo').getItem()
+        if(loginInfo.email && loginInfo.password){
+          dispatch(asyncLogin(loginInfo))
         }
       }
     }, 5000);
