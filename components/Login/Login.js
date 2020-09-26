@@ -132,7 +132,6 @@ export default function App({navigation}) {
         setIsShowPassword(!IsShowPassword)
     }, [IsShowPassword])
 
-    console.log(store.getState())
 
     return (
         <View style={[styles.container, {paddingHorizontal: 30,paddingTop: 110}]}>

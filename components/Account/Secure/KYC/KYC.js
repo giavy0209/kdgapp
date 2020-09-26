@@ -6,6 +6,9 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import {  checkLanguage } from '../../../../helper';
+
+
+//{checkLanguage({vi: 'XXXXXXXX', en: `XXXXXXX`},language)}
 export default function App(){
     const navigation = useNavigation()
 

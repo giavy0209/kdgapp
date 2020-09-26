@@ -145,7 +145,7 @@ export default function App(){
                                 }))
                                 Alert.alert(
                                     checkLanguage({vi: 'Thông báo', en: `Notification`},language),
-                                    checkLanguage({vi: 'KYC thành công, vui lòng chờ xét duyệt', en: `KYC is successful, please wait for approval`},language)
+                                    checkLanguage({vi: 'Đã nộp KYC, vui lòng chờ duyệt', en: `KYC is submitted, please wait for approval`},language)
                                 )
                                 navigation.navigate('Secure')
                                 return

@@ -29,7 +29,7 @@ export default function App(){
                 <View style={{paddingTop: 10}}>
                     <TouchableOpacity 
                     onPress={()=>navigation.navigate('Terms', {
-                        id: '1'
+                        id: '3'
                     })}
                     style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative'}}>
                         <View style={accountStyle.maskOpacity} ></View>

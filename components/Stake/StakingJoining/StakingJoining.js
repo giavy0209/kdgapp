@@ -79,7 +79,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
           setToggleCheckBox(false)
           Alert.alert(
             checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-            checkLanguage({vi: 'Đã có lỗi xảy ra', en: 'An error has occurredg'},language)
+            checkLanguage({vi: 'Đã có lỗi xảy ra', en: 'An error has occurred'},language)
         )
         })
         

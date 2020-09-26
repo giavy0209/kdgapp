@@ -23,7 +23,6 @@ export default function App({setOutScrollViewTop}){
     const dispatch = useDispatch();
     const [isModalVisible, setModalVisible] = useState(false);
     useEffect(() => {
-        handleGetStore()
         async function getUserInfo() {
           var userinfo = await storage('_id').getItem();
  
