@@ -15,7 +15,7 @@ export default function Maincontainer({Component,route ,reqLogin, ...restProps})
     const display = useSelector(state => state.display)
     const [OutScrollView, setOutScrollView] = useState(null)
     const [OutScrollViewTop, setOutScrollViewTop] = useState(null)
-    const [BackGround, setBackGround] = useState(bg)
+    const [BackGround, setBackGround] = useState(null)
 
     useMemo(() => {
       if(display === 1){
@@ -26,7 +26,7 @@ export default function Maincontainer({Component,route ,reqLogin, ...restProps})
     }, [display])
 
     return (
-      <ImageBackground source={BackGround} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
+      <ImageBackground source={BackGround ? BackGround : display === 1 ? bg3 : bg} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
         {OutScrollViewTop && OutScrollViewTop}
         <ScrollView 
         >

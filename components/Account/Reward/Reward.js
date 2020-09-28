@@ -9,7 +9,8 @@ import {  useSelector } from 'react-redux'
 import Popup from '../../Popup/Popup'
 import { LinearGradient } from 'expo-linear-gradient'
 
-import RewardBanner from '../../../assets/images/rewardbanner.png'
+import RewardBanneren from '../../../assets/images/rewardbanneren.png'
+import RewardBannervi from '../../../assets/images/rewardbannervi.png'
 import checking from '../../../assets/images/checking.png'
 import spin from '../../../assets/images/spin.png'
 import ref from '../../../assets/images/ref.png'
@@ -100,7 +101,7 @@ export default function App({setOutScrollViewTop}){
             style={[mainStyles.container]}>
                 <View style={styles.blockImgText}>
                     <View style={styles.blockImg}>
-                        <Image style={styles.img} source={RewardBanner} />
+                        <Image style={styles.img} source={checkLanguage({vi : RewardBannervi , en: RewardBanneren}, language)} />
                     </View>
                     <View style={styles.blockText}>
                         <Text style={styles.text}>Mời ngay bạn bè đăng ký tài khoản và xác minh danh tính (KYC) thành công sẽ nhận ngay được 5 KDG Reward</Text>

@@ -9,6 +9,7 @@ import { Popup } from '../../Popup'
 import html from './WebviewHTML'
 
 import spintextvi from '../../../assets/images/spintextvi.png'
+import spintexten from '../../../assets/images/spintexten.png'
 import kdgcoin from '../../../assets/images/kdg-coin.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
@@ -223,7 +224,7 @@ export default function App ({setBackGround}) {
                 style={styles.backBtn}>
                     <FontAwesomeIcon color='#fff' icon={faChevronLeft} />
                 </TouchableOpacity>
-                <Image style={styles.text} source={spintextvi} />
+                <Image style={styles.text} source={checkLanguage({vi : spintextvi, en: spintexten}, language)} />
             </View>
             <WebView
                 ref={ref => webview.current = ref}
