@@ -25,6 +25,7 @@ const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollViewTop, setOutScrollView}){
     const [Width , setWidth] = useState(0);
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
     const btnActive = (
     <JoinButton
     title={checkLanguage({vi: 'Tham gia ngay', en: 'Join now'},language)}
