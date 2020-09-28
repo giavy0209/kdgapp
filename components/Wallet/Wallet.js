@@ -2,7 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import {View, Text, TouchableOpacity, Alert, Image, Dimensions,BackHandler,FlatList, Clipboard } from 'react-native';
 import { Camera } from 'expo-camera';
-import { mainStyles, walletStyles, scannerStyles } from '../../styles/'
+import { mainStyles, walletStyles, scannerStyles, } from '../../styles/'
+import { walletStylesLight } from '../../styles/light/'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBell, faTimes,faEye,faEyeSlash, faSortAmountDown,faPlusCircle, faAngleRight, faSortAmountUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,6 +22,7 @@ export default function App({ navigation }) {
   const isLogin = useSelector(state => state.isLogin);
 
 
+
   const isFocused = useIsFocused();
 
   const typeCurrency = useSelector(state => state.currency)
@@ -28,6 +30,8 @@ export default function App({ navigation }) {
   const coinDisplay = useSelector(state => state.coin)
 
   const language = useSelector(state => state.language)
+
+  const display = useSelector(state => state.display)
 
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
   const [VisibleBalance, setVisibleBalance] = useState(false);
@@ -50,12 +54,14 @@ export default function App({ navigation }) {
   const [KNCBalance, setKNCBalance] = useState(0);
   const [MCHBalance, setMCHBalance] = useState(0);
   const [TOMOBalance, setTOMOBalance] = useState(0);
+  const [BTCBalance, setBTCBalance] = useState(0);
   // ----------------------------------
 
   // ----------Address Coin -----------
   const [TRXAddress, setTRXAddress] = useState('');
   const [ETHAddress, setETHAddress] = useState('');
   const [TOMOAddress, setTOMOAddress] = useState('');
+  const [BTCAddress, setBTCAddress] = useState('');
   // ----------------------------------
   const [KDGLock, setKDGLock] = useState(0);
 
@@ -99,6 +105,11 @@ export default function App({ navigation }) {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
+  const [CoinPriceBTC, setCoinPriceBTC] = useState({
+    btc: 0, vnd: 0, usd: 0, cny: 0, exchange: {
+      vnd: 0, usd: 0, cny: 0, percent24h: 0
+    } 
+  });
 
 
   const TotalBalance = {
@@ -108,6 +119,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceTRX.btc) + 
     parseFloat(CoinPriceKNC.btc ) + 
     parseFloat(CoinPriceTOMO.btc ) + 
+    parseFloat(CoinPriceBTC.btc ) + 
     parseFloat(CoinPriceMCH.btc)).toFixed(8),
     vnd: (parseFloat(CoinPriceKDG.vnd)+ 
     parseFloat(CoinPriceETH.vnd) + 
@@ -115,6 +127,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceTRX.vnd) + 
     parseFloat(CoinPriceKNC.vnd ) + 
     parseFloat(CoinPriceTOMO.vnd ) + 
+    parseFloat(CoinPriceBTC.vnd ) + 
     parseFloat(CoinPriceMCH.vnd)).toFixed(2),
     usd: (parseFloat(CoinPriceKDG.usd)+ 
     parseFloat(CoinPriceETH.usd) + 
@@ -122,6 +135,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceTRX.usd) + 
     parseFloat(CoinPriceKNC.usd ) + 
     parseFloat(CoinPriceTOMO.usd ) + 
+    parseFloat(CoinPriceBTC.usd ) + 
     parseFloat(CoinPriceMCH.usd)).toFixed(4),
     cny: (parseFloat(CoinPriceKDG.cny)+ 
     parseFloat(CoinPriceETH.cny) + 
@@ -129,6 +143,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceTRX.cny) + 
     parseFloat(CoinPriceKNC.cny ) + 
     parseFloat(CoinPriceTOMO.cny ) + 
+    parseFloat(CoinPriceBTC.cny ) + 
     parseFloat(CoinPriceMCH.cny)).toFixed(4),
     
   }
@@ -140,6 +155,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceTRX.btc) + 
     parseFloat(CoinPriceKNC.btc ) + 
     parseFloat(CoinPriceTOMO.btc ) + 
+    parseFloat(CoinPriceBTC.btc ) + 
     parseFloat(CoinPriceMCH.btc) - parseFloat(CoinPriceKDGLock.btc)).toFixed(8),
     vnd: (parseFloat(CoinPriceKDG.vnd)+ 
     parseFloat(CoinPriceETH.vnd) + 
@@ -147,6 +163,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceTRX.vnd) + 
     parseFloat(CoinPriceKNC.vnd ) + 
     parseFloat(CoinPriceTOMO.vnd ) + 
+    parseFloat(CoinPriceBTC.btc ) + 
     parseFloat(CoinPriceMCH.vnd) - parseFloat(CoinPriceKDGLock.vnd)).toFixed(2),
     usd: (parseFloat(CoinPriceKDG.usd)+ 
     parseFloat(CoinPriceETH.usd) + 
@@ -154,6 +171,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceTRX.usd) + 
     parseFloat(CoinPriceKNC.usd ) + 
     parseFloat(CoinPriceTOMO.usd ) + 
+    parseFloat(CoinPriceBTC.btc ) + 
     parseFloat(CoinPriceMCH.usd) - parseFloat(CoinPriceKDGLock.usd)).toFixed(4),
     cny: (parseFloat(CoinPriceKDG.cny)+ 
     parseFloat(CoinPriceETH.cny) + 
@@ -161,6 +179,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceTRX.cny) + 
     parseFloat(CoinPriceKNC.cny ) + 
     parseFloat(CoinPriceTOMO.cny ) + 
+    parseFloat(CoinPriceBTC.btc ) + 
     parseFloat(CoinPriceMCH.cny) - parseFloat(CoinPriceKDGLock.cny)).toFixed(4),
     
   }
@@ -188,7 +207,6 @@ export default function App({ navigation }) {
   }, [])
 
 
-
   useEffect(()=>{
     BackHandler.addEventListener(
       "hardwareBackPress",
@@ -210,6 +228,7 @@ export default function App({ navigation }) {
         setTOMOAddress(res.data.tomo_address)
         setTRXAddress(res.data.trx_address);
         setETHAddress(res.data.erc_address);
+        setBTCAddress(res.data.btc_address);
         if(res.data.kdg_lock !== undefined){
             setKDGLock(res.data.kdg_lock);
             setUserData(res.data)
@@ -237,7 +256,12 @@ export default function App({ navigation }) {
       dispatch(asyncGetBalance('tomo', TOMOAddress))
       .then((res)=>{
         setTOMOBalance(res.balance)
-      })      
+      })    
+      
+      dispatch(asyncGetBalance('btc', BTCAddress))
+      .then((res)=>{
+        setBTCBalance(res.balance)
+      })       
     }
 
     getwalletBlance()
@@ -391,9 +415,23 @@ useEffect(() => {
         } 
       })
   })
+
+  dispatch(asyncGetCoinPrice('BTC'))
+  .then((res)=>{
+      var coin_to_usd = res.data2.current_price.usd
+      var coin_to_cny = res.data2.current_price.cny
+      var coin_to_vnd = res.data2.current_price.vnd
+      var coin_percent24h = res.data2.price_change_percentage_24h
+      var coin_to_btc = res.data2.current_price.btc
+      setCoinPriceBTC({
+        btc: (coin_to_btc*BTCBalance), vnd: (coin_to_vnd*BTCBalance).toFixed(2), usd: (coin_to_usd*BTCBalance).toFixed(4) , cny: (coin_to_usd*BTCBalance).toFixed(4), exchange: {
+          vnd: coin_to_vnd.toFixed(2), usd: coin_to_usd.toFixed(4), cny: coin_to_cny.toFixed(4), percent24h: coin_percent24h
+        } 
+      })
+  })
   .catch(console.log) 
 
-},[KGDBalance, ETHBalance, USDTBalance, TRXBalance, KNCBalance, MCHBalance, TOMOBalance])
+},[KGDBalance, ETHBalance, USDTBalance, TRXBalance, KNCBalance, MCHBalance, TOMOBalance, BTCBalance])
 
 useEffect(() => {
 
@@ -433,6 +471,11 @@ useEffect(() => {
       exchange_rate: CoinPriceTOMO,
       address: TOMOAddress
     },
+    btc: {
+      balance: BTCBalance,
+      exchange_rate: CoinPriceBTC,
+      address: BTCAddress
+    },
 
 
   }))
@@ -443,6 +486,8 @@ useEffect(() => {
   KNCBalance, 
   MCHBalance,
   TOMOBalance, 
+  BTCBalance,
+  CoinPriceBTC,
   CoinPriceKDG,
   CoinPriceETH,
   CoinPriceTRX,
@@ -459,50 +504,56 @@ const sortHandler = (isSort, isTapSort) => {
 
 }
 
+// -------------------style------------------------------
+
+var WalletStyle = display === 1 ? walletStylesLight : walletStyles
+
+// ------------------------------------------------------
+
   return (
     <>
       {!IsScannerOpen && 
       
           <View style={[mainStyles.container,{paddingBottom: 20, paddingHorizontal: 15}]}>
-            <View style={[walletStyles.header]}>
-              <View><Text style={walletStyles.titleHeader}>King Wallet</Text></View>
-              <View style={walletStyles.groupIcon}>
+            <View style={[WalletStyle.header]}>
+              <View><Text style={WalletStyle.titleHeader}>King Wallet</Text></View>
+              <View style={WalletStyle.groupIcon}>
                 <TouchableOpacity
                   onPress={() => { openScanner() }}
                 >
-                  <Image style={walletStyles.scanQRIcon} source={openscaner} />
+                  <Image style={WalletStyle.scanQRIcon} source={openscaner} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>navigation.navigate('Notify', {
                   NewsData: NewsData
-                })} style={walletStyles.notifyIcon}>
-                  <FontAwesomeIcon icon={faBell} style={{ color: '#fff' }} />
-                  {Count !== 0 ?<Text style={walletStyles.notifyCount}>{Count}</Text> : null}
+                })} style={WalletStyle.notifyIcon}>
+                  <FontAwesomeIcon icon={faBell} style={{ color: display === 1 ? '#283349' : '#ffff' }} />
+                  {Count !== 0 ?<Text style={WalletStyle.notifyCount}>{Count}</Text> : null}
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={walletStyles.balance}>
-              <View style={walletStyles.maskOpacity}></View>
-              <View style={walletStyles.totalBalanceAndVisible}>
-                <Text style={walletStyles.totalBalance}>{VisibleBalance ? hiddenBalance : isNaN(AvailableBalance.usd) ||  AvailableBalance.usd < 0.0000000000000001 ? 'Loading...' : TotalBalance.btc + " BTC"}</Text>
+            <View style={WalletStyle.balance}>
+              <View style={WalletStyle.maskOpacity}></View>
+              <View style={WalletStyle.totalBalanceAndVisible}>
+                <Text style={WalletStyle.totalBalance}>{VisibleBalance ? hiddenBalance : isNaN(AvailableBalance.usd) ||  AvailableBalance.usd < 0.0000000000000001 ? 'Loading...' : TotalBalance.btc + " BTC"}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
                   <View style={{padding: 13}}>
-                    <FontAwesomeIcon style={walletStyles.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
+                    <FontAwesomeIcon style={WalletStyle.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
                   </View>
                 </TouchableOpacity>
               </View>
-              <View style={walletStyles.availableAndLock}>
-                <View style={walletStyles.availableAndLockBlock}>
-                  <Text style={walletStyles.textAvailableAndLock}>{checkLanguage({vi: 'Tài sản sẵn có', en: 'Available Asset'},language)}</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  isNaN(AvailableBalance.usd) || AvailableBalance.usd < 0.00000000000000001 ? 'Loading...' :
+              <View style={WalletStyle.availableAndLock}>
+                <View style={WalletStyle.availableAndLockBlock}>
+                  <Text style={WalletStyle.textAvailableAndLock}>{checkLanguage({vi: 'Tài sản sẵn có', en: 'Available Asset'},language)}</Text>
+                  <Text style={WalletStyle.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  isNaN(AvailableBalance.usd) || AvailableBalance.usd < 0.00000000000000001 ? 'Loading...' :
                     typeCurrency === 1 ? 
                     AvailableBalance.vnd + ' ₫' : 
                     typeCurrency === 2 ?  
                     '¥' + AvailableBalance.cny : 
                     '$' + AvailableBalance.usd}</Text>
                 </View>
-                <View style={walletStyles.availableAndLockBlock}>
-                  <Text style={walletStyles.textAvailableAndLock}>{checkLanguage({vi: 'Tài sản bị khoá', en: 'Locked Asset'},language)}</Text>
-                  <Text style={walletStyles.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? 
+                <View style={WalletStyle.availableAndLockBlock}>
+                  <Text style={WalletStyle.textAvailableAndLock}>{checkLanguage({vi: 'Tài sản bị khoá', en: 'Locked Asset'},language)}</Text>
+                  <Text style={WalletStyle.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? 
                     CoinPriceKDGLock.vnd + ' ₫' : 
                     typeCurrency === 2 ?  
                     '¥' + CoinPriceKDGLock.cny : 
@@ -513,15 +564,15 @@ const sortHandler = (isSort, isTapSort) => {
 
             <GroupButton />
             
-            <View style={walletStyles.listCoinHead}>
-              <Text style={walletStyles.listCoinHeadColor}>{checkLanguage({vi: 'Tổng tài sản', en: 'Total Asset'},language)}</Text>
-              <View style={[walletStyles.listCoinHead, {justifyContent:'flex-end', marginTop: 0}]}>
+            <View style={WalletStyle.listCoinHead}>
+              <Text style={WalletStyle.listCoinHeadColor}>{checkLanguage({vi: 'Tổng tài sản', en: 'Total Asset'},language)}</Text>
+              <View style={[WalletStyle.listCoinHead, {justifyContent:'flex-end', marginTop: 0}]}>
                 <TouchableOpacity onPress={() => sortHandler(IsShortCoin, IsTapShortCoin)}
                 >
-                  <FontAwesomeIcon style={walletStyles.listCoinHeadColor} icon={IsShortCoin ? faSortAmountDown : faSortAmountUp}/>
+                  <FontAwesomeIcon style={WalletStyle.listCoinHeadColor} icon={IsShortCoin ? faSortAmountDown : faSortAmountUp}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>navigation.navigate('SetCoins')}>
-                  <FontAwesomeIcon style={[walletStyles.listCoinHeadColor, {marginLeft:15}]} icon={faPlusCircle}/>
+                  <FontAwesomeIcon style={[WalletStyle.listCoinHeadColor, {marginLeft:15}]} icon={faPlusCircle}/>
                 </TouchableOpacity>
               </View>
             </View>
@@ -536,9 +587,11 @@ const sortHandler = (isSort, isTapSort) => {
               balanceKNC={KNCBalance}
               balanceMCH={MCHBalance}
               balanceTOMO={TOMOBalance}
+              balanceBTC={BTCBalance}
               addressTRX={TRXAddress}
               addressETH={ETHAddress}
               addressTOMO={TOMOAddress}
+              addressBTC={BTCAddress}
               coinPriceKDG={CoinPriceKDG}
               coinPriceETH={CoinPriceETH}
               coinPriceTRX={CoinPriceTRX}
@@ -546,22 +599,23 @@ const sortHandler = (isSort, isTapSort) => {
               coinPriceKNC={CoinPriceKNC}
               coinPriceMCH={CoinPriceMCH}
               coinPriceTOMO={CoinPriceTOMO}
+              coinPriceBTC={CoinPriceBTC}
               coinDisplay={coinDisplay}
               isShortCoin={IsShortCoin}
               isTapSort={IsTapShortCoin}
          
             />
 
-            <View style={walletStyles.listPostHead}>
-              <Text style={walletStyles.listPostHeadText}>{checkLanguage({vi: 'Tin tức', en: 'News'},language)}</Text>
+            <View style={WalletStyle.listPostHead}>
+              <Text style={WalletStyle.listPostHeadText}>{checkLanguage({vi: 'Tin tức', en: 'News'},language)}</Text>
               <TouchableOpacity onPress={()=>navigation.navigate('News')} style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={walletStyles.listPostHeadViewMore}>{checkLanguage({vi: 'Xem thêm', en: 'See more'},language)}</Text>
-                <FontAwesomeIcon style={walletStyles.listPostHeadViewMore} icon={faAngleRight}/>
+                <Text style={WalletStyle.listPostHeadViewMore}>{checkLanguage({vi: 'Xem thêm', en: 'See more'},language)}</Text>
+                <FontAwesomeIcon style={WalletStyle.listPostHeadViewMore} icon={faAngleRight}/>
               </TouchableOpacity>
             </View>
 
 
-              <View style={walletStyles.listPostScroll}>
+              <View style={WalletStyle.listPostScroll}>
                   {            
                           checkLanguage({
                             vi: (
@@ -571,15 +625,15 @@ const sortHandler = (isSort, isTapSort) => {
                                 renderItem={({item}) => {
 
                                     if(item.content_vi !== undefined){
-                                      return <View style={walletStyles.post}>
+                                      return <View style={WalletStyle.post}>
                                       <TouchableOpacity
                                         onPress={()=>navigation.navigate('News', {
                                           NewsID: item._id
                                         })}
                                       >
                                         <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}>
-                                          <Image style={walletStyles.postImage} source={{ uri: item.thumbURL_vi}}/></View>
-                                        <Text style={walletStyles.postTitle}>{item.title_vi}</Text>
+                                          <Image style={WalletStyle.postImage} source={{ uri: item.thumbURL_vi}}/></View>
+                                        <Text style={WalletStyle.postTitle}>{item.title_vi}</Text>
                                       </TouchableOpacity>
                                     </View>  
                                       
@@ -597,15 +651,15 @@ const sortHandler = (isSort, isTapSort) => {
                             renderItem={({item}) => {
 
                               if(item.content_en !== undefined){
-                                return <View style={walletStyles.post}>
+                                return <View style={WalletStyle.post}>
                                 <TouchableOpacity
                                   onPress={()=>navigation.navigate('News', {
                                     NewsID: item._id
                                   })}
                                 >
                                   <View style={{width: '100%',borderRadius: 5,overflow: 'hidden',}}>
-                                    <Image style={walletStyles.postImage} source={{ uri: item.thumbURL_en}}/></View>
-                                  <Text style={walletStyles.postTitle}>{item.title_en}</Text>
+                                    <Image style={WalletStyle.postImage} source={{ uri: item.thumbURL_en}}/></View>
+                                  <Text style={WalletStyle.postTitle}>{item.title_en}</Text>
                                 </TouchableOpacity>
                               </View>  
                                 

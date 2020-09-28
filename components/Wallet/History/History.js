@@ -12,7 +12,7 @@ import Select from './Select'
 import HistoryButton from '../../Button/HistoryButton'
 import Popup from '../../Popup/Popup'
 
-import { storage } from '../../../helper'
+import { storage, checkLanguage } from '../../../helper'
 import { asyncGetBlockchainTransaction} from '../../../store/actions'
 import WebView from 'react-native-webview';
 
@@ -21,6 +21,8 @@ const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollView, setOutScrollViewTop}){
 
     const [isModalVisible, setModalVisible] = useState(false);
+
+    const language = useSelector(state => state.language)
   
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
@@ -200,7 +202,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                                 start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                                 colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
                                 style={{alignItems: 'center', padding: windowWidth/38, width: '100%', borderRadius: 20}}>
-                                <Text style={{color: '#111b2d', fontSize: 16}}>NẠP</Text>
+                                <Text style={{color: '#111b2d', fontSize: 16}}>{checkLanguage({vi: 'NẠP', en: `DEPOSIT`},language)}</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                     <TouchableOpacity 
@@ -211,7 +213,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         })}
                         style={{width: windowWidth/2.3}}>
                         <View style={{alignItems: 'center', borderColor: '#fac800', borderWidth: 2, padding: windowWidth/38, width: '100%', borderRadius: 20}}>
-                                <Text style={{color: '#fac800'}}>RÚT</Text>
+                                <Text style={{color: '#fac800'}}>{checkLanguage({vi: 'RÚT', en: `WITHDRAW`},language)}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>   
@@ -220,7 +222,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
                     <View style={{flexDirection: 'row', justifyContent: 'center', paddingBottom: 10}}>
                         <View>
-                            <Text style={{color: '#deb306', fontSize: 18}}>Lịch sử</Text>
+                            <Text style={{color: '#deb306', fontSize: 18}}>{checkLanguage({vi: 'Lịch sử', en: `Transaction`},language)}</Text>
                         </View>
                         {/* <View style={{position: 'absolute', top: 2, right: 2}}>
                              <TouchableOpacity 
@@ -318,7 +320,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                    
                     
                     }
-                    /> : <Text style={{color: 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>Trống</Text>
+                    /> : <Text style={{color: 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>{checkLanguage({vi: 'Trống', en: `Empty`},language)}</Text>
                      
                     }
                     

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faLink, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useDispatch } from 'react-redux'
 import {asyncSetCoin} from '../../../store/actions'
+import {checkLanguage} from '../../../helper'
 
 // ------------------Icon Image---------------------
 import kdgicon from '../../../assets/images/IconCoin/KDG.png'
@@ -15,6 +16,7 @@ import usdticon from '../../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../../assets/images/IconCoin/MCH.png'
 import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
+import btcicon from '../../../assets/images/IconCoin/BTC.png'
 
 // ------------------------------------------
 export default function App(){
@@ -23,6 +25,8 @@ export default function App(){
     const dispatch = useDispatch()
     const [SearchHeight , setSearchHeight] = useState(0)
     const [Search , setSearch] = useState('')
+
+    const language = useSelector(state => state.language)
 
     const handleSearch = useCallback(value=>{
         setSearch(value)
@@ -35,6 +39,7 @@ export default function App(){
     const [isEnabledKNC, setIsEnabledKNC] = useState(coinDisplay ? coinDisplay.knc : true);
     const [isEnabledMCH, setIsEnabledMCH] = useState(coinDisplay ? coinDisplay.mch : true);
     const [isEnabledTOMO, setIsEnabledTOMO] = useState(coinDisplay ? coinDisplay.tomo : true);
+    const [isEnabledBTC, setIsEnabledBTC] = useState(coinDisplay ? coinDisplay.btc : true);
 // ---------------------------------------------------------
 
 // -------------------------Coin toggle---------------------------
@@ -45,6 +50,7 @@ const toggleSwitchUSDT = () => setIsEnabledUSDT(previousState => !previousState)
 const toggleSwitchKNC = () => setIsEnabledKNC(previousState => !previousState);
 const toggleSwitchMCH = () => setIsEnabledMCH(previousState => !previousState);
 const toggleSwitchTOMO = () => setIsEnabledTOMO(previousState => !previousState);
+const toggleSwitchBTC = () => setIsEnabledBTC(previousState => !previousState);
 // ---------------------------------------------------------
 
 const data = [
@@ -55,6 +61,7 @@ const data = [
     { isEnabled: isEnabledKNC, toggle: toggleSwitchKNC, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
     { isEnabled: isEnabledMCH, toggle: toggleSwitchMCH, text: 'MCH', icon: mchicon, description: 'MeconCash', key: '6'},
     { isEnabled: isEnabledTOMO, toggle: toggleSwitchTOMO, text: 'TOMO', icon: tomoicon, description: 'TomoChain', key: '7'},
+    { isEnabled: isEnabledBTC, toggle: toggleSwitchBTC, text: 'BTC', icon: btcicon, description: 'Bitcoin', key: '8'},
 ]
 
 
@@ -68,10 +75,11 @@ useEffect(() => {
         usdt: isEnabledUSDT, 
         knc: isEnabledKNC, 
         mch: isEnabledMCH,
-        tomo: isEnabledTOMO
+        tomo: isEnabledTOMO,
+        btc: isEnabledBTC
     }))
 
-}, [isEnabledKDG, isEnabledETH, isEnabledTRX, isEnabledUSDT, isEnabledKNC, isEnabledMCH, isEnabledTOMO])
+}, [isEnabledKDG, isEnabledETH, isEnabledTRX, isEnabledUSDT, isEnabledKNC, isEnabledMCH, isEnabledTOMO, isEnabledBTC])
 
     return (
         <>
@@ -84,7 +92,7 @@ useEffect(() => {
                     onChangeText={handleSearch}
                     value={Search}
                     placeholderTextColor='rgba(255,255,255, 0.2)'
-                    style={{color: '#8a8c8e',fontSize: 13,backgroundColor: '#2e394f', borderRadius: 20, paddingVertical: 10, paddingLeft: 50}} placeholder="Tìm kiếm"/>
+                    style={{color: '#8a8c8e',fontSize: 13,backgroundColor: '#2e394f', borderRadius: 20, paddingVertical: 10, paddingLeft: 50}} placeholder={checkLanguage({vi: 'Tìm kiếm', en: `Search`},language)}/>
                     <TouchableOpacity 
                     onPress={()=>setSearch('')}
                     style={[{position: 'absolute',  top: '50%', right:10,zIndex: 9},{transform: [{translateY: -8}]}
@@ -100,7 +108,7 @@ useEffect(() => {
 {
             Search ? (
             <View>
-                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>Kết quả</Text>
+                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>{checkLanguage({vi: 'Kết quả', en: `Result`},language)}</Text>
                 <FlatList
                 data={data}
                 renderItem={({item}) => 

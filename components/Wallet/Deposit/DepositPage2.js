@@ -23,6 +23,7 @@ import usdticon from '../../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../../assets/images/IconCoin/MCH.png'
 import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
+import btcicon from '../../../assets/images/IconCoin/BTC.png'
 
 
 // ------------------------------------------
@@ -109,7 +110,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
         <View style={{paddingTop: 15, alignItems: 'center'}}>
             <View style={{flexDirection: 'row' ,backgroundColor: 'rgba(40,51,73,0.8)', width: '90%', padding: 20, borderRadius: 5, justifyContent: 'space-between'}}>
                 <Text style={{color: '#fff'}}>{coinName}</Text>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity onPress={() => navigation.navigate('Deposit')} style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5 }}>{checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}</Text>
                   <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faChevronRight}/>
                 </TouchableOpacity>
@@ -144,7 +145,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             <View>
             <QRCode
                 value={SelectedType === 0 ? coinAddress : coinAddressTRC}
-                logo={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : mchicon}
+                logo={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : coinName === 'MCH' ? mchicon : btcicon}
             />
             </View>
             <View>

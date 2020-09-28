@@ -97,7 +97,6 @@ export default function App({setOutScrollViewTop}){
         <>
             <Popup type={ModalStyle} title={ModalMess} isModalVisible={isModalVisible}/>
             <View 
-            onLayout={e=>console.log(e)}
             style={[mainStyles.container]}>
                 <View style={styles.blockImgText}>
                     <View style={styles.blockImg}>

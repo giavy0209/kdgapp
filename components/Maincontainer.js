@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {ImageBackground, ScrollView, } from 'react-native'
 
 import bg from '../assets/images/bg.jpg'
 import bg2 from '../assets/images/bg2.jpg'
+import bg3 from '../assets/images/bg3.jpg'
 import { mainStyles } from '../styles/'
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,10 +15,19 @@ export default function Maincontainer({Component,route ,reqLogin, ...restProps})
     const display = useSelector(state => state.display)
     const [OutScrollView, setOutScrollView] = useState(null)
     const [OutScrollViewTop, setOutScrollViewTop] = useState(null)
-    const [BackGround, setBackGround] = useState()
+    const [BackGround, setBackGround] = useState(bg)
+
+    useEffect(() => {
+      if(display === 1){
+        setBackGround(bg3)
+      }else{
+        setBackGround(bg)
+      }
+
+    }, [display])
 
     return (
-      <ImageBackground source={checkDisplays({dark: bg, light: bg2},display)} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
+      <ImageBackground source={BackGround} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
         {OutScrollViewTop && OutScrollViewTop}
         <ScrollView 
           style={{ paddingBottom: bottom}}>

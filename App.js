@@ -65,8 +65,10 @@ export default function App() {
   useEffect(()=>{
     async function setFirstTime(){
       
-      // await AsyncStorage.clear()
-    }setFirstTime()
+      await AsyncStorage.clear()
+    }
+    
+    setFirstTime()
 
   },[])
 

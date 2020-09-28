@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { View, Text, Image, TouchableOpacity,Alert, TextInput, ActivityIndicator} from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -13,7 +13,7 @@ import defaultAvataPNG from '../../../assets/images/default-avata.png'
 import { useRoute } from '@react-navigation/native'
 import {asyncGetUserbyID, asyncLogout} from '../../../store/actions'
 import { LinearGradient } from 'expo-linear-gradient'
-import { storage } from '../../../helper';
+import { storage, checkLanguage } from '../../../helper';
 import { asyncUpdateUser  } from '../../../store/actions'
 import { Popup } from '../../Popup';
 
@@ -35,6 +35,8 @@ export default function App() {
     const [ButtonHeight, setButtonHeight] = useState(0)
     const screenHeight = useSelector(state=>state.height)
     const [Loading, setLoading] = useState(false);
+
+    const language = useSelector(state => state.language)
 
     const [BlockWidth, setBlockWidth] = useState(0)
     const [ImageWidth, setImageWidth] = useState(0)
@@ -84,7 +86,10 @@ export default function App() {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if (status !== 'granted') {
-                Alert.alert('Tải hình','Bạn cần cấp quyền để ứng dụng tải hình lên');
+                Alert.alert(
+                    checkLanguage({vi: 'Tải hình', en: `Upload photo`},language),
+                    checkLanguage({vi: 'Bạn cần cấp quyền để ứng dụng tải hình lên', en: `You need permission for the app to upload photo`},language)
+                );
             }else pickImage()
         }else pickImage()
     }, []);
@@ -157,9 +162,9 @@ export default function App() {
 
     return (
         <>
-            <HeaderwithButton toPress={handleLogout} type='logout' setHeight={setHeight} title="Hồ sơ cá nhân" />
+            <HeaderwithButton toPress={handleLogout} type='logout' setHeight={setHeight} title={checkLanguage({vi: 'Hồ sơ cá nhân', en: `Profile`},language)} />
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 36, paddingTop: 78,}]}>
-            <Popup type='success' title='Cập nhật thành công' isModalVisible={isModalVisible}/>
+            <Popup type='success' title={checkLanguage({vi: 'Cập nhật thành công', en: `Update successful`},language)} isModalVisible={isModalVisible}/>
                 
                 <View
                 onLayout={e => setBlockWidth(e.nativeEvent.layout.width)}
@@ -178,29 +183,29 @@ export default function App() {
 
                 <View style={{paddingTop: 20}}>
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff'}}>Họ</Text>
-                        <TextInput onChangeText={(value) => setFirstName(value)} value={FirstName} placeholder='Nhập họ' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 70}} />
+                        <Text style={{color: '#fff', width: 110}}>{checkLanguage({vi: 'Họ', en: `First name`},language)}</Text>
+                        <TextInput onChangeText={(value) => setFirstName(value)} value={FirstName} placeholder='Nhập họ' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)',}} />
                     </View>
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff'}}>Tên</Text>
-                        <TextInput onChangeText={(value) => setName(value)} value={Name} placeholder='Nhập tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 70}} />
+                        <Text style={{color: '#fff',  width: 110}}>{checkLanguage({vi: 'Tên', en: `Last name`},language)}</Text>
+                        <TextInput onChangeText={(value) => setName(value)} value={Name} placeholder='Nhập tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)',}} />
                     </View>
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff'}}>Email</Text>
-                        <TextInput editable={false} value={email} placeholder='Nhập họ và tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 60}} />
+                        <Text style={{color: '#fff',  width: 110}}>Email</Text>
+                        <TextInput editable={false} value={email} placeholder='Nhập họ và tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)',}} />
                     </View>
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff'}}>Giới tính</Text>
-                        <View  style={{flexDirection: 'row', paddingLeft: 45}}>
-                            <TouchableOpacity onPress={() => setSelectedGender(0)} style={{backgroundColor: '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
+                        <Text style={{color: '#fff',  width: 110}}>{checkLanguage({vi: 'Giới tính', en: `Gender`},language)}</Text>
+                        <View  style={{flexDirection: 'row',}}>
+                            <TouchableOpacity onPress={() => setSelectedGender(0)} style={{backgroundColor: '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                                 {
                                     SelectedGender === 0 ? 
-                                    <View style={{backgroundColor: '#fac800', width: 10, height: 10, borderRadius: 20 }}>
+                                    <View style={{backgroundColor: '#fac800', width: 10, height: 10, borderRadius: 20,  }}>
                                     </View> : null
                                 }
 
                             </TouchableOpacity>
-                            <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 15, paddingRight: 40}}>Nam</Text>
+                            <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 15, paddingRight: 40}}>{checkLanguage({vi: 'Nam', en: `Male`},language)}</Text>
 
                             <TouchableOpacity onPress={() => setSelectedGender(1)} style={{backgroundColor: '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
                                 {
@@ -209,39 +214,50 @@ export default function App() {
                                     </View> : null
                                 }
                             </TouchableOpacity>
-                            <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 15}}>Nữ</Text>
+                            <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 15}}>{checkLanguage({vi: 'Nữ', en: `Female`},language)}</Text>
                         </View>
          
                     </View>
 
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff'}}>Ngày sinh</Text>
+                        <Text style={{color: '#fff',  width: 110}}>{checkLanguage({vi: 'Ngày sinh', en: `Date of birth`},language)}</Text>
                         <TextInput 
                             onChangeText={(value) => setBirthday(value)} 
                             value={Birthday}
-                            placeholder='Ngày/tháng/năm' 
+                            placeholder={checkLanguage({vi: 'Ngày/Tháng/Năm', en: `DD/MM/YYYY`},language)}
                             placeholderTextColor='rgba(255,255,255,0.5)' 
                             style={{color: 'rgba(255,255,255,0.5)', 
-                            paddingLeft: 35}} />
+                           }} />
                     </View>
 
                     <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff'}}>Địa chỉ</Text>
-                        <TextInput onChangeText={(value) => setAddress(value)} value={Address} placeholder='Địa chỉ' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 50}} />
+                        <Text style={{color: '#fff',  width: 110}}>{checkLanguage({vi: 'Địa chỉ', en: `Address`},language)}</Text>
+                        <TextInput onChangeText={(value) => setAddress(value)} value={Address} placeholder={checkLanguage({vi: 'Nhập địa chỉ', en: `Enter your address`},language)} placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)'}} />
                     </View>
                     
                 </View>
                 
             </View>
 
-            <TouchableOpacity style={{marginTop: 80}} onPress={() => updateUser(FirstName, Name, SelectedGender, Birthday, Address)}>
+
+
+            <TouchableOpacity style={{marginTop: 30}}  onPress={() => updateUser(FirstName, Name, SelectedGender, Birthday, Address)}>
                 <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <LinearGradient 
                     start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
                     colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
                     style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20, flexDirection: 'row', justifyContent: 'center'}}>
-                    <Text style={{color: '#111b2d', fontSize: 16, paddingLeft: 10}}>Cập nhật</Text>
+                    <Text style={{color: '#111b2d', fontSize: 16,}}>{checkLanguage({vi: 'Cập nhật', en: `Update`},language)}</Text>
                     </LinearGradient>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{marginTop: 50}} onPress={handleLogout}>
+                <View style={{alignItems: 'center', justifyContent: 'center', borderColor: '#fac800', borderRadius: 20,  borderWidth: 2, width: '60%', alignSelf: 'center', padding: 10}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{color: '#fff', paddingRight: 10}}>{checkLanguage({vi: 'Đăng xuất', en: `Log out`},language)}</Text>
+                        <FontAwesomeIcon color='#fff' size={20}  icon={faSignOutAlt}/>
+                    </View>
                 </View>
             </TouchableOpacity>
 

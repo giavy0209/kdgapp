@@ -1,12 +1,13 @@
 import React, { useState, useEffect , useCallback} from 'react'
-import {View, Text, Image, TextInput, FlatList, ScrollView, Alert, BackHandler} from 'react-native'
+import {View, Text, Image, TextInput, FlatList, ScrollView, Alert, BackHandler, ActivityIndicator} from 'react-native'
 import { mainStyles, withdrawStyle, scannerStyles } from '../../../styles/'
 import {HeaderwithButton} from '../../Header'
 import { useDispatch, useSelector } from 'react-redux'
+
 import logo from '../../../assets/images/logo.png'
 import coin from '../../../assets/images/coin.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faChevronRight, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight, faSignOutAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -24,6 +25,7 @@ import usdticon from '../../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../../assets/images/IconCoin/MCH.png'
 import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
+import btcicon from '../../../assets/images/IconCoin/BTC.png'
 
 
 // ------------------------------------------
@@ -36,6 +38,8 @@ export default function App({setOutScrollView}){
     const coinNumbers = useSelector(state => state.coinNumbers)
     const language = useSelector(state => state.language)
     const [Width , setWidth] = useState(0);
+
+    const [Loading, setLoading] = useState(false);
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -64,6 +68,7 @@ export default function App({setOutScrollView}){
 
 
     const withdraw = useCallback(async (sel) => {
+        setLoading(true)
         var userinfo = await storage('_id').getItem();
         var withdraw_type = coinName === 'TRX' ? 'tron' : 
                             coinName === 'USDT' && sel === 0 ? 'usdt' :  
@@ -71,23 +76,33 @@ export default function App({setOutScrollView}){
 
         dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: withdraw_type, toAddress: ToAddress, token: Token}))
         .then((res)=>{
+            console.log(res)
             if(res.status === 1 ){
+                setValueSend('')
+                setToAddress('')
+                setToken('')
+                setLoading(false)
                 Alert.alert(
                     checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
                     `${checkLanguage({vi: 'Rút thành công', en: 'Withdraw successfully'},language)} ${ValueSend} ${coinName}`,
                 )
 
-                setValueSend('')
-                setToAddress('')
-                setToken('')
+          
                 return
             }else if(res.status === 100){
+                setLoading(false)
                 Alert.alert(
                     checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
                     checkLanguage({vi: 'Mã 2fa không chính xác', en: 'The 2fa code is failed'},language),
                 )
-              
+            }else if(res.status === 101){
+                setLoading(false)
+                Alert.alert(
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'Bạn phải KYC trước khi rút', en: 'You must kyc before withdraw'},language),
+                ) 
             }else{
+                setLoading(false)
                 Alert.alert(
                     checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
                     checkLanguage({vi: 'Giao dịch thất bại', en: 'Transaction failed'},language),
@@ -141,7 +156,7 @@ export default function App({setOutScrollView}){
         <View style={withdrawStyle.numberSendContainer}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <View style={{flexDirection: 'row'}}>
-                        <Image source={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : mchicon} style={{width: windowWidth*windowHeight/9000, height: windowWidth*windowHeight/9000}} />
+                        <Image source={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : coinName === 'MCH' ? mchicon : btcicon} style={{width: windowWidth*windowHeight/9000, height: windowWidth*windowHeight/9000}} />
                         <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
                             <Text style={withdrawStyle.coinName}>{coinName}</Text>
                             <Text style={withdrawStyle.balance}>{checkLanguage({vi: 'Số dư: ', en: 'Balance: '},language)  + coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
@@ -191,6 +206,7 @@ export default function App({setOutScrollView}){
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
                             onChangeText={value=>inputNumberHandler(value)} 
+                            value={ValueSend}
                             style={withdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
@@ -250,6 +266,7 @@ export default function App({setOutScrollView}){
                             onFocus={()=>{}} 
                             onBlur={()=>{}} 
                             onChangeText={value=>setToken(value)} 
+                            value={Token}
                             style={withdrawStyle.inputNum} />
                         </View>
                     </View> 
@@ -258,13 +275,16 @@ export default function App({setOutScrollView}){
         </View>
 
         <TouchableOpacity
+                disabled={Loading ? true : false}
                 onPress={() => withdraw(SelectedType)}
             >
                 <View style={{alignItems: 'center', justifyContent: 'center', marginTop: windowHeight/25}}>
                     <LinearGradient 
                         colors={['#e5be50', '#ecda8b', '#a47b00']}
-                        style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14}}>
-                        <Text style={{color: '#111b2d', fontSize: 16}}>{checkLanguage({vi: 'Rút', en: 'Withdraw'},language)}</Text>
+                        style={{backgroundColor: '#2e394f', alignItems: 'center', justifyContent: 'center', borderRadius: 30, width: '92%', height: windowHeight/14, opacity: Loading ? 0.4 : 1}}>
+                        {  Loading === true ?  <ActivityIndicator size="small" color="#fff" />
+                        :  <Text style={{color: '#111b2d', fontSize: 16}}>{checkLanguage({vi: 'Rút', en: 'Withdraw'},language)}</Text>}
+                       
                     </LinearGradient>
                 </View>
         </TouchableOpacity>

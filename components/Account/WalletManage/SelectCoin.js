@@ -9,9 +9,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 import { asyncExportPrivateKey } from '../../../store/actions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Popup from '../../Popup/Popup'
 import PopupInputPassword from '../../Popup/PopupInputPassword'
+
+
+import {  checkLanguage  } from '../../../helper'
 // ------------------Icon---------------------
 import kdgicon from '../../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../../assets/images/IconCoin/ETH.png'
@@ -32,6 +35,8 @@ export default function App({setOutScrollViewTop}){
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalVisibleInput, setModalVisibleInput] = useState(false);
     const [Error, setError] = useState()
+
+    const language = useSelector(state => state.language)
       
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -59,7 +64,7 @@ export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
 
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title="Chọn Coins"/>)
+        setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Chọn coin', en: `Select coin`},language)}/>)
     },[])
 
     // const submitPasswordHandler = (password, CoinSelected) => {
@@ -84,13 +89,13 @@ export default function App({setOutScrollViewTop}){
             console.log(res)
 
             if(res.status === 1 && res.msg === 'wrong password'){
-                setError('Mật khẩu không chính xác')
+                setError(checkLanguage({vi: 'Mật khẩu không chính xác', en: `Password invalid`},language))
                 toggleModal()
                 setPasswordPrivate('')
                 return
             }
             if(res.status === 0){
-                setError('Đã có lỗi xảy ra')
+                setError(checkLanguage({vi: 'Đã có lỗi xảy ra', en: `An error occurred`},language))
                 toggleModal()
                 setPasswordPrivate('')
                 return
@@ -106,7 +111,7 @@ export default function App({setOutScrollViewTop}){
                 return
             }
             
-            setError('Đã có lỗi xảy ra')
+            setError(checkLanguage({vi: 'Đã có lỗi xảy ra', en: `An error occurred`},language))
             toggleModal()
             setPasswordPrivate('')
         })
@@ -133,12 +138,16 @@ export default function App({setOutScrollViewTop}){
      <Popup type='failed' title={Error} isModalVisible={isModalVisible}/>
      { isModalVisibleInput === true ?
          <PopupInputPassword 
+         title={checkLanguage({vi: 'Vui lòng nhập mật khẩu', en: `Please enter your password`},language)}
+        content={checkLanguage({vi: 'Mật khẩu', en: `Password`},language)}
          toCancel={() => setModalVisibleInput(false)} 
          toSubmit={() => submitPasswordHandler(PasswordPrivate, CoinSelected)}
          toChangeText={(value) => setPasswordPrivate(value)} 
          isModalVisible={isModalVisibleInput}/> : null
      }
      <PopupInputPassword 
+        title={checkLanguage({vi: 'Vui lòng nhập mật khẩu', en: `Please enter your password`},language)}
+        content={checkLanguage({vi: 'Mật khẩu', en: `Password`},language)}
         toCancel={() => setModalVisibleInput(false)} 
         toSubmit={() => submitPasswordHandler(PasswordPrivate, CoinSelected)}
         toChangeText={(value) => setPasswordPrivate(value)} 
@@ -147,7 +156,7 @@ export default function App({setOutScrollViewTop}){
             <View style={[withdrawStyle.searchBoxContainer, {alignItems: 'center'}]}>
                 <FontAwesomeIcon color="#8a8c8e" icon={faSearch}/>
                 <TextInput
-                placeholder="Tìm kiếm" 
+                placeholder={checkLanguage({vi: 'Tìm kiếm', en: `Search`},language)}
                 placeholderTextColor = "#8a8c8e"
                 onFocus={()=>{}} 
                 onBlur={()=>{}} 
@@ -160,7 +169,7 @@ export default function App({setOutScrollViewTop}){
             {
             searchVal ? (
             <View>
-                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>Kết quả</Text>
+                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>{checkLanguage({vi: 'Kết quả', en: `Result`},language)}</Text>
 
                 <FlatList
                 data={list}

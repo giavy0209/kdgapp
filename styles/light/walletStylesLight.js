@@ -18,8 +18,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     titleHeader : {
-        color: '#edca62',
-        fontSize: 16,
+        color: '#fac800',
+        fontSize: 18,
+        fontWeight: 'bold'
     },
     groupIcon:{
         flexDirection: 'row',
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     notifyIcon: {
         marginLeft:15,
         position: 'relative',
-        marginRight: 15
+        marginRight: 15,
     },
     notifyCount : {
         position: 'absolute',
@@ -54,9 +55,16 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        opacity: .4,
         borderRadius :5,
-        backgroundColor: '#283349'
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor: '#fff'
     },
 
     maskOpacity2: {
@@ -65,18 +73,24 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        opacity: .4,
         borderRadius :5,
-        backgroundColor: '#283349'
+        shadowColor: "#000000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor: '#f1f3f4'
     },
-
-    
+  
     balance : {
-        position: 'relative',
-        paddingLeft: 11,
-        paddingRight: 11,
-        paddingTop: 25,
-        paddingBottom: 25,
+    position: 'relative',
+    paddingLeft: 11,
+    paddingRight: 11,
+    paddingTop: 25,
+    paddingBottom: 25,
     },
     totalBalanceAndVisible : {
         flex: 1,
@@ -85,8 +99,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     totalBalance:{
-        fontSize: 24,
-        color: '#edd073',
+        fontSize: 25,
+        color: '#b28f21',
         fontFamily: 'Roboto_700Bold'
     },
     visibleButton : {
@@ -108,10 +122,11 @@ const styles = StyleSheet.create({
     textAvailableAndLock : {
         fontSize: 12,
         color: '#8a8c8e',
+        fontWeight: 'bold'
     },
     quantityAvailableAndLock : {
         fontSize: 16,
-        color: '#ddd9d8',
+        color: '#283349',
         marginTop: 8,
         fontFamily: 'Roboto_500Medium'
     },
@@ -139,7 +154,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 12,
-        color: '#ffffff',
+        color: '#283349',
+        fontWeight: 'bold'
     },
     listCoinHead:{
         marginTop: 25,
@@ -183,10 +199,10 @@ const styles = StyleSheet.create({
     },
     coinName: {
         fontSize: 14,
-        color: '#ffffff'
+        color: '#283349'
     },
     coinPirce:{
-        color: '#8a8c8e',
+        color: '#283349',
         fontSize: 12,
     },
     quantity: {
@@ -250,7 +266,7 @@ const styles = StyleSheet.create({
         borderRadius :5
     },
     postTitle: {
-        color: '#ddd9d8',
+        color: '#283349',
         fontSize: 13,
         marginTop: 10
     }

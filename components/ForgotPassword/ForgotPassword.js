@@ -1,15 +1,18 @@
-import React, { useState, useCallback,useEffect } from 'react';
+import React, { useState, useCallback,useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { ScrollView, View, TextInput, Text, TouchableOpacity,Alert,ImageBackground, Image , Linking} from 'react-native';
 import {mainStyles as styles} from '../../styles/'
-import { useDispatch } from 'react-redux'
-import {transition} from '../../helper'
+import { useDispatch, useSelector } from 'react-redux'
+import {transition, checkLanguage} from '../../helper'
 
 import {Header1} from '../Header'
 import { asyncForgotPassword, asynForgotPasswordCode } from '../../store/actions'
 import Popup from '../Popup/Popup'
-export default function App({ navigation }) {
+
+import bg from '../../assets/images/bg.jpg'
+import bg2 from '../../assets/images/bg2.jpg'
+export default function App({ navigation, setBackGround }) {
 
 
     const [PopupStatus, setPopupStatus] = useState(false);
@@ -29,6 +32,9 @@ export default function App({ navigation }) {
     const [EmailFocus, setEmailFocus] = useState(false)
     const [EmailTextPosition, setEmailTextPosition] = useState(11)
     const [EmailTextSize, setEmailTextSize] = useState(15)
+
+    const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
 
     const [EmailCode, setEmailCode] = useState("")
     const [EmailCodeValidate, setEmailCodeValidate] = useState(<Text></Text>)
@@ -52,6 +58,16 @@ export default function App({ navigation }) {
     const [InputPasswordHeight, setInputPasswordHeight] = useState(0)
     const [InputPasswordEyeHeight, setInputPasswordEyeHeight] = useState(0)
 
+
+    useMemo(()=>{
+        if(display === 1){
+            setBackGround(bg2)
+        }else{
+            setBackGround(bg)
+        }
+    },[])
+
+    
     const [CheckValidate, setCheckValidate] = useState(false);
     useEffect(()=>{
         if(EmailFocus){
@@ -134,15 +150,15 @@ export default function App({ navigation }) {
             // }
             if(res.status === 0 && res.msg === 'forgot passsword code is wrong'){
                 Alert.alert(
-                    "Reset mật khẩu",
-                    "Mã xác nhận không đúng",
+                    checkLanguage({vi: 'Thông báo', en: `Notification`},language),
+                    checkLanguage({vi: 'Mã xác minh không đúng', en: `Verify code incorrect`},language)
                 )
                 return
             }
             if(res.status === 0 && res.msg === 'email (forgot password code) is not exist'){
                 Alert.alert(
-                    "Reset mật khẩu",
-                    "Email không tồn tại",
+                    checkLanguage({vi: 'Thông báo', en: `Notification`},language),
+                    checkLanguage({vi: 'Email không tồn tại', en: `Email does not exist`},language)
                 )
                 return
             }
@@ -163,7 +179,7 @@ export default function App({ navigation }) {
 
         .then((res)=>{
             if(res.status === 0 && res.err === 'no find user'){
-                setEmailValidate(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email không tồn tại</Text>)
+                setEmailValidate(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Email không tồn tại', en: `Email does not exist`},language)}</Text>)
                 return
             }
             console.log(res);
@@ -194,7 +210,7 @@ const validateEmail = (val) => {
         setEmailValidate(null)
     }else{
         setEmailValidate(
-            <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email không hợp lệ</Text>
+            <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Email không hợp lệ', en: 'Invalid email'},language)}</Text>
         )
     }
 }
@@ -205,7 +221,7 @@ const validatePassword = (val) => {
         setPasswordValidate(null)
     }else{
         setPasswordValidate(
-            <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu phải ít nhất 8 ký tự cả chữ và số</Text>
+            <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Ít nhất 8 ký tự, bao gồm chữ và số', en: `At least 8 digits, include word and number`},language)}</Text>
         )
     }
 }
@@ -215,7 +231,7 @@ const validateRePassword = (val) => {
         setRePasswordValidate(null)
     }else{
         setRePasswordValidate(
-            <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mật khẩu không khớp</Text>
+            <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Mật khẩu không khớp. Hãy thử lại.', en: `Not match. Please try again.`},language)}</Text>
         )
     }
 }
@@ -226,7 +242,7 @@ const validateEmailCode = (val) => {
         setEmailCodeValidate(null)
     }else{
         setEmailCodeValidate(
-            <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Mã xác minh không hợp lệ</Text>
+            <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Mã xác minh không hợp lệ', en: `Verify code invalid`},language)}</Text>
         )
     }
 }
@@ -263,7 +279,7 @@ useEffect(()=>{
                 <View style={{padding: 2}}>
                    {EmailValidate}
                 </View>
-                <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? 'Lấy mã thành công' : 'Vui lòng chờ 2 phút để gửi lại'} isModalVisible={isModalVisible}/>
+                <Popup type={PopupStatus === true ? 'success' : 'failed'} title={PopupStatus === true ? checkLanguage({vi: 'Lấy mã thành công', en: `Succesful`},language) : checkLanguage({vi: 'Vui lòng chờ 2 phút để gửi lại', en: `Please wait 2 minutes to resend`},language)} isModalVisible={isModalVisible}/>
                 <View style={[styles.inputBlock]}>
                     <Text style={[styles.placeHolderText,{bottom: EmailCodeTextPosition , fontSize: EmailCodeTextSize}, EmailCodeFocus && {color: '#8a8c8e'}]}>Mã xác minh Email</Text>
                     <TextInput 
@@ -285,7 +301,7 @@ useEffect(()=>{
                 </View>
                 <View style={[styles.inputBlock,{flexDirection: 'column'}]}>
                     <View style={[styles.inputBlock, {marginTop: 0}]}>
-                        <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: '#8a8c8e'}]}>Mật khẩu mới</Text>
+                        <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: '#8a8c8e'}]}>{checkLanguage({vi: 'Mật khẩu mới', en: `New password`},language)}</Text>
                         <TextInput 
                         onFocus={()=>{Password !== '' || !PasswordFocus && setPasswordFocus(true)}} 
                         onBlur={()=>{Password === '' && setPasswordFocus(false)}}
@@ -309,7 +325,7 @@ useEffect(()=>{
                 </View>
 
                 <View style={styles.inputBlock}>
-                    <Text style={[styles.placeHolderText,{bottom: RePasswordTextPosition , fontSize: RePasswordTextSize}, RePasswordFocus && {color: '#8a8c8e'}]}>Xác nhận mật khẩu</Text>
+                    <Text style={[styles.placeHolderText,{bottom: RePasswordTextPosition , fontSize: RePasswordTextSize}, RePasswordFocus && {color: '#8a8c8e'}]}>{checkLanguage({vi: 'Xác nhận mật khẩu', en: `Confirm password`},language)}</Text>
                     <TextInput 
                     onFocus={()=>{RePassword !== '' || !RePasswordFocus && setRePasswordFocus(true)}} 
                     onBlur={()=>{RePassword ==='' && setRePasswordFocus(false)}} 
@@ -328,12 +344,12 @@ useEffect(()=>{
                     {RePasswordValidate}
                 </View>
                 <TouchableOpacity disabled={CheckValidate ? false : true} style={[styles.button, {opacity: CheckValidate ? 1 : 0.5}]}  onPress={resetPassword}>
-                    <Text style={styles.buttonText}>Xác nhận</Text>
+                    <Text style={styles.buttonText}>{checkLanguage({vi: 'Xác nhận', en: `Confirm`},language)}</Text>
                 </TouchableOpacity>
             </View>
             <View style={[styles.groupText,{justifyContent: 'center', marginTop: 24}]}>
-                <Text style={{color: '#8a8c8e'}}>Đã nhớ mật khẩu?</Text>
-                <TouchableOpacity onPress={()=>navigation.replace('Login')}><Text style={[styles.linkText], {color: '#fac800'}}>  Đăng nhập</Text></TouchableOpacity>
+                <Text style={{color: '#8a8c8e'}}>{checkLanguage({vi: 'Đã nhớ mật khẩu?', en: `Remember the password?`},language)}?</Text>
+                <TouchableOpacity onPress={()=>navigation.replace('Login')}><Text style={[styles.linkText], {color: '#fac800'}}>  {checkLanguage({vi: 'Đăng nhập', en: `Login`},language)}</Text></TouchableOpacity>
             </View>
         </View>
     );

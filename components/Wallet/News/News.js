@@ -5,20 +5,31 @@ import { Dimensions } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import logo from '../../../assets/logo.png'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 
 
-    const dimen = Dimensions.get('window');
-    const isIphoneTaiTho =  Platform.OS === 'ios' &&
-    !Platform.isPad &&
-    !Platform.isTVOS &&
-    ((dimen.height === 812 || dimen.width === 812) || (dimen.height === 896 || dimen.width === 896))
+  const dimen = Dimensions.get('window');
+  const isIphoneTaiTho =  Platform.OS === 'ios' &&
+  !Platform.isPad &&
+  !Platform.isTVOS &&
+  ((dimen.height === 812 || dimen.width === 812) || (dimen.height === 896 || dimen.width === 896))
 
 const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation();
     const route = useRoute();
     const [lang, setlang] = useState('vi')
+    const language = useSelector(state => state.language)
+
+    const isFocuse = useIsFocused()
+    useEffect(() => {
+      if(language === 0){
+        setlang('vi')
+      }else{
+        setlang('en')
+      }
+    },[isFocuse])
 
     const {NewsID} = route.params ?? {}
 

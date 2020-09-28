@@ -21,6 +21,7 @@ import usdticon from '../../../assets/images/IconCoin/USDT.png'
 import kncicon from '../../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../../assets/images/IconCoin/MCH.png'
 import tomoicon from '../../../assets/images/IconCoin/TOMO.png'
+import btcicon from '../../../assets/images/IconCoin/BTC.png'
 
 
 // ------------------------------------------
@@ -57,6 +58,7 @@ export default function App({setOutScrollViewTop}){
         {address: coinNumbers.knc.address , exchange_rate: coinNumbers.knc.exchange_rate, balance: coinNumbers.knc.balance, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
         {address: coinNumbers.mch.address , exchange_rate: coinNumbers.mch.exchange_rate, balance: coinNumbers.mch.balance, text: 'MCH', icon: mchicon, description: 'Meconcash ', key: '6'},
         {address: coinNumbers.tomo.address , exchange_rate: coinNumbers.tomo.exchange_rate, balance: coinNumbers.tomo.balance, text: 'TOMO', icon: tomoicon, description: 'TomoChain ', key: '7'},
+        {address: coinNumbers.btc.address , exchange_rate: coinNumbers.btc.exchange_rate, balance: coinNumbers.btc.balance, text: 'BTC', icon: btcicon, description: 'Bitcoin ', key: '8'},
     
       ];
 
@@ -95,7 +97,7 @@ export default function App({setOutScrollViewTop}){
             {
             searchVal ? (
             <View>
-                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>Kết quả</Text>
+                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>{checkLanguage({vi: 'Kết quả', en: `Result`},language)}</Text>
                 <FlatList
                 data={list}
                 renderItem={({item}) => 

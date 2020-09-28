@@ -1,4 +1,4 @@
-import React, { useState, useCallback,useEffect } from 'react';
+import React, { useState, useCallback,useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { View, TextInput, Text, TouchableOpacity,Alert, Image , Linking, Button} from 'react-native';
@@ -9,14 +9,17 @@ import ticker from '../../assets/images/ticker.png'
 import {transition, checkLanguage} from '../../helper'
 import {asyncReg, asyncRegisterCode} from '../../store/actions'
 import Popup from '../Popup/Popup'
+import bg from '../../assets/images/bg.jpg'
+import bg2 from '../../assets/images/bg2.jpg'
 
 
-export default function App({ navigation }) {
+export default function App({ navigation, setBackGround }) {
 
     const [PopupStatus, setPopupStatus] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
 
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
   
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
@@ -24,7 +27,14 @@ export default function App({ navigation }) {
         setModalVisible(false);
        }, 1000);
     };
-  
+    useMemo(()=>{
+        if(display === 1){
+            setBackGround(bg2)
+        }else{
+            setBackGround(bg)
+        }
+    },[])
+
 
 
     const dispatch = useDispatch()

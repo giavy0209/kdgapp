@@ -10,6 +10,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { LinearGradient } from 'expo-linear-gradient'
 import Select from './Select'
 import Popup from '../../Popup/Popup'
+import { useSelector } from 'react-redux'
+import {  checkLanguage } from '../../../helper';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,6 +19,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
 
     const navigation = useNavigation()
     const route = useRoute();
+    const language = useSelector(state => state.language)
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -28,7 +31,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
     // ------------content---------------
     const [Status, setStatus] = useState(                        
         <Text style={{color: '#fac800'}}>
-           Giao dịch đang chờ
+          {checkLanguage({vi: 'Giao dịch đang chờ', en: `Transaction pending`},language)}
        </Text>
     )
 
@@ -58,14 +61,14 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
        if(status === 'failed'){
             setStatus(
                 <Text style={{color: '#c00e0f'}}>
-                    Giao dịch thất bại
+                   {checkLanguage({vi: 'Giao dịch thất bại', en: `Transaction failed`},language)}
                 </Text>
             )
        }
        if(status === 'success'){
             setStatus(
                 <Text style={{color: '#259e58'}}>
-                    Giao dịch thành công
+                    {checkLanguage({vi: 'Giao dịch thành công', en: `Transaction successful`},language)}
                 </Text>
             );
         }
@@ -111,7 +114,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
     return (
         <>   
             <View style={[mainStyles.container]}>
-            <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
+            <Popup type='success' title={checkLanguage({vi: 'Đã copy', en: `Copied`},language)} isModalVisible={isModalVisible}/>
                 <View style={{padding: 10}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         {/* <Text style={{color: '#259e58'}}>
@@ -127,7 +130,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     <View style={{alignItems: 'center'}}>
                         {Icon}
                         <View style={{paddingTop: 5}}>
-                            <Text style={{color: '#fac800', fontSize: 20, fontWeight: 'bold'}}>{type === 'deposit' ? `+ ${amount} ${coin_name}` : type === 'withdraw' ? `- ${amount} ${coin_name}` : 'Không xác định'}</Text>
+                            <Text style={{color: '#fac800', fontSize: 20, fontWeight: 'bold'}}>{type === 'deposit' ? `+ ${amount} ${coin_name}` : type === 'withdraw' ? `- ${amount} ${coin_name}` : '???'}</Text>
                         </View>
           
                     </View>
@@ -140,7 +143,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
 
                 <View style={{height: '100%', flexDirection: 'column', paddingTop:30}}>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>Từ</Text>
+                        <Text style={{color: '#fff'}}>{checkLanguage({vi: 'Từ', en: `From`},language)}</Text>
                         <TouchableOpacity 
                             onPress={copyHandler1}
                             style={{paddingTop: 5}}>
@@ -151,7 +154,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     </TouchableOpacity>
                     </View>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>Đến</Text>
+                        <Text style={{color: '#fff'}}>{checkLanguage({vi: 'Đến', en: `To`},language)}</Text>
                         <TouchableOpacity 
                             onPress={copyHandler2}
                             style={{paddingTop: 5}}>
@@ -162,7 +165,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     </TouchableOpacity>
                     </View>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>Mã giao dịch</Text>
+                        <Text style={{color: '#fff'}}>{checkLanguage({vi: 'Mã giao dịch', en: `Hash`},language)}</Text>
                         <TouchableOpacity 
                             onPress={copyHandler3}
                             disabled={true}
@@ -184,7 +187,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                     </TouchableOpacity>
                     </View>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>Ghi chú</Text>
+                        <Text style={{color: '#fff'}}>{checkLanguage({vi: 'Ghi chú', en: `Note`},language)}</Text>
                         <TouchableOpacity 
                             // onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
                             disabled={true}

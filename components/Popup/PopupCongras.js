@@ -4,14 +4,14 @@ import {View,Text, Platform, TouchableOpacity, Image } from 'react-native'
 import { Dimensions } from 'react-native'
 import making from '../../assets/images/making.png'
 import { LinearGradient } from 'expo-linear-gradient'
-
+const dimen = Dimensions.get('window');
 const isIphoneTaiTho =  Platform.OS === 'ios' &&
 !Platform.isPad &&
 !Platform.isTVOS &&
 ((dimen.height === 812 || dimen.width === 812) || (dimen.height === 896 || dimen.width === 896))
 
 export default function App({isModalVisible, toPress, title, content}){
-    const dimen = Dimensions.get('window');
+
     const [Width , setWidth] = useState(0);
 
     return(

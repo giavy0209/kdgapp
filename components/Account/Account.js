@@ -6,6 +6,7 @@ import { faPen} from '@fortawesome/free-solid-svg-icons';
 
 import image from '../../assets/images/account-header-background.jpg';
 import {accountStyle, mainStyles} from '../../styles'
+import {accountStyleLight} from '../../styles/light'
 import wallet from '../../assets/images/wallet-account.png'
 import support from '../../assets/images/support-account.png'
 import invitation from '../../assets/images/invitation-account.png'
@@ -22,6 +23,7 @@ export default function App({navigation}){
   const [UserEmail, setUserEmail] = useState('')
 
   const language = useSelector(state => state.language)
+  const display = useSelector(state => state.display)
 
   useEffect(() => {
     async function getUserInfo() {
@@ -32,34 +34,40 @@ export default function App({navigation}){
 
     getUserInfo()
   }, [UserName, UserEmail])
+
+  // -------------------style------------------------------
+
+var AccountStyle = display === 1 ? accountStyleLight : accountStyle
+
+// ------------------------------------------------------
     return(
         <>
         <View style={[mainStyles.container,]}>
             <ImageBackground style={{width: '100%'}} source={image}>
-                <View style={accountStyle.backgroundHead}>
-                    <Text style={accountStyle.title}>{checkLanguage({vi: 'Tài khoản', en: 'Profile'},language)}</Text>
-                    <View style={accountStyle.rowHeader}>
-                        <View style={accountStyle.itemHeader}>
+                <View style={AccountStyle.backgroundHead}>
+                    <Text style={AccountStyle.title}>{checkLanguage({vi: 'Tài khoản', en: 'Profile'},language)}</Text>
+                    <View style={AccountStyle.rowHeader}>
+                        <View style={AccountStyle.itemHeader}>
                             <TouchableOpacity 
                                 style={{alignItems: 'center'}}
                                 onPress={() => {navigation.navigate('WalletManage')}}
                             >
                                 <Image source={wallet}/>
-                                <Text style={accountStyle.textHeader}>{checkLanguage({vi: 'Quản lý ví', en: 'Manage Wallet'},language)}</Text>
+                                <Text style={AccountStyle.textHeader}>{checkLanguage({vi: 'Quản lý ví', en: 'Manage Wallet'},language)}</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={accountStyle.itemHeader}>
+                        <View style={AccountStyle.itemHeader}>
                             <Image source={support}/>
-                            <Text style={accountStyle.textHeader}>{checkLanguage({vi: 'Hỗ trợ', en: 'Support'},language)}</Text>
+                            <Text style={AccountStyle.textHeader}>{checkLanguage({vi: 'Hỗ trợ', en: 'Support'},language)}</Text>
                         </View>
            
-                        <View style={accountStyle.itemHeader}>
+                        <View style={AccountStyle.itemHeader}>
                             <TouchableOpacity 
                                 style={{alignItems: 'center'}}
                                 onPress={() => {navigation.navigate('Reward')}}
                             >
                                 <Image source={invitation}/>
-                                <Text style={accountStyle.textHeader}>{checkLanguage({vi: 'Phần thưởng', en: 'Reward'},language)}</Text>
+                                <Text style={AccountStyle.textHeader}>{checkLanguage({vi: 'Phần thưởng', en: 'Reward'},language)}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -71,20 +79,20 @@ export default function App({navigation}){
                     // userName: UserName,
                     email: UserEmail
                 })} 
-                style={accountStyle.profileBar}>
-                <View style={accountStyle.blockAvata}>
-                    <Image style={accountStyle.avata} source={Platform.OS === 'ios' ? defaultAvataPNG : defaultAvata}/>
+                style={AccountStyle.profileBar}>
+                <View style={AccountStyle.blockAvata}>
+                    <Image style={AccountStyle.avata} source={Platform.OS === 'ios' ? defaultAvataPNG : defaultAvata}/>
                 </View>
-                    <Text style={accountStyle.profileBarEmail}>{UserEmail}</Text>
+                    <Text style={AccountStyle.profileBarEmail}>{UserEmail}</Text>
                 <LinearGradient 
                 start={[0,1]}
                 end={[1,0]}
-                style={accountStyle.pen}
+                style={AccountStyle.pen}
                 colors={['#ab7f00', '#edd57c']}>
                     <TouchableOpacity onPress={()=>navigation.navigate('Profile', {
                                     // userName: UserName,
                                     email: UserEmail
-                                })} style={accountStyle.touchPen}>
+                                })} style={AccountStyle.touchPen}>
                         <FontAwesomeIcon color="#fff" icon={faPen}/>
                     </TouchableOpacity>
                 </LinearGradient>

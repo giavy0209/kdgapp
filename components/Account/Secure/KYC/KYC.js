@@ -12,6 +12,8 @@ import {  checkLanguage } from '../../../../helper';
 export default function App(){
     const navigation = useNavigation()
 
+    
+
     const screenHeight = useSelector(state => state.height)
     const [Height, setHeight] =useState(0)
     const [ContentHeight, setContentHeight] =useState(0)

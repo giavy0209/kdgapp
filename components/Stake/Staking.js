@@ -14,6 +14,8 @@ import kdgicon from '../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../assets/images/IconCoin/ETH.png'
 import trxicon from '../../assets/images/IconCoin/TRX.png'
 import usdticon from '../../assets/images/IconCoin/USDT.png'
+import mchicon from '../../assets/images/IconCoin/MCH.png'
+import tomoicon from '../../assets/images/IconCoin/TOMO.png'
 // ------------------------------------------
 
 const windowWidth = Dimensions.get('window').width;
@@ -49,12 +51,12 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     />)
 
     const list = [
-        {icon: kdgicon, token: 'KDG ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnActive},
-        {icon: ethicon, token: 'ETH ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '8%', btn: btnDisable},
-        {icon: trxicon, token: 'TRX ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '10%', btn: btnDisable},
+        {icon: kdgicon, token: ' KDG ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '30%', btn: btnActive},
+        {icon: ethicon, token: ' ETH ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '8%', btn: btnDisable},
+        {icon: trxicon, token: ' TRX ', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '10%', btn: btnDisable},
         {icon: usdticon, token: 'USDT', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '6%', btn: btnDisable},
-        {icon: usdticon, token: 'MCH', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '15%', btn: btnDisable},
-        {icon: usdticon, token: 'TOMO', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '15%', btn: btnDisable},
+        {icon: mchicon, token: ' MCH', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '15%', btn: btnDisable},
+        {icon: tomoicon, token: 'TOMO', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '15%', btn: btnDisable},
         
       ];
 

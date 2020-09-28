@@ -5,6 +5,7 @@ import deposit from '../../assets/images/deposit.png'
 import stake from '../../assets/images/stake.png'
 import swap from '../../assets/images/swap.png'
 import { walletStyles } from '../../styles/'
+import { walletStylesLight } from '../../styles/light'
 import { useNavigation } from '@react-navigation/native'
 import { checkLanguage } from '../../helper'
 import { useSelector } from 'react-redux'
@@ -12,48 +13,55 @@ import { useSelector } from 'react-redux'
 export default function App({}){
     const navigation = useNavigation()
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
+
+    // -------------------style------------------------------
+
+var WalletStyle = display === 1 ? walletStylesLight : walletStyles
+
+// ------------------------------------------------------
     return (
-        <View style={walletStyles.groupButton}>
+        <View style={WalletStyle.groupButton}>
             <TouchableOpacity  
                 onPress={()=>navigation.navigate('Withdraw',{
 
                 })} 
-                style={walletStyles.buttonBlock}>
-            <View style={walletStyles.button}>
-                <View style={walletStyles.maskOpacity}></View>
+                style={WalletStyle.buttonBlock}>
+            <View style={WalletStyle.button}>
+                <View style={WalletStyle.maskOpacity}></View>
                 <Image source={withdraw}/>
-                <Text style={walletStyles.buttonText}>{checkLanguage({vi: 'Rút', en: 'Withdraw'},language)}</Text>
+                <Text style={WalletStyle.buttonText}>{checkLanguage({vi: 'Rút', en: 'Withdraw'},language)}</Text>
             </View>
             </TouchableOpacity>
 
             <TouchableOpacity  
                 onPress={()=>navigation.navigate('Deposit', {
                 })}  
-                style={walletStyles.buttonBlock}>
-            <View style={walletStyles.button}>
-                <View style={walletStyles.maskOpacity}></View>
+                style={WalletStyle.buttonBlock}>
+            <View style={WalletStyle.button}>
+                <View style={WalletStyle.maskOpacity}></View>
                 <Image source={deposit}/>
-                <Text style={walletStyles.buttonText}>{checkLanguage({vi: 'Nạp', en: 'Deposit'},language)}</Text>
+                <Text style={WalletStyle.buttonText}>{checkLanguage({vi: 'Nạp', en: 'Deposit'},language)}</Text>
             </View>
             </TouchableOpacity>
 
             <TouchableOpacity 
                 onPress={()=>navigation.navigate('Staking')}
-                style={walletStyles.buttonBlock}>
-            <View style={walletStyles.button}>
-                <View style={walletStyles.maskOpacity}></View>
+                style={WalletStyle.buttonBlock}>
+            <View style={WalletStyle.button}>
+                <View style={WalletStyle.maskOpacity}></View>
                 <Image style={{marginTop: 5}} source={stake}/>
-                <Text style={walletStyles.buttonText}>Staking</Text>
+                <Text style={WalletStyle.buttonText}>Staking</Text>
             </View>
             </TouchableOpacity>
 
             <TouchableOpacity 
                 onPress={()=>navigation.navigate('Swap')}
-                style={walletStyles.buttonBlock}>
-            <View style={walletStyles.button}>
-                <View style={walletStyles.maskOpacity}></View>
+                style={WalletStyle.buttonBlock}>
+            <View style={WalletStyle.button}>
+                <View style={WalletStyle.maskOpacity}></View>
                 <Image style={{marginTop: 5}}  source={swap}/>
-                <Text style={walletStyles.buttonText}>Swap</Text>
+                <Text style={WalletStyle.buttonText}>Swap</Text>
             </View>
             </TouchableOpacity>
         </View>

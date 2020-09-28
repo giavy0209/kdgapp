@@ -1,4 +1,4 @@
-import React, { useState, useCallback , useEffect} from 'react';
+import React, { useState, useCallback , useEffect, useMemo} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,11 +7,15 @@ import {actChangeUserData,actChangeLoginStatus,asyncLogin, actChangeRouters} fro
 import { View, TextInput, Text,  TouchableOpacity ,Image, ActivityIndicator} from 'react-native';
 import {mainStyles as styles} from '../../styles/'
 import logo from '../../assets/images/logo.png'
-import { useRoute } from '@react-navigation/native'
+import { useIsFocused, useRoute } from '@react-navigation/native'
 import {transition, storage, checkLanguage} from '../../helper'
 import AsyncStorage from '@react-native-community/async-storage';
 import store from '../../store';
-export default function App({navigation}) {
+
+import bg from '../../assets/images/bg.jpg'
+import bg2 from '../../assets/images/bg2.jpg'
+
+export default function App({navigation, setBackGround}) {
     const dispatch = useDispatch()
     const [Error, setError] = useState(<Text></Text>);
     const [Email, setEmail] = useState('')
@@ -21,6 +25,7 @@ export default function App({navigation}) {
     const [EmailTextSize, setEmailTextSize] = useState(15)
 
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
 
     const [Password, setPassword] = useState('')
     const [PasswordValidate, setPasswordValidate] = useState(<Text></Text>)
@@ -37,6 +42,15 @@ export default function App({navigation}) {
     const route = useRoute();
     const { email_params } = route.params ?? {};
 
+    const isFocus = useIsFocused()
+
+    useMemo(()=>{
+        if(display === 1){
+            setBackGround(bg2)
+        }else{
+            setBackGround(bg)
+        }
+    },[isFocus])
 
     
     useEffect(() => {
@@ -140,7 +154,7 @@ export default function App({navigation}) {
             <Text style={styles.subTitle}>{checkLanguage({vi: 'Đăng nhập để tiếp tục', en: `Log in to continue`},language)}</Text>
             <View style={[styles.formBlock, {marginTop: 42}]}>
                 <View style={styles.inputBlock}>
-                    <Text style={[styles.placeHolderText,{bottom: EmailTextPosition , fontSize: EmailTextSize}, EmailFocus && {color: '#8a8c8e'}]}>Email</Text>
+                    <Text style={[styles.placeHolderText,{bottom: EmailTextPosition , fontSize: EmailTextSize}, EmailFocus && {color: language === 1 ? '#000000' :'#8a8c8e'}]}>Email</Text>
                     <TextInput 
                     autoCapitalize="none"
                     onFocus={()=>{Email !== '' || !EmailFocus && setEmailFocus(true)}} 
@@ -155,7 +169,7 @@ export default function App({navigation}) {
                    {EmailValidate ? EmailValidate : Error}
                 </View>
                 <View style={styles.inputBlock}>
-                    <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: '#8a8c8e'}]}>{checkLanguage({vi: 'Mật khẩu', en: `Password`},language)}</Text>
+                    <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: language === 1 ? '#000000' : '#8a8c8e'}]}>{checkLanguage({vi: 'Mật khẩu', en: `Password`},language)}</Text>
                     <TextInput 
                     onFocus={()=>{Password !== '' || !PasswordFocus && setPasswordFocus(true)}} 
                     onBlur={()=>{Password === '' && setPasswordFocus(false)}}

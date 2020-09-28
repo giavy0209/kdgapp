@@ -9,10 +9,13 @@ import { useNavigation } from '@react-navigation/native'
 import PopupInput from '../../Popup/PopupInput'
 import { useDispatch, useSelector } from 'react-redux'
 import { actChangeWalletName } from '../../../store/actions'
+
+import {  checkLanguage  } from '../../../helper'
 // import Dialog from "react-native-dialog"
 export default function App(){
     const navigation = useNavigation()
     const dispatch = useDispatch();
+    const language = useSelector(state => state.language)
     const walletname = useSelector(state => state.walletname)
     const [WalletNames, setWalletNames] = useState('Kingdome game 4.0')
     const [isModalVisibleInput, setModalVisibleInput] = useState(false);
@@ -25,10 +28,11 @@ export default function App(){
 
     return (
         <>
-            <Header2 title="Quản lý ví"/>
+            <Header2 title={checkLanguage({vi: 'Quản lý ví', en: `Wallet Manage`},language)}/>
             <View style={[mainStyles.container,]}>
             <PopupInput 
-                value={walletname ? walletname : 'Kingdom game 4.0'}
+                title={checkLanguage({vi: 'Tên ví', en: `Wallet name`},language)}
+                content={checkLanguage({vi: 'Nhập tên ví bạn muốn đổi', en: `Enter wallet name to change`},language)}
                 toCancel={() => setModalVisibleInput(false)} 
                 toSubmit={() => submitHandler(WalletNames)}
                 toChangeText={(value) => setWalletNames(value)} 
@@ -38,7 +42,7 @@ export default function App(){
                     onPress={() => setModalVisibleInput(true)}
                     style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative'}}>
                         <View style={accountStyle.maskOpacity} ></View>
-                        <Text style={{fontSize: 14, color: '#ddd9d8'}}>Tên ví</Text>
+                        <Text style={{fontSize: 14, color: '#ddd9d8'}}>{checkLanguage({vi: 'Tên ví', en: `Wallet name`},language)}</Text>
                         <View style={{flexDirection: 'row'}}>
                             <Text style={{fontSize: 14, color: '#ddd9d8', paddingRight: 10}}>{walletname ? walletname : 'Kingdom game 4.0'}</Text>
                             <FontAwesomeIcon color="#8a8c8e" icon={faAngleRight}/>
@@ -48,7 +52,7 @@ export default function App(){
                     onPress={()=>navigation.navigate('SelectCoin')}
                     style={{flexDirection: 'row', justifyContent: 'space-between',paddingVertical: 19, paddingHorizontal: 15, position: 'relative',borderTopColor: '#3b3f49', borderTopWidth: 1}}>
                         <View style={accountStyle.maskOpacity} ></View>
-                        <Text style={{fontSize: 14, color: '#ddd9d8'}}>Xuất Private key</Text>
+                        <Text style={{fontSize: 14, color: '#ddd9d8'}}>{checkLanguage({vi: 'Xuất Private Key', en: `Export Private Key`},language)}</Text>
                         <FontAwesomeIcon color="#8a8c8e" icon={faAngleRight}/>
                     </TouchableOpacity>
                 </View>

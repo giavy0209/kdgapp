@@ -5,22 +5,8 @@ import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
-const checkSelect = function (type,selected){
-    if(type === 0) return {title: 'QUỐC GIA', list: [
-        { id: 0, name: 'Việt Nam' },
-        { id: 1, name: 'Quốc gia khác' }
-    ]}
-    if(type === 1) return {title: 'LOẠI GIẤY TỜ', list: [
-        { id: 0, name: 'CMND/Bằng lái xe' },
-        { id: 2, name: 'Hộ chiếu' }
-    ]}
-    if(type === 2) return {title: 'GIỚI TÍNH', list: [     
-        { id: 0, name: 'Nam' },
-        { id: 1, name: 'Nữ' }
-    ]}
+import {  checkLanguage } from '../../../../../helper';
 
-    return null
-}
 
 export default function App({
     SelectType,
@@ -28,6 +14,27 @@ export default function App({
     SelectValue,
     setSelectValue
 }){
+
+    const language = useSelector(state => state.language)
+
+    const checkSelect =  (type,selected) => {
+        if(type === 0) return {title: checkLanguage({vi: 'QUỐC GIA', en: 'NATION'},language), list: [
+            { id: 0, name: checkLanguage({vi: 'Việt nam', en: 'Vietnam'},language) },
+            { id: 1, name: checkLanguage({vi: 'Quốc gia khác', en: 'Others'},language) }
+        ]}
+        if(type === 1) return {title: checkLanguage({vi: 'LOẠI GIẤY TỜ', en: 'DOCUMENT TYPE'},language), list: [
+            { id: 0, name: checkLanguage({vi: 'CMND/ Bằng lái xe', en: `ID card / Driver's license`},language) },
+            { id: 2, name: checkLanguage({vi: 'Hộ chiếu', en: `Passport`},language) }
+        ]}
+        if(type === 2) return {title: checkLanguage({vi: 'GIỚI TÍNH', en: `GENDER`},language), list: [     
+            { id: 0, name: checkLanguage({vi: 'Nam', en: `Male`},language) },
+            { id: 1, name: checkLanguage({vi: 'Nữ', en: `Female`},language) }
+        ]}
+    
+        return null
+    }
+    
+
     const screenHeight = useSelector(state=>state.height)
     const screenWidth = useSelector(state=>state.width)
 
@@ -38,6 +45,9 @@ export default function App({
         setSelectType(null)
         setSelectValue(select)
     },[Select,setSelectType])
+
+
+
     return(
         <>
             <View
