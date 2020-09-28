@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {View, Text, Image, TextInput, FlatList, ScrollView, SafeAreaView} from 'react-native'
 import { mainStyles, withdrawStyle } from '../../../styles'
+import { walletStylesLight, withdrawStyleLight } from '../../../styles/light'
 import {Header2} from '../../Header'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
@@ -31,7 +32,9 @@ export default function App({setOutScrollViewTop}){
     const [Width , setWidth] = useState(0);
     const dispatch = useDispatch();
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
 
+    
     const list = [
         {address: coinNumbers.kdg.address , exchange_rate: coinNumbers.kdg.exchange_rate, balance: coinNumbers.kdg.balance, text: 'KDG', icon: kdgicon, description: 'Kingdom Game 4.0', key: '1'},
         {address: coinNumbers.eth.address , exchange_rate: coinNumbers.eth.exchange_rate, balance: coinNumbers.eth.balance, text: 'ETH', icon: ethicon, description: 'Ethereum', key: '2'},
@@ -53,6 +56,11 @@ export default function App({setOutScrollViewTop}){
     },[])
 
 
+// -------------------style------------------------------
+
+var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
+
+// ------------------------------------------------------
 
     return (
         
@@ -62,7 +70,7 @@ export default function App({setOutScrollViewTop}){
 
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
         <View style={{padding: (windowWidth*windowHeight)/29376}}>
-            <View style={withdrawStyle.searchBoxContainer}>
+            <View style={WithdrawStyle.searchBoxContainer}>
                 <View style={{justifyContent: 'center', paddingRight: 10}}>
                     <FontAwesomeIcon color="#8a8c8e" icon={faSearch}/>
                 </View>
@@ -73,21 +81,21 @@ export default function App({setOutScrollViewTop}){
                 onBlur={()=>{}} 
                 onChangeText={value=>setSearchVal(value)} 
                 value={searchVal} 
-                style={withdrawStyle.searchBox} />
+                style={WithdrawStyle.searchBox} />
             </View>
             
 
             {
             searchVal ? (
             <View>
-                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>{checkLanguage({vi: 'Kết quả', en: `Result`},language)}</Text>
+                <Text style={{color: display === 1 ? '#8a8c8e' : 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>{checkLanguage({vi: 'Kết quả', en: `Result`},language)}</Text>
                 <FlatList
                 data={list}
                 renderItem={({item}) => 
                 {
                     if(((item.text).toLowerCase()).startsWith(searchVal.toLowerCase()) || ((item.description).toLowerCase()).startsWith(searchVal.toLowerCase())){
                         return (
-                            <View style={withdrawStyle.listContainer}>
+                            <View style={WithdrawStyle.listContainer}>
                                 <TouchableOpacity 
                                 onPress={() => 
                                 navigation.navigate('DepositPage2', {
@@ -100,12 +108,12 @@ export default function App({setOutScrollViewTop}){
                                         <Image source={item.icon} style={{width: 35, height: 35}} />
                                         <View style={{width: '93%',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: (windowWidth*windowHeight)/35251}}>
                                             <View>
-                                                <Text style={withdrawStyle.textList}>{item.text}</Text>
-                                                <Text style={withdrawStyle.description}>{item.description}</Text>
+                                                <Text style={WithdrawStyle.textList}>{item.text}</Text>
+                                                <Text style={WithdrawStyle.description}>{item.description}</Text>
                                             </View>
                                             <View style={{paddingRight: (windowWidth*windowHeight)/29376, alignItems: 'flex-end'}}>
-                                                <Text style={withdrawStyle.exchangeRate}>{item.balance}</Text>
-                                                <Text style={withdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
+                                                <Text style={WithdrawStyle.exchangeRate}>{item.balance}</Text>
+                                                <Text style={WithdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
                                             </View>
                                         </View>
                                     </View>   
@@ -123,7 +131,7 @@ export default function App({setOutScrollViewTop}){
                 <FlatList
                 data={list}
                 renderItem={({item}) => (
-                    <View style={withdrawStyle.listContainer}>
+                    <View style={WithdrawStyle.listContainer}>
                         <TouchableOpacity 
                         onPress={() => 
                         navigation.navigate('DepositPage2', {
@@ -136,12 +144,12 @@ export default function App({setOutScrollViewTop}){
                                 <Image source={item.icon} style={{width: 35, height: 35}} />
                                 <View style={{width: '93%',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: (windowWidth*windowHeight)/35251}}>
                                     <View>
-                                        <Text style={withdrawStyle.textList}>{item.text}</Text>
-                                        <Text style={withdrawStyle.description}>{item.description}</Text>
+                                        <Text style={WithdrawStyle.textList}>{item.text}</Text>
+                                        <Text style={WithdrawStyle.description}>{item.description}</Text>
                                     </View>
                                     <View style={{paddingRight: (windowWidth*windowHeight)/29376, alignItems: 'flex-end'}}>
-                                        <Text style={withdrawStyle.exchangeRate}>{item.balance}</Text>
-                                        <Text style={withdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
+                                        <Text style={WithdrawStyle.exchangeRate}>{item.balance}</Text>
+                                        <Text style={WithdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
                                     </View>
                                 </View>
                             </View>   

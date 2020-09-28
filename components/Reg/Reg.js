@@ -146,7 +146,7 @@ export default function App({ navigation, setBackGround }) {
     }
     const validatePassword = (val) => {
         setPassword(val);
-        var passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&.,]{8,}$/;
+        var passwordFormat = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})/;
         if(val.match(passwordFormat)){
             setPasswordValidate(null)
         }else{

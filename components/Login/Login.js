@@ -99,7 +99,7 @@ export default function App({navigation, setBackGround}) {
     const validatePassword = (val) => {
         setPassword(val);
         setError(null);
-        var passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&.,]{8,}$/;
+        var passwordFormat = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})/;
         if(val.match(passwordFormat)){
             setPasswordValidate(null)
         }else{
@@ -154,7 +154,7 @@ export default function App({navigation, setBackGround}) {
             <Text style={styles.subTitle}>{checkLanguage({vi: 'Đăng nhập để tiếp tục', en: `Log in to continue`},language)}</Text>
             <View style={[styles.formBlock, {marginTop: 42}]}>
                 <View style={styles.inputBlock}>
-                    <Text style={[styles.placeHolderText,{bottom: EmailTextPosition , fontSize: EmailTextSize}, EmailFocus && {color: language === 1 ? '#000000' :'#8a8c8e'}]}>Email</Text>
+                    <Text style={[styles.placeHolderText,{bottom: EmailTextPosition , fontSize: EmailTextSize}, EmailFocus && {color: language === 1 ? '#8a8c8e' :'#8a8c8e'}]}>Email</Text>
                     <TextInput 
                     autoCapitalize="none"
                     onFocus={()=>{Email !== '' || !EmailFocus && setEmailFocus(true)}} 
@@ -169,7 +169,7 @@ export default function App({navigation, setBackGround}) {
                    {EmailValidate ? EmailValidate : Error}
                 </View>
                 <View style={styles.inputBlock}>
-                    <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: language === 1 ? '#000000' : '#8a8c8e'}]}>{checkLanguage({vi: 'Mật khẩu', en: `Password`},language)}</Text>
+                    <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: language === 1 ? '#8a8c8e' : '#8a8c8e'}]}>{checkLanguage({vi: 'Mật khẩu', en: `Password`},language)}</Text>
                     <TextInput 
                     onFocus={()=>{Password !== '' || !PasswordFocus && setPasswordFocus(true)}} 
                     onBlur={()=>{Password === '' && setPasswordFocus(false)}}

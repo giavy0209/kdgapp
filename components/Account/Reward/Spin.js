@@ -153,7 +153,7 @@ export default function App ({setBackGround}) {
     const webview = useRef()
     const navigation = useNavigation()
     const dispatch = useDispatch()
-    useMemo(()=>{
+    useEffect(()=>{
         setBackGround(bg)
     },[])
 
@@ -188,7 +188,10 @@ export default function App ({setBackGround}) {
 
     const inject = useCallback(async ()=>{
         var spinInfo = await getSpinRate()
-        webview.current.injectJavaScript(`window.spinInfo = ${JSON.stringify(spinInfo)}`)
+        webview.current.injectJavaScript(`
+        window.spinInfo = ${JSON.stringify(spinInfo)};
+        window.language = ${JSON.stringify(language)}
+        `)
     },[])
 
     const injectValue = useCallback(async ()=>{

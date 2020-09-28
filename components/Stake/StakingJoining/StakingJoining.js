@@ -252,7 +252,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                                          ['rgba(212, 175, 55, 0.4)', 'rgba(237, 218, 139, 0.4)', 'rgba(167, 123, 0, 0.4)', 'rgba(231, 190, 34, 0.4)', 'rgba(232, 191, 35, 0.4)']}
                 style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20}}>
                     {  Loading === true ?   <ActivityIndicator size="small" color="#000" />
-                    :<Text style={{color: '#111b2d', fontSize: 16, opacity: ToggleCheckBox ? 1 : 0.4}}>THAM GIA NGAY</Text>}
+                    :<Text style={{color: '#111b2d', fontSize: 16, opacity: ToggleCheckBox ? 1 : 0.4}}>{checkLanguage({vi: 'THAM GIA NGAY', en: 'JOIN NOW'},language)}</Text>}
             </LinearGradient>
         </View>
     </TouchableOpacity>

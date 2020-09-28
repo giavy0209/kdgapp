@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {View, Text, Image, TextInput, FlatList, ScrollView, SafeAreaView, Alert} from 'react-native'
 import { mainStyles, withdrawStyle } from '../../../styles/'
+import { withdrawStyleLight } from '../../../styles/light'
 import {Header2} from '../../Header'
 import logo from '../../../assets/images/logo.png'
 
@@ -35,7 +36,8 @@ export default function App({setOutScrollViewTop}){
     const language = useSelector(state => state.language)
     const coinNumbers = useSelector(state => state.coinNumbers)
     const route = useRoute();
-    
+
+    const display = useSelector(state => state.display)
 
     const [searchVal, setSearchVal] = useState();
     const navigation = useNavigation()
@@ -72,6 +74,13 @@ export default function App({setOutScrollViewTop}){
     //     }
     //   },[])
 
+
+    // -------------------style------------------------------
+
+var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
+
+// ------------------------------------------------------
+
     return (
         
         <>
@@ -80,7 +89,7 @@ export default function App({setOutScrollViewTop}){
 
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
         <View style={{padding: (windowWidth*windowHeight)/29376}}>
-            <View style={withdrawStyle.searchBoxContainer}>
+            <View style={WithdrawStyle.searchBoxContainer}>
                 <View style={{justifyContent: 'center', paddingRight: 10}}>
                     <FontAwesomeIcon color="#8a8c8e" icon={faSearch}/>
                 </View>
@@ -91,7 +100,7 @@ export default function App({setOutScrollViewTop}){
                 onBlur={()=>{}} 
                 onChangeText={value=>setSearchVal(value)} 
                 value={searchVal} 
-                style={[withdrawStyle.searchBox]} />
+                style={[WithdrawStyle.searchBox]} />
             </View>
             
             {
@@ -104,7 +113,7 @@ export default function App({setOutScrollViewTop}){
                 {
                     if(((item.text).toLowerCase()).startsWith(searchVal.toLowerCase()) || ((item.description).toLowerCase()).startsWith(searchVal.toLowerCase())){
                         return (
-                            <View style={withdrawStyle.listContainer}>
+                            <View style={WithdrawStyle.listContainer}>
                                 <TouchableOpacity 
                                onPress={() => 
                                 navigation.navigate('WithdrawPage2', {
@@ -116,12 +125,12 @@ export default function App({setOutScrollViewTop}){
                                         <Image source={item.icon} style={{width: 35, height: 35}} />
                                         <View style={{width: '93%',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: (windowWidth*windowHeight)/35251}}>
                                             <View>
-                                                <Text style={withdrawStyle.textList}>{item.text}</Text>
-                                                <Text style={withdrawStyle.description}>{item.description}</Text>
+                                                <Text style={WithdrawStyle.textList}>{item.text}</Text>
+                                                <Text style={WithdrawStyle.description}>{item.description}</Text>
                                             </View>
                                             <View style={{paddingRight: (windowWidth*windowHeight)/29376, alignItems: 'flex-end'}}>
-                                                <Text style={withdrawStyle.exchangeRate}>{item.balance}</Text>
-                                                <Text style={withdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
+                                                <Text style={WithdrawStyle.exchangeRate}>{item.balance}</Text>
+                                                <Text style={WithdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
                                             </View>
                                         </View>
                                     </View>   
@@ -139,7 +148,7 @@ export default function App({setOutScrollViewTop}){
                     <FlatList
                     data={list}
                     renderItem={({item}) => (
-                        <View style={withdrawStyle.listContainer}>
+                        <View style={WithdrawStyle.listContainer}>
                             <TouchableOpacity 
                             onPress={() => 
                                 navigation.navigate('WithdrawPage2', {
@@ -150,12 +159,12 @@ export default function App({setOutScrollViewTop}){
                                     <Image source={item.icon} style={{width: 35, height: 35}} />
                                     <View style={{width: '93%',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: (windowWidth*windowHeight)/35251}}>
                                         <View>
-                                            <Text style={withdrawStyle.textList}>{item.text}</Text>
-                                            <Text style={withdrawStyle.description}>{item.description}</Text>
+                                            <Text style={WithdrawStyle.textList}>{item.text}</Text>
+                                            <Text style={WithdrawStyle.description}>{item.description}</Text>
                                         </View>
                                         <View style={{paddingRight: (windowWidth*windowHeight)/29376, alignItems: 'flex-end'}}>
-                                            <Text style={withdrawStyle.exchangeRate}>{item.balance}</Text>
-                                            <Text style={withdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
+                                            <Text style={WithdrawStyle.exchangeRate}>{item.balance}</Text>
+                                            <Text style={WithdrawStyle.nearExchangeRate}>≈ ${item.exchange_rate.usd}</Text>
                                         </View>
                                     </View>
                                 </View>   

@@ -153,6 +153,7 @@ export default html = `
             }
 
             draw () {
+                var language = window.language
                 for (let index = 0; index < window.spinInfo.length; index++) {
                     const element = window.spinInfo[index];
                     this.game.ctx.save();
@@ -160,7 +161,7 @@ export default html = `
                     this.game.ctx.fillStyle = element.color
                     this.game.ctx.translate(this.beginX  , this.beginY )
                     this.game.ctx.rotate(-Math.PI / 2 + this.angle * index + (this.game.spinDeg * Math.PI / 180));
-                    this.game.ctx.fillText(element.vi , 50, 5);
+                    this.game.ctx.fillText(language === 0 ? element.en : element.vi , 50, 5);
                     this.game.ctx.restore();
                 }
             }

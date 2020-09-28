@@ -17,20 +17,19 @@ export default function Maincontainer({Component,route ,reqLogin, ...restProps})
     const [OutScrollViewTop, setOutScrollViewTop] = useState(null)
     const [BackGround, setBackGround] = useState(bg)
 
-    useEffect(() => {
+    useMemo(() => {
       if(display === 1){
         setBackGround(bg3)
       }else{
         setBackGround(bg)
       }
-
     }, [display])
 
     return (
       <ImageBackground source={BackGround} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
         {OutScrollViewTop && OutScrollViewTop}
         <ScrollView 
-          style={{ paddingBottom: bottom}}>
+        >
           <Component setOutScrollViewTop={setOutScrollViewTop} setOutScrollView={setOutScrollView} setBackGround={setBackGround} {...restProps}/>
         </ScrollView>
         {OutScrollView && OutScrollView}

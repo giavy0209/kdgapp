@@ -1,6 +1,7 @@
 import React, { useState, useEffect , useCallback} from 'react'
 import {View, Text, Image, TextInput, FlatList, ScrollView, Alert, BackHandler, ActivityIndicator} from 'react-native'
 import { mainStyles, withdrawStyle, scannerStyles } from '../../../styles/'
+import { withdrawStyleLight } from '../../../styles/light'
 import {HeaderwithButton} from '../../Header'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -40,6 +41,7 @@ export default function App({setOutScrollView}){
     const [Width , setWidth] = useState(0);
 
     const [Loading, setLoading] = useState(false);
+    const display = useSelector(state => state.display)
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -144,6 +146,13 @@ export default function App({setOutScrollView}){
       },[])
 
 
+      // -------------------style------------------------------
+
+var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
+
+// ------------------------------------------------------
+
+
     return (
         <>
 {!IsScannerOpen && 
@@ -153,13 +162,13 @@ export default function App({setOutScrollView}){
         title={checkLanguage({vi: 'Rút ', en: 'Withdraw '},language) +  coinName}/>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} > 
 
-        <View style={withdrawStyle.numberSendContainer}>
+        <View style={WithdrawStyle.numberSendContainer}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <View style={{flexDirection: 'row'}}>
                         <Image source={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : coinName === 'MCH' ? mchicon : btcicon} style={{width: windowWidth*windowHeight/9000, height: windowWidth*windowHeight/9000}} />
                         <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
-                            <Text style={withdrawStyle.coinName}>{coinName}</Text>
-                            <Text style={withdrawStyle.balance}>{checkLanguage({vi: 'Số dư: ', en: 'Balance: '},language)  + coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
+                            <Text style={WithdrawStyle.coinName}>{coinName}</Text>
+                            <Text style={WithdrawStyle.balance}>{checkLanguage({vi: 'Số dư: ', en: 'Balance: '},language)  + coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
                         </View>                                   
                 </View>
 
@@ -194,11 +203,11 @@ export default function App({setOutScrollView}){
             
         </View>
 
-        <View style={withdrawStyle.numberSendContainer}>
+        <View style={WithdrawStyle.numberSendContainer}>
             <View style={{width: '100%'}}>
                 <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Số tiền rút', en: 'Withdrawal amount'},language)}</Text>   
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <View style={withdrawStyle.inputNumContainer}>
+                    <View style={WithdrawStyle.inputNumContainer}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
                             <TextInput
                             keyboardType="number-pad"
@@ -207,14 +216,14 @@ export default function App({setOutScrollView}){
                             onBlur={()=>{}} 
                             onChangeText={value=>inputNumberHandler(value)} 
                             value={ValueSend}
-                            style={withdrawStyle.inputNum} />
+                            style={WithdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
                             <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>{coinName}</Text>
                         </View>
                     </View> 
-                    <Text style={withdrawStyle.nearSymbol}>≈</Text>
-                    <View style={withdrawStyle.inputNumContainer}>
+                    <Text style={WithdrawStyle.nearSymbol}>≈</Text>
+                    <View style={WithdrawStyle.inputNumContainer}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
                             <TextInput
                                 placeholderTextColor = "#8a8c8e"
@@ -223,7 +232,7 @@ export default function App({setOutScrollView}){
                                 value={(ValueSend*CoinPriceExchange[typeCurrency === 1 ? 'vnd' : typeCurrency === 2 ? 'cny' : 'usd' ]).toString() === 'NaN' ? '0' : 
                                             (ValueSend*CoinPriceExchange[typeCurrency === 1 ? 'vnd' : typeCurrency === 2 ? 'cny' : 'usd' ]).toString()
                                       }
-                                style={withdrawStyle.inputNum} />
+                                style={WithdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
                             <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>{typeCurrency === 1 ? 'VND' : typeCurrency === 2 ? 'CNY' : 'USD' }</Text>
@@ -233,11 +242,11 @@ export default function App({setOutScrollView}){
             </View>
         </View>
 
-        <View style={withdrawStyle.numberSendContainer}>
+        <View style={WithdrawStyle.numberSendContainer}>
             <View>
                 <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Rút về', en: 'Withdraw to'},language)}</Text>   
                 <View style={{flexDirection: 'row'}}>
-                    <View style={withdrawStyle.inputNumContainer2}>
+                    <View style={WithdrawStyle.inputNumContainer2}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
                             <TextInput
                             placeholder={checkLanguage({vi: 'Nhập địa chỉ nhận tiền', en: 'Enter receiving address'},language)}
@@ -246,18 +255,18 @@ export default function App({setOutScrollView}){
                             onBlur={()=>{}} 
                             onChangeText={value=>setToAddress(value)} 
                             value={ToAddress}
-                            style={withdrawStyle.inputNum} />
+                            style={WithdrawStyle.inputNum} />
                         </View>
                     </View> 
                 </View>      
             </View>
         </View>
 
-        <View style={withdrawStyle.numberSendContainer}>
+        <View style={WithdrawStyle.numberSendContainer}>
             <View>
                 <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Mã xác thực 2FA', en: '2FA code'},language)}</Text>   
                 <View style={{flexDirection: 'row'}}>
-                    <View style={withdrawStyle.inputNumContainer2}>
+                    <View style={WithdrawStyle.inputNumContainer2}>
                         <View style={{padding: (windowWidth*windowHeight)/23040}}>
                             <TextInput
                             keyboardType='decimal-pad'
@@ -267,7 +276,7 @@ export default function App({setOutScrollView}){
                             onBlur={()=>{}} 
                             onChangeText={value=>setToken(value)} 
                             value={Token}
-                            style={withdrawStyle.inputNum} />
+                            style={WithdrawStyle.inputNum} />
                         </View>
                     </View> 
                 </View>      
