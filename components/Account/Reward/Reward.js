@@ -15,6 +15,7 @@ import checking from '../../../assets/images/checking.png'
 import spin from '../../../assets/images/spin.png'
 import ref from '../../../assets/images/ref.png'
 import calAPI from '../../../axios'
+import { asyncGetUserbyID } from '../../../store/actions'
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
     const language = useSelector(state => state.language)
@@ -74,7 +75,7 @@ export default function App({setOutScrollViewTop}){
         if(res.status === 1){
             message.success(checkLanguage({vi: 'Chúc mừng bạn nhận được 2 KDG Reward', en: 'You receive 2 KDG Reward'},language))
             getTransaction()
-            // dispatch(asyncGetUserData())
+            dispatch(asyncGetUserbyID(userid))
         }
         if(res.status === 0 ){
             message.error(checkLanguage({vi: 'Bạn đã nhận thưởng hôm nay rồi', en: 'Already got reward'},language))
@@ -93,18 +94,21 @@ export default function App({setOutScrollViewTop}){
          }, 1000);
     },[isModalVisible])
 
-    
+    const kdg_reward = useSelector(state => state.userInfo.kdg_reward)
     return (
         <>
             <Popup type={ModalStyle} title={ModalMess} isModalVisible={isModalVisible}/>
             <View 
             style={[mainStyles.container]}>
                 <View style={styles.blockImgText}>
+                    <View style={styles.blockText}>
+                        <Text style={styles.text}>{checkLanguage({vi : 'NHẬN NGAY KDG REWARD khi mời bạn bè tham gia', en : 'RECEIVE KDG REWARD IMMEDIATELY after invite friends joining successfully'}, language)}</Text>
+                    </View>
                     <View style={styles.blockImg}>
                         <Image style={styles.img} source={checkLanguage({vi : RewardBannervi , en: RewardBanneren}, language)} />
                     </View>
-                    <View style={styles.blockText}>
-                        <Text style={styles.text}>{checkLanguage({vi : 'NHẬN NGAY KDG REWARD khi mời bạn bè tham gia', en : 'RECEIVE KDG REWARD IMMEDIATELY after invite friends joining successfully'}, language)}</Text>
+                    <View>
+                        <Text style={styles.text}>KDG Reward : {kdg_reward ? kdg_reward : 0} </Text>
                     </View>
                 </View>
                 <View
@@ -150,7 +154,7 @@ export default function App({setOutScrollViewTop}){
                         >
                             <Image style source={ref}/>
                         </LinearGradient>
-                        <Text style={styles.textButtom}> {checkLanguage({vi : 'Giới thiệu', en : 'Referer'}, language)} </Text>
+                        <Text style={styles.textButtom}> {checkLanguage({vi : 'Giới thiệu', en : 'Referral'}, language)} </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -165,8 +169,9 @@ const styles = StyleSheet.create({
         justifyContent : 'center',
         alignItems : 'center',
         marginTop : 9,
-        paddingHorizontal : 9,
-        position : 'relative'
+        marginHorizontal : 9,
+        position : 'relative',
+        backgroundColor : '#283349'
     },
     blockImg : {
         width: '100%',
@@ -176,16 +181,15 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     blockText : {
-        position : 'absolute',
-        bottom :12, 
-        left :0,
         width: '100%',
         paddingHorizontal : 40,
+        
     },
     text : {
         color: '#8a8c8e',
-        fontSize : 14,
+        fontSize : 20,
         textAlign : 'center',
+        color : '#fff',
     },
     groupButton: {
         paddingTop : 20,

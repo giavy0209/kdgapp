@@ -13,24 +13,23 @@ export default function App({setOutScrollViewTop}){
 
     const { RewardData } = route.params
 
-    console.log(RewardData);
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title="Phần thưởng của tôi"/>)
     },[])
-    
+    const language = useSelector(state => state.language)
     return (
         <>
             <View style={[mainStyles.container,]}>
                 <View style={{paddingTop: 20}}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{backgroundColor: 'rgba(28,37,54,0.8)', width: '28%' , paddingVertical: 15, alignItems: 'center'}}>
-                            <Text style={{color: '#fac800'}}>Thời gian</Text>
+                            <Text style={{color: '#fac800'}}>{checkLanguage({vi: 'Thời gian', en: 'Date'},language)}</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(28,37,54,0.8)', width: '44%' , paddingVertical: 15, borderLeftColor: 'rgba(255,255,255,0.3)', borderLeftWidth: 1, alignItems: 'center'}}>
                             <Text style={{color: '#fac800'}}>Email</Text>
                         </View>
                         <View style={{backgroundColor: 'rgba(28,37,54,0.8)', width: '28%' , paddingVertical: 15, borderLeftColor: 'rgba(255,255,255,0.3)', borderLeftWidth: 1, alignItems: 'center'}}>
-                            <Text style={{color: '#fac800'}}>Tình Trạng</Text>
+                            <Text style={{color: '#fac800'}}>{checkLanguage({vi: 'Tình Trạng', en: 'Status'},language)}</Text>
                         </View>
                     </View>
                 

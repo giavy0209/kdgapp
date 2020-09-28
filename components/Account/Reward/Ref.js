@@ -4,10 +4,10 @@ import { View, Text, TouchableOpacity, Image, Clipboard, Share} from 'react-nati
 import {Header2} from '../../Header'
 import { mainStyles,accountStyle } from '../../../styles'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCopy, faLink, faShareAlt } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight, faCopy, faLink, faShareAlt } from '@fortawesome/free-solid-svg-icons'
 import { useNavigation } from '@react-navigation/native'
 import FollowList from '../FollowList'
-import { storage } from '../../../helper'
+import { checkLanguage, storage } from '../../../helper'
 import { asyncGetTransaction, asyncGetUserbyID } from '../../../store/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import Popup from '../../Popup/Popup'
@@ -22,6 +22,7 @@ export default function App({setOutScrollViewTop}){
     const [RewardData, setRewardData] = useState([]);
     const dispatch = useDispatch();
     const [isModalVisible, setModalVisible] = useState(false);
+    const language = useSelector(state => state.language)
     useEffect(() => {
         async function getUserInfo() {
           var userinfo = await storage('_id').getItem();
@@ -92,21 +93,9 @@ export default function App({setOutScrollViewTop}){
         <>
             <View style={[mainStyles.container,]}>
             <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
-                <View style={{paddingBottom: 10}}>
-                    <Image
-                        style={{width: '100%'}}
-                        source={require('../../../assets/images/headerReward.png')}
-                    />
-                    <View style={{position: 'absolute', right: 15, top: 30}}>
-                        <View style={{alignItems: 'center'}}>
-                            <Text style={{fontSize: 17, textAlign: 'center'}}>{`NHẬN NGAY GẤP ĐÔI \n PHẦN QUÀ`}</Text>
-                            <Text style={{paddingTop: 5, fontSize: 14, textAlign: 'center', color: '#fac800', fontWeight: 'bold'}}>Khi Mời Bạn Bè Tham Gia</Text>
-                        </View>
-                    </View>
-                </View>
                 <View style={{backgroundColor: 'rgba(40, 51, 73, 0.4)', width: '100%', padding: 20}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                        <Text style={{color: '#fff', fontSize: 16}}>Mã Liên Kết</Text>
+                        <Text style={{color: '#fff', fontSize: 16}}>{checkLanguage({vi : 'Mã Liên Kết', en : 'Share link'},language)}</Text>
                         <View style={{position: 'absolute', right: 0}}>
                             <TouchableOpacity
                                 onPress={() => {navigation.navigate('Rule')}}
@@ -117,18 +106,14 @@ export default function App({setOutScrollViewTop}){
                     </View>
                     <View style={{paddingTop: 20}}>
                       <View style={{flexDirection: 'row', paddingBottom: 15}}>
-                          <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>Tổng số KDG Reward:</Text>
-                          <Text style={{paddingLeft: 10, fontSize: 15, color: '#fac800'}}>{KDGReward} KDG Reward</Text>
-                      </View>
-                      <View style={{flexDirection: 'row', paddingBottom: 15}}>
-                          <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>Link giới thiệu:</Text>
+                          <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>{checkLanguage({vi : 'Link giới thiệu:', en : 'Referral link:'},language)}</Text>
                           <TouchableOpacity onPress={()=>copyHandler1(RefCode)} style={{flexDirection: 'row'}}>
                             <Text style={{paddingHorizontal: 10, fontSize: 15, color: '#0687d7', paddingLeft: 60}}>{`https://www.kingdomgame.\norg/reg/${RefCode}`}</Text>
                             <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                           </TouchableOpacity>
                       </View>
                       <View style={{flexDirection: 'row', paddingBottom: 15}}>
-                          <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>Mã giới thiệu:</Text>
+                          <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>{checkLanguage({vi : 'Mã giới thiệu:', en : 'Referral Code:'},language)}</Text>
                           <TouchableOpacity onPress={()=>copyHandler2(RefCode)} style={{flexDirection: 'row'}}>
                             <Text style={{paddingHorizontal: 10, fontSize: 15, color: '#fff', paddingLeft: 70}}>{RefCode}</Text>
                             <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
@@ -141,7 +126,7 @@ export default function App({setOutScrollViewTop}){
                                 colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
                                 style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20, flexDirection: 'row', justifyContent: 'center'}}>
                                 <FontAwesomeIcon size={15} color="rgba(0,0,0,0.8)" icon={faShareAlt}/>
-                                <Text style={{color: '#111b2d', fontSize: 16, paddingLeft: 10}}>Chia sẻ</Text>
+                                <Text style={{color: '#111b2d', fontSize: 16, paddingLeft: 10}}> {checkLanguage({vi : 'Chia sẻ', en : 'Share'},language)} </Text>
                                 </LinearGradient>
                             </View>
                        </TouchableOpacity>
@@ -153,14 +138,15 @@ export default function App({setOutScrollViewTop}){
                         onPress={() => {navigation.navigate('MyReward', {
                             RewardData: RewardData
                         })}}
-                        style={{alignItems: 'center'}}
+                        style={{alignItems: 'center', flexDirection : 'row', justifyContent : 'center'}}
                     >
-                        <Text style={{color: '#fff'}}>Phần Thưởng Của Tôi</Text>
+                        <Text style={{color: '#fff'}}>{checkLanguage({vi : 'Phần Thưởng Của Tôi' , en : 'My Reward'},language)} </Text>
+                        <FontAwesomeIcon color='#fff' icon={faChevronRight} />
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 30}}>
                         <View style={{backgroundColor: '#121827', borderRadius: 10, width: '90%', padding: 5}}>
                             <View style={{alignItems: 'center'}}>
-                                <Text style={{textAlign: 'center', color: 'rgba(255,255,255,0.5)'}}>Số người mới KYC thành công</Text>
+                                <Text style={{textAlign: 'center', color: 'rgba(255,255,255,0.5)'}}> {checkLanguage({vi : 'Số người KYC thành công' , en : 'Number of successful KYC'},language)} </Text>
                                     <Text style={{fontWeight: 'bold', fontSize: 16, color: '#fac800', paddingTop: 5}}>{RewardData ? RewardData.length : 0}</Text>
                             </View>
                         </View>
