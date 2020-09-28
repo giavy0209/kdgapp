@@ -46,34 +46,36 @@ export default function App(){
             setPinBar2Focus(false)
         }
     },[Pin2])
+    const language = useSelector(state => state.language)
 
     const handleSubmit = useCallback(()=>{
         if(OldPin !== PIN){
-            Alert.alert('Unlock PIN', 'Mã PIN cũ không đúng')
+            Alert.alert('Unlock PIN', checkLanguage({vi: 'Mã PIN cũ không đúng', en: 'Incorrect PIN code'},language))
             return null
         }
 
         if(Pin1.length !== 6){
-            Alert.alert('Unlock PIN', 'Mã PIN phải đủ 6 chữ số')
+            Alert.alert('Unlock PIN', checkLanguage({vi: 'Mã PIN phải đủ 6 chữ số', en: 'PIN code must be 6 numbers'},language))
             return null
         }
 
         if(Pin1 === Pin2){
             dispatch(asyncSetPin(Pin1))
             .then(()=>{
-                Alert.alert('Unlock PIN', 'Mã PIN được cài đặt thành công')
+                Alert.alert('Unlock PIN', checkLanguage({vi:'Mã PIN được cài đặt thành công', en: 'PIN code setting successfully'},language))
                 navigation.goBack()
             })
         }else{
-            Alert.alert('Unlock PIN', 'Nhập lại mã pin không chính xác')
+            Alert.alert('Unlock PIN', checkLanguage({vi: 'Nhập lại mã pin không chính xác', en: 'PIN code is not match'},language))
         }
     },[Pin1,Pin2, OldPin,PIN])
 
     return(
         <>
-        <Header2 title="Đổi mã PIN"/>
+        
+        <Header2 title={checkLanguage({vi: "Đổi mã PIN", en: 'Change PIN'},language)}/>
         <View style={[mainStyles.container,{paddingHorizontal: 16, alignItems: 'center'}]}>
-            <Text style={{marginTop:25,color: '#ddd9d8', fontSize: 13,textAlign:'center'}}>Nhập vào mã PIN cũ</Text>
+            <Text style={{marginTop:25,color: '#ddd9d8', fontSize: 13,textAlign:'center'}}>{checkLanguage({vi: 'Nhập vào mã PIN cũ', en: 'Enter current PIN'},language)}</Text>
 
             <TouchableOpacity disabled={OldPinBarFocus} activeOpacity={false} onPress={()=>{OldPinBar.focus(); setOldPinBarFocus(true)}} style={{position:'relative',backgroundColor: '#1d2536', height: 55, flex: 1, justifyContent: 'center', alignItems: 'center',width: '100%', borderRadius: 40, marginTop:32}}>
                 <Image style={{position: 'absolute', left: 19, top: 22}} source={Lock}/>
@@ -85,7 +87,7 @@ export default function App(){
                 style={{position : 'absolute', right: 19, padding: 10}}  >
                     <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
                 </TouchableOpacity>
-                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: OldPinBarFocus ? 0 : 1}}>Nhập mã PIN cũ</Text>
+                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: OldPinBarFocus ? 0 : 1}}>{checkLanguage({vi: 'Nhập mã PIN cũ', en: 'Enter current PIN'},language)}</Text>
 
                 <View 
                 style={{
@@ -132,7 +134,7 @@ export default function App(){
                 style={{position : 'absolute', right: 19, padding: 10}}  >
                     <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
                 </TouchableOpacity>
-                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar1Focus ? 0 : 1}}>Nhập mã PIN mới</Text>
+                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar1Focus ? 0 : 1}}>{checkLanguage({vi: 'Nhập mã PIN mới', en: 'Enter new PIN'},language)}</Text>
 
                 <View 
                 style={{
@@ -179,7 +181,7 @@ export default function App(){
                 style={{position : 'absolute', right: 19, padding: 10}}  >
                     <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
                 </TouchableOpacity>
-                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar2Focus ? 0 : 1}}>Nhập lại mã PIN mới</Text>
+                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar2Focus ? 0 : 1}}>{checkLanguage({vi: 'Nhập lại mã PIN mới', en: 'Confirm new PIN'},language)}</Text>
 
                 <View 
                 style={{
@@ -225,7 +227,7 @@ export default function App(){
                 colors={['#a47b00','#edda8b', '#d6b039', '#edda8b', '#a47b00']}
                 style={{width: '100%',height: 47, justifyContent: 'center', alignItems: 'center'}}
                 >
-                    <Text style={{color: '#111b2d', fontSize: 14}}>XÁC NHẬN</Text>
+                    <Text style={{color: '#111b2d', fontSize: 14}}>{checkLanguage({vi: 'XÁC NHẬN', en: 'CONFIRM'},language)}</Text>
                 </LinearGradient>
             </TouchableOpacity>
         </View>

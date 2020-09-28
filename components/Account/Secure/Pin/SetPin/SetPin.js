@@ -7,10 +7,11 @@ import Lock from '../../../../../assets/images/lock-pin.png'
 import { LinearGradient } from 'expo-linear-gradient'
 
 import {asyncSetPin} from '../../../../../store/actions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faTimes, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { checkLanguage } from '../../../../../helper'
 
 export default function App(){
     const dispatch = useDispatch()
@@ -30,28 +31,31 @@ export default function App(){
         (Pin2 + '').length === 0 && setPinBar2Focus(false)
     },[Pin2])
 
+    const language = useSelector(state => state.language)
+
     const handleSubmit = useCallback(()=>{
         if(Pin1.length !== 6){
-            Alert.alert('Unlock PIN', 'Mã PIN phải đủ 6 chữ số')
+            Alert.alert('Unlock PIN',checkLanguage({vi :'Mã PIN phải đủ 6 chữ số', en : 'PIN code must be 6 numbers'},language))
             return null
         }
         if(Pin1 === Pin2){
             dispatch(asyncSetPin(Pin1))
             .then(()=>{
             })
-            Alert.alert('Unlock PIN', 'Mã PIN được cài đặt thành công')
+            Alert.alert('Unlock PIN', checkLanguage({vi :'Mã PIN được cài đặt thành công', en : 'Setting successfully'},language))
             navigation.goBack()
         }else{
-            Alert.alert('Đổi mã pin', 'Nhập lại mã pin không chính xác')
+            Alert.alert('Unlock PIN',  checkLanguage({vi :'Nhập lại mã PIN không chính xác', en : 'PIN code is not match'},language))
         }
-    },[Pin1,Pin2])
+    },[Pin1,Pin2,language])
 
     return(
         <>
-        <Header2 title="Cài đặt Unlock PIN"/>
+        
+        <Header2 title={checkLanguage({vi: "Cài đặt Unlock PIN", en: 'Setting PIN code'},language)}/>
         <View style={[mainStyles.container,{paddingHorizontal: 16, alignItems: 'center'}]}>
-            <Text style={{marginTop:25,color: '#ddd9d8', fontSize: 13,textAlign:'center'}}>Tạo mật khẩu 6 số để bảo vệ an toàn Ví King của bạn</Text>
-            <Text style={{color: '#ddd9d8', fontSize: 13,textAlign:'center'}}>Mã PIN dùng để mở khóa ví tiền và gửi tiền</Text>
+            <Text style={{marginTop:25,color: '#ddd9d8', fontSize: 13,textAlign:'center'}}>{checkLanguage({vi: 'Tạo mật khẩu 6 số để bảo vệ an toàn Ví King của bạn', en: 'Create PIN to protect your account'},language)}</Text>
+            <Text style={{color: '#ddd9d8', fontSize: 13,textAlign:'center'}}>{checkLanguage({vi: 'Mã PIN dùng để mở khóa ví', en: 'Using PIN code to unlock your account'},language)}</Text>
 
             <TouchableOpacity 
             disabled={PinBar1Focus} 
@@ -67,7 +71,7 @@ export default function App(){
                 style={{position : 'absolute', right: 19, padding: 10}}  >
                     <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
                 </TouchableOpacity>
-                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar1Focus ? 0 : 1}}>Nhập mã PIN</Text>
+                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar1Focus ? 0 : 1}}>{checkLanguage({vi: 'Nhập mã PIN', en: 'Enter PIN code'},language)}</Text>
 
                 <View 
                 style={{
@@ -114,7 +118,7 @@ export default function App(){
                     <FontAwesomeIcon color='#fff' icon={faTimesCircle} />
                 </TouchableOpacity>
                 <Image style={{position: 'absolute', left: 19, top: 22}} source={Lock}/>
-                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar2Focus ? 0 : 1}}>Nhập lại mã PIN</Text>
+                <Text style={{color: '#8a8c8e',fontSize: 16,opacity: PinBar2Focus ? 0 : 1}}>{checkLanguage({vi: 'Nhập lại mã PIN', en: 'Confirm PIN code'},language)}</Text>
 
                 <View 
                 style={{
@@ -160,7 +164,7 @@ export default function App(){
                 colors={['#a47b00','#edda8b', '#d6b039', '#edda8b', '#a47b00']}
                 style={{width: '100%',height: 47, justifyContent: 'center', alignItems: 'center'}}
                 >
-                    <Text style={{color: '#111b2d', fontSize: 14}}>XÁC NHẬN</Text>
+                    <Text style={{color: '#111b2d', fontSize: 14}}>{checkLanguage({vi: 'XÁC NHẬN', en: 'CONFIRM'},language)}</Text>
                 </LinearGradient>
             </TouchableOpacity>
         </View>
