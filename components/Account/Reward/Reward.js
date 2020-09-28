@@ -15,6 +15,7 @@ import checking from '../../../assets/images/checking.png'
 import spin from '../../../assets/images/spin.png'
 import ref from '../../../assets/images/ref.png'
 import calAPI from '../../../axios'
+import { asyncGetUserbyID } from '../../../store/actions'
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()
     const language = useSelector(state => state.language)
@@ -74,7 +75,7 @@ export default function App({setOutScrollViewTop}){
         if(res.status === 1){
             message.success(checkLanguage({vi: 'Chúc mừng bạn nhận được 2 KDG Reward', en: 'You receive 2 KDG Reward'},language))
             getTransaction()
-            // dispatch(asyncGetUserData())
+            dispatch(asyncGetUserbyID(userid))
         }
         if(res.status === 0 ){
             message.error(checkLanguage({vi: 'Bạn đã nhận thưởng hôm nay rồi', en: 'Already got reward'},language))
