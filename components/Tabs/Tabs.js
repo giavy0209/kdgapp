@@ -16,7 +16,7 @@ export default function App(){
 
         tabBarOptions={{
         activeTintColor: '#fac800',
-        inactiveTintColor: "#ffffff",
+        inactiveTintColor: "#8a8c8e",
         style: {
             backgroundColor: display === 1 ? '#ffff' :'#283349',
             borderTopWidth: display === 1 ? 1 : 0,
@@ -26,7 +26,7 @@ export default function App(){
 
         {TABS.map(tab=>
         <Screen
-        options={{tabBarIcon: ({focused}) =><Image source={focused ? tab.logoActive : tab.logo} />,}}  
+        options={{tabBarIcon: ({focused}) =><Image source={focused ? display === 1 ? tab.logoActiveLight : tab.logoActive : tab.logo} />,}}  
         key={tab.name} 
         name={tab.name}
         >

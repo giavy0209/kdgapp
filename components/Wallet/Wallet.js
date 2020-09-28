@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBell, faTimes,faEye,faEyeSlash, faSortAmountDown,faPlusCircle, faAngleRight, faSortAmountUp } from '@fortawesome/free-solid-svg-icons';
 
 import openscaner from '../../assets/images/openscaner.png'
+import openscanerLight from '../../assets/images/openscanerLight.png'
 
 import GroupButton from './GroupButton'
 import ListCoin from './ListCoin'
@@ -521,7 +522,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                 <TouchableOpacity
                   onPress={() => { openScanner() }}
                 >
-                  <Image style={WalletStyle.scanQRIcon} source={openscaner} />
+                  <Image style={WalletStyle.scanQRIcon} source={display === 1  ? openscanerLight : openscaner} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>navigation.navigate('Notify', {
                   NewsData: NewsData

@@ -61,6 +61,12 @@ import tabSwapActive from './assets/images/tab-swap-active.png'
 import tabAccount from './assets/images/tab-account.png'
 import tabAccountActive from './assets/images/tab-account-active.png'
 
+import tabWalletActiveLight from './assets/images/Taisan.png'
+import tabStakeActiveLight from './assets/images/stake-active.png'
+import tabSwapActiveLight from './assets/images/swap.png'
+import tabAccountActiveLight from './assets/images/Taikhoan.png'
+
+
 
 
 const ROUTERS = [
@@ -480,6 +486,7 @@ const TABS = [
         render : Wallet,
         logo: tabWallet,
         logoActive: tabWalletActive,
+        logoActiveLight: tabWalletActiveLight,
         reqLogin: true,
     },
     {
@@ -488,6 +495,7 @@ const TABS = [
         render : Staking,
         logo: tabStake,
         logoActive: tabStakeActive,
+        logoActiveLight: tabStakeActiveLight,
         reqLogin: true,
     },
     {
@@ -496,6 +504,7 @@ const TABS = [
         render : Swap,
         logo: tabSwap,
         logoActive: tabSwapActive,
+        logoActiveLight: tabSwapActiveLight,
         reqLogin: true,
     },
     {
@@ -504,6 +513,7 @@ const TABS = [
         render : Account,
         logo: tabAccount,
         logoActive: tabAccountActive,
+        logoActiveLight: tabAccountActiveLight,
         reqLogin: true,
     },
 ]

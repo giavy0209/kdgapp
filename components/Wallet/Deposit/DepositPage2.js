@@ -33,6 +33,8 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollView, setOutScrollViewTop}){
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
+
 
     const [Width , setWidth] = useState(0);
   
@@ -108,30 +110,30 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} > 
     <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
         <View style={{paddingTop: 15, alignItems: 'center'}}>
-            <View style={{flexDirection: 'row' ,backgroundColor: 'rgba(40,51,73,0.8)', width: '90%', padding: 20, borderRadius: 5, justifyContent: 'space-between'}}>
-                <Text style={{color: '#fff'}}>{coinName}</Text>
+            <View style={{flexDirection: 'row' ,backgroundColor: display === 1 ? '#fff' : 'rgba(40,51,73,0.8)', width: '90%', padding: 20, borderRadius: 5, justifyContent: 'space-between'}}>
+                <Text style={{color: display === 1 ? '#283349' : '#fff'}}>{coinName}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Deposit')} style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5 }}>{checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}</Text>
-                  <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faChevronRight}/>
+                  <Text style={{color:  display === 1 ? '#283349' : 'rgba(255,255,255,0.5)', paddingRight: 5 }}>{checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}</Text>
+                  <FontAwesomeIcon size={15} color={display === 1 ? '#283349' : "rgba(255,255,255,0.5)"} icon={faChevronRight}/>
                 </TouchableOpacity>
             </View>
 
             {
               coinName === 'USDT' ?
               <View style={{flexDirection: 'row' ,paddingHorizontal: 60, width: '100%', paddingTop: 30, justifyContent: 'space-between'}}>
-                  <Text style={{color: 'rgba(255,255,255,0.5)'}}>{checkLanguage({vi: 'Chọn loại', en: 'Select type'},language)}</Text>
+                  <Text style={{color:  display === 1 ? '#283349' :  'rgba(255,255,255,0.5)'}}>{checkLanguage({vi: 'Chọn loại', en: 'Select type'},language)}</Text>
                   <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={() => setSelectedType(0)} style={{backgroundColor: SelectedType === 0 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                         {SelectedType === 0 ? <Image source={ticker}/>  : null}
                     </TouchableOpacity>
-                    <Text style={{color: '#fff', paddingLeft: 10}}>ERC-20</Text>
+                    <Text style={{color:  display === 1 ? '#283349' :  '#fff', paddingLeft: 10}}>ERC-20</Text>
                   </View>
 
                   <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={() => setSelectedType(1)} style={{backgroundColor: SelectedType === 1 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                         {SelectedType === 1 ? <Image source={ticker}/>  : null}
                     </TouchableOpacity>
-                    <Text style={{color: '#fff', paddingLeft: 10}}>TRC-20</Text>
+                    <Text style={{color:  display === 1 ? '#283349' :  '#fff', paddingLeft: 10}}>TRC-20</Text>
                   </View>
 
               </View> : null
@@ -140,7 +142,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
             
             <View style={{paddingTop: 35}}>
-                <Text style={{color: 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Scan tại đây để nạp', en: 'Scan here to deposit'},language)}</Text>
+                <Text style={{color: display === 1 ? '#909294' :   'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Scan tại đây để nạp', en: 'Scan here to deposit'},language)}</Text>
             </View>
             <View>
             <QRCode
@@ -149,14 +151,14 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             />
             </View>
             <View>
-                <Text style={{color: 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Hoặc sao chép mã tại đây', en: 'Or copy the code here'},language)}</Text>
+                <Text style={{color: display === 1 ? '#909294' :   'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Hoặc sao chép mã tại đây', en: 'Or copy the code here'},language)}</Text>
             </View>
             <View>
                 <TouchableOpacity 
                     onPress={copyHandler}
                     style={{paddingTop: 5}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center'}}>
-                        <Text style={{color: 'rgba(84,86,89, 0.9)', paddingRight: 5}}>{SelectedType === 0 ? coinAddress : coinAddressTRC}</Text>
+                        <Text  style={{color: display === 1 ? '#283349' : 'rgba(84,86,89, 0.9)', paddingRight: 5}}>{SelectedType === 0 ? coinAddress : coinAddressTRC}</Text>
                         <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                     </View>
                  </TouchableOpacity>

@@ -60,13 +60,13 @@ export default function App({
     // }
     const data = [
         {coinPrice: coinPriceKDG, isDisplay: coinDisplay ? coinDisplay.kdg : true, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
-        {coinPrice: coinPriceETH, isDisplay: coinDisplay ? coinDisplay.eth : true, key: 2, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
-        {coinPrice: coinPriceTRX, isDisplay: coinDisplay ? coinDisplay.trx : true, key: 3, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
-        {coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 4, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH, addressTRC: addressTRX},
-        {coinPrice: coinPriceKNC, isDisplay: coinDisplay ? coinDisplay.knc : true, key: 5, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
-        {coinPrice: coinPriceMCH, isDisplay: coinDisplay ? coinDisplay.mch : true, key: 6, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
-        {coinPrice: coinPriceTOMO, isDisplay: coinDisplay ? coinDisplay.tomo : true, key: 7, coinName: 'TOMO', icon: tomoicon, balance: balanceTOMO, address: addressTOMO},
-        {coinPrice: coinPriceBTC, isDisplay: coinDisplay ? coinDisplay.btc : true, key: 8, coinName: 'BTC', icon: btcicon, balance: balanceBTC, address: addressBTC},
+        {coinPrice: coinPriceBTC, isDisplay: coinDisplay ? coinDisplay.btc : true, key: 2, coinName: 'BTC', icon: btcicon, balance: balanceBTC, address: addressBTC},
+        {coinPrice: coinPriceETH, isDisplay: coinDisplay ? coinDisplay.eth : true, key: 3, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
+        {coinPrice: coinPriceTRX, isDisplay: coinDisplay ? coinDisplay.trx : true, key: 4, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
+        {coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 5, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH, addressTRC: addressTRX},
+        {coinPrice: coinPriceKNC, isDisplay: coinDisplay ? coinDisplay.knc : true, key: 6, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
+        {coinPrice: coinPriceMCH, isDisplay: coinDisplay ? coinDisplay.mch : true, key: 7, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
+        {coinPrice: coinPriceTOMO, isDisplay: coinDisplay ? coinDisplay.tomo : true, key: 8, coinName: 'TOMO', icon: tomoicon, balance: balanceTOMO, address: addressTOMO},
     ]
 
 
@@ -86,8 +86,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                         id: id,
                         address: address,
                         addressTRC: addressTRC
-                        
-                        
+                                                
                     })}}
                     style={[WalletStyle.coinSwipeRight, 
                     {height: CoinHeight}]}>
@@ -144,10 +143,10 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
             <FlatList
                 data={isTapSort === false ? data : isShortCoin === true ? 
                     data.sort(function(a, b){
-                        return a.coinPrice.usd < b.coinPrice.usd;
+                        return parseFloat(a.coinPrice.usd)  < parseFloat(b.coinPrice.usd);
                     })
                     :       data.sort(function(a, b){
-                        return a.coinPrice.usd > b.coinPrice.usd;
+                        return parseFloat(a.coinPrice.usd) > parseFloat(b.coinPrice.usd);
                     })
                 }
 

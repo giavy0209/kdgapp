@@ -43,7 +43,7 @@ export default function App({setOutScrollViewTop}){
                                     (new Date(item.create_date)).getFullYear().toString()}</Text>
                             </View>
                             <View style={{backgroundColor: 'rgba(36,45,65 ,0.8)', width: '44%' , paddingVertical: 10, borderLeftColor: 'rgba(255,255,255,0.3)', borderLeftWidth: 1, justifyContent: 'center'}}>
-                                <Text style={{alignSelf: 'center' ,textAlign: 'center', color: 'rgba(255,255,255,0.8)'}}>{item.from.email}</Text>
+                                <Text style={{alignSelf: 'center' ,textAlign: 'center', color: 'rgba(255,255,255,0.8)'}}>{item.from ? item.from.email ? item.from.email : '' : ''}</Text>
                             </View>
                             <View style={{backgroundColor: 'rgba(36,45,65 ,0.8)', width: '28%' , paddingVertical: 10, borderLeftColor: 'rgba(255,255,255,0.3)', borderLeftWidth: 1, justifyContent: 'center'}}>
                                 <Text style={{alignSelf: 'center' ,textAlign: 'center', color: 'rgba(255,255,255,0.8)'}}>{item.type === 'kyc-success' ? 'KYC thành công' : ''}</Text>

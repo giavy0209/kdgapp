@@ -173,8 +173,8 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
                 </View>
 
                 <TouchableOpacity onPress={() => navigation.navigate('Withdraw')} style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={{color: 'rgba(255,255,255,0.5)', paddingRight: 5}}>{checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}</Text>
-                    <FontAwesomeIcon size={15} color="rgba(255,255,255,0.5)" icon={faChevronRight}/>
+                    <Text style={{color: display === 1 ? '#283349'  :"rgba(255,255,255,0.5)", paddingRight: 5}}>{checkLanguage({vi: 'Chọn coin', en: 'Select coin'},language)}</Text>
+                    <FontAwesomeIcon size={15} color={display === 1 ? '#283349'  :"rgba(255,255,255,0.5)"} icon={faChevronRight}/>
                 </TouchableOpacity>
        
             </View>
@@ -187,14 +187,14 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
                     <TouchableOpacity onPress={() => setSelectedType(0)} style={{backgroundColor: SelectedType === 0 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                         {SelectedType === 0 ? <Image source={ticker}/>  : null}
                     </TouchableOpacity>
-                    <Text style={{color: '#fff', paddingLeft: 10}}>ERC-20</Text>
+                    <Text style={{color: display === 1 ? '#283349' : '#fff', paddingLeft: 10}}>ERC-20</Text>
                   </View>
 
                   <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={() => setSelectedType(1)} style={{backgroundColor: SelectedType === 1 ? '#fac800' : '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                         {SelectedType === 1 ? <Image source={ticker}/>  : null}
                     </TouchableOpacity>
-                    <Text style={{color: '#fff', paddingLeft: 10}}>TRC-20</Text>
+                    <Text style={{color: display === 1 ? '#283349' : '#fff', paddingLeft: 10}}>TRC-20</Text>
                   </View>
 
               </View> : null
@@ -205,7 +205,7 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
 
         <View style={WithdrawStyle.numberSendContainer}>
             <View style={{width: '100%'}}>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Số tiền rút', en: 'Withdrawal amount'},language)}</Text>   
+                <Text style={{color: display === 1 ? '#283349'  :'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Số tiền rút', en: 'Withdrawal amount'},language)}</Text>   
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <View style={WithdrawStyle.inputNumContainer}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
@@ -244,7 +244,7 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
 
         <View style={WithdrawStyle.numberSendContainer}>
             <View>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Rút về', en: 'Withdraw to'},language)}</Text>   
+                <Text style={{color: display === 1 ? '#283349'  :'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Rút về', en: 'Withdraw to'},language)}</Text>   
                 <View style={{flexDirection: 'row'}}>
                     <View style={WithdrawStyle.inputNumContainer2}>
                         <View style={{flex: 3, padding: (windowWidth*windowHeight)/23040}}>
@@ -264,7 +264,7 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
 
         <View style={WithdrawStyle.numberSendContainer}>
             <View>
-                <Text style={{color: 'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Mã xác thực 2FA', en: '2FA code'},language)}</Text>   
+                <Text style={{color: display === 1 ? '#283349'  :'rgba(241, 243, 244, 0.7)', fontSize: (windowWidth*windowHeight)/23040, marginBottom: windowHeight/213}}>{checkLanguage({vi: 'Mã xác thực 2FA', en: '2FA code'},language)}</Text>   
                 <View style={{flexDirection: 'row'}}>
                     <View style={WithdrawStyle.inputNumContainer2}>
                         <View style={{padding: (windowWidth*windowHeight)/23040}}>

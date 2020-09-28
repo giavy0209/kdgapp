@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         },
         coinName: {
             fontWeight: 'bold',
-            color: 'white',
+            color: '#283349',
             fontSize:  15
 
         },
@@ -75,18 +75,18 @@ const styles = StyleSheet.create({
             backgroundColor: '#fff',
         },
         nearSymbol: {
-            color: 'rgba(241, 243, 244, 0.5)',
+            color: '#8a8c8e',
             fontSize: 40
         },
         inputNumContainer: {
             borderRadius: 10,
-            backgroundColor: 'white',
+            backgroundColor: '#f1f3f4',
             flexDirection: 'row',   
             width: windowWidth/3,
         },
         inputNumContainer2: {
             borderRadius: 10,
-            backgroundColor: 'white',
+            backgroundColor: '#f1f3f4',
             width: '100%'
     
         },
