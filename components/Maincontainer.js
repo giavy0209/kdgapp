@@ -17,13 +17,6 @@ export default function Maincontainer({Component,route ,reqLogin, ...restProps})
     const [OutScrollViewTop, setOutScrollViewTop] = useState(null)
     const [BackGround, setBackGround] = useState(null)
 
-    useMemo(() => {
-      if(display === 1){
-        setBackGround(bg3)
-      }else{
-        setBackGround(bg)
-      }
-    }, [display])
 
     return (
       <ImageBackground source={BackGround ? BackGround : display === 1 ? bg3 : bg} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>

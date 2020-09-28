@@ -303,7 +303,7 @@ export default html = `
                 var degPerReward = 360 / this.total
 
                 var totalRewardNeedSpin = indexReward - indexLastReward
-                this.spinTarget +=( totalRewardNeedSpin * degPerReward + 10800) *(-1)
+                this.spinTarget +=( totalRewardNeedSpin * degPerReward + 3600) *(-1)
                 this.lastReward = reward
             }
 

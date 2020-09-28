@@ -23,13 +23,13 @@ export default function Button({ScreenWidth, ScreenHeight}){
                         backgroundColor: 'transparent',
                         fontSize: 14,
                         color: '#000',
-                        }}>Đăng nhập
+                        }}>Login
                     </Text>
                 </LinearGradient>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={()=>navigation.replace('Reg')} style={{marginLeft: ScreenWidth * 0.03,paddingTop: ScreenHeight * 0.01499, paddingBottom: ScreenHeight * 0.01499, alignItems: 'center', borderRadius: 50 ,width: ScreenWidth * 0.4, borderWidth: 1, borderColor: '#ebc660'}}>
-                <Text style={{color: '#ebc660', fontSize: 14}}>Đăng ký</Text>
+                <Text style={{color: '#ebc660', fontSize: 14}}>Register</Text>
             </TouchableOpacity>
         </View>
         </>

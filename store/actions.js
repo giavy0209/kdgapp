@@ -153,7 +153,7 @@ export function asyncGetRouters(){
 
         if(!language &&language !== 0) {
             await AsyncStorage.setItem('language', JSON.stringify(0))
-            dispatch(actChangeLanguage(0))
+            dispatch(actChangeLanguage(1))
         }else{
             dispatch(actChangeLanguage(language))
         }

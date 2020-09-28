@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import bg from '../../../assets/images/spinbg.png'
 import calAPI from '../../../axios'
 import { checkLanguage } from '../../../helper'
-import { Popup } from '../../Popup'
+import { Popup, PopupCongras } from '../../Popup'
 import html from './WebviewHTML'
 
 import spintextvi from '../../../assets/images/spintextvi.png'
@@ -161,7 +161,10 @@ export default function App ({setBackGround}) {
     const [isModalVisible,setModalVisible] = useState(false)
     const [ModalStyle,setModalStyle] = useState('')
     const [ModalMess,setModalMess] = useState('')
-    const IsRefreshData = useRef(false)
+    const [RewardText,setRewardText] = useState('')
+    const IsRefreshData = useRef(true)
+
+    const [isModalVisible2, setModalVisible2] = useState(false);
 
     const language = useSelector(state => state.language)
     const user = useSelector(state => state.userInfo)
@@ -198,19 +201,26 @@ export default function App ({setBackGround}) {
     const injectValue = useCallback(async ()=>{
         var res = (await (await calAPI()).post('/api/get_lucky_spin', { userId: user._id})).data
         if(res.status === 1){
-            IsRefreshData.current = false
+            var spinInfo = await getSpinRate()
+            setTimeout(() => {
+                IsRefreshData.current = false
+            }, 1000);
             webview.current.injectJavaScript(`window.spinValue = ${res.spin_value}`)
+            var text = spinInfo.find(o => o.reward === res.spin_value)
+            setRewardText(checkLanguage({vi : text.vi, en : text.en} , language))
         }
         if(res.status === 0) {
             message.error(checkLanguage({vi: 'Bạn không đủ KDG Reward', en : 'You dont have enough KDG Reward'}, language))
         }
-    },[user])
+    },[user, language])
 
     const refreshUserData = useCallback(async (e) => {
         if(!IsRefreshData.current){
+            IsRefreshData.current = true
             dispatch(asyncGetUserbyID(user._id))
             .then(res=>{
-                IsRefreshData.current = true
+                console.log(123);
+                setModalVisible2(true)
             })
         }
     },[user])
@@ -218,6 +228,7 @@ export default function App ({setBackGround}) {
         <>
             <View style={styles.container}>
             <Popup type={ModalStyle} title={ModalMess} isModalVisible={isModalVisible}/>
+            <PopupCongras title={checkLanguage({vi: 'Chúc mừng!', en: 'Congrats!'},language)} content={checkLanguage({vi: 'Bạn đã nhận được '+RewardText+' KDG Reward cho lượt quay này', en: `You got `+RewardText+` KDG Reward for this spin`},language)} toPress={() => setModalVisible2(false)} isModalVisible={isModalVisible2}/>
             <View style={styles.containerText}>
                 <TouchableOpacity
                 onPress={()=>navigation.goBack()}
