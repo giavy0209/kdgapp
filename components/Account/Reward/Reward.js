@@ -104,7 +104,7 @@ export default function App({setOutScrollViewTop}){
                         <Image style={styles.img} source={checkLanguage({vi : RewardBannervi , en: RewardBanneren}, language)} />
                     </View>
                     <View style={styles.blockText}>
-                        <Text style={styles.text}>{checkLanguage({vi : 'NHẬN NGAY KDG REWARD khi mời bạn bè tham gia', en : 'RECEIVE KDG REWARD IMMEDIATELY after invite friends joining successfully'})}</Text>
+                        <Text style={styles.text}>{checkLanguage({vi : 'NHẬN NGAY KDG REWARD khi mời bạn bè tham gia', en : 'RECEIVE KDG REWARD IMMEDIATELY after invite friends joining successfully'}, language)}</Text>
                     </View>
                 </View>
                 <View
@@ -172,7 +172,6 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     img: {
-        backgroundColor : '#fff',
         resizeMode: "contain",
         width: '100%'
     },
