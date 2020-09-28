@@ -37,6 +37,7 @@ export default function App() {
     const [Loading, setLoading] = useState(false);
 
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
 
     const [BlockWidth, setBlockWidth] = useState(0)
     const [ImageWidth, setImageWidth] = useState(0)
@@ -162,7 +163,7 @@ export default function App() {
 
     return (
         <>
-            <HeaderwithButton toPress={handleLogout} type='logout' setHeight={setHeight} title={checkLanguage({vi: 'Hồ sơ cá nhân', en: `Profile`},language)} />
+            <Header2 type='logout' setHeight={setHeight} title={checkLanguage({vi: 'Hồ sơ cá nhân', en: `Profile`},language)} />
             <View onLayout={e=>setContentHeight(e.nativeEvent.layout.height)} style={[mainStyles.container,{paddingHorizontal: 36, paddingTop: 78,}]}>
             <Popup type='success' title={checkLanguage({vi: 'Cập nhật thành công', en: `Update successful`},language)} isModalVisible={isModalVisible}/>
                 
@@ -182,20 +183,20 @@ export default function App() {
                 </View>
 
                 <View style={{paddingTop: 20}}>
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff', width: 110}}>{checkLanguage({vi: 'Họ', en: `First name`},language)}</Text>
-                        <TextInput onChangeText={(value) => setFirstName(value)} value={FirstName} placeholder='Nhập họ' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)',}} />
+                    <View style={{flexDirection: 'row', borderBottomColor: display === 1 ? '#e8e8e8' : 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff', width: 110}}>{checkLanguage({vi: 'Họ', en: `First name`},language)}</Text>
+                        <TextInput onChangeText={(value) => setFirstName(value)} value={FirstName} placeholder='Nhập họ' placeholderTextColor='rgba(255,255,255,0.5)' style={{width: '100%' , color: display === 1 ? '#8a8c8e' : 'rgba(255,255,255,0.5)',}} />
                     </View>
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff',  width: 110}}>{checkLanguage({vi: 'Tên', en: `Last name`},language)}</Text>
-                        <TextInput onChangeText={(value) => setName(value)} value={Name} placeholder='Nhập tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)',}} />
+                    <View style={{flexDirection: 'row', borderBottomColor: display === 1 ? '#e8e8e8' : 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff',  width: 110}}>{checkLanguage({vi: 'Tên', en: `Last name`},language)}</Text>
+                        <TextInput onChangeText={(value) => setName(value)} value={Name} placeholder='Nhập tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{width: '100%' , color: display === 1 ? '#8a8c8e' : 'rgba(255,255,255,0.5)',}} />
                     </View>
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff',  width: 110}}>Email</Text>
-                        <TextInput editable={false} value={email} placeholder='Nhập họ và tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)',}} />
+                    <View style={{flexDirection: 'row', borderBottomColor: display === 1 ? '#e8e8e8' : 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff',  width: 110}}>Email</Text>
+                        <TextInput editable={false} value={email} placeholder='Nhập họ và tên' placeholderTextColor='rgba(255,255,255,0.5)' style={{width: '100%' , color: display === 1 ? '#8a8c8e' : 'rgba(255,255,255,0.5)',}} />
                     </View>
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff',  width: 110}}>{checkLanguage({vi: 'Giới tính', en: `Gender`},language)}</Text>
+                    <View style={{flexDirection: 'row', borderBottomColor: display === 1 ? '#e8e8e8' : 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff',  width: 110}}>{checkLanguage({vi: 'Giới tính', en: `Gender`},language)}</Text>
                         <View  style={{flexDirection: 'row',}}>
                             <TouchableOpacity onPress={() => setSelectedGender(0)} style={{backgroundColor: '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center',}}>
                                 {
@@ -205,7 +206,7 @@ export default function App() {
                                 }
 
                             </TouchableOpacity>
-                            <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 15, paddingRight: 40}}>{checkLanguage({vi: 'Nam', en: `Male`},language)}</Text>
+                            <Text style={{ color: display === 1 ? '#8a8c8e' : 'rgba(255,255,255,0.5)', paddingLeft: 15, paddingRight: 40}}>{checkLanguage({vi: 'Nam', en: `Male`},language)}</Text>
 
                             <TouchableOpacity onPress={() => setSelectedGender(1)} style={{backgroundColor: '#ddd9d8', width: 20, height: 20, borderRadius: 20, alignItems: 'center', justifyContent: 'center'}}>
                                 {
@@ -214,25 +215,25 @@ export default function App() {
                                     </View> : null
                                 }
                             </TouchableOpacity>
-                            <Text style={{color: 'rgba(255,255,255,0.5)', paddingLeft: 15}}>{checkLanguage({vi: 'Nữ', en: `Female`},language)}</Text>
+                            <Text style={{width: '100%' , color: display === 1 ? '#8a8c8e' : 'rgba(255,255,255,0.5)', paddingLeft: 15}}>{checkLanguage({vi: 'Nữ', en: `Female`},language)}</Text>
                         </View>
          
                     </View>
 
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff',  width: 110}}>{checkLanguage({vi: 'Ngày sinh', en: `Date of birth`},language)}</Text>
+                    <View style={{flexDirection: 'row', borderBottomColor: display === 1 ? '#e8e8e8' : 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff',  width: 110}}>{checkLanguage({vi: 'Ngày sinh', en: `Date of birth`},language)}</Text>
                         <TextInput 
                             onChangeText={(value) => setBirthday(value)} 
                             value={Birthday}
                             placeholder={checkLanguage({vi: 'Ngày/Tháng/Năm', en: `DD/MM/YYYY`},language)}
                             placeholderTextColor='rgba(255,255,255,0.5)' 
-                            style={{color: 'rgba(255,255,255,0.5)', 
+                            style={{width: '100%' , color: display === 1 ? '#8a8c8e' : 'rgba(255,255,255,0.5)', 
                            }} />
                     </View>
 
-                    <View style={{flexDirection: 'row', borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
-                        <Text style={{color: '#fff',  width: 110}}>{checkLanguage({vi: 'Địa chỉ', en: `Address`},language)}</Text>
-                        <TextInput onChangeText={(value) => setAddress(value)} value={Address} placeholder={checkLanguage({vi: 'Nhập địa chỉ', en: `Enter your address`},language)} placeholderTextColor='rgba(255,255,255,0.5)' style={{color: 'rgba(255,255,255,0.5)'}} />
+                    <View style={{flexDirection: 'row', borderBottomColor: display === 1 ? '#e8e8e8' : 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff',  width: 110}}>{checkLanguage({vi: 'Địa chỉ', en: `Address`},language)}</Text>
+                        <TextInput onChangeText={(value) => setAddress(value)} value={Address} placeholder={checkLanguage({vi: 'Nhập địa chỉ', en: `Enter your address`},language)} placeholderTextColor='rgba(255,255,255,0.5)' style={{width: '100%' , color: display === 1 ? '#8a8c8e' : 'rgba(255,255,255,0.5)'}} />
                     </View>
                     
                 </View>
@@ -255,8 +256,8 @@ export default function App() {
             <TouchableOpacity style={{marginTop: 50}} onPress={handleLogout}>
                 <View style={{alignItems: 'center', justifyContent: 'center', borderColor: '#fac800', borderRadius: 20,  borderWidth: 2, width: '60%', alignSelf: 'center', padding: 10}}>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{color: '#fff', paddingRight: 10}}>{checkLanguage({vi: 'Đăng xuất', en: `Log out`},language)}</Text>
-                        <FontAwesomeIcon color='#fff' size={20}  icon={faSignOutAlt}/>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff', paddingRight: 10}}>{checkLanguage({vi: 'Đăng xuất', en: `Log out`},language)}</Text>
+                <FontAwesomeIcon color={display === 1 ? '#283349' : '#fff'} size={20}  icon={faSignOutAlt}/>
                     </View>
                 </View>
             </TouchableOpacity>

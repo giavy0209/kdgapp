@@ -19,6 +19,7 @@ export default function App(){
     const [ContentHeight, setContentHeight] =useState(0)
     const [ButtonHeight, setButtonHeight] =useState(0)
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
     return (
         <>
             <Header2 setHeight={setHeight} title={checkLanguage({vi: 'Xác minh danh tính', en: 'KYC'},language)}/>
@@ -36,7 +37,7 @@ export default function App(){
                     >
                         <Text style={{color: '#111b2d'}}>1</Text>
                     </LinearGradient>
-                    <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{checkLanguage({vi: 'Thông tin cá nhân', en: `Personal information`},language)}</Text>
+                    <Text style={[mainStyles.fontsize14, mainStyles.color2, display === 1 ? {color: '#283349'} : null]}>{checkLanguage({vi: 'Thông tin cá nhân', en: `Personal information`},language)}</Text>
                 
                 </View>
                 <View style={{flexDirection:'row', alignItems: 'center',marginTop: 14}}>
@@ -48,7 +49,7 @@ export default function App(){
                     >
                         <Text style={{color: '#111b2d'}}>2</Text>
                     </LinearGradient>
-                    <Text style={[mainStyles.fontsize14, mainStyles.color2,]}>{checkLanguage({vi: 'Upload ảnh CMND/ Bằng lái xe/ Hộ chiếu', en: `Upload photo ID card / Driver's license / Passportn`},language)}</Text>
+                    <Text style={[mainStyles.fontsize14, mainStyles.color2, display === 1 ? {color: '#283349'} : null]}>{checkLanguage({vi: 'Upload ảnh CMND/ Bằng lái xe/ Hộ chiếu', en: `Upload photo ID card / Driver's license / Passportn`},language)}</Text>
                 
                 </View>
 

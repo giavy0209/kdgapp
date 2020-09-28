@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import {View, Text, Image, TextInput, FlatList, ScrollView, SafeAreaView, Alert} from 'react-native'
 import { mainStyles, withdrawStyle } from '../../../styles/'
+
+import { withdrawStyleLight } from '../../../styles/light'
 import {Header2} from '../../Header'
 import coin from '../../../assets/images/coin.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -35,6 +37,8 @@ export default function App({setOutScrollViewTop}){
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalVisibleInput, setModalVisibleInput] = useState(false);
     const [Error, setError] = useState()
+
+    const display = useSelector(state => state.display)
 
     const language = useSelector(state => state.language)
       
@@ -127,7 +131,11 @@ export default function App({setOutScrollViewTop}){
         setCoinSelected(value)
     }
 
+// -------------------style------------------------------
 
+var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
+
+// ------------------------------------------------------
     return (
         
         <>
@@ -153,7 +161,7 @@ export default function App({setOutScrollViewTop}){
         toChangeText={(value) => setPasswordPrivate(value)} 
         isModalVisible={isModalVisibleInput}/>
         <View style={{padding: (windowWidth*windowHeight)/29376}}>
-            <View style={[withdrawStyle.searchBoxContainer, {alignItems: 'center'}]}>
+            <View style={[WithdrawStyle.searchBoxContainer, {alignItems: 'center'}]}>
                 <FontAwesomeIcon color="#8a8c8e" icon={faSearch}/>
                 <TextInput
                 placeholder={checkLanguage({vi: 'Tìm kiếm', en: `Search`},language)}
@@ -162,21 +170,21 @@ export default function App({setOutScrollViewTop}){
                 onBlur={()=>{}} 
                 onChangeText={value=>setSearchVal(value)} 
                 value={searchVal} 
-                style={[withdrawStyle.searchBox, {paddingLeft: 5}]} />
+                style={[WithdrawStyle.searchBox, {paddingLeft: 5}]} />
             </View>
             
 
             {
             searchVal ? (
             <View>
-                <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>{checkLanguage({vi: 'Kết quả', en: `Result`},language)}</Text>
+                <Text style={{color: display === 1 ? '#989a9c' : 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>{checkLanguage({vi: 'Kết quả', en: `Result`},language)}</Text>
 
                 <FlatList
                 data={list}
                 renderItem={({item}) => 
                     { 
                         if(((item.text).toLowerCase()).startsWith(searchVal.toLowerCase()) || ((item.description).toLowerCase()).startsWith(searchVal.toLowerCase())){
-                            return <View style={withdrawStyle.listContainer}>
+                            return <View style={WithdrawStyle.listContainer}>
                                 <TouchableOpacity 
                                 // onPress={() => 
                                 // navigation.navigate('PrivateKey', {
@@ -189,7 +197,7 @@ export default function App({setOutScrollViewTop}){
                                         <Image source={item.icon} style={{width: 35, height: 35}} />
                                         <View style={{width: '93%',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: (windowWidth*windowHeight)/35251, alignItems: 'center'}}>
                                             <View>
-                                                <Text style={{color: '#fff'}}>{item.text}</Text>
+                                                <Text style={{color: display === 1 ? '#283349'  :'#fff'}}>{item.text}</Text>
                                             </View>
                                             <View style={{paddingRight: (windowWidth*windowHeight)/29376}}>
                                                 <FontAwesomeIcon color="rgba(0,0,0,0)" size={12} icon={faChevronDown}/>
@@ -207,7 +215,7 @@ export default function App({setOutScrollViewTop}){
             ) :  <FlatList
             data={list}
             renderItem={({item}) => (
-                <View style={withdrawStyle.listContainer}>
+                <View style={WithdrawStyle.listContainer}>
                     <TouchableOpacity 
                       // onPress={() => 
                                 // navigation.navigate('PrivateKey', {
@@ -220,7 +228,7 @@ export default function App({setOutScrollViewTop}){
                             <Image source={item.icon} style={{width: 35, height: 35}} />
                             <View style={{width: '93%',flexDirection: 'row', justifyContent: 'space-between', paddingLeft: (windowWidth*windowHeight)/35251, alignItems: 'center'}}>
                                 <View>
-                                    <Text style={{color: '#fff'}}>{item.text}</Text>
+                                    <Text style={{color: display === 1 ? '#283349'  : '#fff'}}>{item.text}</Text>
                                 </View>
                                 <View style={{paddingRight: (windowWidth*windowHeight)/29376}}>
                                     <FontAwesomeIcon color="rgba(0,0,0,0)" size={12} icon={faChevronDown}/>

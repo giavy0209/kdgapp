@@ -17,6 +17,8 @@ export default function App({
 
     const language = useSelector(state => state.language)
 
+    const display = useSelector(state => state.display)
+
     const checkSelect =  (type,selected) => {
         if(type === 0) return {title: checkLanguage({vi: 'QUỐC GIA', en: 'NATION'},language), list: [
             { id: 0, name: checkLanguage({vi: 'Việt nam', en: 'Vietnam'},language) },

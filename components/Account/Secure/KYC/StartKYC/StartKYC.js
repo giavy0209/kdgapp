@@ -19,6 +19,7 @@ export default function App({setOutScrollView}){
     const [SelectedID, setSelectedID] = useState(0)
     const [SelectedSex, setSelectedSex] = useState(0)
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
     const [Name, setName] = useState('')
     const [IDNumber, setIDNumber] = useState('')
 
@@ -74,9 +75,9 @@ export default function App({setOutScrollView}){
                 <TouchableOpacity 
                 style={{marginTop: 8}}
                 onPress={()=>setSelectType(0)}>
-                    <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
-                        <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedCountry === 0 ? checkLanguage({vi: 'Việt Nam', en: 'Vietnamese'},language) : checkLanguage({vi: 'Quốc gia khác', en: 'Others'},language)}</Text>
+                    <View style={{backgroundColor: display === 1 ? '#fff' : null,position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
+                    {display === 1 ? null : <View style={walletStyles.maskOpacity}></View>}
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2, {color: display === 1 ? '#283349' : '#fff'}]}>{SelectedCountry === 0 ? checkLanguage({vi: 'Việt Nam', en: 'Vietnamese'},language) : checkLanguage({vi: 'Quốc gia khác', en: 'Others'},language)}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'
@@ -89,9 +90,9 @@ export default function App({setOutScrollView}){
                 <TouchableOpacity 
                 style={{marginTop: 8}}
                 onPress={()=>setSelectType(1)}>
-                    <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
-                        <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedID === 0 ? checkLanguage({vi: 'CMND/ Bằng lái xe', en: `ID card / Driver's license`},language) : checkLanguage({vi: 'Hộ chiếu', en: `Passport`},language)}</Text>
+                    <View style={{backgroundColor: display === 1 ? '#fff' : null,position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
+                    {display === 1 ? null : <View style={walletStyles.maskOpacity}></View>}
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2, {color: display === 1 ? '#283349' : '#ffff'}]}>{SelectedID === 0 ? checkLanguage({vi: 'CMND/ Bằng lái xe', en: `ID card / Driver's license`},language) : checkLanguage({vi: 'Hộ chiếu', en: `Passport`},language)}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'
@@ -102,10 +103,10 @@ export default function App({setOutScrollView}){
                 <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{checkLanguage({vi: 'TÊN', en: 'NAME'},language)}</Text>
                 <View 
                 style={{marginTop: 8}}>
-                    <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
-                        <View style={walletStyles.maskOpacity}></View>
+                    <View style={{backgroundColor: display === 1 ? '#fff' : null,position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
+                    {display === 1 ? null : <View style={walletStyles.maskOpacity}></View>}
                         {/* <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text> */}
-                        <TextInput onChangeText={(value) => setName(value)}  placeholder={checkLanguage({vi: 'Nhập tên', en: 'Enter your name'},language)} placeholderTextColor='#fff' style={[mainStyles.fontsize14, mainStyles.color2]}/>
+                        <TextInput onChangeText={(value) => setName(value)}  placeholder={checkLanguage({vi: 'Nhập tên', en: 'Enter your name'},language)} placeholderTextColor={display === 1 ? '#8a8c8e' : '#fff'} style={[mainStyles.fontsize14, mainStyles.color2, {color: display === 1 ? '#283349' : '#ffff'}]}/>
                     </View>
                 </View>
                 
@@ -113,9 +114,9 @@ export default function App({setOutScrollView}){
                 <TouchableOpacity 
                 style={{marginTop: 8}}
                 onPress={()=>setSelectType(2)}>
-                    <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
-                        <View style={walletStyles.maskOpacity}></View>
-                        <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? checkLanguage({vi: 'Nam', en: 'Male'},language) : checkLanguage({vi: 'Nữ', en: 'Female'},language)}</Text>
+                    <View style={{backgroundColor: display === 1 ? '#fff' : null,position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
+                    {display === 1 ? null : <View style={walletStyles.maskOpacity}></View>}
+                        <Text style={[mainStyles.fontsize14, mainStyles.color2, {color: display === 1 ? '#283349' : '#fff'}]}>{SelectedSex === 0 ? checkLanguage({vi: 'Nam', en: 'Male'},language) : checkLanguage({vi: 'Nữ', en: 'Female'},language)}</Text>
                         <FontAwesomeIcon 
                         size={12}
                         color='#8a8c8e'
@@ -126,10 +127,10 @@ export default function App({setOutScrollView}){
                 <Text style={[mainStyles.fontsize12, mainStyles.color1,{marginTop: 21}]}>{SelectedID === 0 ? checkLanguage({vi: 'SỐ CMND/BẰNG LÁI XE', en: `ID CARD / DRIVER'S LICENSE NUMBER`},language) : checkLanguage({vi: 'HỘ CHIẾU', en: 'PASSPORT'},language)}</Text>
                 <View
                 style={{marginTop: 8}}>
-                    <View style={{position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
-                        <View style={walletStyles.maskOpacity}></View>
+                    <View style={{backgroundColor: display === 1 ? '#fff' : null,position: 'relative',height: 40, justifyContent: 'center', paddingHorizontal: 19}}>
+                    {display === 1 ? null : <View style={walletStyles.maskOpacity}></View>}
                         {/* <Text style={[mainStyles.fontsize14, mainStyles.color2]}>{SelectedSex === 0 ? 'Nam' : 'Nữ'}</Text> */}
-                        <TextInput onChangeText={(value) => setIDNumber(value)} placeholder={SelectedID === 0 ? checkLanguage({vi: 'Nhập Số CMND/Bằng lái xe', en: `Enter ID card / Driver's license number`},language) : checkLanguage({vi: 'Hộ chiếu', en: `Passport`},language)} placeholderTextColor='#fff'  style={[mainStyles.fontsize14, mainStyles.color2]}/>
+                        <TextInput onChangeText={(value) => setIDNumber(value)} placeholder={SelectedID === 0 ? checkLanguage({vi: 'Nhập Số CMND/Bằng lái xe', en: `Enter ID card / Driver's license number`},language) : checkLanguage({vi: 'Hộ chiếu', en: `Passport`},language)} placeholderTextColor={display === 1 ? '#8a8c8e' : '#fff'}  style={[mainStyles.fontsize14, mainStyles.color2,  {color: display === 1 ? '#283349' : '#fff'}]}/>
                     </View>
                 </View>
                 

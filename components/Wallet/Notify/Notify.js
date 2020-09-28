@@ -7,13 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import Notification from './Notification'
 import { storage } from '../../../helper'
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 
 export default function App(){
     const [Width , setWidth] = useState(0)
     const [CreateDate, setCreateDate] = useState('')
     const route = useRoute();
+
+    const navigation = useNavigation()
 
     const {NewsData} = route.params ?? {}
     const listnoti = useSelector(state => state.notify)
@@ -44,7 +46,9 @@ export default function App(){
                     if(item.content_vi !== undefined && item.meta_vi !== undefined){
                        return (
                             <Notification
-                                idnews={item._id}
+                                toPress={() => navigation.navigate('News',{
+                                    NewsID: item._id
+                                })}
                                 title={item.title_vi}
                                 content={item.meta_vi  + '...'}
                                 datetime={

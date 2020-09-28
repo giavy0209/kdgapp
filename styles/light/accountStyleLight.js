@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     profileBar : {
         padding: 13,
-        backgroundColor: '#1b2232',
+        backgroundColor: '#ffff',
         flex: 1,
         flexDirection:'row',
         alignItems: 'center',
@@ -61,8 +61,9 @@ const styles = StyleSheet.create({
     },
     profileBarEmail: {
         marginLeft: 10,
-        color: '#fff',
-        fontSize: 12
+        color: '#283349',
+        fontSize: 14,
+        fontWeight: 'bold'
     },
     touchPen: {
         width: 36,
@@ -89,8 +90,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        opacity: .4,
-        backgroundColor: '#283349'
+        backgroundColor: '#fff'
     },
     blockSetting: {
         marginTop: 20,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     settingTextLeft: {
-        color: '#ddd9d8',
+        color: '#283349',
         fontSize: 13,
         marginLeft: 18
     },
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     },
     settingBorder: {
         borderTopWidth: 1,
-        borderTopColor: '#343a48'
+        borderTopColor: '#e8e8e8'
     },
     listFollow: {
         flex: 1,

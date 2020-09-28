@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {View, Text, Image, TextInput, FlatList, ScrollView, SafeAreaView} from 'react-native'
 import { mainStyles, stakingStyle } from '../../styles'
+import { stakingStyleLight } from '../../styles/light'
 import {HeaderStaking} from '../Header'
 import { JoinButton } from '../Button'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -71,6 +72,12 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                             />)
 
     },[])
+    
+    // -------------------style------------------------------
+
+var StakingStyle = display === 1 ? stakingStyleLight : stakingStyle
+
+// ------------------------------------------------------
 
     return (
         
@@ -78,30 +85,30 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
 <View style={mainStyles.container}>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
-        <View style={stakingStyle.contentContainer}>
+        <View style={StakingStyle.contentContainer}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> 
-                <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: 13 }}>Staking</Text>
+                <Text style={{color: display === 1 ?  '#989a9c' : 'rgba(255,255,255,0.6)', fontSize: 13 }}>Staking</Text>
                 <TouchableOpacity
                     onPress={() => 
                     navigation.navigate('StakingHistory')} 
                 >
-                    <Text style={{color: '#d7ae07', fontSize: 13 }}>{checkLanguage({vi: 'Lịch sử Staking >', en: 'Staking history >'},language)}</Text>
+                    <Text style={{color: display === 1 ?  '#fac800' :'#d7ae07', fontSize: 13 }}>{checkLanguage({vi: 'Lịch sử Staking >', en: 'Staking history >'},language)}</Text>
                 </TouchableOpacity>
             </View>
-            <View style={stakingStyle.tableContainer}>
+            <View style={StakingStyle.tableContainer}>
                 {/* -----S-Header------ */}
-                <View style={stakingStyle.tableHeaderContainer}>
+                <View style={StakingStyle.tableHeaderContainer}>
                     <View style={{width: '24%'}}>
-                        <Text style={stakingStyle.titleHeader} >Token</Text>
+                        <Text style={StakingStyle.titleHeader} >Token</Text>
                     </View>
                     <View style={{width: '24%'}}>
-                        <Text style={stakingStyle.titleHeader} >{checkLanguage({vi: 'Thời gian khoá', en: 'Locking time'},language)}</Text>
+                        <Text style={StakingStyle.titleHeader} >{checkLanguage({vi: 'Thời gian khoá', en: 'Locking time'},language)}</Text>
                     </View>
                     <View style={{width: '26%'}}>
-                        <Text style={stakingStyle.titleHeader} >{checkLanguage({vi: 'Tỷ lệ lợi nhuận hàng năm dự kiến', en: 'Expected annual rate of return'},language)}</Text>
+                        <Text style={StakingStyle.titleHeader} >{checkLanguage({vi: 'Tỷ lệ lợi nhuận hàng năm dự kiến', en: 'Expected annual rate of return'},language)}</Text>
                     </View>
                     <View style={{width: '26%'}}> 
-                        <Text style={stakingStyle.titleHeader} ></Text>
+                        <Text style={StakingStyle.titleHeader} ></Text>
                     </View>
                 </View>
                 {/* -----E-Header------ */}
@@ -109,19 +116,19 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                  <FlatList
                             data={list}
                             renderItem={({item}) => (
-                                <View style={stakingStyle.tableContentContainer}>
+                                <View style={StakingStyle.tableContentContainer}>
                                     <View style={{width: '24%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                                         <Image
                                             style={{width: 33, height: 33}}
                                             source={item.icon}
                                         />
-                                        <Text style={stakingStyle.titleContent} >{item.token}</Text>
+                                        <Text style={StakingStyle.titleContent} >{item.token}</Text>
                                     </View>
                                     <View style={{width: '24%', justifyContent: 'center', alignItems: 'center'}}>
-                                        <Text style={stakingStyle.titleContent} >{item.time}</Text>
+                                        <Text style={StakingStyle.titleContent} >{item.time}</Text>
                                     </View>
                                     <View style={{width: '26%', justifyContent: 'center', alignItems: 'center'}}>
-                                        <Text style={stakingStyle.titleContent} >{item.ratio}</Text>
+                                        <Text style={StakingStyle.titleContent} >{item.ratio}</Text>
                                     </View>
         
                                         <View style={{width: '26%', justifyContent: 'flex-end', alignItems: 'center'}}> 

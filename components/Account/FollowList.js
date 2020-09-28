@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import {View, Text, Image, TouchableOpacity, Linking, Button} from 'react-native'
 
 import {accountStyle} from '../../styles'
+import {accountStyleLight} from '../../styles/light'
 
 import twitter from '../../assets/images/twitter.png'
 import instagram from '../../assets/images/instagram.png'
@@ -10,6 +11,7 @@ import medium from '../../assets/images/medium.png'
 import youtube from '../../assets/images/youtube.png'
 import zalo from '../../assets/images/zalo.png'
 import telegram from '../../assets/images/FolllowList/telegram.png'
+import { useSelector } from 'react-redux'
 
 // import zalo from '../../assets/images/FolllowList/zalo.png'
 
@@ -31,6 +33,8 @@ const ListFollow = [
 const supportedURL = "https://google.com";
 
 
+
+
 const OpenURLButton = ({ url, icon, key }) => {
   const handlePress = useCallback(async () => {
     // Checking if the link is supported for links with custom URL scheme.
@@ -50,17 +54,24 @@ const OpenURLButton = ({ url, icon, key }) => {
     </TouchableOpacity>
 };
 
+
+
+
 export default function App(){
 
+const display = useSelector(state => state.display)
 
+      // -------------------style------------------------------
 
-    
+  var AccountStyle = display === 1 ? accountStyleLight : accountStyle
+
+  // ------------------------------------------------------
 
     return(
         <>
-        <View style={accountStyle.listFollow}>
+        <View style={AccountStyle.listFollow}>
 
-            <View style={accountStyle.maskOpacity}/>
+            <View style={AccountStyle.maskOpacity}/>
             {
             ListFollow.map((el,index)=>
                 <OpenURLButton url={el.link} icon={el.icon} key={index}  />

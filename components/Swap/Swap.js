@@ -27,6 +27,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const [KDGReward, setKDGReward] = useState('Loading...')
     const dispatch = useDispatch();
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
+
 
     const isFocused = useIsFocused();
     const navigation = useNavigation()
@@ -126,25 +128,25 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 <View style={mainStyles.container}>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
         <View style={{padding: 15}}>
-            <View style={{backgroundColor: 'rgba(40,51,73,0.4)'}}>
+            <View style={{backgroundColor: display === 1 ? '#ffff' :'rgba(40,51,73,0.4)'}}>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{flex: 3}}>
-                       <View style={{padding: 25,borderColor: 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, borderRightWidth: 0.8, justifyContent: 'center', alignItems: 'center'}}>
+                       <View style={{padding: 25,borderColor: display === 1 ? '#eeeceb' : 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, borderRightWidth: 0.8, justifyContent: 'center', alignItems: 'center', height: 120}}>
                           <View style={{alignItems: 'center'}}>
                               <Image style={{width: 35, height: 35}} source={coin}/>
-                              <Text style={{color: '#fff', fontSize: 15, paddingTop: 5}}>KDG Reward</Text>
+                              <Text style={{color: display === 1 ? '#283349' : '#fff', fontSize: 15, paddingTop: 5}}>KDG Reward</Text>
                           </View>
                        </View>
                        <View style={{position: 'absolute', top: 95, left: 125}}>
-                            <View style={{backgroundColor: '#fff', borderRadius: 45, width: 35, height: 35, justifyContent: 'center', alignItems: 'center'}}>
+                            <View style={{backgroundColor: display === 1 ? '#ddd9d8' : '#fff', borderRadius: 45, width: 35, height: 35, justifyContent: 'center', alignItems: 'center', zIndex: 999}}>
                                 <Text style={{fontSize: 20, color: 'rgba(0,0,0,0.5)'}}>=</Text>
                             </View>
                        </View>
                     </View>
                     <View style={{flex: 5}}>
-                        <View style={{padding: 25,borderColor: 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, justifyContent: 'center'}}>
+                        <View style={{padding: 25,borderColor: display === 1 ? '#eeeceb' :'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, justifyContent: 'center', height: 120}}>
                             <View>
-                                <Text style={{color: 'rgba(255,255,255,0.3)', fontWeight: 'bold'}}>{checkLanguage({vi: 'Trả', en: 'Pay'},language)}</Text>
+                                <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255,0.3)', fontWeight: 'bold'}}>{checkLanguage({vi: 'Trả', en: 'Pay'},language)}</Text>
                                <TextInput 
                                     value={ValueSwap.toString()}
                                     onChangeText={value => setValueSwap(value)}
@@ -157,17 +159,17 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 </View>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{flex: 3}}>
-                       <View style={{padding: 25,borderColor: 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, borderRightWidth: 0.8, justifyContent: 'center', alignItems: 'center'}}>
+                       <View style={{padding: 25,borderColor: display === 1 ? '#eeeceb' : 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, borderRightWidth: 0.8, justifyContent: 'center', alignItems: 'center', height: 120}}>
                           <View style={{alignItems: 'center'}}>
                               <Image style={{width: 35, height: 35}} source={coin}/>
-                              <Text style={{color: '#fff', fontSize: 15, paddingTop: 5}}>KDG</Text>
+                              <Text style={{color: display === 1 ? '#283349' : '#fff', fontSize: 15, paddingTop: 5}}>KDG</Text>
                           </View>
                        </View>
                     </View>
                     <View style={{flex: 5}}>
-                        <View style={{padding: 25,borderColor: 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, justifyContent: 'center'}}>
+                        <View style={{padding: 25,borderColor: display === 1 ? '#eeeceb' : 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, justifyContent: 'center', height: 120}}>
                             <View>
-                                <Text style={{color: 'rgba(255,255,255,0.3)', fontWeight: 'bold'}}>{checkLanguage({vi: 'Nhận', en: 'Receive'},language)}</Text>
+                                <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255,0.3)', fontWeight: 'bold'}}>{checkLanguage({vi: 'Nhận', en: 'Receive'},language)}</Text>
                                <TextInput 
                                     value={ValueSwap.toString()}
                                     editable={false}
@@ -186,13 +188,13 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
             <View style={{paddingTop: 10}}>
                 <View>
-                    <Text style={{color: '#fff', textDecorationLine: 'underline', fontStyle: 'italic'}}>{checkLanguage({vi: 'Lưu ý:', en: `Note:`},language)}</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  : '#fff', textDecorationLine: 'underline', fontStyle: 'italic'}}>{checkLanguage({vi: 'Lưu ý:', en: `Note:`},language)}</Text>
                 </View>
                 <View style={{padding: 10}}>
-                    <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 14}}>{checkLanguage({vi: 'Tài khoản đăng ký trước ngày 1/9 sẽ được đổi tối đa ', en: 'Account registration before 1/9/2020 are able to swap the reward maximum '},language)}<Text style={{color: '#fac800', fontWeight: 'bold', fontStyle: 'italic'}}>{checkLanguage({vi: '20 KDG Reward/ ngày', en: '20KDG / day'},language)}</Text>, {checkLanguage({vi: 'duy nhất 1 lần / ngày', en: 'only 1 time / day'},language)}</Text>
-                    <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
-                    <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 20}}>{checkLanguage({vi: 'Tài khoản đăng ký sau ngày 1/9 sẽ được quy đổi thành KDG token khi bạn ', en: 'Account registration after 1/9/2020 are able to swap the reward when '},language)}<Text style={{color: '#fac800', fontWeight: 'bold', fontStyle: 'italic'}}>{checkLanguage({vi: 'có đủ 25 KDG reward, tối đa 50 KDG reward ', en: 'being enough 25KDG / day, maximum 50KDG / day'},language)}</Text>, {checkLanguage({vi: 'duy nhất 1 lần / ngày', en: 'only 1 time / day'},language)}</Text>
-                    <Text style={{color: 'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14}}>{checkLanguage({vi: 'Tài khoản đăng ký trước ngày 1/9 sẽ được đổi tối đa ', en: 'Account registration before 1/9/2020 are able to swap the reward maximum '},language)}<Text style={{color: '#fac800', fontWeight: 'bold', fontStyle: 'italic'}}>{checkLanguage({vi: '20 KDG Reward/ ngày', en: '20KDG / day'},language)}</Text>, {checkLanguage({vi: 'duy nhất 1 lần / ngày', en: 'only 1 time / day'},language)}</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 20}}>{checkLanguage({vi: 'Tài khoản đăng ký sau ngày 1/9 sẽ được quy đổi thành KDG token khi bạn ', en: 'Account registration after 1/9/2020 are able to swap the reward when '},language)}<Text style={{color: '#fac800', fontWeight: 'bold', fontStyle: 'italic'}}>{checkLanguage({vi: 'có đủ 25 KDG reward, tối đa 50 KDG reward ', en: 'being enough 25KDG / day, maximum 50KDG / day'},language)}</Text>, {checkLanguage({vi: 'duy nhất 1 lần / ngày', en: 'only 1 time / day'},language)}</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
                 </View>
             </View>
 

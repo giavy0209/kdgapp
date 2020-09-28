@@ -6,11 +6,11 @@ import logo from '../../../assets/images/logo.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { useNavigation } from '@react-navigation/native'
-export default function Notification({status, title, content, datetime, idnews}){
+export default function Notification({status, title, content, datetime, toPress}){
     const [Width , setWidth] = useState(0)
     return (
         <>
-        <View style={notifyStyles.notify}>
+        <TouchableOpacity onPress={toPress} style={notifyStyles.notify}>
             <Image source={logo} style={{width: 25,padding: 0, height: 18 ,alignSelf: 'flex-start',resizeMode: 'contain'}} />
             <View style={{marginLeft: 8, width: Width - 25 - 8 ,borderBottomWidth:1,borderBottomColor: '#29303d', paddingBottom:12, width : '100%'}}>
                 <Text style={{includeFontPadding: false, color: '#fff', fontSize: 14,  paddingRight: 10}}>{title}</Text>
@@ -20,7 +20,7 @@ export default function Notification({status, title, content, datetime, idnews})
                 { status === true ? <FontAwesomeIcon  style={{position: 'absolute', right: 20}} color='#FFF862' size={8} icon={faCircle}/> 
                 : null
                 }
-        </View>
+        </TouchableOpacity>
         </>
     )
 }

@@ -27,6 +27,8 @@ export default function App(){
     const dispatch = useDispatch()
     const { SelectedID, SelectedCountry, SelectedSex, Name, IDNumber } = useRoute().params;
     const language = useSelector(state => state.language)
+
+    const display = useSelector(state => state.display)
     const screenHeight = useSelector(state => state.height)
     const [Height, setHeight] =useState(0)
     const [ContentHeight, setContentHeight] =useState(0)
@@ -203,7 +205,7 @@ export default function App(){
             <View 
             onLayout={e=>setContentHeight(e.nativeEvent.layout.height)}
             style={[mainStyles.container,{paddingHorizontal: 14, paddingVertical: 10,}]}>
-                <Text style={[mainStyles.color1, mainStyles.fontsize13]}>{checkLanguage({vi: 'Vui lòng sử dụng định dạng JPG., JPEG., PNG. Kích thước tệp tối đa = 2MB', en: 'Please use the format JPG., JPEG., PNG. Maximum file size = 2MB'},language)}</Text>
+                <Text style={[mainStyles.color1, mainStyles.fontsize13, {color: display === 1? '#364155' : '#8a8c8e'}]}>{checkLanguage({vi: 'Vui lòng sử dụng định dạng JPG., JPEG., PNG. Kích thước tệp tối đa = 2MB', en: 'Please use the format JPG., JPEG., PNG. Maximum file size = 2MB'},language)}</Text>
                 <Text style={[mainStyles.color1, mainStyles.fontsize13]}>{checkLanguage({vi: 'Để đảm bảo quá trình xác minh được thuận tiện, vui lòng không che hoặc làm nhoè ảnh', en: 'To ensure the verification process most quickly, please do not hide or blur the image'},language)}</Text>
 
                 <View style={{flexDirection:'row', alignItems: 'center', marginTop: 33, justifyContent:'space-between', position: 'relative'}}>

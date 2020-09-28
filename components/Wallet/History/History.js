@@ -6,7 +6,7 @@ import {mainStyles} from '../../../styles'
 import {Header2} from '../../Header'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faAngleDown, faChevronLeft, faChevronRight, faCopy, faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faAngleLeft, faAngleRight, faChevronLeft, faChevronRight, faCopy, faFilter } from '@fortawesome/free-solid-svg-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import Select from './Select'
 import HistoryButton from '../../Button/HistoryButton'
@@ -18,6 +18,20 @@ import WebView from 'react-native-webview';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+const paginate = function (array, index, size) {
+    // transform values
+    index = Math.abs(parseInt(index));
+    index = index > 0 ? index - 1 : index;
+    size = parseInt(size);
+    size = size < 1 ? 1 : size;
+
+    // filter
+    return [...(array.filter((value, n) => {
+        return (n >= (index * size)) && (n < ((index+1) * size))
+    }))]
+}
+
 export default function App({setOutScrollView, setOutScrollViewTop}){
 
     const [isModalVisible, setModalVisible] = useState(false);
@@ -40,7 +54,9 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
     
     const [Loading, setLoading] = useState(false);
-    
+
+    const [Skip, setSkip] = useState(0)
+  
 
     const [SelectType, setSelectType] = useState(null)
     const [SelectedHistory, setSelectedHistory] = useState('Tất cả')
@@ -55,7 +71,6 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
     const [Transaction, setTransaction] = useState([]);
 
-    const [Skip, setSkip] = useState(1)
     useEffect(()=>{
         if(SelectType !== null){
             setOutScrollView(<Select 
@@ -75,9 +90,13 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
           var type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase() 
           dispatch(asyncGetBlockchainTransaction(type, coinAddress, 10,'2016-08-01'))
           .then((res)=>{
+      
             if(type === 'usdt' || type === 'eth'|| type === 'knc' || type === 'mch'){
                 setLoading(false)
                 setTransaction(res.data.result)
+            }else if(coinName === 'TOMO'){
+                setLoading(false)
+                setTransaction(res.data.items)
             }else{
                 setLoading(false)
                 setTransaction(res.data.data)
@@ -93,16 +112,21 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     },[])
 
 
-    // const leftArrowHandler = (val) => { 
-    //     if(val > 5){
-    //         setSkip(val-5)
-     
-    //     }
-    // }
+    const rightArrowHandler = (skip) => { 
+        var tranLength = Transaction ? Transaction.length ? Transaction.length : -1 : -1
 
-    // const rightArrowHandler = (val) => {
-    //     setSkip(val+5)
-    // }
+        if(tranLength !== -1){
+            if(skip < tranLength/5){
+                setSkip(skip+1)
+            }
+        }
+    }
+
+    const leftArrowHandler = (skip) => {
+        if(skip > 0){
+            setSkip(skip-1)
+        }
+    }
 
     // let JS = '<script src="https://widgets.coingecko.com/coingecko-coin-ticker-widget.js"></script>';
 
@@ -113,7 +137,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
         toggleModal()
 
     }
-    console.log("sdf" + Transaction)
+
 
     const percent24h = coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.percent24h
     return (
@@ -235,9 +259,9 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         </View> */}
                     </View>
                     {  Loading === true ?  <ActivityIndicator size="small" color="#fac800" />
-                    : Transaction !== [] ?
+                    : Transaction ? Transaction.length > 0 ?
                     <FlatList
-                    data={Transaction}
+                    data={paginate(Transaction, Skip, 5)}
                     renderItem={({item}) => 
                     {
                         if(coinName === 'KNC' || coinName === 'ETH' || coinName === 'USDT' || coinName === 'MCH'){
@@ -245,7 +269,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                                 <HistoryButton 
                                     toPress={() => navigation.navigate('HistoryDetail', {
                                         coin_name: coinName,
-                                        type: item.from === coinAddress ? 'withdraw' : 'deposit',
+                                        type: item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit',
                                         status: 'success',
                                         fromAddress: item.from,
                                         toAddress: item.to,
@@ -262,7 +286,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
 
                                     })}
-                                    type={item.from === coinAddress ? 'withdraw' : 'deposit'}
+                                    type={item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
                                     status = 'success'
                                     datetime={ 
                                                 (new Date((item.timeStamp)*1000)).getHours().toString()  + ":" +
@@ -276,13 +300,40 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                                     coin_name={coinName}
                 
                                 />
+                             
                             )
-                        } else{
+                        } else if(coinName === 'TOMO') {
+
                             return (
                                 <HistoryButton 
                                     toPress={() => navigation.navigate('HistoryDetail', {
                                         coin_name: coinName,
-                                        type: item.transferFromAddress === coinAddress ? 'withdraw' : 'deposit',
+                                        type: item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit',
+                                        status: item.status === true ? 'success' : 'failed',
+                                        fromAddress: item.from,
+                                        toAddress: item.to,
+                                        block: item.blockNumber,
+                                        hash: item.hash,
+                                        amount: (item.value)/Math.pow(10, 18),
+                                        datetime:            
+                                        (item.timestamp.toString())
+
+
+                                    })}
+                                    type={item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
+                                    status={item.status === true ? 'success' : 'failed'}
+                                    datetime={(item.timestamp.toString())}
+                                    value= {(item.value)/Math.pow(10, 18)}
+                                    coin_name={coinName}
+                    
+                                />
+                            )
+                        }else{
+                            return (
+                                <HistoryButton 
+                                    toPress={() => navigation.navigate('HistoryDetail', {
+                                        coin_name: coinName,
+                                        type: item.transferFromAddress.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit',
                                         status: item.confirmed === true ? 'success' : 'failed',
                                         fromAddress: item.transferFromAddress,
                                         toAddress: item.transferToAddress,
@@ -299,7 +350,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
 
 
                                     })}
-                                    type={item.transferFromAddress === coinAddress ? 'withdraw' : 'deposit'}
+                                    type={item.transferFromAddress.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
                                     status={item.confirmed === true ? 'success' : 'failed'}
                                     datetime={ 
                                                 (new Date(item.timestamp)).getHours().toString()  + ":" +
@@ -317,11 +368,27 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         }
                         
                     }
-                   
+                    
                     
                     }
                     /> : <Text style={{color: 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>{checkLanguage({vi: 'Trống', en: `Empty`},language)}</Text>
+                    : <Text style={{color: 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>{checkLanguage({vi: 'Trống', en: `Empty`},language)}</Text>
                      
+                    }
+                    
+                    {
+                        Transaction ? Transaction.length ? Transaction.length > 0 ?
+                        <View style={{paddingTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', paddingBottom: 20}}>
+                            <TouchableOpacity onPress={() => leftArrowHandler(Skip)}>
+                                <FontAwesomeIcon size={40} color="rgba(255,255,255,0.6)" icon={faAngleLeft}/>
+                            </TouchableOpacity>
+                                <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: 20, paddingHorizontal: 20}}>{Skip+1}</Text>
+                            <TouchableOpacity onPress={() =>  rightArrowHandler(Skip)}>
+                                <FontAwesomeIcon size={40} color="rgba(255,255,255,0.6)" icon={faAngleRight}/>
+                            </TouchableOpacity>
+                        </View>
+                        : null : null : null
+
                     }
                     
                 </View>

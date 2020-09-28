@@ -22,6 +22,8 @@ export default function App(){
     const [isModalVisible2, setModalVisible2] = useState(false);
 
     const language = useSelector(state => state.language)
+
+    const display = useSelector(state => state.display)
   
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
@@ -127,7 +129,7 @@ export default function App(){
                 {status2FA === false ?
                 (<View style={{alignItems: 'center'}}>
                     <View>
-                        <Text style={{color: 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Scan tại đây để xác thực', en: 'Scan here to authenticate'},language)}</Text>
+                        <Text style={{color: display === 1 ? '#8a8c8e'  : 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Scan tại đây để xác thực', en: 'Scan here to authenticate'},language)}</Text>
                     </View>
                     <View>
                     <QRCode
@@ -136,7 +138,7 @@ export default function App(){
                     />
                     </View>
                     <View>
-                        <Text style={{color: 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Hoặc sao chép mã tại đây', en: 'Or copy the code here'},language)}</Text>
+                        <Text style={{color: display === 1 ? '#8a8c8e'  : 'rgba(255,255,255,0.7)'}}>{checkLanguage({vi: 'Hoặc sao chép mã tại đây', en: 'Or copy the code here'},language)}</Text>
                     </View>
                     
                     <View>

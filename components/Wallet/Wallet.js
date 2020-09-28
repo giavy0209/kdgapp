@@ -535,7 +535,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
             <View style={WalletStyle.balance}>
               <View style={WalletStyle.maskOpacity}></View>
               <View style={WalletStyle.totalBalanceAndVisible}>
-                <Text style={WalletStyle.totalBalance}>{VisibleBalance ? hiddenBalance : isNaN(AvailableBalance.usd) ||  AvailableBalance.usd < 0.0000000000000001 ? 'Loading...' : TotalBalance.btc + " BTC"}</Text>
+                <Text style={WalletStyle.totalBalance}>{VisibleBalance ? hiddenBalance : isNaN(TotalBalance.usd) ? 'Loading...' : TotalBalance.btc + " BTC"}</Text>
                 <TouchableOpacity onPress={()=>setVisibleBalance(!VisibleBalance)}>
                   <View style={{padding: 13}}>
                     <FontAwesomeIcon style={WalletStyle.visibleButton} icon={VisibleBalance ? faEyeSlash : faEye}/>
@@ -545,7 +545,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
               <View style={WalletStyle.availableAndLock}>
                 <View style={WalletStyle.availableAndLockBlock}>
                   <Text style={WalletStyle.textAvailableAndLock}>{checkLanguage({vi: 'Tài sản sẵn có', en: 'Available Asset'},language)}</Text>
-                  <Text style={WalletStyle.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  isNaN(AvailableBalance.usd) || AvailableBalance.usd < 0.00000000000000001 ? 'Loading...' :
+                  <Text style={WalletStyle.quantityAvailableAndLock}>{VisibleBalance ? hiddenBalance :  isNaN(AvailableBalance.usd)  ? 'Loading...' :
                     typeCurrency === 1 ? 
                     AvailableBalance.vnd + ' ₫' : 
                     typeCurrency === 2 ?  

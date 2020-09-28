@@ -19,6 +19,7 @@ export default function App(){
     const navigation = useNavigation()
 
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
 
     const { status2FA } = route.params;
  
@@ -44,7 +45,7 @@ export default function App(){
                     <Text style={{color: 'rgba(255,255,255,0.8)', fontSize: 16}}></Text>
                 </View>
                 <View style={{alignItems: 'center', paddingTop: 10}}>
-                    <Text style={{color: 'rgba(255,255,255,0.5)'}}>{status2FA === true ? checkLanguage({vi: 'Bạn đã cài đặt 2FA, muốn huỷ vui lòng xác nhận dưới đây', en: 'You have 2FA settings. If you want to cancel, please confirm below'},language) : 
+                    <Text style={{color: display === 1 ? '#283349'  :'rgba(255,255,255,0.5)'}}>{status2FA === true ? checkLanguage({vi: 'Bạn đã cài đặt 2FA, muốn huỷ vui lòng xác nhận dưới đây', en: 'You have 2FA settings. If you want to cancel, please confirm below'},language) : 
                     checkLanguage({vi: 'Bạn chưa cài đặt 2FA, vui lòng nhấn nút dưới đây để kích hoạt', en: 'You do not have 2FA settings, please press the button below to activate'},language)}</Text>
                 </View>
                 <TouchableOpacity

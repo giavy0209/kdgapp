@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import {View, Text, TouchableOpacity, Image, FlatList, Alert, TextInput, ActivityIndicator} from 'react-native'
 import { mainStyles, stakingStyle } from '../../../styles'
+import { stakingStyleLight } from '../../../styles/light'
 import {Header2} from '../../Header'
 import { JoinButton } from '../../Button'
 import coin from '../../../assets/images/coin.png'
@@ -24,11 +25,14 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height
 
 
+
 export default function App({setOutScrollViewTop, setOutScrollView}){
     const dispatch = useDispatch();
     const [ValueStaking, setValueStaking] = useState(0);
     const [isSelected, setSelection] = useState(false);
     const language = useSelector(state => state.language)
+
+    const display = useSelector(state => state.display)
 
     const [ToggleCheckBox, setToggleCheckBox] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
@@ -105,6 +109,14 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const okPopupHandler = () => {
         setModalVisible(false)
     }
+
+
+
+ // -------------------style------------------------------
+
+ var StakingStyle = display === 1 ? stakingStyleLight : stakingStyle
+
+ // ------------------------------------------------------
     return (
         
         <>
@@ -112,45 +124,45 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 <View style={mainStyles.container}>
 <PopupCongras title={checkLanguage({vi: 'Chúc mừng!', en: 'Congrats!'},language)} content={checkLanguage({vi: 'Chúc mừng bạn đã tham gia Staking thành công', en: `You've joined KDG Staking successfully!`},language)} toPress={() => setModalVisible(false)} isModalVisible={isModalVisible}/>
     <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
-        <View style={{padding: (windowWidth*windowHeight)/29376, backgroundColor: 'rgba(29,37,54,0.8)', marginBottom: 13}}>
+        <View style={{padding: (windowWidth*windowHeight)/29376, backgroundColor: display === 1? '#ffff'  :'rgba(29,37,54,0.8)', marginBottom: 13}}>
             <View style={{alignItems: 'center'}}>
                 <Image
                     source={require('../../../assets/images/coin.png')}
                 />
-                <Text style={stakingStyle.coinName}>KDG</Text>
+                <Text style={StakingStyle.coinName}>KDG</Text>
                 <View>
-                    <View style={stakingStyle.timeContainer}>
-                        <Text style={{...stakingStyle.timeName, textAlign: 'left'}}>{checkLanguage({vi: 'Thời gian bắt đầu', en: 'Locking start time'},language)}</Text>
-                        <Text style={{...stakingStyle.timeName, textAlign: 'center'}}>{checkLanguage({vi: 'Thời gian mở khoá', en: 'Unlocking time'},language)}</Text>
-                        <Text style={{...stakingStyle.timeName, textAlign: 'right'}}>{checkLanguage({vi: 'Thời gian phân bổ gốc và lãi', en: 'Time to allocate principal and interest'},language)}</Text>
+                    <View style={StakingStyle.timeContainer}>
+                        <Text style={{...StakingStyle.timeName, textAlign: 'left'}}>{checkLanguage({vi: 'Thời gian bắt đầu', en: 'Locking start time'},language)}</Text>
+                        <Text style={{...StakingStyle.timeName, textAlign: 'center'}}>{checkLanguage({vi: 'Thời gian mở khoá', en: 'Unlocking time'},language)}</Text>
+                        <Text style={{...StakingStyle.timeName, textAlign: 'right'}}>{checkLanguage({vi: 'Thời gian phân bổ gốc và lãi', en: 'Time to allocate principal and interest'},language)}</Text>
                     </View>
                         <Image
                             resizeMode={'cover'}
                             style={{ width: (windowHeight/60)*25.75, height: windowHeight/60 }}
                             source={require('../../../assets/images/timeline.png')}
                         />
-                    <View style={stakingStyle.dateContainer}>
-                        <Text style={{...stakingStyle.dateName, textAlign: 'left'}}>{lockDate}</Text>
-                        <Text style={{...stakingStyle.dateName, textAlign: 'center' }}>{unLockdate}</Text>
-                        <Text style={{...stakingStyle.dateName, textAlign: 'right' }}>{endDate}</Text>
+                    <View style={StakingStyle.dateContainer}>
+                        <Text style={{...StakingStyle.dateName, textAlign: 'left'}}>{lockDate}</Text>
+                        <Text style={{...StakingStyle.dateName, textAlign: 'center' }}>{unLockdate}</Text>
+                        <Text style={{...StakingStyle.dateName, textAlign: 'right' }}>{endDate}</Text>
                     </View>
                 </View>
             </View>
         </View>
         
-        <View style={stakingStyle.mainStakingContainer}>
-            <View style={stakingStyle.stakingNumberContainer}>
+        <View style={StakingStyle.mainStakingContainer}>
+            <View style={StakingStyle.stakingNumberContainer}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}> 
-                    <View style={stakingStyle.numberOrderContainer}>
+                    <View style={StakingStyle.numberOrderContainer}>
                         <Text style={{color: '#fff'}}>1</Text>
                     </View>
-                    <Text style={{paddingLeft: 10, color: '#fff'}}>{checkLanguage({vi: 'Số tiền staking', en: 'Staking quantity'},language)}</Text>
+                    <Text style={{paddingLeft: 10, color: display === 1 ? '#283349'  :'#fff'}}>{checkLanguage({vi: 'Số tiền staking', en: 'Staking quantity'},language)}</Text>
                 </View>
 
 
                 <View>
-                    <Text style={stakingStyle.dashSymbol}>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </Text>
-                    <TextInput onEndEditing={edittingHandler} style={[stakingStyle.valueStaking, {width: '100%'}]}>{ValueStaking}</TextInput>
+                    <Text style={StakingStyle.dashSymbol}>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </Text>
+                    <TextInput onEndEditing={edittingHandler} style={[StakingStyle.valueStaking, {width: '100%'}]}>{ValueStaking}</TextInput>
                 </View>
                 <Text style={{color: '#rgba(138,140,142, 0.8)', color: '#fff'}}>KDG</Text>
             </View>
@@ -177,7 +189,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                             maximumValue={50000}
                             thumbTintColor='#fac800'
                             minimumTrackTintColor='#fac800'
-                            maximumTrackTintColor='#fff'
+                            maximumTrackTintColor='#989a9c'
                             value={parseInt(ValueStaking)}
                             onValueChange={value => setValueStaking(value)}
                     />
@@ -189,24 +201,24 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center', paddingTop: 10}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}> 
-                    <View style={stakingStyle.numberOrderContainer}>
+                    <View style={StakingStyle.numberOrderContainer}>
                         <Text style={{color: '#fff'}}>2</Text>
                     </View>
-                    <Text style={{paddingLeft: 10, color: '#fff'}}>{checkLanguage({vi: 'Lãi suất tham chiếu năm', en: 'Estimated annual interest rate'},language)}</Text>
+                    <Text style={{paddingLeft: 10, color: display === 1 ? '#283349' : '#fff'}}>{checkLanguage({vi: 'Lãi suất tham chiếu năm', en: 'Estimated annual interest rate'},language)}</Text>
                 </View>
                 <Text style={{color: '#fff', paddingLeft: 10, fontSize: 20}}>30%</Text>
             </View>
-            <View style={stakingStyle.interestReceiveContainer}>
+            <View style={StakingStyle.interestReceiveContainer}>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={stakingStyle.interestReceive}>{checkLanguage({vi: 'Số tiền lãi và gốc nhận được', en: 'The amount of interest and principal received'},language)}</Text>
-                    <Text style={stakingStyle.interestReceiveUnit}>{(1.05*ValueStaking).toFixed(2)} KDG</Text>
+                    <Text style={StakingStyle.interestReceive}>{checkLanguage({vi: 'Số tiền lãi và gốc nhận được', en: 'The amount of interest and principal received'},language)}</Text>
+                    <Text style={StakingStyle.interestReceiveUnit}>{(1.05*ValueStaking).toFixed(2)} KDG</Text>
                 </View>
             </View>
         </View>
         <View style={{padding: (windowWidth*windowHeight)/29376}}>
-            <View style={stakingStyle.iconInfoContainer}>
+            <View style={StakingStyle.iconInfoContainer}>
                 <FontAwesomeIcon size={20} color="#cb0d0d" icon={faInfoCircle}/>
-                <Text style={stakingStyle.iconInfo}>{checkLanguage({vi: 'Vui lòng đọc quỹ quy tắc trước khi tham gia', en: 'Please read the following Staking rules carefully before join'},language)}</Text>
+                <Text style={StakingStyle.iconInfo}>{checkLanguage({vi: 'Vui lòng đọc quỹ quy tắc trước khi tham gia', en: 'Please read the following Staking rules carefully before join'},language)}</Text>
             </View>
             <View>
             <FlatList
@@ -216,22 +228,22 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                     {key: `(3) ${checkLanguage({vi: 'Bạn không thể rút, giao dịch hay sử dụng số lượng KDG trong thời gian tham gia Staking', en: 'Trade, withdrawal and pre-unlocking are unvailable during locking period'},language)}`},
                     {key: `(4) ${checkLanguage({vi: 'Khi thời gian tham gia Staking kết thúc, cả gốc và lãi sẽ được mở khóa vào tài khoản của bạn', en: 'When the Staking period ends, both principal and interest will be unlocked to your account'},language)}`},
                 ]}
-                renderItem={({item}) => <View style={{paddingLeft: windowWidth/19}}><Text style={stakingStyle.termContent}>{item.key}</Text></View>}
+                renderItem={({item}) => <View style={{paddingLeft: windowWidth/19}}><Text style={StakingStyle.termContent}>{item.key}</Text></View>}
             />
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <TouchableOpacity style={{paddingRight: 10}} onPress={()=> setToggleCheckBox(!ToggleCheckBox)}>
-                    <View style={[stakingStyle.checkBox,ToggleCheckBox && {backgroundColor: '#fac800'}]}><Image style={[stakingStyle.checkBoxTick,!ToggleCheckBox && {opacity: 0}]} source={ticker}/></View>
+                    <View style={[StakingStyle.checkBox,ToggleCheckBox && {backgroundColor: '#fac800'}]}><Image style={[StakingStyle.checkBoxTick,!ToggleCheckBox && {opacity: 0}]} source={ticker}/></View>
                 </TouchableOpacity>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={stakingStyle.termCheckboxTitle}>{checkLanguage({vi: 'Tôi đã đọc và hiểu rõ', en: 'I have read and understood'},language)}</Text>
+                    <Text style={StakingStyle.termCheckboxTitle}>{checkLanguage({vi: 'Tôi đã đọc và hiểu rõ', en: 'I have read and understood'},language)}</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('Terms', {
                             id: 1,
                         })}
                     >
-                        <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: '#fff', paddingHorizontal: 5}}>{checkLanguage({vi: 'cảnh báo rủi ro', en: ' the risk warning '},language)}</Text>
+                        <Text style={{textDecorationLine: 'underline', fontWeight: 'bold', color: display === 1 ? '#283349' :'#fff', paddingHorizontal: 5}}>{checkLanguage({vi: 'cảnh báo rủi ro', en: ' the risk warning '},language)}</Text>
                     </TouchableOpacity>
-                    <Text style={stakingStyle.termCheckboxTitle}>{checkLanguage({vi: ' trước khi tham gia', en: ' before joining'},language)}</Text>
+                    <Text style={StakingStyle.termCheckboxTitle}>{checkLanguage({vi: ' trước khi tham gia', en: ' before joining'},language)}</Text>
                 </View>
                 
             </View>
