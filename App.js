@@ -29,7 +29,7 @@ import { actChangeNotify } from './store/actions';
 
 
 console.disableYellowBox = true;
-setStatusBarHidden(true, 'none')
+setStatusBarHidden(false, 'none')
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

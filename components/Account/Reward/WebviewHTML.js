@@ -48,7 +48,7 @@ export default html = `
                 this.grd.addColorStop(.4, "#faf599");
                 this.grd.addColorStop(.6, "#f8f092");
                 this.grd.addColorStop(.8, "#eeda77");
-                this.grd.addColorStop(.10, "#ddb044");
+                this.grd.addColorStop(1, "#ddb044");
             }
 
             draw(){
@@ -180,7 +180,7 @@ export default html = `
                 this.grdMaker.addColorStop(.4, "#fbf89c");
                 this.grdMaker.addColorStop(.6, "#e4c159");
                 this.grdMaker.addColorStop(.8, "#c28c2d");
-                this.grdMaker.addColorStop(.10, "#dfb449");
+                this.grdMaker.addColorStop(1, "#dfb449");
 
                 this.grdMakerButton = this.game.ctx.createLinearGradient(0, 300, 300, 0);
                 this.grdMakerButton.addColorStop(0, "#a90004");
@@ -188,7 +188,7 @@ export default html = `
                 this.grdMakerButton.addColorStop(.4, "#ba1613");
                 this.grdMakerButton.addColorStop(.6, "#cd2e24");
                 this.grdMakerButton.addColorStop(.8, "#ff5640");
-                this.grdMakerButton.addColorStop(.10, "#ff4e3b");
+                this.grdMakerButton.addColorStop(1, "#ff4e3b");
             }
 
             draw (){

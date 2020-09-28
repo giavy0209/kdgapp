@@ -42,7 +42,7 @@ export default function App() {
           dispatch(asyncLogin(loginInfo))
         }
       }
-    }, 5000);
+    }, 30000);
   },[])
 
   useMemo(()=>{
@@ -52,14 +52,14 @@ export default function App() {
   
   useEffect(()=>{
     dispatch(actChangeScreenWidth(Dimensions.get('screen').width ))
-    dispatch(actChangeScreenHeight(Dimensions.get('screen').height - bottom))
+    dispatch(actChangeScreenHeight(Dimensions.get('screen').height - bottom - top))
   },[])
     return (
       <SafeAreaView>
       <View
         style={[{
           width: ScreenWidth,
-          height: ScreenHeight + bottom,
+          height: ScreenHeight,
         }]}
       >
       {Routers && Routers.length !== 0 && <NavigationContainer>
