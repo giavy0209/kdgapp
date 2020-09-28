@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import logo from '../../assets/images/logo.png'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 
 
 const windowHeight = Dimensions.get('window').height;
@@ -22,7 +23,8 @@ export default function App({setOutScrollViewTop}){
     document.querySelectorAll('.menu .language li')[1].click()
     `)
     const [Width , setWidth] = useState(0);
-    const [lang, setlang] = useState('vi')
+    
+    const language = useSelector(state => state.language)
 
 
     const navigation = useNavigation();
@@ -30,12 +32,12 @@ export default function App({setOutScrollViewTop}){
 
     const { id } = route.params ?? {}
     useEffect(()=>{
-      var index = lang === 'vi' ? 1 : 0
+      var index = language
       injectedJavaScript.current = `document.querySelectorAll('.menu .language li')[${index}].click()`
       if(webview.current.reload ){
         webview.current.reload()
       }
-    },[lang])
+    },[language])
     return (
         <>
           <WebView
