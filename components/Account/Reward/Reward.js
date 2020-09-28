@@ -104,7 +104,7 @@ export default function App({setOutScrollViewTop}){
                         <Image style={styles.img} source={checkLanguage({vi : RewardBannervi , en: RewardBanneren}, language)} />
                     </View>
                     <View style={styles.blockText}>
-                        <Text style={styles.text}>Mời ngay bạn bè đăng ký tài khoản và xác minh danh tính (KYC) thành công sẽ nhận ngay được 5 KDG Reward</Text>
+                        <Text style={styles.text}>{checkLanguage({vi : 'NHẬN NGAY KDG REWARD khi mời bạn bè tham gia', en : 'RECEIVE KDG REWARD IMMEDIATELY after invite friends joining successfully'})}</Text>
                     </View>
                 </View>
                 <View
@@ -122,7 +122,7 @@ export default function App({setOutScrollViewTop}){
                         >
                             <Image style source={checking}/>
                         </LinearGradient>
-                        <Text style={styles.textButtom}>Điểm danh</Text>
+                        <Text style={styles.textButtom}> {checkLanguage({vi : 'Điểm danh' ,en : 'Checkin'}, language)} </Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
                     onPress={()=>{
@@ -150,7 +150,7 @@ export default function App({setOutScrollViewTop}){
                         >
                             <Image style source={ref}/>
                         </LinearGradient>
-                        <Text style={styles.textButtom}>Giới thiệu</Text>
+                        <Text style={styles.textButtom}> {checkLanguage({vi : 'Giới thiệu', en : 'Referer'}, language)} </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     img: {
         backgroundColor : '#fff',
         resizeMode: "contain",
+        width: '100%'
     },
     blockText : {
         position : 'absolute',
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     iconButton : {
         width : 54,
         height : 54,
-        borderRadius : 50,
+        borderRadius : 25,
         position: 'relative',
         display: 'flex',
         justifyContent : 'center',
