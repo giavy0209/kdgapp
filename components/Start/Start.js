@@ -42,31 +42,31 @@ export default function App() {
           }}>
               {item.key === 's1' ?
                   <View style={{alignItems: 'center'}}>
-                    <Text style={{fontSize: ScreenWidth * 0.08, color: '#fff', marginTop: ScreenHeight * 0.33283, fontFamily: 'RobotoCondensed_300Light'}}>Chào mừng bạn đến với</Text>
-                    <Image source={kwtext} style={{resizeMode: 'contain'}}></Image>
-                    <Text style={[styles2.text,{fontSize: ScreenWidth * 0.037333,marginTop: ScreenHeight * 0.03448}]}>King Wallet đáp ứng tất cả nhu cầu</Text>
-                    <Text style={[styles2.text,{fontSize: ScreenWidth * 0.037333}]}>của người dùng</Text>
+                    <Text style={{fontSize: ScreenWidth * 0.08, color: '#fff', marginTop: ScreenHeight * 0.33283, fontFamily: 'RobotoCondensed_300Light'}}>Welcome to</Text>
+                    <Image source={kwtext} style={[styles2.image,{width : ScreenWidth * 0.5}]}></Image>
+                    <Text style={[styles2.text,{marginTop: ScreenHeight * 0.03448}]}>King Wallet meets all the demands</Text>
+                    <Text style={[styles2.text,]}>of the users</Text>
                  </View> :
                  item.key === 's2' ?
                  <View style={{alignItems: 'center'}}>
-                   <Image source={mainImage2} style={[styles2.image,{width: ScreenHeight * 0.4497,marginTop: ScreenHeight * 0.1079}]}></Image>
-                    <Image source={securetext} style={[styles2.image,{width : ScreenWidth * 0.46933, marginTop: ScreenHeight * 0.0374812}]}></Image>
-                    <Text style={[styles2.text,{marginTop: ScreenHeight * 0.02248}]}>Cơ chế bảo mật nhiều tầng đảm bảo tài sản</Text>
-                    <Text style={styles2.text}>và giao dịch an toàn và ổn định</Text>
+                   <Image source={mainImage2} style={[styles2.image,{width: ScreenHeight * 0.4497, height :ScreenHeight * 0.4497 ,marginTop: ScreenHeight * 0.1079}]}></Image>
+                    <Image source={securetext} style={[styles2.image,{width : ScreenWidth * 0.384*1.5, marginTop: ScreenHeight * 0.0374812}]}></Image>
+                    <Text style={[styles2.text,{marginTop: ScreenHeight * 0.02248}]}>Multi-layer security mechanism ensures</Text>
+                    <Text style={styles2.text}>safe and stable assets and transactions</Text>
                 </View> : 
                 item.key === 's3' ?
                 <View style={{alignItems: 'center'}}>
-                    <Image source={mainImage3} style={[styles2.image,{width: ScreenHeight * 0.4497 ,marginTop: ScreenHeight * 0.1079}]}></Image>
-                    <Image source={multitext} style={[styles2.image,{width : ScreenWidth * 0.46933, marginTop: ScreenHeight * 0.0374812}]}></Image>
-                    <Text style={[styles2.text,{marginTop: ScreenHeight * 0.02248}]}>Người dùng có thể quản lý nhiều tài khoản </Text>
-                    <Text style={styles2.text}>trên King Wallet</Text>
+                    <Image source={mainImage3} style={[styles2.image,{width: ScreenHeight * 0.4497 , height :ScreenHeight * 0.4497,marginTop: ScreenHeight * 0.1079}]}></Image>
+                    <Image source={multitext} style={[styles2.image,{width : ScreenWidth * 0.5333333333*1.5, marginTop: ScreenHeight * 0.0374812}]}></Image>
+                    <Text style={[styles2.text,{marginTop: ScreenHeight * 0.02248}]}>Users can manage multiple accounts</Text>
+                    <Text style={styles2.text}>on King Wallet</Text>
                </View> : 
                 item.key === 's4' ?
                 <View style={{alignItems: 'center'}}>
-                    <Image source={mainImage4} style={[styles2.image,{width: ScreenHeight * 0.4497,marginTop: ScreenHeight * 0.1079}]}></Image>
-                    <Image source={easytext} style={[styles2.image,{width : ScreenWidth * 0.46933, marginTop: ScreenHeight * 0.0374812}]}></Image>
-                    <Text style={[styles2.text,{marginTop: ScreenHeight * 0.02248}]}>Thao tác đơn giản, giao diện thân thiện với</Text>
-                    <Text style={styles2.text}>người dùng</Text>
+                    <Image source={mainImage4} style={[styles2.image,{width: ScreenHeight * 0.4497, height :ScreenHeight * 0.4497,marginTop: ScreenHeight * 0.1079}]}></Image>
+                    <Image source={easytext} style={[styles2.image,{width : ScreenWidth * 0.32*1.5, marginTop: ScreenHeight * 0.0374812}]}></Image>
+                    <Text style={[styles2.text,{marginTop: ScreenHeight * 0.02248}]}>Simple operation, user-friendly</Text>
+                    <Text style={styles2.text}>interface</Text>
                     <Button  ScreenWidth={ScreenWidth} ScreenHeight={ScreenHeight}/>
                 </View> : null
             }
@@ -83,12 +83,13 @@ export default function App() {
                 showSkipButton={false}
                 showPrevButton={true}
                 onSkip={onSkip}
-                doneLabel='XONG'
-                nextLabel='TIẾP THEO'
-                prevLabel='TRỞ VỀ'
+                doneLabel='DONE'
+                nextLabel='NEXT'
+                prevLabel='BACK'
+              
                 buttonTextStyle={
                     {color: '#fac800',
-                     fontSize: 15
+                     fontSize: 13
                     }
                 }
                 // renderItem={item => renderItem(item)}

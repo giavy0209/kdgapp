@@ -570,7 +570,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
               <View style={[WalletStyle.listCoinHead, {justifyContent:'flex-end', marginTop: 0}]}>
                 <TouchableOpacity onPress={() => sortHandler(IsShortCoin, IsTapShortCoin)}
                 >
-                  <FontAwesomeIcon style={WalletStyle.listCoinHeadColor} icon={IsShortCoin ? faSortAmountDown : faSortAmountUp}/>
+                  <FontAwesomeIcon style={WalletStyle.listCoinHeadColor} icon={IsShortCoin ? faSortAmountUp : faSortAmountDown}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>navigation.navigate('SetCoins')}>
                   <FontAwesomeIcon style={[WalletStyle.listCoinHeadColor, {marginLeft:15}]} icon={faPlusCircle}/>

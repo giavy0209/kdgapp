@@ -24,7 +24,7 @@ export default function App({setOutScrollViewTop}){
     const [ModalMess,setModalMess] = useState('')
     const [isModalVisible,setModalVisible] = useState(false)
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title="Phần thưởng"/>)
+        setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Phần thưởng', en: 'Reward'},language)}/>)
     },[])
 
     const userid = useSelector(state=> state.userInfo._id)

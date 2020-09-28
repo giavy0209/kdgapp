@@ -45,7 +45,7 @@ export default function App({setOutScrollViewTop}){
       }, [])
     
     useEffect(()=>{
-        setOutScrollViewTop(<Header2 title="Giới thiệu"/>)
+        setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Giới thiệu', en: 'Referral'},language)}/>)
     },[])
 
 
@@ -100,7 +100,7 @@ export default function App({setOutScrollViewTop}){
                             <TouchableOpacity
                                 onPress={() => {navigation.navigate('Rule')}}
                             >
-                                <Text style={{color: '#fac800', fontWeight: 'bold'}}>Quy luật</Text>
+                                <Text style={{color: '#fac800', fontWeight: 'bold'}}>{checkLanguage({vi: 'Quy luật', en: 'Rule'},language)}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

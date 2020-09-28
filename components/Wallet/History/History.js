@@ -173,7 +173,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             <WebView
                originWhitelist={['*']}
                source={{ html: `<script src="https://widgets.coingecko.com/coingecko-coin-compare-chart-widget.js"></script>
-               <coingecko-coin-compare-chart-widget  coin-ids="${coinName === 'KDG' ? 'kingdom-game-4-0' : coinName === 'ETH' ? 'ethereum' : coinName === 'TRX' ? 'tron' :  coinName === 'USDT' ? 'tether' : coinName === 'KNC' ? 'kyber-network' : coinName === 'MCH' ? 'meconcash' : 'tomochain'}" currency="usd" locale="en"></coingecko-coin-compare-chart-widget>` }}
+               <coingecko-coin-compare-chart-widget  coin-ids="${coinName === 'KDG' ? 'kingdom-game-4-0' : coinName === 'ETH' ? 'ethereum' : coinName === 'TRX' ? 'tron' :  coinName === 'USDT' ? 'tether' : coinName === 'KNC' ? 'kyber-network' : coinName === 'MCH' ? 'meconcash' : coinName === 'TOMO' ? 'tomochain' : 'bitcoin'}" currency="usd" locale="en"></coingecko-coin-compare-chart-widget>` }}
                scalesPageToFit={true}
                bounces={false}
                javaScriptEnabled
