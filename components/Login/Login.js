@@ -11,9 +11,12 @@ import { useIsFocused, useRoute } from '@react-navigation/native'
 import {transition, storage, checkLanguage} from '../../helper'
 import AsyncStorage from '@react-native-community/async-storage';
 import store from '../../store';
+import * as Device from 'expo-device';
 
 import bg from '../../assets/images/bg.jpg'
 import bg2 from '../../assets/images/bg2.jpg'
+
+var mobile_device_id = (Device.modelName + Device.osBuildId).replace(/ /g, '');
 
 export default function App({navigation, setBackGround}) {
     const dispatch = useDispatch()
@@ -113,7 +116,7 @@ export default function App({navigation, setBackGround}) {
     const login = useCallback(() => {
         setLoading(true)
         if(EmailValidate === null && PasswordValidate === null){
-            dispatch(asyncLogin({email: Email, password: Password}))
+            dispatch(asyncLogin({email: Email, password: Password, mobile_device_id: mobile_device_id ? mobile_device_id : null}))
             .then((res)=>{
                 console.log(res)
                 if(res.status === 103){
