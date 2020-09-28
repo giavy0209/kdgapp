@@ -169,11 +169,11 @@ const styles = StyleSheet.create({
         position : 'relative'
     },
     blockImg : {
-        width: '100%'
+        width: '100%',
     },
     img: {
-        width : '100%',
-        resizeMode : 'contain'
+        backgroundColor : '#fff',
+        resizeMode: "contain",
     },
     blockText : {
         position : 'absolute',
