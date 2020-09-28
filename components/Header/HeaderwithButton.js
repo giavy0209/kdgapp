@@ -1,9 +1,9 @@
-import React, { useState, useCallback,useEffect } from 'react';
+import React, { useState, useCallback,useEffect, useMemo } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import {View,Text, TouchableOpacity, Image, BackHandler } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import openscaner from '../../assets/images/openscaner.png'
 import logout from '../../assets/images/logout.png'
 import { useSelector } from 'react-redux';
@@ -14,18 +14,20 @@ export default function App({title,setHeight,toPress, type}){
 
     const display = useSelector(state => state.display)
 
+
     function handleBackButtonClick() {
         navigation.goBack();
         return true;
-      }
+    }
     
-      useEffect(() => {
+    
+      useMemo(() => {
         BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
         return () => {
           BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
         };
-      }, []);
-      
+      }, [handleBackButtonClick]);
+
     return(
         <>
 

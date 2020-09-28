@@ -20,7 +20,7 @@ export default function App({title}){
         return () => {
           BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
         };
-      }, []);
+      }, [handleBackButtonClick]);
 
 
     return(

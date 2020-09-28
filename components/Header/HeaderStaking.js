@@ -23,7 +23,7 @@ export default function App({title, subTitle}){
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
     };
-  }, []);
+  }, [handleBackButtonClick]);
     return(
         <>
         <View>
