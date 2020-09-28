@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/iconapp.png",
     "androidNavigationBar": {
-      "visible": "sticky-immersive",
+      "visible": true,
       "barStyle": "dark-content"
     },
     "splash": {

@@ -52,7 +52,7 @@ export default function App() {
   
   useEffect(()=>{
     dispatch(actChangeScreenWidth(Dimensions.get('screen').width ))
-    dispatch(actChangeScreenHeight(Dimensions.get('screen').height - bottom - top))
+    dispatch(actChangeScreenHeight(Dimensions.get('window').height ))
   },[])
     return (
       <SafeAreaView>
