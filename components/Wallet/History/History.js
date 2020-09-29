@@ -91,7 +91,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     useEffect(() => {
           setLoading(true)
           var type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase() 
-          dispatch(asyncGetBlockchainTransaction(type, coinAddress, 10,'2016-08-01'))
+          dispatch(asyncGetBlockchainTransaction(type, coinAddress, 10000000,'2016-08-01'))
           .then((res)=>{
       
             if(type === 'usdt' || type === 'eth'|| type === 'knc' || type === 'mch'){
@@ -122,7 +122,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
         var tranLength = Transaction ? Transaction.length ? Transaction.length : -1 : -1
 
         if(tranLength !== -1){
-            if(skip < tranLength/5 && skip > 5){
+            if(skip < tranLength/5){
                 setSkip(skip+1)
             }
         }

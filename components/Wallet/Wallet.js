@@ -116,7 +116,7 @@ export default function App({ navigation }) {
   });
 
 
-  const TotalBalance = {
+  const AvailableBalance= {
     btc: (parseFloat(CoinPriceKDG.btc)+ 
     parseFloat(CoinPriceETH.btc) + 
     parseFloat(CoinPriceUSDT.btc) + 
@@ -152,7 +152,7 @@ export default function App({ navigation }) {
     
   }
 
-  const AvailableBalance = {
+  const TotalBalance = {
     btc: (parseFloat(CoinPriceKDG.btc)+ 
     parseFloat(CoinPriceETH.btc) + 
     parseFloat(CoinPriceUSDT.btc) + 
@@ -160,7 +160,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceKNC.btc ) + 
     parseFloat(CoinPriceTOMO.btc ) + 
     parseFloat(CoinPriceBTC.btc ) + 
-    parseFloat(CoinPriceMCH.btc) - parseFloat(CoinPriceKDGLock.btc)).toFixed(8),
+    parseFloat(CoinPriceMCH.btc) + parseFloat(CoinPriceKDGLock.btc)).toFixed(8),
     vnd: (parseFloat(CoinPriceKDG.vnd)+ 
     parseFloat(CoinPriceETH.vnd) + 
     parseFloat(CoinPriceUSDT.vnd) + 
@@ -168,7 +168,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceKNC.vnd ) + 
     parseFloat(CoinPriceTOMO.vnd ) + 
     parseFloat(CoinPriceBTC.btc ) + 
-    parseFloat(CoinPriceMCH.vnd) - parseFloat(CoinPriceKDGLock.vnd)).toFixed(2),
+    parseFloat(CoinPriceMCH.vnd) + parseFloat(CoinPriceKDGLock.vnd)).toFixed(2),
     usd: (parseFloat(CoinPriceKDG.usd)+ 
     parseFloat(CoinPriceETH.usd) + 
     parseFloat(CoinPriceUSDT.usd) + 
@@ -176,7 +176,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceKNC.usd ) + 
     parseFloat(CoinPriceTOMO.usd ) + 
     parseFloat(CoinPriceBTC.btc ) + 
-    parseFloat(CoinPriceMCH.usd) - parseFloat(CoinPriceKDGLock.usd)).toFixed(4),
+    parseFloat(CoinPriceMCH.usd) + parseFloat(CoinPriceKDGLock.usd)).toFixed(4),
     cny: (parseFloat(CoinPriceKDG.cny)+ 
     parseFloat(CoinPriceETH.cny) + 
     parseFloat(CoinPriceUSDT.cny) + 
@@ -184,7 +184,7 @@ export default function App({ navigation }) {
     parseFloat(CoinPriceKNC.cny ) + 
     parseFloat(CoinPriceTOMO.cny ) + 
     parseFloat(CoinPriceBTC.btc ) + 
-    parseFloat(CoinPriceMCH.cny) - parseFloat(CoinPriceKDGLock.cny)).toFixed(4),
+    parseFloat(CoinPriceMCH.cny) + parseFloat(CoinPriceKDGLock.cny)).toFixed(4),
     
   }
 
