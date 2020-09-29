@@ -521,7 +521,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
 
   return (
     <>
-      <PopupCongras isModalVisible={isModalVisible} toPress={()=>setisModalVisible(false)} title={checkLanguage({vi: 'Chúc mừng bạn', en: 'Congrats'},language)} content={checkLanguage({vi : 'Bạn nhận được 2KDG Reward cho lần đầu đăng nhập app', en : 'You got 2 KDG Reward for the first time login'})} />
+      <PopupCongras isModalVisible={isModalVisible} toPress={()=>setisModalVisible(false)} title={checkLanguage({vi: 'Chúc mừng bạn', en: 'Congrats'},language)} content={checkLanguage({vi : 'Bạn nhận được 2KDG Reward cho lần đầu đăng nhập app', en : 'You got 2 KDG Reward for the first time login'},language)} />
       {!IsScannerOpen && 
 
           <View style={[mainStyles.container,{paddingBottom: 20, paddingHorizontal: 15}]}>
