@@ -5,7 +5,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 
 import React, { useEffect, useRef } from 'react';
-import {View,Platform } from 'react-native'
+import {View,Platform, LogBox } from 'react-native'
 import { Provider} from 'react-redux'
 import store from './store'
 import Navigation from './components/Navigation'
@@ -26,9 +26,23 @@ import calAPI from './axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import { storage } from './helper';
 import { actChangeNotify } from './store/actions';
+import io from 'socket.io-client/dist/socket.io';
+const connectionConfig = {
+  jsonp: false,
+  reconnection: true,
+  reconnectionDelay: 100,
+  reconnectionAttempts: 100000
+};
+const socket = io('https://ws.kingdomgame.org',connectionConfig);
 
-
-console.disableYellowBox = true;
+socket.on('notify',({title,content})=>{
+  console.log('recive');
+  Notifications.presentNotificationAsync({
+    title: title,
+    body: content,
+  });
+})
+LogBox.ignoreAllLogs()
 setStatusBarHidden(false, 'none')
 
 Notifications.setNotificationHandler({
@@ -39,16 +53,16 @@ Notifications.setNotificationHandler({
   }),
 });
 
-registerForPushNotificationsAsync().then( async token => {
-  console.log(token);
-  (await calAPI()).post('/token',{token})
-  .then(res => {
-    console.log(res.data);
-  })
-  .catch(res => {
-    console.log(res);
-  })
-});
+// registerForPushNotificationsAsync().then( async token => {
+//   console.log(token);
+//   (await calAPI()).post('/token',{token})
+//   .then(res => {
+//     console.log(res.data);
+//   })
+//   .catch(res => {
+//     console.log(res);
+//   })
+// });
 
 
 
@@ -72,22 +86,9 @@ export default function App() {
 
   },[])
 
-  React.useEffect(() => {
-    const subscription = Notifications.addNotificationReceivedListener(async notification => {
-      const {title,body} = notification.request.content
-      var noti = await storage('noti').getItem()
-      noti.unshift({
-        title,
-        content : body,
-        datetime : new Date(),
-        status: true,
-      })
+  useEffect(() => {
+    
 
-      await storage('noti', noti).setItem()
-
-      store.dispatch(actChangeNotify(noti))
-    });
-    return () => subscription.remove();
   }, []);
 
 
