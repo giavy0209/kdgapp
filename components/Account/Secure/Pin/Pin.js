@@ -34,7 +34,7 @@ export default function App(){
     const language = useSelector(state => state.language)
     return (
         <>
-            <Header2 title="Cài đặt Unlock PIN"/>
+            <Header2 title={checkLanguage({vi : 'Cài đặt Unlock PIN', en : 'Unlock PIN Setting'},language)}/>
             <View style={[mainStyles.container,{padding: 14}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',paddingVertical: 10}}>
                     <Text style={{color: '#ddd9d8', fontSize: 14}}> {checkLanguage({vi : 'Cài đặt Unlock PIN', en : 'Unlock PIN Setting'},language)} </Text>

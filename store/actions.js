@@ -249,6 +249,7 @@ export function asyncLogin(loginInfo){
         try {
             const res = (await (await calAPI()).post('/api/authorize', loginInfo)).data
             if(res.status === 1){
+                console.log(res);
                 storage('token' , res.jwtToken).setItem();
                 var newRouters = []
                 ROUTERS.forEach((router)=>{
