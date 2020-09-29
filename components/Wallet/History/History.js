@@ -37,6 +37,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const [isModalVisible, setModalVisible] = useState(false);
 
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
+  
   
     const toggleModal = () => {
       setModalVisible(!isModalVisible);
@@ -207,8 +209,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                 <TouchableOpacity 
                     onPress={() => copyHandler(coinAddress)}
                     style={{padding: 20}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: 'rgba(29,38,59,0.6)', borderRadius: 5}}>
-                        <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{coinAddress}</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: display === 1 ? '#ffff' : 'rgba(29,38,59,0.6)', borderRadius: 5}}>
+                        <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255, 0.7)'}}>{coinAddress}</Text>
                         <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                     </View>
                 </TouchableOpacity>
@@ -380,11 +382,11 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                         Transaction ? Transaction.length ? Transaction.length > 0 ?
                         <View style={{paddingTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', paddingBottom: 20}}>
                             <TouchableOpacity onPress={() => leftArrowHandler(Skip)}>
-                                <FontAwesomeIcon size={40} color="rgba(255,255,255,0.6)" icon={faAngleLeft}/>
+                                <FontAwesomeIcon size={40} color={display === 1 ? '#fac800' : "rgba(255,255,255,0.6)"} icon={faAngleLeft}/>
                             </TouchableOpacity>
-                                <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: 20, paddingHorizontal: 20}}>{Skip+1}</Text>
+                                <Text style={{color: display === 1 ? '#fac800' :  'rgba(255,255,255,0.6)', fontSize: 20, paddingHorizontal: 20}}>{Skip+1}</Text>
                             <TouchableOpacity onPress={() =>  rightArrowHandler(Skip)}>
-                                <FontAwesomeIcon size={40} color="rgba(255,255,255,0.6)" icon={faAngleRight}/>
+                                <FontAwesomeIcon size={40} color={display === 1 ? '#fac800' : "rgba(255,255,255,0.6)"} icon={faAngleRight}/>
                             </TouchableOpacity>
                         </View>
                         : null : null : null
