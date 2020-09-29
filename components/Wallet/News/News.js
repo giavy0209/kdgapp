@@ -54,7 +54,7 @@ export default function App({setOutScrollViewTop}){
             scalesPageToFit={true}
             bounces={false}
             javaScriptEnabled
-            style={{ height: isIphoneTaiTho ? (95*windowHeight)/100 : windowHeight+30, width: '100%' }}
+            style={{ height: windowHeight, width: '100%' }}
             source={{
               uri: NewsID === undefined ? 'https://kingdomgame.org/kdg-news' : `https://kingdomgame.org/news/${NewsID}`,
             }}
