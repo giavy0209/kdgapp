@@ -20,7 +20,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
     const navigation = useNavigation()
     const route = useRoute();
     const language = useSelector(state => state.language)
-
+    const display = useSelector(state => state.display)
     const [isModalVisible, setModalVisible] = useState(false);
 
     
@@ -121,7 +121,7 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
                             Giao dịch thành công
                         </Text> */}
                         {Status}
-                        <Text style={{color: 'rgba(255,255,255,0.5)'}}>
+                        <Text style={{color: display === 1 ? '#989a9c' : 'rgba(255,255,255,0.5)'}}>
                            {datetime}
                         </Text>
                     </View>
@@ -143,57 +143,57 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
 
                 <View style={{height: '100%', flexDirection: 'column', paddingTop:30}}>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>{checkLanguage({vi: 'Từ', en: `From`},language)}</Text>
+                        <Text style={{color: display === 1 ? '#283349' :  '#fff'}}>{checkLanguage({vi: 'Từ', en: `From`},language)}</Text>
                         <TouchableOpacity 
                             onPress={copyHandler1}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', padding: 10, borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{fromAddress}</Text>
-                                <FontAwesomeIcon size={15} color="rgba(255,255,255, 0.7)" icon={faCopy}/>
+                                <Text style={{color: display === 1 ? '#283349' : 'rgba(255,255,255, 0.7)'}}>{fromAddress}</Text>
+                                <FontAwesomeIcon size={15} color={display === 1 ? '#283349' :"rgba(255,255,255, 0.7)"} icon={faCopy}/>
                             </View>
                     </TouchableOpacity>
                     </View>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>{checkLanguage({vi: 'Đến', en: `To`},language)}</Text>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff'}}>{checkLanguage({vi: 'Đến', en: `To`},language)}</Text>
                         <TouchableOpacity 
                             onPress={copyHandler2}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', padding: 10, borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)', paddingRight: 10}}>{toAddress}</Text>
+                                <Text style={{color: display === 1 ? '#283349' : 'rgba(255,255,255, 0.7)', paddingRight: 10}}>{toAddress}</Text>
                                 <FontAwesomeIcon size={15} color="rgba(255,255,255, 0.7)" icon={faCopy}/>
                             </View>
                     </TouchableOpacity>
                     </View>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>{checkLanguage({vi: 'Mã giao dịch', en: `Hash`},language)}</Text>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff'}}>{checkLanguage({vi: 'Mã giao dịch', en: `Hash`},language)}</Text>
                         <TouchableOpacity 
                             onPress={copyHandler3}
                             disabled={true}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)', paddingRight: 10}}>{hash}</Text>
+                                <Text style={{color: display === 1 ? '#283349' : 'rgba(255,255,255, 0.7)', paddingRight: 10}}>{hash}</Text>
                             </View>
                     </TouchableOpacity>
                     </View>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>Block</Text>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff'}}>Block</Text>
                         <TouchableOpacity 
                             // onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
                             disabled={true}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>{block}</Text>
+                                <Text style={{color: display === 1 ? '#283349' : 'rgba(255,255,255, 0.7)'}}>{block}</Text>
                             </View>
                     </TouchableOpacity>
                     </View>
                     <View style={{paddingHorizontal: 20, paddingBottom: 10, borderTopWidth: 1, paddingTop: 10, borderTopColor: 'rgba(255,255,255,0.1)'}}>
-                        <Text style={{color: '#fff'}}>{checkLanguage({vi: 'Ghi chú', en: `Note`},language)}</Text>
+                        <Text style={{color: display === 1 ? '#283349' : '#fff'}}>{checkLanguage({vi: 'Ghi chú', en: `Note`},language)}</Text>
                         <TouchableOpacity 
                             // onPress={() => Clipboard.setString('TS8jRFiS3sjnwwJMAydZifV9Bas3rKgFFu')}
                             disabled={true}
                             style={{paddingTop: 5}}>
                             <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, borderRadius: 5}}>
-                                <Text style={{color: 'rgba(255,255,255, 0.7)'}}>N/A</Text>
+                                <Text style={{color: display === 1 ? '#283349' : 'rgba(255,255,255, 0.7)'}}>N/A</Text>
                             </View>
                     </TouchableOpacity>
                     </View>
