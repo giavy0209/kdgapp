@@ -12,6 +12,7 @@ import Select from './Select'
 import HistoryButton from '../../Button/HistoryButton'
 import Popup from '../../Popup/Popup'
 
+import emptyicon from '../../../assets/images/emptyicon.png'
 import { storage, checkLanguage } from '../../../helper'
 import { asyncGetBlockchainTransaction} from '../../../store/actions'
 import WebView from 'react-native-webview';
@@ -99,6 +100,9 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
             }else if(coinName === 'TOMO'){
                 setLoading(false)
                 setTransaction(res.data.items)
+            }else if(coinName === 'BTC'){
+                setLoading(false)
+               setTransaction(res.data.txs.out)
             }else{
                 setLoading(false)
                 setTransaction(res.data.data)
@@ -330,6 +334,32 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     
                                 />
                             )
+
+                        } else if(coinName === 'BTC') {
+
+                            return (
+                                <HistoryButton 
+                                    toPress={() => navigation.navigate('HistoryDetail', {
+                                        coin_name: coinName,
+                                        type: item.spent === false ? 'withdraw' : 'deposit',
+                                        status: 'success',
+                                        fromAddress: item.addr,
+                                        toAddress:  '',
+                                        block: '',
+                                        hash: item.script,
+                                        amount: (item.value)/1e8,
+                                        datetime: ''         
+                                   
+
+                                    })}
+                                    type={item.spent === false ? 'withdraw' : 'deposit'}
+                                    status='success'
+                                    datetime=''
+                                    value= {(item.value)/1e8}
+                                    coin_name={coinName}
+                    
+                                />
+                            )
                         }else{
                             return (
                                 <HistoryButton 
@@ -373,8 +403,19 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     
                     
                     }
-                    /> : <Text style={{color: 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>{checkLanguage({vi: 'Trống', en: `Empty`},language)}</Text>
-                    : <Text style={{color: 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>{checkLanguage({vi: 'Trống', en: `Empty`},language)}</Text>
+                    /> : <View style={{alignItems: 'center', justifyContent: 'center'}}>
+
+                            <Image source={emptyicon}/>
+                            <Text style={{color: display === 1 ? '#989a9c' : 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>{checkLanguage({vi: 'Không có dữ liệu', en: `No data`},language)}</Text>
+                    
+                        </View>
+                        
+                    : <View style={{alignItems: 'center', justifyContent: 'center'}}>
+
+                        <Image source={emptyicon}/>
+                        <Text style={{color: display === 1 ? '#989a9c' : 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>{checkLanguage({vi: 'Không có dữ liệu', en: `No data`},language)}</Text>
+                
+                    </View>
                      
                     }
                     

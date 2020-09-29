@@ -274,7 +274,7 @@ useEffect(()=>{
                     onChangeText={(value) => validateEmail(value)} 
                     value={Email} 
                     autoCapitalize = 'none'
-                    style={styles.input} />
+                    style={[styles.input, display === 1 ? {borderColor: '#e8e8e8', color: '#283349'} : null]} />
                 </View>
                 <View style={{padding: 2}}>
                    {EmailValidate}
@@ -288,7 +288,7 @@ useEffect(()=>{
                     onBlur={()=>{EmailCode ==='' && setEmailCodeFocus(false)}} 
                     onChangeText={value => validateEmailCode(value)} 
                     value={EmailCode} 
-                    style={[styles.input,{width: '84%'}]} />
+                    style={[styles.input, {width: '84%'}, display === 1 ? {borderColor: '#e8e8e8', color: '#283349'} : null]} />
                     <TouchableOpacity style={{width: 70}} disabled={EmailValidate === null && seconds === 0 ? false : true} onPress={reqMailCode}>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', opacity: EmailValidate === null  && seconds === 0 ? 1 : 0.5, backgroundColor: '#fac800', borderRadius: 10, alignItems: 'center', padding: 3}}>
                             <Text style={{color: 'rgba(255,255,255,0.8)', paddingLeft: 5}}>Lấy mã</Text>
@@ -308,7 +308,7 @@ useEffect(()=>{
                         onLayout={e => setInputPasswordHeight(e.nativeEvent.layout.height)} 
                         onChangeText={value => validatePassword(value)} 
                         value={Password} 
-                        style={styles.input} 
+                        style={[styles.input, display === 1 ? {borderColor: '#e8e8e8', color: '#283349'} : null]} 
                         secureTextEntry={!IsShowPassword} 
                         />
                         <TouchableOpacity
@@ -331,7 +331,7 @@ useEffect(()=>{
                     onBlur={()=>{RePassword ==='' && setRePasswordFocus(false)}} 
                     onChangeText={value => validateRePassword(value)} 
                     value={RePassword} 
-                    style={styles.input}
+                    style={[styles.input, display === 1 ? {borderColor: '#e8e8e8', color: '#283349'} : null]}
                     secureTextEntry={!IsShowPassword}  />
                     <TouchableOpacity
                     onPress={ToggleShowPassword}
