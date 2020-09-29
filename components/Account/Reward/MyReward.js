@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCopy, faLink } from '@fortawesome/free-solid-svg-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import FollowList from '../FollowList'
+import {  checkLanguage } from '../../../helper'
 import { useSelector } from 'react-redux'
 export default function App({setOutScrollViewTop}){
     const navigation = useNavigation()

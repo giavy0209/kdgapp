@@ -23,6 +23,7 @@ export default function App({setOutScrollViewTop}){
     const dispatch = useDispatch();
     const [isModalVisible, setModalVisible] = useState(false);
     const language = useSelector(state => state.language)
+    const display = useSelector(state => state.display)
     useEffect(() => {
         async function getUserInfo() {
           var userinfo = await storage('_id').getItem();
@@ -93,7 +94,7 @@ export default function App({setOutScrollViewTop}){
         <>
             <View style={[mainStyles.container,]}>
             <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
-                <View style={{backgroundColor: 'rgba(40, 51, 73, 0.4)', width: '100%', padding: 20}}>
+                <View style={{backgroundColor: display === 1 ? '#ffff' : 'rgba(40, 51, 73, 0.4)', width: '100%', padding: 20}}>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                         <Text style={{color: '#fff', fontSize: 16}}>{checkLanguage({vi : 'Mã Liên Kết', en : 'Share link'},language)}</Text>
                         <View style={{position: 'absolute', right: 0}}>
@@ -106,16 +107,16 @@ export default function App({setOutScrollViewTop}){
                     </View>
                     <View style={{paddingTop: 20}}>
                       <View style={{flexDirection: 'row', paddingBottom: 15}}>
-                          <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>{checkLanguage({vi : 'Link giới thiệu:', en : 'Referral link:'},language)}</Text>
+                          <Text style={{fontSize: 15, color:  display === 1 ? '#283349' :  'rgba(255,255,255,0.4)'}}>{checkLanguage({vi : 'Link giới thiệu:', en : 'Referral link:'},language)}</Text>
                           <TouchableOpacity onPress={()=>copyHandler1(RefCode)} style={{flexDirection: 'row'}}>
                             <Text style={{paddingHorizontal: 10, fontSize: 15, color: '#0687d7', paddingLeft: 60}}>{`https://www.kingdomgame.\norg/reg/${RefCode}`}</Text>
                             <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                           </TouchableOpacity>
                       </View>
                       <View style={{flexDirection: 'row', paddingBottom: 15}}>
-                          <Text style={{fontSize: 15, color: 'rgba(255,255,255,0.4)'}}>{checkLanguage({vi : 'Mã giới thiệu:', en : 'Referral Code:'},language)}</Text>
+                          <Text style={{fontSize: 15, color:  display === 1 ? '#283349' :  'rgba(255,255,255,0.4)'}}>{checkLanguage({vi : 'Mã giới thiệu:', en : 'Referral Code:'},language)}</Text>
                           <TouchableOpacity onPress={()=>copyHandler2(RefCode)} style={{flexDirection: 'row'}}>
-                            <Text style={{paddingHorizontal: 10, fontSize: 15, color: '#fff', paddingLeft: 70}}>{RefCode}</Text>
+                            <Text style={{paddingHorizontal: 10, fontSize: 15, color: display === 1 ? '#283349' :  '#fff', paddingLeft: 70}}>{RefCode}</Text>
                             <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                           </TouchableOpacity>
                       </View>
@@ -133,14 +134,14 @@ export default function App({setOutScrollViewTop}){
                     </View>
                   
                 </View>
-                <View style={{marginTop: 15,backgroundColor: 'rgba(40, 51, 73, 0.4)', width: '100%', padding: 20}}>
+                <View style={{marginTop: 15,backgroundColor: display === 1 ? '#ffff' :  'rgba(40, 51, 73, 0.4)', width: '100%', padding: 20}}>
                     <TouchableOpacity
                         onPress={() => {navigation.navigate('MyReward', {
                             RewardData: RewardData
                         })}}
                         style={{alignItems: 'center', flexDirection : 'row', justifyContent : 'center'}}
                     >
-                        <Text style={{color: '#fff'}}>{checkLanguage({vi : 'Phần Thưởng Của Tôi' , en : 'My Reward'},language)} </Text>
+                        <Text style={{color: display === 1 ? '#283349' :  '#fff'}}>{checkLanguage({vi : 'Phần Thưởng Của Tôi' , en : 'My Reward'},language)} </Text>
                         <FontAwesomeIcon color='#fff' icon={faChevronRight} />
                     </TouchableOpacity>
                     <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 30}}>

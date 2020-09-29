@@ -6,7 +6,7 @@ import logo from '../../../assets/images/logo.png'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import Notification from './Notification'
-import { storage } from '../../../helper'
+import { checkLanguage, storage } from '../../../helper'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 
@@ -19,6 +19,8 @@ export default function App(){
 
     const {NewsData} = route.params ?? {}
     const listnoti = useSelector(state => state.notify)
+    const language = useSelector(state => state.language)
+
     return (
         <>
         <View style={mainStyles.container}>
@@ -28,8 +30,8 @@ export default function App(){
                     console.log(item);
                     return (
                         <Notification
-                            title={item.title}
-                            content={item.content}
+                            title={checkLanguage({vi: item.titlevi, en: item.titleen}, language)}
+                            content={checkLanguage({vi: item.contentvi, en: item.contenten}, language)}
                             datetime={
                                 (new Date(item.datetime)).getHours().toString()  + ":" +
                                 (new Date(item.datetime)).getMinutes().toString()  + ":" +

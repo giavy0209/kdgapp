@@ -60,7 +60,7 @@ export default function App({
     // }
     const data = [
         {coinPrice: coinPriceKDG, isDisplay: coinDisplay ? coinDisplay.kdg : true, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
-        {coinPrice: coinPriceBTC, isDisplay: coinDisplay ? coinDisplay.btc : true, key: 2, coinName: 'BTC', icon: btcicon, balance: balanceBTC, address: addressBTC},
+        // {coinPrice: coinPriceBTC, isDisplay: coinDisplay ? coinDisplay.btc : true, key: 2, coinName: 'BTC', icon: btcicon, balance: balanceBTC, address: addressBTC},
         {coinPrice: coinPriceETH, isDisplay: coinDisplay ? coinDisplay.eth : true, key: 3, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
         {coinPrice: coinPriceTRX, isDisplay: coinDisplay ? coinDisplay.trx : true, key: 4, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
         {coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 5, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH, addressTRC: addressTRX},

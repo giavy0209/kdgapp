@@ -276,7 +276,7 @@ export default function App({ navigation }) {
     getwalletBlance()
 
 
-  }, [TOMOBalance, TOMOAddress, isFocused])
+  }, [TOMOBalance, TOMOAddress, BTCAddress,isFocused])
 
 
 useEffect(() => {

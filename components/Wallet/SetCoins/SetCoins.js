@@ -61,7 +61,7 @@ const data = [
     { isEnabled: isEnabledKNC, toggle: toggleSwitchKNC, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
     { isEnabled: isEnabledMCH, toggle: toggleSwitchMCH, text: 'MCH', icon: mchicon, description: 'MeconCash', key: '6'},
     { isEnabled: isEnabledTOMO, toggle: toggleSwitchTOMO, text: 'TOMO', icon: tomoicon, description: 'TomoChain', key: '7'},
-    { isEnabled: isEnabledBTC, toggle: toggleSwitchBTC, text: 'BTC', icon: btcicon, description: 'Bitcoin', key: '8'},
+    // { isEnabled: isEnabledBTC, toggle: toggleSwitchBTC, text: 'BTC', icon: btcicon, description: 'Bitcoin', key: '8'},
 ]
 
 

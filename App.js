@@ -24,7 +24,7 @@ import {
 import { setStatusBarHidden } from 'expo-status-bar';
 import calAPI from './axios';
 import AsyncStorage from '@react-native-community/async-storage';
-import { storage } from './helper';
+import { checkLanguage, storage } from './helper';
 import { actChangeNotify } from './store/actions';
 import io from 'socket.io-client/dist/socket.io';
 const connectionConfig = {
@@ -35,12 +35,17 @@ const connectionConfig = {
 };
 const socket = io('https://ws.kingdomgame.org',connectionConfig);
 
-socket.on('notify',({title,content})=>{
-  console.log('recive');
+socket.on('notify',({titlevi,contentvi,titleen,contenten})=>{
+  const language = store.getState().language || 0
+
   Notifications.presentNotificationAsync({
-    title: title,
-    body: content,
+    title: checkLanguage({vi: titlevi, en: titleen}, language),
+    body: checkLanguage({vi: contentvi , en : contenten}, language),
   });
+  var noti = storage('noti').getItem()
+  noti.push({titlevi,contentvi,titleen,contenten,datetime : new Date()})
+  storage('noti',noti).setItem()
+  dispatch(actChangeNotify(noti))
 })
 LogBox.ignoreAllLogs()
 setStatusBarHidden(false, 'none')
@@ -66,7 +71,7 @@ export default function App() {
   useEffect(()=>{
     async function setFirstTime(){
       
-      await AsyncStorage.clear()
+      await storage('isNotFirstTime', true).setItem()
     }
     
     setFirstTime()
