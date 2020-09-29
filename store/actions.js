@@ -26,6 +26,13 @@ export function actChangeRouters(routers){
     }
 }
 
+export function actChangeIsGetReward(isgetreward){
+    return {
+        type: CHANGE_ROUTER,
+        payload: {isgetreward}
+    }
+}
+
 export function actChangeNotify(notify){
     return {
         type: CHANGE_NOTIFY,
@@ -255,6 +262,7 @@ export function asyncLogin(loginInfo){
                 await storage('userData' , res.data).setItem();
                 await storage('isLogin' , true).setItem();
                 await storage('loginTime', new Date().getTime()).setItem()
+                await dispatch(actChangeIsGetReward(res.isMobileLoginFirstTime))
                 await dispatch(asyncGetUserbyID(res.data._id))
                 var newRouters = []
                 ROUTERS.forEach((router)=>{

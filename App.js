@@ -53,19 +53,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-// registerForPushNotificationsAsync().then( async token => {
-//   console.log(token);
-//   (await calAPI()).post('/token',{token})
-//   .then(res => {
-//     console.log(res.data);
-//   })
-//   .catch(res => {
-//     console.log(res);
-//   })
-// });
-
-
-
 export default function App() {
   let [fontsLoaded] = useFonts({
     Roboto_300Light_Italic,
@@ -135,4 +122,4 @@ async function registerForPushNotificationsAsync() {
   }
 
   return token;
-}
+}registerForPushNotificationsAsync()

@@ -13,8 +13,9 @@ import openscanerLight from '../../assets/images/openscanerLight.png'
 import GroupButton from './GroupButton'
 import ListCoin from './ListCoin'
 import { storage, checkLanguage } from '../../helper';
-import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus } from '../../store/actions'
+import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus, actChangeIsGetReward } from '../../store/actions'
 import { useIsFocused } from '@react-navigation/native';
+import { PopupCongras } from '../Popup';
 
 
 const hiddenBalance = "******"
@@ -33,6 +34,7 @@ export default function App({ navigation }) {
   const language = useSelector(state => state.language)
 
   const display = useSelector(state => state.display)
+  const isgetreward = useSelector(state => state.isgetreward)
 
   const [IsScannerOpen, setIsScannerOpen] = useState(false);
   const [VisibleBalance, setVisibleBalance] = useState(false);
@@ -40,6 +42,7 @@ export default function App({ navigation }) {
   const [IsTapShortCoin, setIsTapShortCoin] = useState(false);
 
   const [UserData, setUserData] = useState({});
+  const [isModalVisible, setisModalVisible] = useState(false);
 
 
   const [NewsData, setNewsData] = useState([]);
@@ -216,10 +219,15 @@ export default function App({ navigation }) {
         return true;
       }
     );
-
+    
   },[])
 
-  
+  useEffect(()=>{
+    if(isgetreward){
+      setisModalVisible(true)
+      dispatch(actChangeIsGetReward(false))
+    }
+  },[isgetreward])
 
   useEffect(() => {
     async function getwalletBlance() {
@@ -513,8 +521,9 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
 
   return (
     <>
+      <PopupCongras isModalVisible={isModalVisible} toPress={()=>setisModalVisible(false)} title={checkLanguage({vi: 'Chúc mừng bạn', en: 'Congrats'},language)} content={checkLanguage({vi : 'Bạn nhận được 2KDG Reward cho lần đầu đăng nhập app', en : 'You got 2 KDG Reward for the first time login'})} />
       {!IsScannerOpen && 
-      
+
           <View style={[mainStyles.container,{paddingBottom: 20, paddingHorizontal: 15}]}>
             <View style={[WalletStyle.header]}>
               <View><Text style={WalletStyle.titleHeader}>King Wallet</Text></View>
