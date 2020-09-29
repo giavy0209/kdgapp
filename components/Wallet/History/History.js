@@ -102,7 +102,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                 setTransaction(res.data.items)
             }else if(coinName === 'BTC'){
                 setLoading(false)
-               setTransaction(res.data.txs.out)
+                setTransaction(res.data.txs)
             }else{
                 setLoading(false)
                 setTransaction(res.data.data)
@@ -122,7 +122,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
         var tranLength = Transaction ? Transaction.length ? Transaction.length : -1 : -1
 
         if(tranLength !== -1){
-            if(skip < tranLength/5){
+            if(skip < tranLength/5 && skip > 5){
                 setSkip(skip+1)
             }
         }

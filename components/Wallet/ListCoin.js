@@ -96,7 +96,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
             </Animated.View>
           </RectButton>
         );
-    },[CoinHeight]);
+    },[CoinHeight, language]);
 
     const renderRightActions = useCallback((id, balance) => {
         return (
@@ -115,7 +115,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
             </Animated.View>
           </RectButton>
         );
-    },[CoinHeight]);
+    },[CoinHeight,language]);
 
     const handleSwipeOpen = useCallback((obj)=>{
         var index = SwipeList.findIndex(o => o.id === obj.id)

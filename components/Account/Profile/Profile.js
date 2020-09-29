@@ -182,7 +182,7 @@ export default function App() {
                     </TouchableOpacity>
                 </View>
 
-                <View style={{paddingTop: 20}}>
+                <View style={{marginTop: -50}} >
                     <View style={{flexDirection: 'row', borderBottomColor: display === 1 ? '#e8e8e8' : 'rgba(255,255,255,0.2)', borderBottomWidth: 1, paddingBottom: 10, paddingTop: 35, alignItems: 'center'}}>
                         <Text style={{color: display === 1 ? '#283349' : '#fff', width: 110}}>{checkLanguage({vi: 'Họ', en: `First name`},language)}</Text>
                         <TextInput onChangeText={(value) => setFirstName(value)} value={FirstName} placeholder='Nhập họ' placeholderTextColor='rgba(255,255,255,0.5)' style={{width: '100%' , color: display === 1 ? '#8a8c8e' : 'rgba(255,255,255,0.5)',}} />
@@ -241,7 +241,6 @@ export default function App() {
             </View>
 
 
-
             <TouchableOpacity style={{marginTop: 30}}  onPress={() => updateUser(FirstName, Name, SelectedGender, Birthday, Address)}>
                 <View style={{alignItems: 'center', justifyContent: 'center'}}>
                     <LinearGradient 
@@ -253,14 +252,19 @@ export default function App() {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{marginTop: 50}} onPress={handleLogout}>
-                <View style={{alignItems: 'center', justifyContent: 'center', borderColor: '#fac800', borderRadius: 20,  borderWidth: 2, width: '60%', alignSelf: 'center', padding: 10}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{color: display === 1 ? '#283349' : '#fff', paddingRight: 10}}>{checkLanguage({vi: 'Đăng xuất', en: `Log out`},language)}</Text>
-                <FontAwesomeIcon color={display === 1 ? '#283349' : '#fff'} size={20}  icon={faSignOutAlt}/>
-                    </View>
+            
+
+            <TouchableOpacity style={{marginTop: 30}}  onPress={handleLogout}>
+                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                    <LinearGradient 
+                    start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
+                    colors={['#d4af37', '#edda8b', '#a77b00', '#e7be22', '#e8bf23']}
+                    style={{width: '90%', padding: 12, alignItems: 'center', borderRadius: 20, flexDirection: 'row', justifyContent: 'center'}}>
+                    <Text style={{color: '#111b2d', fontSize: 16,}}>{checkLanguage({vi: 'Đăng xuất', en: `Log out`},language)}</Text>
+                    </LinearGradient>
                 </View>
             </TouchableOpacity>
+
 
 
         </>
