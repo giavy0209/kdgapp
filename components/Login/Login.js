@@ -94,7 +94,7 @@ export default function App({navigation, setBackGround}) {
             setEmailValidate(null)
         }else{
             setEmailValidate(
-                <Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Email không hợp lệ', en: 'Invalid email'},language)}</Text>
+                <Text style={{color:'#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Email không hợp lệ', en: 'Invalid email'},language)}</Text>
             )
         }
     }
@@ -154,10 +154,10 @@ export default function App({navigation, setBackGround}) {
         <View style={[styles.container, {paddingHorizontal: 30,paddingTop: 110}]}>
             <Image source={logo} style={styles.logo}></Image>
             <Text style={styles.title}>{checkLanguage({vi: 'Xin chào', en: `Hello`},language)}</Text>
-            <Text style={styles.subTitle}>{checkLanguage({vi: 'Đăng nhập để tiếp tục', en: `Log in to continue`},language)}</Text>
+            <Text style={[styles.subTitle, display === 1 ? {color: '#283349'} : null]}>{checkLanguage({vi: 'Đăng nhập để tiếp tục', en: `Log in to continue`},language)}</Text>
             <View style={[styles.formBlock, {marginTop: 42}]}>
                 <View style={styles.inputBlock}>
-                    <Text style={[styles.placeHolderText,{bottom: EmailTextPosition , fontSize: EmailTextSize}, EmailFocus && {color: language === 1 ? '#8a8c8e' :'#8a8c8e'}]}>Email</Text>
+                    <Text style={[styles.placeHolderText,{bottom: EmailTextPosition , fontSize: EmailTextSize}, EmailFocus && {color: display === 1 ? '#283349' :'#8a8c8e'}]}>Email</Text>
                     <TextInput 
                     autoCapitalize="none"
                     onFocus={()=>{Email !== '' || !EmailFocus && setEmailFocus(true)}} 
@@ -165,21 +165,21 @@ export default function App({navigation, setBackGround}) {
                     // onChangeText={value => setEmail(value)} 
                     onChangeText={value => validateEmail(value)}
                     value={Email} 
-                    style={styles.input} />
+                    style={[styles.input, display === 1 ? {borderColor: '#e8e8e8', color: '#283349'} : null]} />
                    
                 </View>
                 <View style={{padding: 5}}>
                    {EmailValidate ? EmailValidate : Error}
                 </View>
                 <View style={styles.inputBlock}>
-                    <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: language === 1 ? '#8a8c8e' : '#8a8c8e'}]}>{checkLanguage({vi: 'Mật khẩu', en: `Password`},language)}</Text>
+                    <Text style={[styles.placeHolderText,{bottom: PasswordTextPosition , fontSize: PasswordTextSize}, PasswordFocus && {color: display === 1 ? '#283349' : '#8a8c8e'}]}>{checkLanguage({vi: 'Mật khẩu', en: `Password`},language)}</Text>
                     <TextInput 
                     onFocus={()=>{Password !== '' || !PasswordFocus && setPasswordFocus(true)}} 
                     onBlur={()=>{Password === '' && setPasswordFocus(false)}}
                     onLayout={e => setInputPasswordHeight(e.nativeEvent.layout.height)} 
                     onChangeText={value => validatePassword(value)} 
                     value={Password} 
-                    style={styles.input} 
+                    style={[styles.input,  display === 1 ? {borderColor: '#e8e8e8', color: '#283349'} : null]} 
                     secureTextEntry={!IsShowPassword} 
                     />
                     <TouchableOpacity
