@@ -11,6 +11,7 @@ const {Navigator, Screen} = Tab
 export default function App(){
 
     const display = useSelector(state => state.display)
+    const language = useSelector(state => state.language)
     return (
         <Navigator
 
@@ -28,7 +29,7 @@ export default function App(){
         <Screen
         options={{tabBarIcon: ({focused}) =><Image source={focused ? display === 1 ? tab.logoActiveLight : tab.logoActive : tab.logo} />,}}  
         key={tab.name} 
-        name={tab.name}
+        name={language === 1 ? tab.name : tab.nameVi}
         >
             {props => <Maincomponent {...props} reqLogin={tab.reqLogin} Component={tab.render}></Maincomponent>}
         </Screen>
