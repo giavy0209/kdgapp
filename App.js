@@ -5,7 +5,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 
 import React, { useEffect, useRef } from 'react';
-import {View,Platform, LogBox } from 'react-native'
+import {View,Platform, LogBox, YellowBox } from 'react-native'
 import { Provider} from 'react-redux'
 import store from './store'
 import Navigation from './components/Navigation'
@@ -22,11 +22,16 @@ import {
   RobotoCondensed_300Light
 } from '@expo-google-fonts/roboto-condensed';
 import { setStatusBarHidden } from 'expo-status-bar';
-import calAPI from './axios';
-import AsyncStorage from '@react-native-community/async-storage';
 import { checkLanguage, storage } from './helper';
 import { actChangeNotify } from './store/actions';
-import io from 'socket.io-client/dist/socket.io';
+import io from 'socket.io-client';
+
+LogBox.ignoreLogs([
+  'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?',
+  'Require cycles',
+  'VirtualizedLists',
+  'Warning'
+])
 const connectionConfig = {
   jsonp: false,
   reconnection: true,
@@ -47,7 +52,6 @@ socket.on('notify',({titlevi,contentvi,titleen,contenten})=>{
   storage('noti',noti).setItem()
   dispatch(actChangeNotify(noti))
 })
-LogBox.ignoreAllLogs()
 setStatusBarHidden(false, 'none')
 
 Notifications.setNotificationHandler({
@@ -79,8 +83,8 @@ export default function App() {
   },[])
 
   useEffect(() => {
-    
-
+    LogBox.ignoreLogs(["Require cycle"]);
+    LogBox.ignoreAllLogs()
   }, []);
 
 
@@ -102,7 +106,6 @@ async function registerForPushNotificationsAsync() {
   let token;
   if (Constants.isDevice) {
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    console.log(existingStatus);
     let finalStatus = existingStatus;
     if (existingStatus !== 'granted') {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
