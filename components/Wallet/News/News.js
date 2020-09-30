@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef } from 'react'
+import React, {useState, useEffect, useRef, useCallback } from 'react'
 import {View, Text, Platform, Image, TouchableOpacity} from 'react-native'  
 import WebView from 'react-native-webview'
 import { Dimensions } from 'react-native'
@@ -23,6 +23,7 @@ export default function App({setOutScrollViewTop}){
     const language = useSelector(state => state.language)
 
     const isFocuse = useIsFocused()
+    const isload = useRef(false)
     useEffect(() => {
       if(language === 0){
         setlang('vi')
@@ -33,19 +34,19 @@ export default function App({setOutScrollViewTop}){
 
     const {NewsID} = route.params ?? {}
 
-    const injectedJavaScript = useRef( `
-    document.querySelectorAll('.menu .language li')[1].click()
-    `)
 
     const webview = useRef('')
 
-    useEffect(()=>{
-      var index = lang === 'vi' ? 1 : 0
-      injectedJavaScript.current = `document.querySelectorAll('.menu .language li')[${index}].click()`
-      if(webview.current.reload ){
-        webview.current.reload()
+    const inject = useCallback(()=>{
+      var lang = language === 0 ? 'vi' : 'en'
+      if(!isload.current){
+        isload.current = true
+        webview.current.injectJavaScript(`
+window.localStorage.setItem('lang', '${lang}')
+location.reload()
+      `)
       }
-    },[lang])
+    },[language])
  
     return (
         <>
@@ -54,12 +55,12 @@ export default function App({setOutScrollViewTop}){
             scalesPageToFit={true}
             bounces={false}
             javaScriptEnabled
+            onLoadEnd={inject}
             style={{ height: windowHeight, width: '100%' }}
             source={{
               uri: NewsID === undefined ? 'https://kingdomgame.org/kdg-news' : `https://kingdomgame.org/news/${NewsID}`,
             }}
             automaticallyAdjustContentInsets={false}
-            injectedJavaScript={injectedJavaScript.current}
           />
           <View style={{width: '100%', backgroundColor: '#2c3040', position: 'absolute', height: 80}}>
             <TouchableOpacity 

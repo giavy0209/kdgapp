@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef } from 'react'
+import React, {useState, useEffect, useRef, useCallback } from 'react'
 import {View, Text, Platform, Image, TouchableOpacity} from 'react-native'  
 import WebView from 'react-native-webview'
 import { Dimensions } from 'react-native'
@@ -19,9 +19,7 @@ const isIphoneTaiTho =  Platform.OS === 'ios' &&
 
 export default function App({setOutScrollViewTop}){
     const webview = useRef('')
-    const injectedJavaScript = useRef( `
-    document.querySelectorAll('.menu .language li')[1].click()
-    `)
+    const isload = useRef(false)
     const [Width , setWidth] = useState(0);
     
     const language = useSelector(state => state.language)
@@ -31,11 +29,15 @@ export default function App({setOutScrollViewTop}){
     const route = useRoute();
 
     const { id } = route.params ?? {}
-    useEffect(()=>{
-      var index = language
-      injectedJavaScript.current = `document.querySelectorAll('.menu .language li')[${index}].click()`
-      if(webview.current.reload ){
-        webview.current.reload()
+
+    const inject = useCallback(()=>{
+      var lang = language === 0 ? 'vi' : 'en'
+      if(!isload.current){
+        isload.current = true
+        webview.current.injectJavaScript(`
+window.localStorage.setItem('lang', '${lang}')
+location.reload()
+      `)
       }
     },[language])
     return (
@@ -45,12 +47,13 @@ export default function App({setOutScrollViewTop}){
             scalesPageToFit={true}
             bounces={false}
             javaScriptEnabled
-            style={{ height: isIphoneTaiTho ? (95*windowHeight)/100 : windowHeight+30, width: '100%' }}
+            injectedJavaScript={``}
+            onLoadEnd={inject}
+            style={{ height: isIphoneTaiTho ? (95*windowHeight)/100 : windowHeight, width: '100%' }}
             source={{
               uri: id ? `https://kingdomgame.org/terms-of-service/${id}`  : `https://kingdomgame.org/terms-of-service/`,
             }}
             automaticallyAdjustContentInsets={false}
-            injectedJavaScript={injectedJavaScript.current}
           />
           <View style={{width: '100%', backgroundColor: '#2c3040', position: 'absolute', height: 80}}>
             <TouchableOpacity 
