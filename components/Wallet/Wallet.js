@@ -296,7 +296,7 @@ useEffect(() => {
     .then((res)=>{
       setNewsData(res.data)
       
-      res.data.slice(0,4).map((item) =>{
+      res.data.slice(0,4).forEach((item) =>{
         if(item.content_vi !== undefined && item.meta_vi !== undefined){
             if(
                 (
@@ -632,10 +632,11 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                                 <FlatList
                                 horizontal={true}
                                 data={NewsData}
-                                renderItem={({item}) => {
+                                keyExtractor={(item,index) => index + '123'}
+                                renderItem={({item,index}) => {
 
                                     if(item.content_vi !== undefined){
-                                      return <View style={WalletStyle.post}>
+                                      return <View key={index + 'aaaa'} style={WalletStyle.post}>
                                       <TouchableOpacity
                                         onPress={()=>navigation.navigate('News', {
                                           NewsID: item._id
@@ -658,10 +659,11 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                             <FlatList
                             horizontal={true}
                             data={NewsData}
-                            renderItem={({item}) => {
+                            keyExtractor={(item,index) => index + '123'}
+                            renderItem={({item,index}) => {
 
                               if(item.content_en !== undefined){
-                                return <View style={WalletStyle.post}>
+                                return <View key={index + 'aaaaa'} style={WalletStyle.post}>
                                 <TouchableOpacity
                                   onPress={()=>navigation.navigate('News', {
                                     NewsID: item._id
