@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { View ,Dimensions} from 'react-native'
+import { View ,Dimensions, Platform} from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -52,7 +52,7 @@ export default function App() {
   
   useEffect(()=>{
     dispatch(actChangeScreenWidth(Dimensions.get('screen').width ))
-    dispatch(actChangeScreenHeight(Dimensions.get('window').height ))
+    dispatch(actChangeScreenHeight(Platform.OS !== 'android' ? Dimensions.get('window').height - bottom : Dimensions.get('window').height))
   },[])
     return (
       <SafeAreaView>
