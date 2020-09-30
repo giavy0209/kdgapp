@@ -206,6 +206,10 @@ export default function App({navigation, setBackGround}) {
                 <TouchableOpacity onPress={()=>navigation.navigate('ForgotPassword')}><Text style={[styles.linkText, {color: '#fac800'}]}>{checkLanguage({vi: 'Quên mật khẩu?', en: `Forgot password?`},language)}</Text></TouchableOpacity>
                 <TouchableOpacity onPress={()=>navigation.replace('Reg')}><Text style={[styles.linkText], {color: '#fac800'}}>{checkLanguage({vi: 'Đăng ký', en: `Register`},language)}</Text></TouchableOpacity>
             </View>
+
+            <View style={{alignItems: 'center', justifyContent: 'center', marginTop: -20}}>
+                <Text style={{color: '#74787a'}}>Version 1.0</Text>
+            </View>
         </View>
     );
 }

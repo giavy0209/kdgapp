@@ -514,6 +514,7 @@ export function asyncGetBlockchainTransaction(type, address, take, begin_date){
     return async (dispatch) =>{
         try {
             const res = (await (await calAPI()).get(`/api/blockchain_transaction?coin_type=${type}&address=${address}&skip=1&take=${take}&begin_date=${begin_date}`)).data
+            console.log(res);
             return res
         } catch (error) {
             return {ok: false, status: error.response.status}

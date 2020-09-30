@@ -22,8 +22,8 @@ const windowHeight = Dimensions.get('window').height;
 
 const paginate = function (array, index, size) {
     // transform values
+    console.log(index);
     index = Math.abs(parseInt(index));
-    index = index > 0 ? index - 1 : index;
     size = parseInt(size);
     size = size < 1 ? 1 : size;
 
@@ -59,7 +59,6 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     const [Loading, setLoading] = useState(false);
 
     const [Skip, setSkip] = useState(0)
-  
 
     const [SelectType, setSelectType] = useState(null)
     const [SelectedHistory, setSelectedHistory] = useState('Tất cả')
@@ -91,7 +90,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     useEffect(() => {
           setLoading(true)
           var type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase() 
-          dispatch(asyncGetBlockchainTransaction(type, coinAddress, 10000000,'2016-08-01'))
+          dispatch(asyncGetBlockchainTransaction(type, coinAddress, 10000,'2016-08-01'))
           .then((res)=>{
       
             if(type === 'usdt' || type === 'eth'|| type === 'knc' || type === 'mch'){
@@ -118,21 +117,24 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     },[])
 
 
-    const rightArrowHandler = (skip) => { 
-        var tranLength = Transaction ? Transaction.length ? Transaction.length : -1 : -1
-
-        if(tranLength !== -1){
-            if(skip < tranLength/5){
-                setSkip(skip+1)
-            }
+    
+  const rightArrowHandler = useCallback(() => {
+      var tranLength = Transaction ? Transaction.length ? Transaction.length : -1 : -1
+      
+      if(tranLength !== -1){
+        if(Skip < tranLength/5){
+            setSkip(Skip+1)
         }
     }
+}, [Skip,Transaction]);
 
-    const leftArrowHandler = (skip) => {
-        if(skip > 0){
-            setSkip(skip-1)
-        }
+
+const leftArrowHandler = useCallback((skip) => {
+    if(skip > 0){
+        setSkip(skip-1)
     }
+}, [Skip]);
+
 
     // let JS = '<script src="https://widgets.coingecko.com/coingecko-coin-ticker-widget.js"></script>';
 
@@ -210,17 +212,17 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                style={{ height: 180, width: '100%' }}
                automaticallyAdjustContentInsets={false}
             />
-                <TouchableOpacity 
+                {/* <TouchableOpacity 
                     onPress={() => copyHandler(coinAddress)}
                     style={{padding: 20}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: display === 1 ? '#ffff' : 'rgba(29,38,59,0.6)', borderRadius: 5}}>
                         <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255, 0.7)'}}>{coinAddress}</Text>
                         <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
      
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: windowHeight/25, paddingHorizontal: 15}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: windowHeight/25, paddingHorizontal: 15, paddingTop: 10}}>
                     <TouchableOpacity 
                         onPress={() => navigation.navigate('DepositPage2', {
                             id: coinName,
@@ -334,6 +336,32 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
                     
                                 />
                             )
+                        // } else if(coinName === 'MCH') {
+
+                        //     return (
+                        //         <HistoryButton 
+                        //             toPress={() => navigation.navigate('HistoryDetail', {
+                        //                 coin_name: coinName,
+                        //                 type: item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit',
+                        //                 status: item.status === true ? 'success' : 'failed',
+                        //                 fromAddress: item.from,
+                        //                 toAddress: item.to,
+                        //                 block: item.blockNumber,
+                        //                 hash: item.hash,
+                        //                 amount: (item.value)/Math.pow(10, 18),
+                        //                 datetime:            
+                        //                 (item.timestamp.toString())
+
+
+                        //             })}
+                        //             type={item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
+                        //             status={item.status === true ? 'success' : 'failed'}
+                        //             datetime={(item.timestamp.toString())}
+                        //             value= {(item.value)/Math.pow(10, 18)}
+                        //             coin_name={coinName}
+                    
+                        //         />
+                        //     )
 
                         } else if(coinName === 'BTC') {
 
