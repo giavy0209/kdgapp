@@ -482,8 +482,8 @@ const ROUTERS = [
 const TABS = [
     {
         name: 'Wallet',
-        nameVi: 'Ví',
-        title: 'Ví',
+        titleVi: 'Ví',
+        title: 'Wallet',
         render : Wallet,
         logo: tabWallet,
         logoActive: tabWalletActive,
@@ -492,7 +492,7 @@ const TABS = [
     },
     {
         name: 'Staking',
-        nameVi: 'Staking',
+        titleVi: 'Staking',
         title: 'Staking',
         render : Staking,
         logo: tabStake,
@@ -502,7 +502,7 @@ const TABS = [
     },
     {
         name: 'Swap',
-        nameVi: 'Hoán đổi',
+        titleVi: 'Hoán đổi',
         title: 'Swap',
         render : Swap,
         logo: tabSwap,
@@ -512,7 +512,7 @@ const TABS = [
     },
     {
         name: 'Me',
-        nameVi: 'Cá nhân',
+        titleVi: 'Cá nhân',
         title: 'Me',
         render : Account,
         logo: tabAccount,

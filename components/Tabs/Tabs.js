@@ -27,9 +27,11 @@ export default function App(){
 
         {TABS.map(tab=>
         <Screen
-        options={{tabBarIcon: ({focused}) =><Image source={focused ? display === 1 ? tab.logoActiveLight : tab.logoActive : tab.logo} />,}}  
+        options={{tabBarIcon: ({focused}) =><Image source={focused ? display === 1 ? tab.logoActiveLight : tab.logoActive : tab.logo} />, 
+            title: language === 0 ? tab.titleVi : tab.title
+        }}  
         key={tab.name} 
-        name={language === 1 ? tab.name : tab.nameVi}
+        name={tab.name}
         >
             {props => <Maincomponent {...props} reqLogin={tab.reqLogin} Component={tab.render}></Maincomponent>}
         </Screen>

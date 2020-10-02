@@ -22,7 +22,6 @@ const windowHeight = Dimensions.get('window').height;
 
 const paginate = function (array, index, size) {
     // transform values
-    console.log(index);
     index = Math.abs(parseInt(index));
     size = parseInt(size);
     size = size < 1 ? 1 : size;
@@ -90,7 +89,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     useEffect(() => {
           setLoading(true)
           var type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase() 
-          dispatch(asyncGetBlockchainTransaction(type, coinAddress, 10000,'2016-08-01'))
+          dispatch(asyncGetBlockchainTransaction(type, coinAddress,  coinName === 'TOMO' ? 100 : 10000,'2016-08-01'))
+          //Loi backend khong xu ly skip, take. TOMO: Limit is less than 101 items per page
           .then((res)=>{
       
             if(type === 'usdt' || type === 'eth'|| type === 'knc' || type === 'mch'){
@@ -122,7 +122,7 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
       var tranLength = Transaction ? Transaction.length ? Transaction.length : -1 : -1
       
       if(tranLength !== -1){
-        if(Skip < tranLength/5){
+        if(Skip < tranLength/5-1){
             setSkip(Skip+1)
         }
     }
@@ -136,15 +136,11 @@ const leftArrowHandler = useCallback((skip) => {
 }, [Skip]);
 
 
-    // let JS = '<script src="https://widgets.coingecko.com/coingecko-coin-ticker-widget.js"></script>';
-
-    // let source = JS + '<coingecko-coin-ticker-widget  coin-id="bitcoin" currency="usd" locale="en"></coingecko-coin-ticker-widget>';
-
-    const copyHandler = (address) => {
-        Clipboard.setString(address)
-        toggleModal()
-
-    }
+    // var d = new Date('2020-09-21 08:16:05 UTC')
+    
+    // var s = d.replace()
+    // var d = new Date('2020-09-21T08:16:05.000+00:00')
+    // console.log(d.toString())
 
 
     const percent24h = coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.percent24h
@@ -311,7 +307,14 @@ const leftArrowHandler = useCallback((skip) => {
                              
                             )
                         } else if(coinName === 'TOMO') {
-
+                            var timestamp = item.timestamp.replace(' ', 'T').replace(' ','').replace('UTC', '+00:00')
+                            var date = new Date(timestamp)
+                            var h = date.getHours()
+                            var m = date.getMinutes()
+                            var s = date.getSeconds()
+                            var d = date.getDate()
+                            var mm = date.getMonth()+1
+                            var y = date.getFullYear()
                             return (
                                 <HistoryButton 
                                     toPress={() => navigation.navigate('HistoryDetail', {
@@ -323,45 +326,19 @@ const leftArrowHandler = useCallback((skip) => {
                                         block: item.blockNumber,
                                         hash: item.hash,
                                         amount: (item.value)/Math.pow(10, 18),
-                                        datetime:            
-                                        (item.timestamp.toString())
+                                        datetime: h + ':' + m + ':' + s + " - " + d + "/" + mm + "/" + y
+                                      
 
 
                                     })}
                                     type={item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
                                     status={item.status === true ? 'success' : 'failed'}
-                                    datetime={(item.timestamp.toString())}
+                                    datetime= {h + ':' + m + ':' + s + " - " + d + "/" + mm + "/" + y}
                                     value= {(item.value)/Math.pow(10, 18)}
                                     coin_name={coinName}
                     
                                 />
                             )
-                        // } else if(coinName === 'MCH') {
-
-                        //     return (
-                        //         <HistoryButton 
-                        //             toPress={() => navigation.navigate('HistoryDetail', {
-                        //                 coin_name: coinName,
-                        //                 type: item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit',
-                        //                 status: item.status === true ? 'success' : 'failed',
-                        //                 fromAddress: item.from,
-                        //                 toAddress: item.to,
-                        //                 block: item.blockNumber,
-                        //                 hash: item.hash,
-                        //                 amount: (item.value)/Math.pow(10, 18),
-                        //                 datetime:            
-                        //                 (item.timestamp.toString())
-
-
-                        //             })}
-                        //             type={item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
-                        //             status={item.status === true ? 'success' : 'failed'}
-                        //             datetime={(item.timestamp.toString())}
-                        //             value= {(item.value)/Math.pow(10, 18)}
-                        //             coin_name={coinName}
-                    
-                        //         />
-                        //     )
 
                         } else if(coinName === 'BTC') {
 
@@ -453,7 +430,7 @@ const leftArrowHandler = useCallback((skip) => {
                             <TouchableOpacity onPress={() => leftArrowHandler(Skip)}>
                                 <FontAwesomeIcon size={40} color={display === 1 ? '#fac800' : "rgba(255,255,255,0.6)"} icon={faAngleLeft}/>
                             </TouchableOpacity>
-                                <Text style={{color: display === 1 ? '#fac800' :  'rgba(255,255,255,0.6)', fontSize: 20, paddingHorizontal: 20}}>{Skip+1}</Text>
+                                <Text style={{color: display === 1 ? '#fac800' :  'rgba(255,255,255,0.6)', fontSize: 20, paddingHorizontal: 20}}>{Skip+1 + '/' + ( Math.ceil(Transaction.length/5))}</Text>
                             <TouchableOpacity onPress={() =>  rightArrowHandler(Skip)}>
                                 <FontAwesomeIcon size={40} color={display === 1 ? '#fac800' : "rgba(255,255,255,0.6)"} icon={faAngleRight}/>
                             </TouchableOpacity>

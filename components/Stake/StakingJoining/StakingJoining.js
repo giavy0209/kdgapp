@@ -162,7 +162,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
                 <View>
                     <Text style={StakingStyle.dashSymbol}>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </Text>
-                    <TextInput onEndEditing={edittingHandler} style={[StakingStyle.valueStaking, {width: '100%'}]}>{ValueStaking}</TextInput>
+                    <TextInput keyboardType='decimal-pad' onEndEditing={edittingHandler} style={[StakingStyle.valueStaking, {width: '100%'}]}>{ValueStaking}</TextInput>
                 </View>
                 <Text style={{color: '#rgba(138,140,142, 0.8)', color: '#fff'}}>KDG</Text>
             </View>
