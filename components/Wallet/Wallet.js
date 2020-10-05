@@ -635,7 +635,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                                 keyExtractor={(item,index) => index + '123'}
                                 renderItem={({item,index}) => {
 
-                                    if(item.content_vi !== undefined){
+                                    if(item.content_vi !== undefined && item.thumbURL_vi   !== undefined){
                                       return <View key={index + 'aaaa'} style={WalletStyle.post}>
                                       <TouchableOpacity
                                         onPress={()=>navigation.navigate('News', {
@@ -661,8 +661,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                             data={NewsData}
                             keyExtractor={(item,index) => index + '123'}
                             renderItem={({item,index}) => {
-
-                              if(item.content_en !== undefined){
+                              if(item.content_en !== undefined && item.thumbURL_en !== undefined){
                                 return <View key={index + 'aaaaa'} style={WalletStyle.post}>
                                 <TouchableOpacity
                                   onPress={()=>navigation.navigate('News', {

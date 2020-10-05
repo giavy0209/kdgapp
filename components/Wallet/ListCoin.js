@@ -189,7 +189,7 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                             </View>
                         </View>
                         <View style={WalletStyle.coinRight}>
-                            <Text style={WalletStyle.quantity}>{VisibleBalance ? hiddenBalance : item.balance !== undefined && !isNaN(item.balance) ?  item.balance :'Loading...'}</Text>
+                            <Text style={WalletStyle.quantity}>{VisibleBalance ? hiddenBalance : item.balance !== undefined && !isNaN(item.balance) ?  (item.coinName === 'BTC' || item.coinName === 'ETH' ? parseFloat(item.balance.toFixed(7)) : parseFloat(item.balance.toFixed(4))) :'Loading...'}</Text>
                             <Text style={WalletStyle.coinPirce}>{VisibleBalance ? hiddenBalance : item.coinPrice.usd !== undefined && !isNaN(item.coinPrice.usd) ? typeCurrency === 1 ? `~${item.coinPrice.vnd} ₫` :  typeCurrency === 2 ? `~¥${item.coinPrice.cny}` : `~$${item.coinPrice.usd}` : 'Loading...'} </Text>
                         </View>
                     </TouchableOpacity>

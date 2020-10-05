@@ -554,7 +554,8 @@ export function asyncLogout(){
             dispatch(actChangeLoginStatus(false))
             const newRouters = []
             
-            // await AsyncStorage.clear();
+            await AsyncStorage.clear();
+          
             await storage('isNotFirstTime', true).setItem()
 
             ROUTERS.forEach((router)=>{
