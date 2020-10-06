@@ -93,6 +93,14 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             )
             return;
           }
+          if(res.status === 105){
+            setLoading(false)
+            Alert.alert(
+                checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                checkLanguage({vi: 'KDG Reward hiện tại không khả dụng, vui lòng thử lại sau', en: `KDG Reward not available, please try again later`},language),
+            )
+            return;
+          }
           if(res.status === 1){
             setLoading(false)
             Alert.alert(
@@ -111,7 +119,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
           setLoading(false)
           Alert.alert(
             checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-            checkLanguage({vi: 'Swap không thành công', en: `Swap failed`},language),
+            checkLanguage({vi: 'Swap thất bại', en: `Swap failed`},language),
          )
         
         })
