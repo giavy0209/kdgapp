@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { View, Text, TouchableOpacity,Image, Alert, Platform } from 'react-native'
+import { View, Text, TouchableOpacity,Image, Alert, Platform, ActivityIndicator } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -31,6 +31,8 @@ export default function App(){
     const [Height, setHeight] =useState(0)
     const [ContentHeight, setContentHeight] =useState(0)
     const [ButtonHeight, setButtonHeight] =useState(0)
+
+    const [Loading, setLoading] = useState(false);
 
     const [ImageFront, setImageFront] = useState(null)
 
@@ -216,6 +218,7 @@ export default function App(){
 
             <TouchableOpacity 
             onPress={handleNext}
+            disabled={(Loading === false) ? false : true}
             onLayout={e => setButtonHeight(e.nativeEvent.layout.height)}
             style={[{marginHorizontal: 11 , flex: 1,height: 47, justifyContent: 'center', alignItems: 'center',borderRadius: 50, overflow: 'hidden'},
             {marginTop: screenHeight - ContentHeight - Height - ButtonHeight - 22}
@@ -226,7 +229,8 @@ export default function App(){
                 colors={['#a47b00','#edda8b', '#d6b039', '#edda8b', '#a47b00']}
                 style={{width: '100%',height: 47, justifyContent: 'center', alignItems: 'center'}}
                 >
-                    <Text style={{color: '#111b2d', fontSize: 14}}>{checkLanguage({vi: 'Tiếp theo', en: `Continue`},language)}</Text>
+                    {  Loading === true ?  <ActivityIndicator size="small" color="#0000" />
+                    : <Text style={{color: '#111b2d', fontSize: 14}}>{checkLanguage({vi: 'Tiếp theo', en: `Continue`},language)}</Text>}     
                 </LinearGradient>
             </TouchableOpacity>
         </>
