@@ -26,9 +26,9 @@ export default function App(){
     const [KYCType, setKYCType] = useState()
     useEffect(() => {
         async function getUserInfo() {
-          var userinfo = await storage('_id').getItem();
+          var userid = await storage('userId').getItem();
        
-        dispatch(asyncGetUserbyID(userinfo._id))
+        dispatch(asyncGetUserbyID(userid))
         .then((res)=>{
             setIs2FA(res.data.is2FA)
             setKYCType(res.data.kyc)

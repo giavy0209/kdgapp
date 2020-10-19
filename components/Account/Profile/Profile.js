@@ -57,14 +57,14 @@ export default function App() {
 
     useEffect(() => {
         async function getUserInfo() {
-          var userid = await storage('_id').getItem();
+          var userid = await storage('userId').getItem();
           dispatch(asyncGetUserbyID(userid))
           .then((res)=>{
-            // setUserInfoInServer({
-            //     Name: res.data.first_name + " " + res.data.last_name,
-            //     Gender: res.data.gioi_tinh_id,
-            //     Birthday: res.data.birth_day,
-            // })
+            setUserInfoInServer({
+                Name: res.data.first_name + " " + res.data.last_name,
+                Gender: res.data.gioi_tinh_id,
+                Birthday: res.data.birth_day,
+            })
             setSelectedGender(res.data.gioi_tinh_id)
             setName(res.data.last_name)
             setAddress(res.data.address)
@@ -127,10 +127,10 @@ export default function App() {
 
         toggleModal()
 
-            var userinfo = await storage('_id').getItem();
+            var userid = await storage('userId').getItem();
             var submitInfo = 
             {
-                id: userinfo._id, gioi_tinh_id: SelectedGender, first_name: first_name, last_name: name, birth_day: birth_day, address: address
+                id: userid, gioi_tinh_id: SelectedGender, first_name: first_name, last_name: name, birth_day: birth_day, address: address
             }
 
             dispatch(asyncUpdateUser(submitInfo))

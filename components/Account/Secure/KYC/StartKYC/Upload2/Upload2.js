@@ -71,7 +71,7 @@ export default function App(){
     }, []);
 
     const handleNext = useCallback(async ()=>{
-        var userinfo = await storage('_id').getItem();
+        var userid = await storage('userId').getItem();
         if(ImageFront && ImageSelfy){
         
                 const arrayUpload = []
@@ -83,7 +83,7 @@ export default function App(){
                     name: `photo.${extFront}`,
                 }
                 uploadFront.append('file', fileFront)
-                uploadFront.append('userId' , userinfo._id)
+                uploadFront.append('userId' , userid)
                 arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadFront))
 
                 const extSelf = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
@@ -94,7 +94,7 @@ export default function App(){
                 }
                 const uploadSelf = new FormData()
                 uploadSelf.append('file', fileSelf)
-                uploadSelf.append('userId' , userinfo._id)
+                uploadSelf.append('userId' , userid)
                 arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelf))
 
                 try {
@@ -118,7 +118,7 @@ export default function App(){
                             kyc_number : IDNumber.toString(),
                             kyc_name : Name,
                             kyc : '2',
-                            id : userinfo._id,
+                            id : userid,
                         }
                         dispatch(asyncUpdateUser(kycInfo))
                         .then((res)=>{

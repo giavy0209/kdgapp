@@ -256,9 +256,10 @@ export function asyncLogin(loginInfo){
                         newRouters.push(router)
                     }
                 })
+
                 await storage('loginInfo' , loginInfo).setItem()
                 await storage('userData' , res.data).setItem();
-                await storage('userId' , res.data._id._id).setItem();
+                await storage('userId' , res.data._id).setItem();
                 await storage('userBalance' , res.data.balances).setItem();
                 await storage('isLogin' , true).setItem();
                 await storage('loginTime', new Date().getTime()).setItem()

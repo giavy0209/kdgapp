@@ -5,7 +5,7 @@ import {Header2} from '../../Header'
 import { mainStyles } from '../../../styles'
 import { useNavigation } from '@react-navigation/native'
 import {  checkLanguage, storage } from '../../../helper'
-import {  useSelector } from 'react-redux'
+import {  useDispatch, useSelector } from 'react-redux'
 import Popup from '../../Popup/Popup'
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -22,6 +22,7 @@ export default function App({setOutScrollViewTop}){
     const [IsRewardToday,setIsRewardToday] = useState(false)
     const [ModalStyle,setModalStyle] = useState('')
     const [ModalMess,setModalMess] = useState('')
+    const dispatch = useDispatch()
     const [isModalVisible,setModalVisible] = useState(false)
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Phần thưởng', en: 'Reward'},language)}/>)
