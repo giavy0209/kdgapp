@@ -63,10 +63,10 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const Swap = useCallback(async () => {
         setLoading(true)  
 
-        var userinfo = await storage('_id').getItem();
+        var userid = await storage('userId').getItem();
 
 
-        dispatch(asyncConvertKDGReward({userId: userinfo._id, value: ValueSwap}))
+        dispatch(asyncConvertKDGReward({userId: userid, value: ValueSwap}))
         .then((res)=>{
 
           if(res.status === 104){
