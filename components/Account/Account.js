@@ -27,7 +27,7 @@ export default function App({navigation}){
 
   useEffect(() => {
     async function getUserInfo() {
-      var userinfo = await storage('_id').getItem();
+      var userinfo = await storage('userData').getItem();
       setUserName(userinfo.first_name + " " + userinfo.last_name);
       setUserEmail(userinfo.email);
     }

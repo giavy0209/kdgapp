@@ -25,13 +25,13 @@ export default function App(){
  
 
     const generate2FACode = useCallback(async () => {
-        var userinfo = await storage('_id').getItem();
-        dispatch(async2FA({userId: userinfo._id}))
+        var userData = await storage('userData').getItem();
+        dispatch(async2FA({userId: userData._id}))
         .then((res)=>{
            navigation.navigate('Generate2FACode', {
-                userId: userinfo._id,
+                userId: userData._id,
                 gaSecret: res.gaSecret,
-                email: userinfo.email,
+                email: userData.email,
                 status2FA: status2FA
            })
         })

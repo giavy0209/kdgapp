@@ -36,9 +36,9 @@ export default function App(){
     const [CheckValidate, setCheckValidate] = useState(false);
 
     const handleChangePass = useCallback(async ()=>{
-        var userinfo = await storage('_id').getItem();
+        var userid = await storage('userId').getItem();
 
-        dispatch(asyncChangePassword({id: userinfo._id, old_password: OldPass, new_password: NewPass}))
+        dispatch(asyncChangePassword({id: userid, old_password: OldPass, new_password: NewPass}))
         .then((res)=>{
             // if(res.status === 100 && res.msg === 'email is registed'){
             //     setEmailValidate(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>Email đã được đăng ký</Text>)

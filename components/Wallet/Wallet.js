@@ -13,7 +13,7 @@ import openscanerLight from '../../assets/images/openscanerLight.png'
 import GroupButton from './GroupButton'
 import ListCoin from './ListCoin'
 import { storage, checkLanguage } from '../../helper';
-import { asyncGetBalance, asyncSetCoinNumbers, asyncGetBalanceDouble, asyncGetNews, asyncGetCoinPrice, asyncGetUserbyID, asyncSecureStatus, actChangeSecureStatus, actChangeIsGetReward } from '../../store/actions'
+import {asyncSetCoinNumbers, asyncGetNews, asyncGetCoinPrice, actChangeSecureStatus, actChangeIsGetReward } from '../../store/actions'
 import { useIsFocused } from '@react-navigation/native';
 import { PopupCongras } from '../Popup';
 
@@ -114,6 +114,62 @@ export default function App({ navigation }) {
       vnd: 0, usd: 0, cny: 0, percent24h: 0
     } 
   });
+
+
+  useEffect(() => {
+    async function getwalletBlance() {
+      var userinfo = await storage('userBalance').getItem();
+      //eth, knc, mch, usdt-erc20, btc, trx, kdg, usdt-trc20, tomo; 
+
+      userinfo.forEach((el,id) => {
+          if(id === 0){
+            setETHBalance(el.balance)
+            setETHAddress(el.wallet.address)
+            return
+          }
+          if(id === 1){
+            setKNCBalance(el.balance)
+            return
+          }
+          if(id === 2){
+            setMCHBalance(el.balance)
+            return
+          }
+          if(id === 3){
+            setUSDTBalance(el.balance)
+            return
+          }
+          if(id === 4){
+            setBTCBalance(el.balance)
+            setBTCAddress(el.wallet.address)
+            return
+          }
+          if(id === 5){
+            setTRXBalance(el.balance)
+            setTRXAddress(el.wallet.address)
+            return
+          }
+          if(id === 6){
+            setKDGBalance(el.balance)
+            return
+          }
+          if(id === 7){
+            setUSDTBalance(el.balance)
+            return
+          }
+          if(id === 8){
+            setTOMOBalance(el.balance)
+            setTOMOAddress(el.wallet.address)
+            return
+          }
+      });
+ 
+    }
+
+    getwalletBlance()
+
+
+  }, [])
 
 
   const AvailableBalance= {
@@ -229,56 +285,6 @@ export default function App({ navigation }) {
     }
   },[isgetreward])
 
-  useEffect(() => {
-    async function getwalletBlance() {
-      var userinfo = await storage('_id').getItem();
-      dispatch(asyncGetUserbyID(userinfo._id))
-      .then((res)=>{
-        setTOMOAddress(res.data.tomo_address)
-        setTRXAddress(res.data.trx_address);
-        setETHAddress(res.data.erc_address);
-        setBTCAddress(res.data.btc_address);
-        if(res.data.kdg_lock !== undefined){
-            setKDGLock(res.data.kdg_lock);
-            setUserData(res.data)
-            return
-        }
-      })
-      dispatch(asyncGetBalanceDouble(userinfo.erc_address, userinfo.trx_address))
-      .then(({resETH, resTRX})=>{
-        setKDGBalance(resTRX.data.kdg_balance)
-        setTRXBalance(resTRX.data.trx_balance)
-        setETHBalance(resETH.data.eth_balance)
-        setUSDTBalance(resETH.data.usdt_balance)
-      })     
-
-      dispatch(asyncGetBalance('knc',userinfo.erc_address))
-      .then((res)=>{
-        setKNCBalance(res.balance)
-      })     
-
-      dispatch(asyncGetBalance('mch',userinfo.erc_address))
-      .then((res)=>{
-        setMCHBalance(res.balance)
-      })  
-
-      dispatch(asyncGetBalance('tomo', TOMOAddress))
-      .then((res)=>{
-        setTOMOBalance(res.balance)
-      })    
-      
-      dispatch(asyncGetBalance('btc', BTCAddress))
-      .then((res)=>{
-        setBTCBalance(res.balance)
-      })       
-    }
-
-    getwalletBlance()
-
-
-  }, [TOMOBalance, TOMOAddress, BTCAddress,isFocused])
-
-
 useEffect(() => {
   dispatch(actChangeSecureStatus({
     kdg_reward: UserData.kdg_reward,
@@ -316,7 +322,7 @@ useEffect(() => {
       setCount(dem)
     })
     .catch(console.log) 
-}, [])
+  }, [])
 
 useEffect(() => {
   dispatch(asyncGetCoinPrice('KDG'))
