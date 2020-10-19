@@ -73,7 +73,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             setLoading(false)
             Alert.alert(
                 checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'Bạn phải chuyển đổi tối thiểu 25 KDG', en: 'The mimimum amount to swap is 25 KDG reward'},language),
+                checkLanguage({vi: 'Bạn phải chuyển đổi tối thiểu 25 KDG Reward', en: 'The mimimum amount to swap is 25 KDG reward'},language),
             )
             return;
           }          
@@ -89,7 +89,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             setLoading(false)
             Alert.alert(
                 checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'Bạn chỉ có thể Swap tối đa 20 KDG 1 ngày', en: `You can swap maximum 20 KDG per day`},language),
+                checkLanguage({vi: 'Bạn chỉ có thể Swap tối đa 20 KDG Reward 1 ngày', en: `You can swap maximum 20 KDG reward per day`},language),
             )
             return;
           }
@@ -179,7 +179,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                             <View>
                                 <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255,0.3)', fontWeight: 'bold'}}>{checkLanguage({vi: 'Nhận', en: 'Receive'},language)}</Text>
                                <TextInput 
-                                    value={ValueSwap.toString()}
+                                    value={(ValueSwap/2).toString()}
                                     editable={false}
                                     style={{color: '#fac800', 
                                     fontSize: 25, 
