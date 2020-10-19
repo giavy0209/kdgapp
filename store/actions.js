@@ -249,7 +249,6 @@ export function asyncLogin(loginInfo){
         try {
             const res = (await (await calAPI()).post('/api/authorize', loginInfo)).data
             if(res.status === 1){
-                console.log(res);
                 storage('token' , res.jwtToken).setItem();
                 var newRouters = []
                 ROUTERS.forEach((router)=>{
@@ -258,9 +257,9 @@ export function asyncLogin(loginInfo){
                     }
                 })
                 await storage('loginInfo' , loginInfo).setItem()
-    
-                await storage('_id' , res.data).setItem();
                 await storage('userData' , res.data).setItem();
+                await storage('userId' , res.data._id._id).setItem();
+                await storage('userBalance' , res.data.balances).setItem();
                 await storage('isLogin' , true).setItem();
                 await storage('loginTime', new Date().getTime()).setItem()
                 await dispatch(actChangeIsGetReward(res.isMobileLoginFirstTime))
@@ -509,17 +508,29 @@ export function asyncExportPrivateKey(userInfo){
 //     }
 // }
 
-
-export function asyncGetBlockchainTransaction(type, address, take, begin_date){
+export function asyncGetTransaction(userid, coinType, skip, limit){
     return async (dispatch) =>{
         try {
-            const res = (await (await calAPI()).get(`/api/blockchain_transaction?coin_type=${type}&address=${address}&skip=1&take=${take}&begin_date=${begin_date}`)).data
+            const res = (await (await calAPI()).get(`/api/transactions?userid=${userid}&coin=${coinType}&skip=${skip}&limit=${limit}`)).data
             return res
         } catch (error) {
             return {ok: false, status: error.response.status}
         }
     }
 }
+
+
+
+// export function asyncGetBlockchainTransaction(type, address, take, begin_date){
+//     return async (dispatch) =>{
+//         try {
+//             const res = (await (await calAPI()).get(`/api/blockchain_transaction?coin_type=${type}&address=${address}&skip=1&take=${take}&begin_date=${begin_date}`)).data
+//             return res
+//         } catch (error) {
+//             return {ok: false, status: error.response.status}
+//         }
+//     }
+// }
 
 
 
@@ -535,16 +546,16 @@ export function asyncGetStakingTransaction(userID){
 }
 
 
-export function asyncGetTransaction(userID){
-    return async (dispatch) =>{
-        try {
-            const res = (await (await calAPI()).get(`/api/get_transaction?id=${userID}&skip=0&take=9999999&type=kyc-success`)).data
-            return res
-        } catch (error) {
-            return {ok: false, status: error.response.status}
-        }
-    }
-}
+// export function asyncGetTransaction(userID){
+//     return async (dispatch) =>{
+//         try {
+//             const res = (await (await calAPI()).get(`/api/get_transaction?id=${userID}&skip=0&take=9999999&type=kyc-success`)).data
+//             return res
+//         } catch (error) {
+//             return {ok: false, status: error.response.status}
+//         }
+//     }
+// }
 
 
 

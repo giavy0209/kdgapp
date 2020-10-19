@@ -57,8 +57,8 @@ export default function App() {
 
     useEffect(() => {
         async function getUserInfo() {
-          var userinfo = await storage('_id').getItem();
-          dispatch(asyncGetUserbyID(userinfo._id))
+          var userid = await storage('_id').getItem();
+          dispatch(asyncGetUserbyID(userid))
           .then((res)=>{
             // setUserInfoInServer({
             //     Name: res.data.first_name + " " + res.data.last_name,

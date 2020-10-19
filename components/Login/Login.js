@@ -136,6 +136,7 @@ export default function App({navigation, setBackGround}) {
 
                     return
                 }
+                console.log(res);
                 setLoading(false)
                 setError(<Text style={{color: '#C00F10' ,fontStyle: 'italic'}}>{checkLanguage({vi: 'Đã có lỗi xảy ra', en: `An error has occurred`},language)}</Text>)
             })

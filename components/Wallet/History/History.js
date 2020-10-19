@@ -14,7 +14,7 @@ import Popup from '../../Popup/Popup'
 
 import emptyicon from '../../../assets/images/emptyicon.png'
 import { storage, checkLanguage } from '../../../helper'
-import { asyncGetBlockchainTransaction} from '../../../store/actions'
+import { asyncGetTransaction} from '../../../store/actions'
 import WebView from 'react-native-webview';
 
 const windowWidth = Dimensions.get('window').width;
@@ -33,6 +33,10 @@ const paginate = function (array, index, size) {
 }
 
 export default function App({setOutScrollView, setOutScrollViewTop}){
+    useEffect(()=>{
+        setOutScrollViewTop(<Header2 title={coinName} />)
+    },[])
+
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -86,35 +90,26 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
     },[SelectType])
 
 
-    useEffect(() => {
+    useEffect(() => {       
+        async function getwalletBlance() {
           setLoading(true)
-          var type = coinName === 'TRX' ? 'tron' : coinName.toLowerCase() 
-          dispatch(asyncGetBlockchainTransaction(type, coinAddress,  coinName === 'TOMO' ? 100 : 10000,'2016-08-01'))
-          //Loi backend khong xu ly skip, take. TOMO: Limit is less than 101 items per page
+          var userid = await storage('userId').getItem();
+          console.log(userid)
+          dispatch(asyncGetTransaction(userid, coinName, 0, 1000))
           .then((res)=>{
-      
-            if(type === 'usdt' || type === 'eth'|| type === 'knc' || type === 'mch'){
-                setLoading(false)
-                setTransaction(res.data.result)
-            }else if(coinName === 'TOMO'){
-                setLoading(false)
-                setTransaction(res.data.items)
-            }else if(coinName === 'BTC'){
-                setLoading(false)
-                setTransaction(res.data.txs)
-            }else{
-                setLoading(false)
-                setTransaction(res.data.data)
-            }
+            setTransaction(res.data)
+            setLoading(false)
           })     
           .catch(console.log)
+        }
+    
+        getwalletBlance()
+    
     
       }, [])
 
+      
 
-    useEffect(()=>{
-        setOutScrollViewTop(<Header2 title={coinName} />)
-    },[])
 
 
     
@@ -144,6 +139,7 @@ const leftArrowHandler = useCallback((skip) => {
 
 
     const percent24h = coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.percent24h
+
     return (
         <>   
             <View style={[mainStyles.container]}>
@@ -268,47 +264,7 @@ const leftArrowHandler = useCallback((skip) => {
                     data={paginate(Transaction, Skip, 5)}
                     renderItem={({item}) => 
                     {
-                        if(coinName === 'KNC' || coinName === 'ETH' || coinName === 'USDT' || coinName === 'MCH'){
-                            return (
-                                <HistoryButton 
-                                    toPress={() => navigation.navigate('HistoryDetail', {
-                                        coin_name: coinName,
-                                        type: item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit',
-                                        status: 'success',
-                                        fromAddress: item.from,
-                                        toAddress: item.to,
-                                        block: item.blockNumber,
-                                        hash: item.hash,
-                                        amount: coinName === 'MCH' ? (item.value)/Math.pow(10, 8) : (item.value)/Math.pow(10, 18),
-                                        datetime:            
-                                            (new Date((item.timeStamp)*1000)).getHours().toString()  + ":" +
-                                            (new Date((item.timeStamp)*1000)).getMinutes().toString()  + ":" +
-                                            (new Date((item.timeStamp)*1000)).getSeconds().toString()  + " - " +
-                                            (new Date((item.timeStamp)*1000)).getDate().toString()  + "/"   +
-                                            ((new Date((item.timeStamp)*1000)).getMonth() + 1).toString() + "/"   +
-                                            (new Date((item.timeStamp)*1000)).getFullYear().toString()
-
-
-                                    })}
-                                    type={item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
-                                    status = 'success'
-                                    datetime={ 
-                                                (new Date((item.timeStamp)*1000)).getHours().toString()  + ":" +
-                                                (new Date((item.timeStamp)*1000)).getMinutes().toString()  + ":" +
-                                                (new Date((item.timeStamp)*1000)).getSeconds().toString()  + " - " +
-                                                (new Date((item.timeStamp)*1000)).getDate().toString()  + "/"   +
-                                                ((new Date((item.timeStamp)*1000)).getMonth() + 1).toString() + "/"   +
-                                                (new Date((item.timeStamp)*1000)).getFullYear().toString()
-                                            }
-                                    value=  {coinName === 'MCH' ? (item.value)/Math.pow(10, 8) : (item.value)/Math.pow(10, 18)}
-                                    coin_name={coinName}
-                
-                                />
-                             
-                            )
-                        } else if(coinName === 'TOMO') {
-                            var timestamp = item.timestamp.replace(' ', 'T').replace(' ','').replace('UTC', '+00:00')
-                            var date = new Date(timestamp)
+                            var date = new Date(item.create_date)
                             var h = date.getHours()
                             var m = date.getMinutes()
                             var s = date.getSeconds()
@@ -325,7 +281,7 @@ const leftArrowHandler = useCallback((skip) => {
                                         toAddress: item.to,
                                         block: item.blockNumber,
                                         hash: item.hash,
-                                        amount: (item.value)/Math.pow(10, 18),
+                                        amount: item.value,
                                         datetime: h + ':' + m + ':' + s + " - " + d + "/" + mm + "/" + y
                                       
 
@@ -334,77 +290,14 @@ const leftArrowHandler = useCallback((skip) => {
                                     type={item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
                                     status={item.status === true ? 'success' : 'failed'}
                                     datetime= {h + ':' + m + ':' + s + " - " + d + "/" + mm + "/" + y}
-                                    value= {(item.value)/Math.pow(10, 18)}
+                                    value= {item.value}
                                     coin_name={coinName}
                     
                                 />
                             )
 
-                        } else if(coinName === 'BTC') {
-
-                            return (
-                                <HistoryButton 
-                                    toPress={() => navigation.navigate('HistoryDetail', {
-                                        coin_name: coinName,
-                                        type: item.spent === false ? 'withdraw' : 'deposit',
-                                        status: 'success',
-                                        fromAddress: item.addr,
-                                        toAddress:  '',
-                                        block: '',
-                                        hash: item.script,
-                                        amount: (item.value)/1e8,
-                                        datetime: ''         
-                                   
-
-                                    })}
-                                    type={item.spent === false ? 'withdraw' : 'deposit'}
-                                    status='success'
-                                    datetime=''
-                                    value= {(item.value)/1e8}
-                                    coin_name={coinName}
+                        } 
                     
-                                />
-                            )
-                        }else{
-                            return (
-                                <HistoryButton 
-                                    toPress={() => navigation.navigate('HistoryDetail', {
-                                        coin_name: coinName,
-                                        type: item.transferFromAddress.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit',
-                                        status: item.confirmed === true ? 'success' : 'failed',
-                                        fromAddress: item.transferFromAddress,
-                                        toAddress: item.transferToAddress,
-                                        block: item.block,
-                                        hash: item.transactionHash,
-                                        amount: coinName === 'TRX' ? (item.amount)/Math.pow(10, 6) : (item.amount)/Math.pow(10, 18),
-                                        datetime:            
-                                            (new Date(item.timestamp)).getHours().toString()  + ":" +
-                                            (new Date(item.timestamp)).getMinutes().toString()  + ":" +
-                                            (new Date(item.timestamp)).getSeconds().toString()  + " - " +
-                                            (new Date(item.timestamp)).getDate().toString()  + "/"   +
-                                            ((new Date(item.timestamp)).getMonth() + 1).toString() + "/"   +
-                                            (new Date(item.timestamp)).getFullYear().toString()
-
-
-                                    })}
-                                    type={item.transferFromAddress.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
-                                    status={item.confirmed === true ? 'success' : 'failed'}
-                                    datetime={ 
-                                                (new Date(item.timestamp)).getHours().toString()  + ":" +
-                                                (new Date(item.timestamp)).getMinutes().toString()  + ":" +
-                                                (new Date(item.timestamp)).getSeconds().toString()  + " - " +
-                                                (new Date(item.timestamp)).getDate().toString()  + "/"   +
-                                                ((new Date(item.timestamp)).getMonth() + 1).toString() + "/"   +
-                                                (new Date(item.timestamp)).getFullYear().toString()
-                                            }
-                                    value= {coinName === 'TRX' ? (item.amount)/Math.pow(10, 6) : (item.amount)/Math.pow(10, 18)}
-                                    coin_name={coinName}
-                    
-                                />
-                            )
-                        }
-                        
-                    }
                     
                     
                     }
