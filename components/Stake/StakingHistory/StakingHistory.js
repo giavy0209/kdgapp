@@ -40,8 +40,8 @@ export default function App({setOutScrollViewTop}){
 
     useEffect(() => {
         async function getStakingHistory() {
-          var userinfo = await storage('_id').getItem();
-          dispatch(asyncGetStakingTransaction(userinfo._id))
+          var userid = await storage('userId').getItem();
+          dispatch(asyncGetStakingTransaction(userid))
           .then((res)=>{
             setStakingHistory(res.data)
           })

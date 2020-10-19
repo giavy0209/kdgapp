@@ -35,7 +35,7 @@ export default function App({setOutScrollViewTop}){
                         </View>
                     </View>
                 
-                    {RewardData.map((item) => (
+                    {!RewardData ? null : RewardData.map((item) => (
                         <View style={{flexDirection: 'row'}}>
                             <View style={{backgroundColor: 'rgba(36,45,65 ,0.8)', width: '28%' , paddingVertical: 10, justifyContent: 'center'}}>
                                 <Text style={{alignSelf: 'center' ,textAlign: 'center', color: 'rgba(255,255,255,0.8)'}}>{        

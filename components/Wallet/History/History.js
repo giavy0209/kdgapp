@@ -276,7 +276,7 @@ const leftArrowHandler = useCallback((skip) => {
                                     toPress={() => navigation.navigate('HistoryDetail', {
                                         coin_name: coinName,
                                         type: item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit',
-                                        status: item.status === true ? 'success' : 'failed',
+                                        status: 'success',
                                         fromAddress: item.from,
                                         toAddress: item.to,
                                         block: item.blockNumber,
@@ -288,7 +288,7 @@ const leftArrowHandler = useCallback((skip) => {
 
                                     })}
                                     type={item.from.toLowerCase() === coinAddress.toLowerCase() ? 'withdraw' : 'deposit'}
-                                    status={item.status === true ? 'success' : 'failed'}
+                                    status='success'
                                     datetime= {h + ':' + m + ':' + s + " - " + d + "/" + mm + "/" + y}
                                     value= {item.value}
                                     coin_name={coinName}

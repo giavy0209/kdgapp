@@ -40,8 +40,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
     useEffect(() => {
         async function getKDG_Reward() {
-          var userinfo = await storage('_id').getItem();
-          dispatch(asyncGetUserbyID(userinfo._id))
+          var userid = await storage('userId').getItem();
+          dispatch(asyncGetUserbyID(userid))
           .then((res)=>{
 
             if(res.data.kdg_reward){
@@ -200,9 +200,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 </View>
                 <View style={{padding: 10}}>
                     <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14}}>{checkLanguage({vi: 'Tài khoản đăng ký trước ngày 1/9 sẽ được đổi tối đa ', en: 'Account registration before 1/9/2020 are able to swap the reward maximum '},language)}<Text style={{color: '#fac800', fontWeight: 'bold', fontStyle: 'italic'}}>{checkLanguage({vi: '20 KDG Reward/ ngày', en: '20KDG / day'},language)}</Text>, {checkLanguage({vi: 'duy nhất 1 lần / ngày', en: 'only 1 time / day'},language)}</Text>
-                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>2 KDG Reward = 1 KDG</Text>
                     <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 20}}>{checkLanguage({vi: 'Tài khoản đăng ký sau ngày 1/9 sẽ được quy đổi thành KDG token khi bạn ', en: 'Account registration after 1/9/2020 are able to swap the reward when '},language)}<Text style={{color: '#fac800', fontWeight: 'bold', fontStyle: 'italic'}}>{checkLanguage({vi: 'có đủ 25 KDG reward, tối đa 50 KDG reward ', en: 'being enough 25KDG / day, maximum 50KDG / day'},language)}</Text>, {checkLanguage({vi: 'duy nhất 1 lần / ngày', en: 'only 1 time / day'},language)}</Text>
-                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>2 KDG Reward = 1 KDG</Text>
                 </View>
             </View>
 
