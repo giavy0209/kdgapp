@@ -79,14 +79,15 @@ export default function App({setOutScrollViewTop}){
 
     const submitPasswordHandler = useCallback(async (pass_private, coin_name) => {
         setModalVisibleInput(false)
-        var userinfo = await storage('_id').getItem();
+        var userinfo = await storage('userData').getItem();
         if(coin_name === 'USDT' || coin_name === 'ETH' || coin_name === 'KNC'|| coin_name === 'MCH'){
             var coinType = 'erc'
-            var coinAdress = userinfo.erc_address
+            var coinAdress = userinfo.balances[0].wallet.address
         }else{
             var coinType = 'trx'
-            var coinAdress = userinfo.trx_address
+            var coinAdress = userinfo.balances[5].wallet.address
         }
+
 
         dispatch(asyncExportPrivateKey({id: userinfo._id, password: pass_private, coin_type: coinType}))
         .then((res)=>{

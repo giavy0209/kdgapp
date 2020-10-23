@@ -61,9 +61,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const Staking = useCallback(async () => {
         setLoading(true)  
 
-        var userinfo = await storage('_id').getItem();
+        var userid = await storage('userid').getItem();
 
-        dispatch(asyncStaking({userId: userinfo._id, kdg_coin: ValueStaking}))
+        dispatch(asyncStaking({userId: userid, kdg_coin: ValueStaking}))
         .then((res)=>{      
           if(res.status === 103){
             setToggleCheckBox(false)

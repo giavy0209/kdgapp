@@ -71,12 +71,12 @@ export default function App({setOutScrollView}){
 
     const withdraw = useCallback(async (sel) => {
         setLoading(true)
-        var userinfo = await storage('_id').getItem();
+        var userid = await storage('userId').getItem();
         var withdraw_type = coinName === 'TRX' ? 'tron' : 
                             coinName === 'USDT' && sel === 0 ? 'usdt' :  
                             coinName === 'USDT' && sel === 1 ? 'usdt-trc20' : coinName.toLowerCase();
 
-        dispatch(asyncWithdraw({userId: userinfo._id, value: ValueSend, deposit_type: withdraw_type, toAddress: ToAddress, token: Token}))
+        dispatch(asyncWithdraw({userId: userid, value: ValueSend, deposit_type: withdraw_type, toAddress: ToAddress, token: Token}))
         .then((res)=>{
             console.log(res)
             if(res.status === 1 ){

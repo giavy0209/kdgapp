@@ -8,7 +8,7 @@ import { faChevronRight, faCopy, faLink, faShareAlt } from '@fortawesome/free-so
 import { useNavigation } from '@react-navigation/native'
 import FollowList from '../FollowList'
 import { checkLanguage, storage } from '../../../helper'
-import { asyncGetTransaction, asyncGetUserbyID } from '../../../store/actions'
+import { asyncGetTransactionRef, asyncGetUserbyID } from '../../../store/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import Popup from '../../Popup/Popup'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -26,15 +26,15 @@ export default function App({setOutScrollViewTop}){
     const display = useSelector(state => state.display)
     useEffect(() => {
         async function getUserInfo() {
-          var userinfo = await storage('_id').getItem();
+          var userid = await storage('userId').getItem();
  
-          dispatch(asyncGetTransaction(userinfo._id))
+          dispatch(asyncGetTransactionRef(userid))
          .then((res)=>{
             setRewardData(res.data)
          })
          .catch(console.log) 
 
-         dispatch(asyncGetUserbyID(userinfo._id))
+         dispatch(asyncGetUserbyID(userid))
           .then((res)=>{
             setKDGReward(res.data ? (res.data.kdg_reward ? res.data.kdg_reward : 0 ): 0 )
             setRefCode(res.data ? (res.data.ref_code ? res.data.ref_code : '' ): '' )
@@ -43,8 +43,8 @@ export default function App({setOutScrollViewTop}){
          }
          getUserInfo()  
     
-      }, [])
-    
+      }, [RewardData])
+    console.log(RewardData)
     useEffect(()=>{
         setOutScrollViewTop(<Header2 title={checkLanguage({vi: 'Giới thiệu', en: 'Referral'},language)}/>)
     },[])

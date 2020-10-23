@@ -40,8 +40,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
     useEffect(() => {
         async function getKDG_Reward() {
-          var userinfo = await storage('_id').getItem();
-          dispatch(asyncGetUserbyID(userinfo._id))
+          var userid = await storage('userId').getItem();
+          dispatch(asyncGetUserbyID(userid))
           .then((res)=>{
 
             if(res.data.kdg_reward){
@@ -63,17 +63,17 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     const Swap = useCallback(async () => {
         setLoading(true)  
 
-        var userinfo = await storage('_id').getItem();
+        var userid = await storage('userId').getItem();
 
 
-        dispatch(asyncConvertKDGReward({userId: userinfo._id, value: ValueSwap}))
+        dispatch(asyncConvertKDGReward({userId: userid, value: ValueSwap}))
         .then((res)=>{
 
           if(res.status === 104){
             setLoading(false)
             Alert.alert(
                 checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'Bạn phải chuyển đổi tối thiểu 25 KDG', en: 'The mimimum amount to swap is 25 KDG reward'},language),
+                checkLanguage({vi: 'Bạn phải chuyển đổi tối thiểu 25 KDG Reward', en: 'The mimimum amount to swap is 25 KDG reward'},language),
             )
             return;
           }          
@@ -89,7 +89,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
             setLoading(false)
             Alert.alert(
                 checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'Bạn chỉ có thể Swap tối đa 20 KDG 1 ngày', en: `You can swap maximum 20 KDG per day`},language),
+                checkLanguage({vi: 'Bạn chỉ có thể Swap tối đa 20 KDG Reward 1 ngày', en: `You can swap maximum 20 KDG reward per day`},language),
             )
             return;
           }
@@ -179,7 +179,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                             <View>
                                 <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255,0.3)', fontWeight: 'bold'}}>{checkLanguage({vi: 'Nhận', en: 'Receive'},language)}</Text>
                                <TextInput 
-                                    value={ValueSwap.toString()}
+                                    value={(ValueSwap/2).toString()}
                                     editable={false}
                                     style={{color: '#fac800', 
                                     fontSize: 25, 
@@ -200,9 +200,9 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                 </View>
                 <View style={{padding: 10}}>
                     <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14}}>{checkLanguage({vi: 'Tài khoản đăng ký trước ngày 1/9 sẽ được đổi tối đa ', en: 'Account registration before 1/9/2020 are able to swap the reward maximum '},language)}<Text style={{color: '#fac800', fontWeight: 'bold', fontStyle: 'italic'}}>{checkLanguage({vi: '20 KDG Reward/ ngày', en: '20KDG / day'},language)}</Text>, {checkLanguage({vi: 'duy nhất 1 lần / ngày', en: 'only 1 time / day'},language)}</Text>
-                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>2 KDG Reward = 1 KDG</Text>
                     <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 20}}>{checkLanguage({vi: 'Tài khoản đăng ký sau ngày 1/9 sẽ được quy đổi thành KDG token khi bạn ', en: 'Account registration after 1/9/2020 are able to swap the reward when '},language)}<Text style={{color: '#fac800', fontWeight: 'bold', fontStyle: 'italic'}}>{checkLanguage({vi: 'có đủ 25 KDG reward, tối đa 50 KDG reward ', en: 'being enough 25KDG / day, maximum 50KDG / day'},language)}</Text>, {checkLanguage({vi: 'duy nhất 1 lần / ngày', en: 'only 1 time / day'},language)}</Text>
-                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>1 KDG Reward = 1 KDG</Text>
+                    <Text style={{color: display === 1 ? '#8a8c8e'  :'rgba(255,255,255,0.7)', fontSize: 14, paddingTop: 10}}>2 KDG Reward = 1 KDG</Text>
                 </View>
             </View>
 
