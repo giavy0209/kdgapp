@@ -18,16 +18,15 @@ const windowHeight = Dimensions.get('window').height
 
 
 export default function App({setOutScrollViewTop, setOutScrollView}){
-
-    const [ValueSwap, setValueSwap] = useState(0);
-    const [isSelected, setSelection] = useState(false);
-    const secstatus = useSelector(state => state.secstatus )
-    const [Loading, setLoading] = useState(false);
-    const [Width , setWidth] = useState(0);
-    const [KDGReward, setKDGReward] = useState('Loading...')
     const dispatch = useDispatch();
     const language = useSelector(state => state.language)
     const display = useSelector(state => state.display)
+    const secstatus = useSelector(state => state.secstatus)
+
+    const [SwapType, setSwapType] = useState(1);
+    const [ValueSwap, setValueSwap] = useState(0);
+    const [Loading, setLoading] = useState(false);
+    const [KDGReward, setKDGReward] = useState('Loading...')
 
 
     const isFocused = useIsFocused();
@@ -123,7 +122,6 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
          )
         
         })
-        
         .catch(console.log)
 
     }, [ValueSwap])
@@ -134,18 +132,18 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         <>
 
 <View style={mainStyles.container}>
-    <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
+    <View >
         <View style={{padding: 15}}>
             <View style={{backgroundColor: display === 1 ? '#ffff' :'rgba(40,51,73,0.4)'}}>
                 <View style={{flexDirection: 'row'}}>
-                    <View style={{flex: 3}}>
+                    <View style={{flex: 3, position : 'relative'}}>
                        <View style={{padding: 25,borderColor: display === 1 ? '#eeeceb' : 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, borderRightWidth: 0.8, justifyContent: 'center', alignItems: 'center', height: 120}}>
                           <View style={{alignItems: 'center'}}>
                               <Image style={{width: 35, height: 35}} source={coin}/>
-                              <Text style={{color: display === 1 ? '#283349' : '#fff', fontSize: 15, paddingTop: 5}}>KDG Reward</Text>
+                              <Text style={{color: display === 1 ? '#283349' : '#fff', fontSize: 15, paddingTop: 5}}>{SwapType === 1 ? 'KDG Reward' : 'KDG'}</Text>
                           </View>
                        </View>
-                       <View style={{position: 'absolute', top: 95, left: 125}}>
+                       <View style={{position: 'absolute', bottom : -(35 / 2), right : -(35/2)}}>
                             <View style={{backgroundColor: display === 1 ? '#ddd9d8' : '#fff', borderRadius: 45, width: 35, height: 35, justifyContent: 'center', alignItems: 'center', zIndex: 999}}>
                                 <Text style={{fontSize: 20, color: 'rgba(0,0,0,0.5)'}}>=</Text>
                             </View>
@@ -156,6 +154,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                             <View>
                                 <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255,0.3)', fontWeight: 'bold'}}>{checkLanguage({vi: 'Trả', en: 'Pay'},language)}</Text>
                                <TextInput 
+                                    keyboardType="numeric"
                                     value={ValueSwap.toString()}
                                     onChangeText={value => setValueSwap(value)}
                                     style={{color: '#fac800', 
@@ -170,7 +169,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                        <View style={{padding: 25,borderColor: display === 1 ? '#eeeceb' : 'rgba(255,255,255,0.3)', borderBottomWidth: 0.8, borderRightWidth: 0.8, justifyContent: 'center', alignItems: 'center', height: 120}}>
                           <View style={{alignItems: 'center'}}>
                               <Image style={{width: 35, height: 35}} source={coin}/>
-                              <Text style={{color: display === 1 ? '#283349' : '#fff', fontSize: 15, paddingTop: 5}}>KDG</Text>
+                              <Text style={{color: display === 1 ? '#283349' : '#fff', fontSize: 15, paddingTop: 5}}>{SwapType === 1 ? 'KDG' : 'KDG Reward'}</Text>
                           </View>
                        </View>
                     </View>

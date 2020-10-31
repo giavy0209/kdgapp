@@ -231,6 +231,18 @@ export function asyncConvertKDGReward(value){
     }
 }
 
+export function asyncConvertKDG(value){
+    return async (dispatch) =>{
+        try {
+            const res = (await (await calAPI()).post('/api/convert_kdg', value)).data
+            return res
+
+        } catch (error) {
+            return {ok: false, status: error.response.status}
+        }
+    }
+}
+
 export function asyncUpdateUser(UserInfo){
     return async (dispatch) =>{
         try {
