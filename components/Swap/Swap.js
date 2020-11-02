@@ -6,7 +6,8 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import coin from '../../assets/images/IconCoin/KDG.png'
-import { actChangeSecureStatus, asyncConvertKDGReward, asyncGetUserbyID } from '../../store/actions'
+import switchswap from '../../assets/images/switchswap.png'
+import { actChangeSecureStatus, asyncConvertKDG, asyncConvertKDGReward, asyncGetUserbyID } from '../../store/actions'
 import { storage, checkLanguage } from '../../helper'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -64,67 +65,95 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
 
         var userid = await storage('userId').getItem();
 
-
-        dispatch(asyncConvertKDGReward({userId: userid, value: ValueSwap}))
-        .then((res)=>{
-
-          if(res.status === 104){
-            setLoading(false)
-            Alert.alert(
-                checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'Bạn phải chuyển đổi tối thiểu 25 KDG Reward', en: 'The mimimum amount to swap is 25 KDG reward'},language),
-            )
-            return;
-          }          
-          if(res.status === 100){
-            setLoading(false)
-            Alert.alert(
-                checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'Bạn không đủ KDG Reward', en: `You don't have enough KDG reward`},language),
-            )
-            return;
-          }
-          if(res.status === 101){
-            setLoading(false)
-            Alert.alert(
-                checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'Bạn chỉ có thể Swap tối đa 20 KDG Reward 1 ngày', en: `You can swap maximum 20 KDG reward per day`},language),
-            )
-            return;
-          }
-          if(res.status === 105){
-            setLoading(false)
-            Alert.alert(
-                checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'KDG Reward hiện tại không khả dụng, vui lòng thử lại sau', en: `KDG Reward not available, please try again later`},language),
-            )
-            return;
-          }
-          if(res.status === 1){
-            setLoading(false)
-            Alert.alert(
-                checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-                checkLanguage({vi: 'Swap thành công', en: `Swap successfully`},language),
-            )
-            setKDGReward(KDGReward - ValueSwap)
-            dispatch(actChangeSecureStatus({
-                ...secstatus,
-                kdg_reward: KDGReward
-    
-            }))
-            setValueSwap(0)
-            return;
-          }
-          setLoading(false)
-          Alert.alert(
-            checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
-            checkLanguage({vi: 'Swap thất bại', en: `Swap failed`},language),
-         )
+        if(SwapType === 1){
+            dispatch(asyncConvertKDGReward({userId: userid, value: ValueSwap}))
+            .then((res)=>{
+              if(res.status === 104){
+                setLoading(false)
+                Alert.alert(
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'Bạn phải chuyển đổi tối thiểu 25 KDG Reward', en: 'The mimimum amount to swap is 25 KDG reward'},language),
+                )
+                return;
+              }          
+              if(res.status === 100){
+                setLoading(false)
+                Alert.alert(
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'Bạn không đủ KDG Reward', en: `You don't have enough KDG reward`},language),
+                )
+                return;
+              }
+              if(res.status === 101){
+                setLoading(false)
+                Alert.alert(
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'Bạn chỉ có thể Swap tối đa 20 KDG Reward 1 ngày', en: `You can swap maximum 20 KDG reward per day`},language),
+                )
+                return;
+              }
+              if(res.status === 105){
+                setLoading(false)
+                Alert.alert(
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'KDG Reward hiện tại không khả dụng, vui lòng thử lại sau', en: `KDG Reward not available, please try again later`},language),
+                )
+                return;
+              }
+              if(res.status === 1){
+                setLoading(false)
+                Alert.alert(
+                    checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                    checkLanguage({vi: 'Swap thành công', en: `Swap successfully`},language),
+                )
+                setKDGReward(KDGReward - ValueSwap)
+                dispatch(actChangeSecureStatus({
+                    ...secstatus,
+                    kdg_reward: KDGReward
         
-        })
-        .catch(console.log)
+                }))
+                setValueSwap(0)
+                return;
+              }
+              setLoading(false)
+              Alert.alert(
+                checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                checkLanguage({vi: 'Swap thất bại', en: `Swap failed`},language),
+             )
+            
+            })
+            .catch(console.log)
 
-    }, [ValueSwap])
+        }
+
+        if(SwapType === 2){
+            dispatch(asyncConvertKDG({userId: userid, value: ValueSwap }))
+            .then(res => {
+                setLoading(false)
+                if(res.status === 1){
+                    Alert.alert(
+                        checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                        checkLanguage({vi: 'Chuyển đổi KDG Reward thành công', en: 'Swap KDG Reward successfully'},language),
+                    )
+                }else if(res.status === 100){
+                    Alert.alert(
+                        checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                        checkLanguage({vi: 'Chuyển đổi nhỏ nhất 2 KDG, lớn nhất 200 KDG', en: 'Min swap : 2 KDG, max swap : 200 KDG'},language),
+                    )
+                }else if(res.status === 101){
+                    Alert.alert(
+                        checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                        checkLanguage({vi: 'Giới hạn chuyển đổi 5 lần 1 ngày', en: 'Limit swap 5 time per day'},language),
+                    )
+                }else{
+                    Alert.alert(
+                        checkLanguage({vi: 'Thông báo', en: 'Notification'},language),
+                        checkLanguage({vi: 'Chuyển đổi thất bại', en: 'Swap KDG fail'},language),
+                    )
+                }
+            })
+        }
+    }, [ValueSwap, SwapType])
 
 
     return (
@@ -144,9 +173,17 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                           </View>
                        </View>
                        <View style={{position: 'absolute', bottom : -(35 / 2), right : -(35/2)}}>
-                            <View style={{backgroundColor: display === 1 ? '#ddd9d8' : '#fff', borderRadius: 45, width: 35, height: 35, justifyContent: 'center', alignItems: 'center', zIndex: 999}}>
-                                <Text style={{fontSize: 20, color: 'rgba(0,0,0,0.5)'}}>=</Text>
-                            </View>
+                            <TouchableOpacity
+                            onPress={() => {
+                                if(SwapType === 1){
+                                    setSwapType(2)
+                                }else{
+                                    setSwapType(1)
+                                }
+                            }}
+                            style={{backgroundColor: display === 1 ? '#ddd9d8' : '#fff', borderRadius: 45, width: 35, height: 35, justifyContent: 'center', alignItems: 'center', zIndex: 999}}>
+                                <Image style={{resizeMode: 'contain' , width : 25}} source={switchswap} />
+                            </TouchableOpacity>
                        </View>
                     </View>
                     <View style={{flex: 5}}>
@@ -178,7 +215,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
                             <View>
                                 <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255,0.3)', fontWeight: 'bold'}}>{checkLanguage({vi: 'Nhận', en: 'Receive'},language)}</Text>
                                <TextInput 
-                                    value={(ValueSwap/2).toString()}
+                                    value={SwapType === 1 ? (ValueSwap/2).toString() :  (ValueSwap * 2).toString()}
                                     editable={false}
                                     style={{color: '#fac800', 
                                     fontSize: 25, 

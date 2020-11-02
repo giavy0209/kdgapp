@@ -102,17 +102,8 @@ export default function App({setOutScrollView, setOutScrollViewTop}){
           })     
           .catch(console.log)
         }
-    
         getwalletBlance()
-    
-    
-      }, [])
-
-      
-
-
-
-    
+    }, [])
   const rightArrowHandler = useCallback(() => {
       var tranLength = Transaction ? Transaction.length ? Transaction.length : -1 : -1
       
@@ -148,52 +139,8 @@ const leftArrowHandler = useCallback((skip) => {
                    <View> 
                         <Text style={{color: percent24h < 0  ? 'red' : '#26a65b', fontSize: 16, textAlign: 'center'}}>{`$${coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.usd} (${percent24h}%)`}</Text>
                    </View>
-                   {/* <View style={{position: 'absolute', top: 25, right: 25}}>
-                       <TouchableOpacity 
-                            style={{flexDirection: 'row',  alignItems: 'center'}}
-                            onPress={()=>setSelectType(1)}
-                       >
-                            <Text style={{color: 'rgba(255,255,255,0.6)', fontSize: (windowWidth*windowHeight)/21000}}>7 ngày</Text>
-                            <FontAwesomeIcon size={15} color="rgba(255,255,255,0.6)" icon={faAngleDown}/>
-                        </TouchableOpacity>
-                   </View> */}
                 </View>
-                {/* <LineChart
-                data={{
-                labels: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],
-                datasets: [
-                    {
-                    data: [
-                        10,9,8,7,6,6,7,8,9,10,11,12,13,14,15,16
-                    ]
-                    }
-                ]
-                }}
-                width={Dimensions.get("window").width} // from react-native
-                height={220}
-                yAxisLabel="$"
-                yAxisSuffix="k"
-                yAxisInterval={10} // optional, defaults to 1
-                chartConfig={{
-                    backgroundGradientFromOpacity: 0,
-                    backgroundGradientToOpacity: 0,
-                    decimalPlaces: 2,
-                    fillShadowGradient: '#e8bf23',
-                    fillShadowGradientOpacity: .37,
-                    color: () => '#edd174',
-                    labelColor: () => '#8a8c8e',
-                    propsForBackgroundLines: {strokeWidth: 1 , stroke: '#000',strokeDasharray: '',strokeOpacity: .2},
-                    barPercentage: 0
-                }}
-                withVerticalLines={false}
-                // withDots={false}
-                withOuterLines={false}
-                fromZero={true}
-                onDataPointClick={({value, dataset, getColor})=>{
-                    console.log(getColor());
-                }}
-                />kingdom-game-4-0,ethereum,tron,tether,kyber-network,meconcash
-                 */}
+               
             <WebView
                originWhitelist={['*']}
                source={{ html: `<script src="https://widgets.coingecko.com/coingecko-coin-compare-chart-widget.js"></script>
@@ -204,16 +151,6 @@ const leftArrowHandler = useCallback((skip) => {
                style={{ height: 180, width: '100%' }}
                automaticallyAdjustContentInsets={false}
             />
-                {/* <TouchableOpacity 
-                    onPress={() => copyHandler(coinAddress)}
-                    style={{padding: 20}}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, backgroundColor: display === 1 ? '#ffff' : 'rgba(29,38,59,0.6)', borderRadius: 5}}>
-                        <Text style={{color: display === 1 ? '#283349'  : 'rgba(255,255,255, 0.7)'}}>{coinAddress}</Text>
-                        <FontAwesomeIcon size={15} color="#fac800" icon={faCopy}/>
-                    </View>
-                </TouchableOpacity> */}
-
-     
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: windowHeight/25, paddingHorizontal: 15, paddingTop: 10}}>
                     <TouchableOpacity 
                         onPress={() => navigation.navigate('DepositPage2', {
@@ -248,15 +185,7 @@ const leftArrowHandler = useCallback((skip) => {
                         <View>
                             <Text style={{color: '#deb306', fontSize: 18}}>{checkLanguage({vi: 'Lịch sử', en: `Transaction`},language)}</Text>
                         </View>
-                        {/* <View style={{position: 'absolute', top: 2, right: 2}}>
-                             <TouchableOpacity 
-                                style={{flexDirection: 'row',  alignItems: 'center'}}
-                                onPress={()=>setSelectType(0)}
-                            >
-                                <Text style={{color: 'rgba(255,255,255,0.4)', fontSize: 14}}>Tất cả </Text>
-                                <FontAwesomeIcon size={12} color="rgba(255,255,255,0.4)" icon={faFilter}/>
-                            </TouchableOpacity>
-                        </View> */}
+                        
                     </View>
                     {  Loading === true ?  <ActivityIndicator size="small" color="#fac800" />
                     : Transaction ? Transaction.length > 0 ?
@@ -314,11 +243,10 @@ const leftArrowHandler = useCallback((skip) => {
                         <Text style={{color: display === 1 ? '#989a9c' : 'rgba(255,255,255,0.5)',  alignItems: 'center', alignSelf: 'center'}}>{checkLanguage({vi: 'Không có dữ liệu', en: `No data`},language)}</Text>
                 
                     </View>
-                     
                     }
                     
                     {
-                        Transaction ? Transaction.length ? Transaction.length > 0 ?
+                        Transaction && Transaction.length && Transaction.length > 0 &&
                         <View style={{paddingTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', paddingBottom: 20}}>
                             <TouchableOpacity onPress={() => leftArrowHandler(Skip)}>
                                 <FontAwesomeIcon size={40} color={display === 1 ? '#fac800' : "rgba(255,255,255,0.6)"} icon={faAngleLeft}/>
@@ -328,8 +256,6 @@ const leftArrowHandler = useCallback((skip) => {
                                 <FontAwesomeIcon size={40} color={display === 1 ? '#fac800' : "rgba(255,255,255,0.6)"} icon={faAngleRight}/>
                             </TouchableOpacity>
                         </View>
-                        : null : null : null
-
                     }
                     
                 </View>

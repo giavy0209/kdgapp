@@ -117,9 +117,6 @@ export default function App({coin = 'BTC', setOutScrollView, setOutScrollViewTop
             <Popup type='success' title={checkLanguage({vi: 'Đã copy', en: `Copied`},language)} isModalVisible={isModalVisible}/>
                 <View style={{padding: 10}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        {/* <Text style={{color: '#259e58'}}>
-                            Giao dịch thành công
-                        </Text> */}
                         {Status}
                         <Text style={{color: display === 1 ? '#989a9c' : 'rgba(255,255,255,0.5)'}}>
                            {datetime}
