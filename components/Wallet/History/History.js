@@ -246,7 +246,7 @@ const leftArrowHandler = useCallback((skip) => {
                     }
                     
                     {
-                        Transaction && Transaction.length && Transaction.length > 0 &&
+                        (Transaction && Transaction.length && Transaction.length > 0 ) ? 
                         <View style={{paddingTop: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', paddingBottom: 20}}>
                             <TouchableOpacity onPress={() => leftArrowHandler(Skip)}>
                                 <FontAwesomeIcon size={40} color={display === 1 ? '#fac800' : "rgba(255,255,255,0.6)"} icon={faAngleLeft}/>
@@ -256,6 +256,7 @@ const leftArrowHandler = useCallback((skip) => {
                                 <FontAwesomeIcon size={40} color={display === 1 ? '#fac800' : "rgba(255,255,255,0.6)"} icon={faAngleRight}/>
                             </TouchableOpacity>
                         </View>
+                        : null
                     }
                     
                 </View>

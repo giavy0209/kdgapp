@@ -18,7 +18,8 @@
     ],
     "ios": {
       "bundleIdentifier": "kingwallet.kingdomgame.org",
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.1",
+      "supportsTablet": true
     },
     "android": {
       "useNextNotificationsApi": true,
