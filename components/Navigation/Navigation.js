@@ -34,15 +34,11 @@ export default function App() {
       }
     }
     setInterval(async () => {
-      var loginTime = await storage('loginTime').getItem()
-      var currTime = new Date().getTime()
-      if(loginTime && currTime - loginTime >= 1200000){
-        var loginInfo = await storage('loginInfo').getItem()
-        if(loginInfo.email && loginInfo.password){
-          dispatch(asyncLogin(loginInfo))
-        }
+      var loginInfo = await storage('loginInfo').getItem()
+      if(loginInfo.email && loginInfo.password){
+        dispatch(asyncLogin(loginInfo))
       }
-    }, 30000);
+    }, 10000);
   },[])
 
   useMemo(()=>{

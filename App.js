@@ -74,7 +74,6 @@ export default function App() {
 
   useEffect(()=>{
     async function setFirstTime(){
-      
       await storage('isNotFirstTime', true).setItem()
     }
     

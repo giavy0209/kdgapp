@@ -117,6 +117,7 @@ export default function App({ navigation }) {
 
 
   useEffect(() => {
+    
     async function getwalletBlance() {
       var userinfo = await storage('userBalance').getItem();
       //eth, knc, mch, usdt-erc20, btc, trx, kdg, usdt-trc20, tomo; 
