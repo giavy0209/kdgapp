@@ -55,7 +55,6 @@ export default function App({setOutScrollViewTop}){
 
     const handleGetCoinPrice = useCallback(async ()=>{
         var userData = (await storage('userData').getItem())
-        console.log(userData);
         if(!userData) return
         var balance = userData.balances
         if(!balance) return
@@ -111,9 +110,10 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
             <View>
                 <Text style={{color: 'rgba(241,243,244, 0.5)', fontSize: 12, padding: 10}}>{checkLanguage({vi: 'Kết quả', en: `Result`},language)}</Text>
                 <FlatList
-                data={list}
+                data={CoinData}
                 renderItem={({item}) => 
                 {
+                    console.log(item);
                     if(((item.text).toLowerCase()).startsWith(searchVal.toLowerCase()) || ((item.description).toLowerCase()).startsWith(searchVal.toLowerCase())){
                         return (
                             <View style={WithdrawStyle.listContainer}>
@@ -149,7 +149,7 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
             
             ) : (
                     <FlatList
-                    data={list}
+                    data={CoinData}
                     renderItem={({item}) => (
                         <View style={WithdrawStyle.listContainer}>
                             <TouchableOpacity 
@@ -157,6 +157,7 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
                                 navigation.navigate('WithdrawPage2', {
                                     id: item.coinName,
                                     balance: item.balance,
+                                    price : item.exchange_rate
                                 })} >
                                 <View style={{flexDirection: 'row'}}>
                                     <Image source={item.icon} style={{width: 35, height: 35}} />
