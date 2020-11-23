@@ -129,17 +129,17 @@ const leftArrowHandler = useCallback((skip) => {
     // console.log(d.toString())
 
 
-    const percent24h = coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.percent24h
+    // const percent24h = coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.percent24h
 
     return (
         <>   
             <View style={[mainStyles.container]}>
                 <Popup type='success' title='Đã copy' isModalVisible={isModalVisible}/>
-                <View style={{flexDirection: 'row',justifyContent: 'center', paddingVertical: 20}}>
+                {/* <View style={{flexDirection: 'row',justifyContent: 'center', paddingVertical: 20}}>
                    <View> 
                         <Text style={{color: percent24h < 0  ? 'red' : '#26a65b', fontSize: 16, textAlign: 'center'}}>{`$${coinNumbers[coinName.toLowerCase()].exchange_rate.exchange.usd} (${percent24h}%)`}</Text>
                    </View>
-                </View>
+                </View> */}
                
             <WebView
                originWhitelist={['*']}

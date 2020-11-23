@@ -7,8 +7,8 @@ import { RectButton, TouchableOpacity, FlatList } from 'react-native-gesture-han
 import depositwhite from '../../assets/images/depositwhite.png'
 import withdrawwhite from '../../assets/images/withdrawwhite.png'
 import { useNavigation } from '@react-navigation/native'
-import { checkLanguage } from '../../helper';
-import { useSelector } from 'react-redux'
+import { checkLanguage, storage } from '../../helper';
+import { useDispatch, useSelector } from 'react-redux'
 // ------------------Icon---------------------
 import kdgicon from '../../assets/images/IconCoin/KDG.png'
 import ethicon from '../../assets/images/IconCoin/ETH.png'
@@ -18,66 +18,64 @@ import kncicon from '../../assets/images/IconCoin/KNC.png'
 import mchicon from '../../assets/images/IconCoin/MCH.png'
 import tomoicon from '../../assets/images/IconCoin/TOMO.png'
 import btcicon from '../../assets/images/IconCoin/BTC.png'
+import calAPI from '../../axios';
 // ------------------------------------------
-
-
+const data = [
+    {dataName : 'KDG' ,coinName: 'KDG', icon: kdgicon},
+    {dataName : 'ETH' ,coinName: 'ETH', icon: ethicon},
+    {dataName : 'TRX' ,coinName: 'TRX', icon: trxicon},
+    {dataName : 'USDT' ,coinName: 'USDT-ERC20', icon: usdticon},
+    {dataName : 'USDT' ,coinName: 'USDT-TRC20', icon: usdticon},
+    {dataName : 'KNC' ,coinName: 'KNC', icon: kncicon},
+    {dataName : 'MCH' ,coinName: 'MCH', icon: mchicon},
+    {dataName : 'TOMO' ,coinName: 'TOMO', icon: tomoicon},
+]
 
 export default function App({
     VisibleBalance,
     hiddenBalance, 
-    balanceKDG, 
-    balanceTRX, 
-    balanceETH, 
-    balanceUSDT,
-    balanceKNC,
-    balanceMCH,
-    balanceTOMO,
-    balanceBTC,
-    addressTRX,
-    addressETH,
-    addressTOMO,
-    addressBTC,
-    coinPriceKDG,
-    coinPriceETH,
-    coinPriceTRX,
-    coinPriceUSDT,
-    coinPriceKNC,
-    coinPriceMCH,
-    coinPriceTOMO,
-    coinPriceBTC,
-    coinDisplay,
     isShortCoin,
-    isTapSort
+    isTapSort,
     }){
     const navigation = useNavigation()
     const [CoinHeight, setCoinHeight] = useState(0)
     const [SwipeList, setSwipeList] = useState([])
     const typeCurrency = useSelector(state => state.currency)
- 
+    const [CoinData , setCoinData] = useState([])
     const language = useSelector(state => state.language)
-    // if (typeof isDisplay) {
-    //     console.log(coinDisplay)
-    // }
-    const data = [
-        {coinPrice: coinPriceKDG, isDisplay: coinDisplay ? coinDisplay.kdg : true, key: 1, coinName: 'KDG', icon: kdgicon, balance: balanceKDG, address: addressTRX},
-        // {coinPrice: coinPriceBTC, isDisplay: coinDisplay ? coinDisplay.btc : true, key: 2, coinName: 'BTC', icon: btcicon, balance: balanceBTC, address: addressBTC},
-        {coinPrice: coinPriceETH, isDisplay: coinDisplay ? coinDisplay.eth : true, key: 3, coinName: 'ETH', icon: ethicon, balance: balanceETH, address: addressETH},
-        {coinPrice: coinPriceTRX, isDisplay: coinDisplay ? coinDisplay.trx : true, key: 4, coinName: 'TRX', icon: trxicon, balance: balanceTRX, address: addressTRX},
-        {coinPrice: coinPriceUSDT, isDisplay: coinDisplay ? coinDisplay.usdt : true, key: 5, coinName: 'USDT', icon: usdticon, balance: balanceUSDT, address: addressETH, addressTRC: addressTRX},
-        {coinPrice: coinPriceKNC, isDisplay: coinDisplay ? coinDisplay.knc : true, key: 6, coinName: 'KNC', icon: kncicon, balance: balanceKNC, address: addressETH},
-        {coinPrice: coinPriceMCH, isDisplay: coinDisplay ? coinDisplay.mch : true, key: 7, coinName: 'MCH', icon: mchicon, balance: balanceMCH, address: addressETH},
-        {coinPrice: coinPriceTOMO, isDisplay: coinDisplay ? coinDisplay.tomo : true, key: 8, coinName: 'TOMO', icon: tomoicon, balance: balanceTOMO, address: addressTOMO},
-    ]
-
-
+    const coinDisplay = useSelector(state => state.coin)
     const display = useSelector(state => state.display)
 
-    // -------------------style------------------------------
+    const handleGetCoinPrice = useCallback(async ()=>{
+        var userData = (await storage('userData').getItem())
+        console.log(userData);
+        if(!userData) return
+        var balance = userData.balances
+        if(!balance) return
+        for (let index = 0; index < data.length; index++) {
+            const _data = data[index];
+            _data.isDisplay = coinDisplay ? coinDisplay[_data.coinName.toLowerCase()] : true
+            
+            const res = (await (await calAPI()).get(`/api/markets/coin_price?coin_type=${_data.dataName}`)).data
+            _data.coinPrice = Number(res.data.price.toFixed(4))
+            
+            var findThisData = balance.find(o => o.coin.code === _data.coinName)
+            console.log(_data.coinName);
+            _data.balance = findThisData.balance
+            _data.address = findThisData.wallet.address
+        }
+        console.log(data);
+        setCoinData([...data])
+    },[coinDisplay])
+
+    useEffect(()=> {
+        handleGetCoinPrice()
+    },[handleGetCoinPrice,coinDisplay])
 
 var WalletStyle = display === 1 ? walletStylesLight : walletStyles
 
 // ------------------------------------------------------
-    const renderLeftActions = useCallback((id, balance, address, addressTRC) => {
+    const renderLeftActions = useCallback((id, address) => {
         return (
           <RectButton>
             <Animated.View>
@@ -85,8 +83,6 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                     onPress={() => {navigation.navigate('DepositPage2', {
                         id: id,
                         address: address,
-                        addressTRC: addressTRC
-                                                
                     })}}
                     style={[WalletStyle.coinSwipeRight, 
                     {height: CoinHeight}]}>
@@ -98,14 +94,15 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
         );
     },[CoinHeight, language]);
 
-    const renderRightActions = useCallback((id, balance) => {
+    const renderRightActions = useCallback((id, balance, price) => {
         return (
           <RectButton>
             <Animated.View>
                 <TouchableOpacity 
                     onPress={() => {navigation.navigate('WithdrawPage2', {
                         id: id,
-                        balance: balance
+                        balance: balance,
+                        price
                     })}}
                     style={[WalletStyle.coinSwipeLeft, 
                     {height: CoinHeight}]}>
@@ -116,12 +113,6 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
           </RectButton>
         );
     },[CoinHeight,language]);
-
-    const handleSwipeOpen = useCallback((obj)=>{
-        var index = SwipeList.findIndex(o => o.id === obj.id)
-        if(index === -1) SwipeList.push(obj)
-        setSwipeList([...SwipeList])
-    },[SwipeList])
 
     const handleSwipeClose = useCallback((id)=>{
         var index = SwipeList.findIndex(o => o.id === id)
@@ -141,20 +132,18 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
         <View style={WalletStyle.listCoin}>
             <View style={WalletStyle.maskOpacity}></View>
             <FlatList
-                data={isTapSort === false ? data : isShortCoin === true ? 
-                    data.sort(function(a, b){
-                        return parseFloat(a.coinPrice.usd)  < parseFloat(b.coinPrice.usd);
+                data={isTapSort === false ? CoinData : isShortCoin === true ? 
+                    CoinData.sort(function(a, b){
+                        return parseFloat(a.coinPrice)  < parseFloat(b.coinPrice);
                     })
-                    :       data.sort(function(a, b){
-                        return parseFloat(a.coinPrice.usd) > parseFloat(b.coinPrice.usd);
+                    :CoinData.sort(function(a, b){
+                        return parseFloat(a.coinPrice) > parseFloat(b.coinPrice);
                     })
                 }
 
                 renderItem={({item, index}) =>
                 {if(item.isDisplay === true)
                 return <Swipeable onSwipeableClose={()=>handleSwipeClose(1)} 
-                    // onSwipeableRightOpen={()=>handleSwipeOpen({id: item.coinName, dir: 'right'})} 
-                    // onSwipeableLeftOpen={()=>handleSwipeOpen({id: item.coinName, dir: 'left'})} 
                     key={index}
                     ref={ref => {
                     if (ref && !rowRefs.get(index)) {
@@ -166,13 +155,12 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                         if (key !== index && ref) ref.close();
                         });
                     }}
-                    renderRightActions={()=>renderRightActions(item.coinName, item.balance)} 
-                    renderLeftActions={()=>renderLeftActions(item.coinName, item.balance, item.address, item.addressTRC ? item.addressTRC : '',)}>
+                    renderRightActions={()=>renderRightActions(item.coinName, item.balance, item.coinPrice)} 
+                    renderLeftActions={()=>renderLeftActions(item.coinName, item.balance, item.address)}>
                     <TouchableOpacity 
                     onPress={()=>navigation.navigate('History', {
                         id: item.coinName,
                         address: item.address,
-                        addressTRC: item.addressTRC ? item.addressTRC : '',
                         balance: item.balance,
                         coinPrice: item.coinPrice
                     })}
@@ -185,12 +173,28 @@ var WalletStyle = display === 1 ? walletStylesLight : walletStyles
                             <Image style={{width: 30, height: 30}} source={item.icon}/>
                             <View style={{marginLeft: 8}}>
                                 <Text style={WalletStyle.coinName}>{item.coinName}</Text>
-                            <Text style={WalletStyle.coinPirce}>{VisibleBalance ? hiddenBalance : typeCurrency === 1 ? `${item.coinPrice.exchange.vnd} ₫` : typeCurrency === 2 ? `¥${item.coinPrice.exchange.cny}` : `$${item.coinPrice.exchange.usd}`}</Text>
+                            <Text style={WalletStyle.coinPirce}>
+                                {
+                                    VisibleBalance ? hiddenBalance : typeCurrency === 1 ? `${item.coinPrice} ₫` : `$${item.coinPrice}`
+                                }
+                            </Text>
                             </View>
                         </View>
                         <View style={WalletStyle.coinRight}>
-                            <Text style={WalletStyle.quantity}>{VisibleBalance ? hiddenBalance : item.balance !== undefined && !isNaN(item.balance) ?  (item.coinName === 'BTC' || item.coinName === 'ETH' ? parseFloat(item.balance.toFixed(7)) : parseFloat(item.balance.toFixed(4))) :'Loading...'}</Text>
-                            <Text style={WalletStyle.coinPirce}>{VisibleBalance ? hiddenBalance : item.coinPrice.usd !== undefined && !isNaN(item.coinPrice.usd) ? typeCurrency === 1 ? `~${item.coinPrice.vnd} ₫` :  typeCurrency === 2 ? `~¥${item.coinPrice.cny}` : `~$${item.coinPrice.usd}` : 'Loading...'} </Text>
+                            <Text style={WalletStyle.quantity}>
+                                {
+                                    VisibleBalance ? hiddenBalance 
+                                    : 
+                                    Math.floor(item.balance * 10000) / 10000
+                                }
+                            </Text>
+                            <Text style={WalletStyle.coinPirce}>
+                                {
+                                    VisibleBalance ? hiddenBalance 
+                                    : 
+                                    Math.floor(item.balance * item.coinPrice * 10000) / 10000 
+                                } 
+                            </Text>
                         </View>
                     </TouchableOpacity>
                 </Swipeable>

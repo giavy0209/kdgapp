@@ -35,7 +35,8 @@ export default function App(){
     const [isEnabledKDG, setIsEnabledKDG] = useState(coinDisplay ? coinDisplay.kdg : true);
     const [isEnabledETH, setIsEnabledETH] = useState(coinDisplay ? coinDisplay.eth : true);
     const [isEnabledTRX, setIsEnabledTRX] = useState(coinDisplay ? coinDisplay.trx : true);
-    const [isEnabledUSDT, setIsEnabledUSDT] = useState(coinDisplay ? coinDisplay.usdt : true);
+    const [isEnabledUSDTERC20, setIsEnabledUSDTERC20] = useState(coinDisplay ? coinDisplay.usdt_erc20 : true);
+    const [isEnabledUSDTTRC20, setIsEnabledUSDTTRC20] = useState(coinDisplay ? coinDisplay.usdt_trc20 : true);
     const [isEnabledKNC, setIsEnabledKNC] = useState(coinDisplay ? coinDisplay.knc : true);
     const [isEnabledMCH, setIsEnabledMCH] = useState(coinDisplay ? coinDisplay.mch : true);
     const [isEnabledTOMO, setIsEnabledTOMO] = useState(coinDisplay ? coinDisplay.tomo : true);
@@ -46,18 +47,19 @@ export default function App(){
 const toggleSwitchKDG = () => setIsEnabledKDG(previousState => !previousState);
 const toggleSwitchETH = () => setIsEnabledETH(previousState => !previousState);
 const toggleSwitchTRX = () => setIsEnabledTRX(previousState => !previousState);
-const toggleSwitchUSDT = () => setIsEnabledUSDT(previousState => !previousState);
+const toggleSwitchUSDTERC20 = () => setIsEnabledUSDTERC20(previousState => !previousState);
+const toggleSwitchUSDTTRC20 = () => setIsEnabledUSDTTRC20(previousState => !previousState);
 const toggleSwitchKNC = () => setIsEnabledKNC(previousState => !previousState);
 const toggleSwitchMCH = () => setIsEnabledMCH(previousState => !previousState);
 const toggleSwitchTOMO = () => setIsEnabledTOMO(previousState => !previousState);
-const toggleSwitchBTC = () => setIsEnabledBTC(previousState => !previousState);
 // ---------------------------------------------------------
 
 const data = [
     { isEnabled: isEnabledKDG, toggle: toggleSwitchKDG, text: 'KDG', icon: kdgicon, description: 'Kingdom Game 4.0', key: '1'},
     { isEnabled: isEnabledETH, toggle: toggleSwitchETH, text: 'ETH', icon: ethicon, description: 'Ethereum', key: '2'},
     { isEnabled: isEnabledTRX, toggle: toggleSwitchTRX, text: 'TRX',icon: trxicon, description: 'Tron', key: '3'},
-    { isEnabled: isEnabledUSDT, toggle: toggleSwitchUSDT, text: 'USDT', icon: usdticon, description: 'Tether', key: '4'},
+    { isEnabled: isEnabledUSDTERC20, toggle: toggleSwitchUSDTERC20, text: 'USDT-ERC20', icon: usdticon, description: 'Tether', key: '4'},
+    { isEnabled: isEnabledUSDTTRC20, toggle: toggleSwitchUSDTTRC20, text: 'USDT-TRC20', icon: usdticon, description: 'Tether', key: '8'},
     { isEnabled: isEnabledKNC, toggle: toggleSwitchKNC, text: 'KNC', icon: kncicon, description: 'Kyber Network', key: '5'},
     { isEnabled: isEnabledMCH, toggle: toggleSwitchMCH, text: 'MCH', icon: mchicon, description: 'MeconCash', key: '6'},
     { isEnabled: isEnabledTOMO, toggle: toggleSwitchTOMO, text: 'TOMO', icon: tomoicon, description: 'TomoChain', key: '7'},
@@ -72,14 +74,15 @@ useEffect(() => {
         kdg: isEnabledKDG, 
         eth: isEnabledETH, 
         trx: isEnabledTRX, 
-        usdt: isEnabledUSDT, 
+        usdt_erc20: isEnabledUSDTERC20, 
+        usdt_trc20: isEnabledUSDTTRC20, 
         knc: isEnabledKNC, 
         mch: isEnabledMCH,
         tomo: isEnabledTOMO,
         btc: isEnabledBTC
     }))
 
-}, [isEnabledKDG, isEnabledETH, isEnabledTRX, isEnabledUSDT, isEnabledKNC, isEnabledMCH, isEnabledTOMO, isEnabledBTC])
+}, [isEnabledKDG, isEnabledETH, isEnabledTRX, isEnabledUSDTERC20,isEnabledUSDTTRC20, isEnabledKNC, isEnabledMCH, isEnabledTOMO, isEnabledBTC])
 
     return (
         <>

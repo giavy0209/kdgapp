@@ -45,8 +45,8 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
     }
 
     const lockDate = (addDate(new Date(), 2).getDate()) + "/" + (addDate(new Date(), 2).getMonth() + 1)+ "/" +(addDate(new Date(), 2).getFullYear())
-    const unLockdate = (addDate(new Date(), 2).getDate()) + "/" + (addDate(new Date(), 60).getMonth() + 1)+ "/" +(addDate(new Date(), 2).getFullYear())
-    const endDate = (addDate(new Date(), 4).getDate()) + "/" + (addDate(new Date(), 60).getMonth() + 1)+ "/" +(addDate(new Date(), 2).getFullYear())
+    const unLockdate = (addDate(new Date(), 2).getDate()) + "/" + (addDate(new Date(), 60).getMonth() + 1)+ "/" +(addDate(new Date(), 60).getFullYear())
+    const endDate = (addDate(new Date(), 4).getDate()) + "/" + (addDate(new Date(), 60).getMonth() + 1)+ "/" +(addDate(new Date(), 60).getFullYear())
     const [Width , setWidth] = useState(0);
 
     const navigation = useNavigation()

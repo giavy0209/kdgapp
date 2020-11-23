@@ -36,7 +36,7 @@ const windowHeight = Dimensions.get('window').height;
 export default function App({setOutScrollView}){
     
     const typeCurrency = useSelector(state => state.currency)
-    const coinNumbers = useSelector(state => state.coinNumbers)
+    // const coinNumbers = useSelector(state => state.coinNumbers)
     const language = useSelector(state => state.language)
     const [Width , setWidth] = useState(0);
 
@@ -54,18 +54,19 @@ export default function App({setOutScrollView}){
     const [Token, setToken] = useState('');
     // -------------------------------
 
-    const [CoinPriceExchange, setCoinPriceExchange] = useState({})
+    const [CoinPriceExchange, setCoinPriceExchange] = useState('0')
 
     // const {id} = route.params;
     const coinName = route.params.id;
+    const balance = route.params.balance;
+    const price = route.params.price;
 
 
 
 
     const inputNumberHandler = (value) => {
         setValueSend(value);
-        var coin_name = coinName.toLowerCase();
-        setCoinPriceExchange(coinNumbers[coin_name].exchange_rate.exchange)
+        setCoinPriceExchange((Math.round(price * value * 10000) / 10000).toString())
     }
 
 
@@ -168,7 +169,7 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
                         <Image source={coinName === 'KDG' ? kdgicon : coinName === 'TRX' ? trxicon : coinName === 'ETH' ? ethicon : coinName === 'USDT' ? usdticon : coinName === 'KNC' ? kncicon : coinName === 'TOMO' ? tomoicon : coinName === 'MCH' ? mchicon : btcicon} style={{width: windowWidth*windowHeight/9000, height: windowWidth*windowHeight/9000}} />
                         <View style={{paddingLeft: (windowWidth*windowHeight)/23040}}>
                             <Text style={WithdrawStyle.coinName}>{coinName}</Text>
-                            <Text style={WithdrawStyle.balance}>{checkLanguage({vi: 'Số dư: ', en: 'Balance: '},language)  + coinNumbers[coinName.toLowerCase()].balance + " " + coinName} </Text>
+                            <Text style={WithdrawStyle.balance}>{checkLanguage({vi: 'Số dư: ', en: 'Balance: '},language) + balance} </Text>
                         </View>                                   
                 </View>
 
@@ -229,13 +230,11 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
                                 placeholderTextColor = "#8a8c8e"
                                 onFocus={()=>{}} 
                                 onBlur={()=>{}}                      
-                                value={(ValueSend*CoinPriceExchange[typeCurrency === 1 ? 'vnd' : typeCurrency === 2 ? 'cny' : 'usd' ]).toString() === 'NaN' ? '0' : 
-                                            (ValueSend*CoinPriceExchange[typeCurrency === 1 ? 'vnd' : typeCurrency === 2 ? 'cny' : 'usd' ]).toString()
-                                      }
+                                value={CoinPriceExchange}
                                 style={WithdrawStyle.inputNum} />
                         </View>
                         <View style={{backgroundColor: '#fac800', borderTopRightRadius: 10, flex: 2,  borderBottomRightRadius: 10, justifyContent: 'center'}}>
-                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>{typeCurrency === 1 ? 'VND' : typeCurrency === 2 ? 'CNY' : 'USD' }</Text>
+                            <Text style={{color: 'white', alignItems: 'center', alignSelf: 'center', fontSize: 14}}>{typeCurrency === 1 ? 'VND' : 'USD' }</Text>
                         </View>
                     </View> 
                 </View>      
@@ -285,7 +284,7 @@ var WithdrawStyle = display === 1 ? withdrawStyleLight : withdrawStyle
 
         <TouchableOpacity
                 disabled={Loading ? true : false}
-                onPress={() => withdraw(SelectedType)}
+                onPress={() => withdraw()}
             >
                 <View style={{alignItems: 'center', justifyContent: 'center', marginTop: windowHeight/25}}>
                     <LinearGradient 
