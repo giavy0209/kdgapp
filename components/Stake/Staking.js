@@ -59,90 +59,116 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         {icon: usdticon, token: 'USDT', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '6%', btn: btnDisable},
         {icon: mchicon, token: ' MCH', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '15%', btn: btnDisable},
         {icon: tomoicon, token: 'TOMO', time: checkLanguage({vi: '60 ngày', en: '60 days'},language), ratio: '15%', btn: btnDisable},
-        
-      ];
-
-    const [searchVal, setSearchVal] = useState();
+    ];
     const navigation = useNavigation()
 
     useEffect(()=>{
         setOutScrollViewTop(<HeaderStaking
-                                title=""
-                                subTitle=""
-                            />)
-
+            title=""
+            subTitle=""
+        />)
     },[])
     
     // -------------------style------------------------------
 
-var StakingStyle = display === 1 ? stakingStyleLight : stakingStyle
+const StakingStyle = display === 1 ? stakingStyleLight : stakingStyle
 
 // ------------------------------------------------------
 
     return (
         
         <>
+        <View>
+            <Image
+                source={require('../../assets/images/headerStaking1.png')}
+                style={{
+                    width: '100%',
+                    height: windowHeight/2
+                }}
+            />
+        </View>
+        <View style={mainStyles.container}>
+            <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
+                <View style={StakingStyle.contentContainer}>
+                    <Text style={stakingStyle.analyticTitle}>Thống kê staking</Text> 
+                    <View style={stakingStyle.analyticContainer}>
+                        <View>
+                            <View>
+                                <Text></Text>
+                                <Text>KDG</Text>
+                                <Text>Tổng Stake</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <View>
+                                <Text></Text>
+                                <Text>KDG</Text>
+                                <Text>Tổng Stake</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <View>
+                                <Text></Text>
+                                <Text>KDG</Text>
+                                <Text>Tổng Stake</Text>
+                            </View>
+                        </View>
+                    </View>
 
-<View style={mainStyles.container}>
-    <View onLayout={e=>setWidth(e.nativeEvent.layout.width)} >
-        <View style={StakingStyle.contentContainer}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> 
-                <Text style={{color: display === 1 ?  '#989a9c' : 'rgba(255,255,255,0.6)', fontSize: 13 }}>Staking</Text>
-                <TouchableOpacity
-                    onPress={() => 
-                    navigation.navigate('StakingHistory')} 
-                >
-                    <Text style={{color: display === 1 ?  '#fac800' :'#d7ae07', fontSize: 13 }}>{checkLanguage({vi: 'Lịch sử Staking >', en: 'Staking history >'},language)}</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={StakingStyle.tableContainer}>
-                {/* -----S-Header------ */}
-                <View style={StakingStyle.tableHeaderContainer}>
-                    <View style={{width: '24%'}}>
-                        <Text style={StakingStyle.titleHeader} >Token</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> 
+                        <Text style={{color: display === 1 ?  '#989a9c' : 'rgba(255,255,255,0.6)', fontSize: 16 }}>Staking</Text>
+                        <TouchableOpacity
+                            onPress={() => 
+                            navigation.navigate('StakingHistory')} 
+                        >
+                            <Text style={{color: display === 1 ?  '#fac800' :'#d7ae07', fontSize: 14 }}>{checkLanguage({vi: 'Lịch sử Staking >', en: 'Staking history >'},language)}</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={{width: '24%'}}>
-                        <Text style={StakingStyle.titleHeader} >{checkLanguage({vi: 'Thời gian khoá', en: 'Locking time'},language)}</Text>
-                    </View>
-                    <View style={{width: '26%'}}>
-                        <Text style={StakingStyle.titleHeader} >{checkLanguage({vi: 'Tỷ lệ lợi nhuận hàng năm dự kiến', en: 'Expected annual rate of return'},language)}</Text>
-                    </View>
-                    <View style={{width: '26%'}}> 
-                        <Text style={StakingStyle.titleHeader} ></Text>
-                    </View>
-                </View>
-                {/* -----E-Header------ */}
-                {/* -----S-Content------ */}
-                 <FlatList
-                            data={list}
-                            renderItem={({item}) => (
-                                <View style={StakingStyle.tableContentContainer}>
-                                    <View style={{width: '24%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                                        <Image
-                                            style={{width: 33, height: 33}}
-                                            source={item.icon}
-                                        />
-                                        <Text style={StakingStyle.titleContent} >{item.token}</Text>
-                                    </View>
-                                    <View style={{width: '24%', justifyContent: 'center', alignItems: 'center'}}>
-                                        <Text style={StakingStyle.titleContent} >{item.time}</Text>
-                                    </View>
-                                    <View style={{width: '26%', justifyContent: 'center', alignItems: 'center'}}>
-                                        <Text style={StakingStyle.titleContent} >{item.ratio}</Text>
-                                    </View>
-        
-                                        <View style={{width: '26%', justifyContent: 'flex-end', alignItems: 'center'}}> 
-                                            {item.btn}
-                                        </View>
-                                </View> 
-                            )}
+                    
+                    <View style={StakingStyle.tableContainer}>
+                        
+                        <View style={StakingStyle.tableHeaderContainer}>
+                            <View style={{width: '24%'}}>
+                                <Text style={StakingStyle.titleHeader} >Token</Text>
+                            </View>
+                            <View style={{width: '24%'}}>
+                                <Text style={StakingStyle.titleHeader} >{checkLanguage({vi: 'Thời gian khoá', en: 'Locking time'},language)}</Text>
+                            </View>
+                            <View style={{width: '26%'}}>
+                                <Text style={StakingStyle.titleHeader} >{checkLanguage({vi: 'Tỷ lệ lợi nhuận hàng năm dự kiến', en: 'Expected annual rate of return'},language)}</Text>
+                            </View>
+                            <View style={{width: '26%'}}> 
+                                <Text style={StakingStyle.titleHeader} ></Text>
+                            </View>
+                        </View>
+                        <FlatList
+                        data={list}
+                        renderItem={({item}) => (
+                            <View style={StakingStyle.tableContentContainer}>
+                                <View style={{width: '24%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Image
+                                        style={{width: 33, height: 33}}
+                                        source={item.icon}
+                                    />
+                                    <Text style={StakingStyle.titleContent} >{item.token}</Text>
+                                </View>
+                                <View style={{width: '24%', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Text style={StakingStyle.titleContent} >{item.time}</Text>
+                                </View>
+                                <View style={{width: '26%', justifyContent: 'center', alignItems: 'center'}}>
+                                    <Text style={StakingStyle.titleContent} >{item.ratio}</Text>
+                                </View>
+                                <View style={{width: '26%', justifyContent: 'flex-end', alignItems: 'center'}}> 
+                                    {item.btn}
+                                </View>
+                            </View> 
+                        )}
                         />
 
-                {/* -----E-Content------ */}     
+                    </View>
+                </View> 
             </View>
-        </View> 
-    </View>
-</View>
+        </View>
         </>
     )
 }
