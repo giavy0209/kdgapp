@@ -42,6 +42,9 @@ export default function App(){
     const [ImageFront, setImageFront] = useState(null)
     const [ImageBack, setImageBack] = useState(null)
     const [ImageSelfy, setImageSelfy] = useState(null)
+    const [ImageSelfyLeft, setImageSelfyLeft] = useState(null)
+    const [ImageSelfyRight, setImageSelfyRight] = useState(null)
+    const [ImageSelfyUp, setImageSelfyUp] = useState(null)
 
 
     const secureStatus = useSelector(state => state.secstatus)
@@ -51,15 +54,16 @@ export default function App(){
             let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                 allowsEditing: true,
-                aspect: [3,2],
                 quality: 1,
                 base64: false,
             });
             if (!result.cancelled) {
-                
                 if(type === 'front') setImageFront(result)
                 if(type === 'back') setImageBack(result)
                 if(type === 'self') setImageSelfy(result)
+                if(type === 'left') setImageSelfyLeft(result)
+                if(type === 'right') setImageSelfyRight(result)
+                if(type === 'up') setImageSelfyUp(result)
             }
         } catch (E) {
             console.log(E);
@@ -80,127 +84,158 @@ export default function App(){
 
     const handleNext = useCallback(async ()=>{
         var userid = await storage('userId').getItem();
+        setLoading(true)
         if(ImageFront && ImageBack && ImageSelfy){
         
-                const arrayUpload = []
-                const uploadFront = new FormData()
-                const extFront = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
-                const fileFront = {
-                    uri : Platform.OS === 'android' ? ImageFront.uri : ImageFront.uri.replace ('file://' , ''),
+            const arrayUpload = []
+            const uploadFront = new FormData()
+            const extFront = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
+            const fileFront = {
+                uri : Platform.OS === 'android' ? ImageFront.uri : ImageFront.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extFront}`,
+            }
+            uploadFront.append('file', fileFront)
+            uploadFront.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadFront))
+
+            const extSelf = ImageSelfy.uri.substr(ImageSelfy.uri.lastIndexOf('.') + 1);
+            const fileSelf = {
+                uri : Platform.OS === 'android' ? ImageSelfy.uri : ImageSelfy.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extSelf}`,
+            }
+            const uploadSelf = new FormData()
+            uploadSelf.append('file', fileSelf)
+            uploadSelf.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelf))
+
+            if(SelectedID === 0){
+                const extBack = ImageBack.uri.substr(ImageBack.uri.lastIndexOf('.') + 1);
+                const fileBack = {
+                    uri : Platform.OS === 'android' ? ImageBack.uri : ImageBack.uri.replace ('file://' , ''),
                     type: 'image/png',
-                    name: `photo.${extFront}`,
+                    name: `photo.${extBack}`,
                 }
-                uploadFront.append('file', fileFront)
-                uploadFront.append('userId' , userid)
-                arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadFront))
 
-                const extSelf = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
-                const fileSelf = {
-                    uri : Platform.OS === 'android' ? ImageSelfy.uri : ImageSelfy.uri.replace ('file://' , ''),
-                    type: 'image/png',
-                    name: `photo.${extSelf}`,
-                }
-                const uploadSelf = new FormData()
-                uploadSelf.append('file', fileSelf)
-                uploadSelf.append('userId' , userid)
-                arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelf))
+                const uploadBack = new FormData()
+                uploadBack.append('file',fileBack)
+                uploadBack.append('userId' , userid)
+                arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadBack))
+            }
 
-                if(SelectedID === 0){
-                    const extBack = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
-                    const fileBack = {
-                        uri : Platform.OS === 'android' ? ImageBack.uri : ImageBack.uri.replace ('file://' , ''),
-                        type: 'image/png',
-                        name: `photo.${extBack}`,
-                    }
+            const extSelfyLeft = ImageSelfyLeft.uri.substr(ImageSelfyLeft.uri.lastIndexOf('.') + 1);
+            const fileSelfyLeft = {
+                uri : Platform.OS === 'android' ? ImageSelfyLeft.uri : ImageSelfyLeft.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extSelfyLeft}`,
+            }
+            const uploadSelfyLeft = new FormData()
+            uploadSelfyLeft.append('file', fileSelfyLeft)
+            uploadSelfyLeft.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelfyLeft))
 
-                    const uploadBack = new FormData()
-                    uploadBack.append('file',fileBack)
-                    uploadBack.append('userId' , userid)
-                    arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadBack))
-                }
-                try {
-                    var res = await Promise.all(arrayUpload)
-                    var isUploadOK = true
-                    res.forEach(el=>{
-                        if(el.data.status !== 1) isUploadOK = false
-                    })
+            const extSelfyRight = ImageSelfyRight.uri.substr(ImageSelfyRight.uri.lastIndexOf('.') + 1);
+            const fileSelfyRight = {
+                uri : Platform.OS === 'android' ? ImageSelfyRight.uri : ImageSelfyRight.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extSelfyRight}`,
+            }
+            const uploadSelfyRight = new FormData()
+            uploadSelfyRight.append('file', fileSelfyRight)
+            uploadSelfyRight.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelfyRight))
 
-                    if(isUploadOK === false) {
-                        Alert.alert(
-                            checkLanguage({vi: 'Lỗi', en: `Error`},language),
-                            checkLanguage({vi: 'Tải hình không thành công', en: `Upload photo failed`},language)
-                          )
-                        return
-                    }
-                    if(isUploadOK === true){
+            const extSelfyUp = ImageSelfyUp.uri.substr(ImageSelfyUp.uri.lastIndexOf('.') + 1);
+            const fileSelfyUp = {
+                uri : Platform.OS === 'android' ? ImageSelfyUp.uri : ImageSelfyUp.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extSelfyUp}`,
+            }
+            const uploadSelfyUp = new FormData()
+            uploadSelfyUp.append('file', fileSelfyUp)
+            uploadSelfyUp.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelfyUp))
 
-                        var kycInfo = {
-                            kyc_country : SelectedCountry ===0 ? 'VN' : 'Others',
-                            kyc_number : IDNumber.toString(),
-                            kyc_name : Name,
-                            kyc : '2',
-                            id : userid,
-                        }
-                        dispatch(asyncUpdateUser(kycInfo))
-                        .then((res)=>{
-                            console.log(res)
-                            if(res.status === 1){
-                                dispatch(asyncSecureStatus({
-                                    ...secureStatus,
-                                    kyc: '2'
-                
-                                }))
-                                Alert.alert(
-                                    checkLanguage({vi: 'Thông báo', en: `Notification`},language),
-                                    checkLanguage({vi: 'Đã nộp KYC, vui lòng chờ duyệt', en: `KYC is submitted, please wait for approval`},language)
-                                )
-                                navigation.navigate('Secure')
-                                return
-                            }
-                            if(res.status === 100){
-                                Alert.alert(
-                                    checkLanguage({vi: 'Lỗi', en: `Error`},language),
-                                    checkLanguage({vi: 'Số chứng minh / băng lái xe đã được sử dụng cho tài khoản khác', en: `ID card / Driver's license has been used for another account`},language)
-                                )
-                                return
-                            }
-                                Alert.alert(
-                                    checkLanguage({vi: 'Lỗi', en: `Error`},language),
-                                    checkLanguage({vi: 'KYC không thành công', en: `KYC failed`},language)
-                                )
-                        })
-                        .catch(console.log)
-            
-                        // if(resUpdate.status === 1){
-                        //     Alert.alert(
-                        //         'Thành công',
-                        //         'Gửi thành công vui lòng chờ xét duyệt'
-                        //     )
-                        // }else if (resUpdate.status === 100){
-                        //     Alert.alert(
-                        //         'Lỗi',
-                        //         'Số chứng minh/passport đã được sử dụng cho tài khoản khác'
-                        //     )
-                        // }else{
-                        //     Alert.alert(
-                        //         'Lỗi',
-                        //         'Gửi KYC không thành công, vui lòng thử lại'
-                        //     )
-                        // }
-          
-                    }
-                    
+            try {
+                var res = await Promise.all(arrayUpload)
+                var isUploadOK = true
+                var isLarge = false
+                res.forEach(el=>{
+                    if(el.data.status !== 1) isUploadOK = false
+                    if(el.data.status === 100) isLarge = true
+                })
 
-                } catch (error) {
-                
+                if(isLarge){
+                    Alert.alert(
+                        checkLanguage({vi: 'Lỗi', en: `Error`},language),
+                        checkLanguage({vi: 'Hình không được vượt quá 2 MB', en: `Image must smaller than 2MB`},language)
+                    )
+                    setLoading(false)
                     return
                 }
+
+                if(isUploadOK === false) {
+                    Alert.alert(
+                        checkLanguage({vi: 'Lỗi', en: `Error`},language),
+                        checkLanguage({vi: 'Tải hình không thành công', en: `Upload photo failed`},language)
+                    )
+                    setLoading(false)
+                    return
+                }
+                if(isUploadOK === true){
+
+                    var kycInfo = {
+                        kyc_country : SelectedCountry ===0 ? 'VN' : 'Others',
+                        kyc_number : IDNumber.toString(),
+                        kyc_name : Name,
+                        kyc : '2',
+                        id : userid,
+                    }
+                    dispatch(asyncUpdateUser(kycInfo))
+                    .then((res)=>{
+                        if(res.status === 1){
+                            dispatch(asyncSecureStatus({
+                                ...secureStatus,
+                                kyc: '2'
+                            }))
+                            Alert.alert(
+                                checkLanguage({vi: 'Thông báo', en: `Notification`},language),
+                                checkLanguage({vi: 'Đã nộp KYC, vui lòng chờ duyệt', en: `KYC is submitted, please wait for approval`},language)
+                            )
+                            navigation.navigate('Secure')
+                            setLoading(false)
+                            return
+                        }
+                        if(res.status === 100){
+                            Alert.alert(
+                                checkLanguage({vi: 'Lỗi', en: `Error`},language),
+                                checkLanguage({vi: 'Số chứng minh / băng lái xe đã được sử dụng cho tài khoản khác', en: `ID card / Driver's license has been used for another account`},language)
+                            )
+                            setLoading(false)
+                            return
+                        }
+                        Alert.alert(
+                            checkLanguage({vi: 'Lỗi', en: `Error`},language),
+                            checkLanguage({vi: 'KYC không thành công', en: `KYC failed`},language)
+                        )
+                    })
+                    .catch(console.log)
+                }
+            } catch (error) {
+                setLoading(false)
                 return
+            }
+            setLoading(false)
+
+            return
         }
         Alert.alert(
             checkLanguage({vi: 'Lỗi', en: `Error`},language),
             checkLanguage({vi: 'Tải hình không thành công', en: `Upload photo failed`},language)
         )
+        setLoading(false)
+
     },[ImageFront, ImageBack,ImageSelfy])
 
     
@@ -245,11 +280,77 @@ export default function App(){
                     style={{position:'absolute', top: -7 , right: -3, width:16, height: 16, borderRadius: 25,backgroundColor: '#8a8c8e',zIndex: 99}}>
                         <FontAwesomeIcon icon={faTimes} />
                     </TouchableOpacity>}
-                    <Text style={[mainStyles.fontsize12, mainStyles.color3, {width: '60%'}]}>{checkLanguage({vi: '3. Ảnh có mặt bạn chụp chung với CMND/Bằng lái xe và một tờ giấy ghi chữ "KINGDOM GAME 4.0", ngày tháng năm hiện tại và chữ ký của bạn.',
-                                    en: `3. Image with your face taken with your ID / Driver's License and a piece of paper which there is a written sentence "KINGDOM GAME 4.0", current date and your signature in that.`},language)}</Text>
+                    <Text style={[mainStyles.fontsize12, mainStyles.color3, {width: '60%'}]}>
+                        {
+                            checkLanguage({
+                                vi: '3. Ảnh có mặt bạn chụp chung với CMND/Bằng lái xe và một tờ giấy ghi chữ "KINGDOM GAME 4.0", ngày tháng năm hiện tại và chữ ký của bạn.',
+                                en: `3. Image with your face taken with your ID / Driver's License and a piece of paper which there is a written sentence "KINGDOM GAME 4.0", current date and your signature in that.`
+                            },language)
+                        }
+                    </Text>
                     <TouchableOpacity disabled={ImageSelfy} onPress={()=>getPermissionAsync('self')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
                         <Image style={[{marginTop: 15,},ImageSelfy && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfy ? {uri : ImageSelfy.uri} : selfy}/>
                         {!ImageSelfy &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems: 'center', marginTop: 33, justifyContent:'space-between', position: 'relative'}}>
+                    {ImageSelfyLeft && <TouchableOpacity 
+                    onPress={()=>setImageSelfyLeft(null)}
+                    style={{position:'absolute', top: -7 , right: -3, width:16, height: 16, borderRadius: 25,backgroundColor: '#8a8c8e',zIndex: 99}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </TouchableOpacity>}
+                    <Text style={[mainStyles.fontsize12, mainStyles.color3, {width: '60%'}]}>
+                        {
+                            checkLanguage({
+                                vi: '4. Ảnh có mặt bạn chụp chung với CMND/Bằng lái xe và một tờ giấy ghi chữ "KINGDOM GAME 4.0", ngày tháng năm hiện tại và chữ ký của bạn.(Mặt phía bên trái)',
+                                en: `4. Image with your face taken with your ID / Driver's License and a piece of paper which there is a written sentence "KINGDOM GAME 4.0", current date and your signature in that.(Turn left)`
+                            },language)
+                        }
+                    </Text>
+                    <TouchableOpacity disabled={ImageSelfyLeft} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
+                        <Image style={[{marginTop: 15,},ImageSelfyLeft && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyLeft ? {uri : ImageSelfyLeft.uri} : selfy}/>
+                        {!ImageSelfyLeft &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems: 'center', marginTop: 33, justifyContent:'space-between', position: 'relative'}}>
+                    {ImageSelfyRight && <TouchableOpacity 
+                    onPress={()=>setImageSelfyRight(null)}
+                    style={{position:'absolute', top: -7 , right: -3, width:16, height: 16, borderRadius: 25,backgroundColor: '#8a8c8e',zIndex: 99}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </TouchableOpacity>}
+                    <Text style={[mainStyles.fontsize12, mainStyles.color3, {width: '60%'}]}>
+                        {
+                            checkLanguage({
+                                vi: '5. Ảnh có mặt bạn chụp chung với CMND/Bằng lái xe và một tờ giấy ghi chữ "KINGDOM GAME 4.0", ngày tháng năm hiện tại và chữ ký của bạn.(Mặt phía bên phải)',
+                                en: `5. Image with your face taken with your ID / Driver's License and a piece of paper which there is a written sentence "KINGDOM GAME 4.0", current date and your signature in that.(Turn right)`
+                            },language)
+                        }
+                    </Text>
+                    <TouchableOpacity disabled={ImageSelfyRight} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
+                        <Image style={[{marginTop: 15,},ImageSelfyRight && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyRight ? {uri : ImageSelfyRight.uri} : selfy}/>
+                        {!ImageSelfyRight &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems: 'center', marginTop: 33, justifyContent:'space-between', position: 'relative'}}>
+                    {ImageSelfyUp && <TouchableOpacity 
+                    onPress={()=>setImageSelfyUp(null)}
+                    style={{position:'absolute', top: -7 , right: -3, width:16, height: 16, borderRadius: 25,backgroundColor: '#8a8c8e',zIndex: 99}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </TouchableOpacity>}
+                    <Text style={[mainStyles.fontsize12, mainStyles.color3, {width: '60%'}]}>
+                        {
+                            checkLanguage({
+                                vi: '6. Ảnh có mặt bạn chụp chung với CMND/Bằng lái xe và một tờ giấy ghi chữ "KINGDOM GAME 4.0", ngày tháng năm hiện tại và chữ ký của bạn.(Mặt ngước lên)',
+                                en: `6. Image with your face taken with your ID / Driver's License and a piece of paper which there is a written sentence "KINGDOM GAME 4.0", current date and your signature in that.(Turn up)`
+                            },language)
+                        }
+                    </Text>
+                    <TouchableOpacity disabled={ImageSelfyUp} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
+                        <Image style={[{marginTop: 15,},ImageSelfyUp && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyUp ? {uri : ImageSelfyUp.uri} : selfy}/>
+                        {!ImageSelfyUp &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
                     </TouchableOpacity>
                 </View>
             </View>

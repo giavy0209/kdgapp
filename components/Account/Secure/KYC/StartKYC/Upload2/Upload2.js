@@ -11,7 +11,6 @@ import {Header2} from '../../../../../Header'
 import {mainStyles} from '../../../../../../styles'
 
 import font from '../../../../../../assets/images/fontID.png'
-import back from '../../../../../../assets/images/backID.png'
 import selfy from '../../../../../../assets/images/selfy.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -37,6 +36,9 @@ export default function App(){
     const [ImageFront, setImageFront] = useState(null)
 
     const [ImageSelfy, setImageSelfy] = useState(null)
+    const [ImageSelfyLeft, setImageSelfyLeft] = useState(null)
+    const [ImageSelfyRight, setImageSelfyRight] = useState(null)
+    const [ImageSelfyUp, setImageSelfyUp] = useState(null)
 
     const language = useSelector(state => state.language)
 
@@ -47,14 +49,15 @@ export default function App(){
             let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                 allowsEditing: true,
-                aspect: [3,2],
                 quality: 1,
                 base64: false,
             });
             if (!result.cancelled) {
-                
                 if(type === 'front') setImageFront(result)
                 if(type === 'self') setImageSelfy(result)
+                if(type === 'left') setImageSelfyLeft(result)
+                if(type === 'right') setImageSelfyRight(result)
+                if(type === 'up') setImageSelfyUp(result)
             }
         } catch (E) {
             console.log(E);
@@ -72,109 +75,142 @@ export default function App(){
 
     const handleNext = useCallback(async ()=>{
         var userid = await storage('userId').getItem();
+        setLoading(true)
         if(ImageFront && ImageSelfy){
-        
-                const arrayUpload = []
-                const uploadFront = new FormData()
-                const extFront = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
-                const fileFront = {
-                    uri : Platform.OS === 'android' ? ImageFront.uri : ImageFront.uri.replace ('file://' , ''),
-                    type: 'image/png',
-                    name: `photo.${extFront}`,
-                }
-                uploadFront.append('file', fileFront)
-                uploadFront.append('userId' , userid)
-                arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadFront))
+            const arrayUpload = []
+            const uploadFront = new FormData()
+            const extFront = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
+            const fileFront = {
+                uri : Platform.OS === 'android' ? ImageFront.uri : ImageFront.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extFront}`,
+            }
+            uploadFront.append('file', fileFront)
+            uploadFront.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadFront))
 
-                const extSelf = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
-                const fileSelf = {
-                    uri : Platform.OS === 'android' ? ImageSelfy.uri : ImageSelfy.uri.replace ('file://' , ''),
-                    type: 'image/png',
-                    name: `photo.${extSelf}`,
-                }
-                const uploadSelf = new FormData()
-                uploadSelf.append('file', fileSelf)
-                uploadSelf.append('userId' , userid)
-                arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelf))
+            const extSelf = ImageFront.uri.substr(ImageFront.uri.lastIndexOf('.') + 1);
+            const fileSelf = {
+                uri : Platform.OS === 'android' ? ImageSelfy.uri : ImageSelfy.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extSelf}`,
+            }
+            const uploadSelf = new FormData()
+            uploadSelf.append('file', fileSelf)
+            uploadSelf.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelf))
 
-                try {
-                    var res = await Promise.all(arrayUpload)
-                    var isUploadOK = true
-                    res.forEach(el=>{
-                        if(el.data.status !== 1) isUploadOK = false
-                    })
+            const extSelfyLeft = ImageSelfyLeft.uri.substr(ImageSelfyLeft.uri.lastIndexOf('.') + 1);
+            const fileSelfyLeft = {
+                uri : Platform.OS === 'android' ? ImageSelfyLeft.uri : ImageSelfyLeft.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extSelfyLeft}`,
+            }
+            const uploadSelfyLeft = new FormData()
+            uploadSelfyLeft.append('file', fileSelfyLeft)
+            uploadSelfyLeft.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelfyLeft))
 
-                    if(isUploadOK === false) {
-                        Alert.alert(
-                            'Lỗi',
-                            'Tải hình không thành công'
-                          )
-                        return
-                    }
-                    if(isUploadOK === true){
+            const extSelfyRight = ImageSelfyRight.uri.substr(ImageSelfyRight.uri.lastIndexOf('.') + 1);
+            const fileSelfyRight = {
+                uri : Platform.OS === 'android' ? ImageSelfyRight.uri : ImageSelfyRight.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extSelfyRight}`,
+            }
+            const uploadSelfyRight = new FormData()
+            uploadSelfyRight.append('file', fileSelfyRight)
+            uploadSelfyRight.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelfyRight))
 
-                        var kycInfo = {
-                            kyc_country : SelectedCountry ===0 ? 'VN' : 'Others',
-                            kyc_number : IDNumber.toString(),
-                            kyc_name : Name,
-                            kyc : '2',
-                            id : userid,
-                        }
-                        dispatch(asyncUpdateUser(kycInfo))
-                        .then((res)=>{
-                            console.log(res)
-                            if(res.status === 1){
-                                Alert.alert(
-                                    checkLanguage({vi: 'Thông báo', en: `Notification`},language),
-                                    checkLanguage({vi: 'Đã nộp KYC, vui lòng chờ duyệt', en: `KYC is submitted, please wait for approval`},language)
-                                )
-                                navigation.navigate('Secure')
-                                return
-                            }
-                            if(res.status === 100){
-                                Alert.alert(
-                                    checkLanguage({vi: 'Lỗi', en: `Error`},language),
-                                    checkLanguage({vi: 'Số chứng minh / băng lái xe đã được sử dụng cho tài khoản khác', en: `ID card / Driver's license has been used for another account`},language)
-                                )
-                                return
-                            }
-                                Alert.alert(
-                                    checkLanguage({vi: 'Lỗi', en: `Error`},language),
-                                    checkLanguage({vi: 'KYC không thành công', en: `KYC failed`},language)
-                                )
-                        })
-                        .catch(console.log)
-            
-                        // if(resUpdate.status === 1){
-                        //     Alert.alert(
-                        //         'Thành công',
-                        //         'Gửi thành công vui lòng chờ xét duyệt'
-                        //     )
-                        // }else if (resUpdate.status === 100){
-                        //     Alert.alert(
-                        //         'Lỗi',
-                        //         'Số chứng minh/passport đã được sử dụng cho tài khoản khác'
-                        //     )
-                        // }else{
-                        //     Alert.alert(
-                        //         'Lỗi',
-                        //         'Gửi KYC không thành công, vui lòng thử lại'
-                        //     )
-                        // }
-          
-                    }
+            const extSelfyUp = ImageSelfyUp.uri.substr(ImageSelfyUp.uri.lastIndexOf('.') + 1);
+            const fileSelfyUp = {
+                uri : Platform.OS === 'android' ? ImageSelfyUp.uri : ImageSelfyUp.uri.replace ('file://' , ''),
+                type: 'image/png',
+                name: `photo.${extSelfyUp}`,
+            }
+            const uploadSelfyUp = new FormData()
+            uploadSelfyUp.append('file', fileSelfyUp)
+            uploadSelfyUp.append('userId' , userid)
+            arrayUpload.push((await calAPI()).post('/api/upload_kyc_image', uploadSelfyUp))
+
+            try {
+                var res = await Promise.all(arrayUpload)
+                var isUploadOK = true
+                var isLarge = false
+                res.forEach(el=>{
+                    if(el.data.status !== 1) isUploadOK = false
+                    if(el.data.status === 100) isLarge = true
+                })
+
+                if(isLarge){
+                    Alert.alert(
+                        checkLanguage({vi: 'Lỗi', en: `Error`},language),
+                        checkLanguage({vi: 'Hình không được vượt quá 2 MB', en: `Image must smaller than 2MB`},language)
+                    )
+                    setLoading(false)
                     
-
-                } catch (error) {
-                
                     return
                 }
+
+                if(isUploadOK === false) {
+                    Alert.alert(
+                        'Lỗi',
+                        'Tải hình không thành công'
+                    )
+                    setLoading(false)
+                    return
+                }
+                if(isUploadOK === true){
+
+                    var kycInfo = {
+                        kyc_country : SelectedCountry ===0 ? 'VN' : 'Others',
+                        kyc_number : IDNumber.toString(),
+                        kyc_name : Name,
+                        kyc : '2',
+                        id : userid,
+                    }
+                    dispatch(asyncUpdateUser(kycInfo))
+                    .then((res)=>{
+                        console.log(res)
+                        if(res.status === 1){
+                            Alert.alert(
+                                checkLanguage({vi: 'Thông báo', en: `Notification`},language),
+                                checkLanguage({vi: 'Đã nộp KYC, vui lòng chờ duyệt', en: `KYC is submitted, please wait for approval`},language)
+                            )
+                            navigation.navigate('Secure')
+                            setLoading(false)
+                            return
+                        }
+                        if(res.status === 100){
+                            Alert.alert(
+                                checkLanguage({vi: 'Lỗi', en: `Error`},language),
+                                checkLanguage({vi: 'Số chứng minh / băng lái xe đã được sử dụng cho tài khoản khác', en: `ID card / Driver's license has been used for another account`},language)
+                            )
+                            setLoading(false)
+                            return
+                        }
+                        Alert.alert(
+                            checkLanguage({vi: 'Lỗi', en: `Error`},language),
+                            checkLanguage({vi: 'KYC không thành công', en: `KYC failed`},language)
+                        )
+                    })
+                }
+                
+                setLoading(false)
+
+            } catch (error) {
+            
+                setLoading(false)
                 return
+            }
+            setLoading(false)
+            return
         }
         Alert.alert(
             checkLanguage({vi: 'Lỗi', en: `Error`},language),
             checkLanguage({vi: 'Tải hình không thành công', en: `Upload photo failed`},language)
         )
+        setLoading(false)
     },[ImageFront,ImageSelfy])
 
     
