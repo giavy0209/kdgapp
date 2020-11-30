@@ -69,7 +69,6 @@ const data = [
 
 
 useEffect(() => {
-
     dispatch(asyncSetCoin({
         kdg: isEnabledKDG, 
         eth: isEnabledETH, 

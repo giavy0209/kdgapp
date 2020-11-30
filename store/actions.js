@@ -269,12 +269,29 @@ export function asyncLogin(loginInfo){
                     }
                 })
 
+                var coindisplay = await storage('coin').getItem()
+                if(!coindisplay) {
+                    coindisplay = {
+                        kdg: true, 
+                        eth: true, 
+                        trx: true, 
+                        usdt_erc20: true, 
+                        usdt_trc20: true, 
+                        knc: true, 
+                        mch: true,
+                        tomo: true,
+                        btc: true
+                    }
+                }
+                dispatch(actChangeCoin(coindisplay))
+
                 await storage('loginInfo' , loginInfo).setItem()
                 await storage('userData' , res.data).setItem();
                 await storage('userId' , res.data._id).setItem();
                 await storage('userBalance' , res.data.balances).setItem();
                 await storage('isLogin' , true).setItem();
                 await storage('loginTime', new Date().getTime()).setItem()
+                
                 await dispatch(actChangeIsGetReward(res.isMobileLoginFirstTime))
                 await dispatch(asyncGetUserbyID(res.data._id))
                 var newRouters = []

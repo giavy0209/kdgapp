@@ -38,6 +38,7 @@ const coin_data = [
     { dataName: 'TOMO', coinName: 'TOMO', icon: tomoicon },
 ]
 export default function App({ navigation }) {
+    const coinDisplay = useSelector(state => state.coin)
     const dispatch = useDispatch();
 
     const typeCurrency = useSelector(state => state.currency)
@@ -76,13 +77,15 @@ export default function App({ navigation }) {
             const res = (await (await calAPI()).get(`/api/markets/coin_price?coin_type=${_data.dataName}`)).data
             _data.coinPrice = typeCurrency === 0 ? Number(res.data.price.toFixed(4)) : Number((res.data.price * 23000).toFixed(4))
 
-            balanceRealMoney += _data.coinPrice
-
+            
             var findThisData = balance.find(o => o.coin.code === _data.coinName)
             _data.balance = findThisData.balance
             _data.address = findThisData.wallet.address
-
+            _data.display = coinDisplay[_data.coinName.toLowerCase().replace('-', '_')]
+            
             if(_data.coinName === 'KDG') setKDGPrice(_data.coinPrice)
+
+            balanceRealMoney += Math.round(Number(_data.coinPrice) * Number(_data.balance) * 1000) / 1000
         }
 
         setBalanceRealMoney(balanceRealMoney)
@@ -91,11 +94,11 @@ export default function App({ navigation }) {
         var getBTCPrice = (await (await calAPI()).get(`/api/markets/coin_price?coin_type=BTC`)).data
         var btcPrice = typeCurrency === 0 ? Number(getBTCPrice.data.price.toFixed(4)) : Number((getBTCPrice.data.price * 23000).toFixed(4))
         setBTCPrice(btcPrice)
-    }, [typeCurrency])
+    }, [typeCurrency, coinDisplay])
 
     useEffect(()=>{
         handleGetCoinPrice()
-    },[typeCurrency])
+    },[typeCurrency,coinDisplay])
 
     useEffect(() => {
         async function getwalletBlance() {

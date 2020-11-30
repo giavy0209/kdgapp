@@ -110,54 +110,55 @@ export default function App({
                 {
                     CoinData.map((item, index) => 
                         {
-                            console.log(item);
-                        return <Swipeable 
-                        onSwipeableClose={() => handleSwipeClose(1)}
-                        key={index}
-                        renderRightActions={() => renderRightActions(item.coinName, item.balance, item.coinPrice)}
-                        renderLeftActions={() => renderLeftActions(item.coinName, item.balance, item.address)}
-                        >
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate('History', {
-                                    id: item.coinName,
-                                    address: item.address,
-                                    balance: item.balance,
-                                    coinPrice: item.coinPrice
-                                })}
-                                onLayout={e => setCoinHeight(e.nativeEvent.layout.height)} style={[WalletStyle.coin,]}>
-                                <View style={[WalletStyle.maskOpacity2,
-                                CheckIncludes(1) === 'left' ? { backgroundColor: '#868d97', opacity: .5, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 } :
-                                    CheckIncludes(1) === 'right' && { backgroundColor: '#868d97', opacity: .5, borderTopRightRadius: 0, borderBottomRightRadius: 0 }
-                                ]}></View>
-                                <View style={WalletStyle.coinLeft}>
-                                    <Image style={{ width: 30, height: 30 }} source={item.icon} />
-                                    <View style={{ marginLeft: 8 }}>
-                                        <Text style={WalletStyle.coinName}>{item.coinName}</Text>
-                                        <Text style={WalletStyle.coinPirce}>
-                                            {
-                                                VisibleBalance ? hiddenBalance : typeCurrency === 1 ? `${item.coinPrice} ₫` : `$${item.coinPrice}`
-                                            }
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View style={WalletStyle.coinRight}>
-                                    <Text style={WalletStyle.quantity}>
-                                        {
-                                            VisibleBalance ? hiddenBalance
-                                            :
-                                            Math.floor(item.balance * 10000) / 10000
-                                        }
-                                    </Text>
-                                    <Text style={WalletStyle.coinPirce}>
-                                        {
-                                            VisibleBalance ? hiddenBalance
-                                            :
-                                            `${typeCurrency === 0 ? '$' : ''}${Math.floor(item.balance * item.coinPrice * 10000) / 10000}${typeCurrency === 1 ? '₫' : ''}`
-                                        }
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </Swipeable>    
+                            if(item.display){
+                                return <Swipeable 
+                                onSwipeableClose={() => handleSwipeClose(1)}
+                                key={index}
+                                renderRightActions={() => renderRightActions(item.coinName, item.balance, item.coinPrice)}
+                                renderLeftActions={() => renderLeftActions(item.coinName, item.balance, item.address)}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() => navigation.navigate('History', {
+                                            id: item.coinName,
+                                            address: item.address,
+                                            balance: item.balance,
+                                            coinPrice: item.coinPrice
+                                        })}
+                                        onLayout={e => setCoinHeight(e.nativeEvent.layout.height)} style={[WalletStyle.coin,]}>
+                                        <View style={[WalletStyle.maskOpacity2,
+                                        CheckIncludes(1) === 'left' ? { backgroundColor: '#868d97', opacity: .5, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 } :
+                                            CheckIncludes(1) === 'right' && { backgroundColor: '#868d97', opacity: .5, borderTopRightRadius: 0, borderBottomRightRadius: 0 }
+                                        ]}></View>
+                                        <View style={WalletStyle.coinLeft}>
+                                            <Image style={{ width: 30, height: 30 }} source={item.icon} />
+                                            <View style={{ marginLeft: 8 }}>
+                                                <Text style={WalletStyle.coinName}>{item.coinName}</Text>
+                                                <Text style={WalletStyle.coinPirce}>
+                                                    {
+                                                        VisibleBalance ? hiddenBalance : typeCurrency === 1 ? `${item.coinPrice} ₫` : `$${item.coinPrice}`
+                                                    }
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style={WalletStyle.coinRight}>
+                                            <Text style={WalletStyle.quantity}>
+                                                {
+                                                    VisibleBalance ? hiddenBalance
+                                                    :
+                                                    Math.floor(item.balance * 10000) / 10000
+                                                }
+                                            </Text>
+                                            <Text style={WalletStyle.coinPirce}>
+                                                {
+                                                    VisibleBalance ? hiddenBalance
+                                                    :
+                                                    `${typeCurrency === 0 ? '$' : ''}${Math.floor(item.balance * Number(item.coinPrice) * 10000) / 10000}${typeCurrency === 1 ? '₫' : ''}`
+                                                }
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </Swipeable>    
+                            }
                         }
                     )
                 }
