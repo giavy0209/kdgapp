@@ -12,6 +12,9 @@ import {mainStyles} from '../../../../../../styles'
 
 import font from '../../../../../../assets/images/fontID.png'
 import selfy from '../../../../../../assets/images/selfy.png'
+import selfyleft from '../../../../../../assets/images/selfyleft.png'
+import selfyright from '../../../../../../assets/images/selfyright.png'
+import selfyup from '../../../../../../assets/images/selfyup.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -250,6 +253,67 @@ export default function App(){
                         {!ImageSelfy &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
                     </TouchableOpacity>
                 </View>
+
+                <View style={{flexDirection:'row', alignItems: 'center', marginTop: 33, justifyContent:'space-between', position: 'relative'}}>
+                    {ImageSelfyLeft && <TouchableOpacity 
+                    onPress={()=>setImageSelfyLeft(null)}
+                    style={{position:'absolute', top: -7 , right: -3, width:16, height: 16, borderRadius: 25,backgroundColor: '#8a8c8e',zIndex: 99}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </TouchableOpacity>}
+                    <Text style={[mainStyles.fontsize12, mainStyles.color3, {width: '60%'}]}>
+                        {
+                            checkLanguage({
+                                vi: '3. Ảnh có mặt bạn chụp chung với CMND/Bằng lái xe và một tờ giấy ghi chữ "KINGDOM GAME 4.0", ngày tháng năm hiện tại và chữ ký của bạn.(Mặt phía bên trái)',
+                                en: `3. Image with your face taken with your ID / Driver's License and a piece of paper which there is a written sentence "KINGDOM GAME 4.0", current date and your signature in that.(Turn left)`
+                            },language)
+                        }
+                    </Text>
+                    <TouchableOpacity disabled={ImageSelfyLeft} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
+                        <Image style={[{marginTop: 15,},ImageSelfyLeft && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyLeft ? {uri : ImageSelfyLeft.uri} : selfyleft}/>
+                        {!ImageSelfyLeft &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems: 'center', marginTop: 33, justifyContent:'space-between', position: 'relative'}}>
+                    {ImageSelfyRight && <TouchableOpacity 
+                    onPress={()=>setImageSelfyRight(null)}
+                    style={{position:'absolute', top: -7 , right: -3, width:16, height: 16, borderRadius: 25,backgroundColor: '#8a8c8e',zIndex: 99}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </TouchableOpacity>}
+                    <Text style={[mainStyles.fontsize12, mainStyles.color3, {width: '60%'}]}>
+                        {
+                            checkLanguage({
+                                vi: '4. Ảnh có mặt bạn chụp chung với CMND/Bằng lái xe và một tờ giấy ghi chữ "KINGDOM GAME 4.0", ngày tháng năm hiện tại và chữ ký của bạn.(Mặt phía bên phải)',
+                                en: `4. Image with your face taken with your ID / Driver's License and a piece of paper which there is a written sentence "KINGDOM GAME 4.0", current date and your signature in that.(Turn right)`
+                            },language)
+                        }
+                    </Text>
+                    <TouchableOpacity disabled={ImageSelfyRight} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
+                        <Image style={[{marginTop: 15,},ImageSelfyRight && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyRight ? {uri : ImageSelfyRight.uri} : selfyright}/>
+                        {!ImageSelfyRight &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{flexDirection:'row', alignItems: 'center', marginTop: 33, justifyContent:'space-between', position: 'relative'}}>
+                    {ImageSelfyUp && <TouchableOpacity 
+                    onPress={()=>setImageSelfyUp(null)}
+                    style={{position:'absolute', top: -7 , right: -3, width:16, height: 16, borderRadius: 25,backgroundColor: '#8a8c8e',zIndex: 99}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </TouchableOpacity>}
+                    <Text style={[mainStyles.fontsize12, mainStyles.color3, {width: '60%'}]}>
+                        {
+                            checkLanguage({
+                                vi: '5. Ảnh có mặt bạn chụp chung với CMND/Bằng lái xe và một tờ giấy ghi chữ "KINGDOM GAME 4.0", ngày tháng năm hiện tại và chữ ký của bạn.(Mặt ngước lên)',
+                                en: `5. Image with your face taken with your ID / Driver's License and a piece of paper which there is a written sentence "KINGDOM GAME 4.0", current date and your signature in that.(Turn up)`
+                            },language)
+                        }
+                    </Text>
+                    <TouchableOpacity disabled={ImageSelfyUp} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
+                        <Image style={[{marginTop: 15,},ImageSelfyUp && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyUp ? {uri : ImageSelfyUp.uri} : selfyup}/>
+                        {!ImageSelfyUp &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
+                    </TouchableOpacity>
+                </View>
+
             </View>
 
             <TouchableOpacity 

@@ -13,6 +13,9 @@ import {mainStyles} from '../../../../../../styles'
 import font from '../../../../../../assets/images/fontID.png'
 import back from '../../../../../../assets/images/backID.png'
 import selfy from '../../../../../../assets/images/selfy.png'
+import selfyleft from '../../../../../../assets/images/selfyleft.png'
+import selfyright from '../../../../../../assets/images/selfyright.png'
+import selfyup from '../../../../../../assets/images/selfyup.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -309,7 +312,7 @@ export default function App(){
                         }
                     </Text>
                     <TouchableOpacity disabled={ImageSelfyLeft} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
-                        <Image style={[{marginTop: 15,},ImageSelfyLeft && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyLeft ? {uri : ImageSelfyLeft.uri} : selfy}/>
+                        <Image style={[{marginTop: 15,},ImageSelfyLeft && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyLeft ? {uri : ImageSelfyLeft.uri} : selfyleft}/>
                         {!ImageSelfyLeft &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
                     </TouchableOpacity>
                 </View>
@@ -329,7 +332,7 @@ export default function App(){
                         }
                     </Text>
                     <TouchableOpacity disabled={ImageSelfyRight} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
-                        <Image style={[{marginTop: 15,},ImageSelfyRight && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyRight ? {uri : ImageSelfyRight.uri} : selfy}/>
+                        <Image style={[{marginTop: 15,},ImageSelfyRight && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyRight ? {uri : ImageSelfyRight.uri} : selfyright}/>
                         {!ImageSelfyRight &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
                     </TouchableOpacity>
                 </View>
@@ -349,7 +352,7 @@ export default function App(){
                         }
                     </Text>
                     <TouchableOpacity disabled={ImageSelfyUp} onPress={()=>getPermissionAsync('selfleft')} style={{width:131, paddingHorizontal: 10, borderRadius: 8, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center'}}>
-                        <Image style={[{marginTop: 15,},ImageSelfyUp && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyUp ? {uri : ImageSelfyUp.uri} : selfy}/>
+                        <Image style={[{marginTop: 15,},ImageSelfyUp && {width: 131, height: 81,marginTop: 0,borderRadius: 8}]} source={ImageSelfyUp ? {uri : ImageSelfyUp.uri} : selfyup}/>
                         {!ImageSelfyUp &&<Text style={{marginTop: 8, color: '#005cfc', fontSize: 11,paddingBottom: 4, textDecorationLine: 'underline', textDecorationColor: '#005cfc', textAlign: 'center'}}>{checkLanguage({vi: 'Nhấn vào đây để tải lên', en: `Click here to upload`},language)}</Text>}
                     </TouchableOpacity>
                 </View>
