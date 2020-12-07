@@ -66,7 +66,7 @@ export default function App({setOutScrollViewTop, setOutScrollView}){
         var userid = await storage('userId').getItem();
 
         if(SwapType === 1){
-            dispatch(asyncConvertKDGReward({userId: userid, value: ValueSwap}))
+            dispatch(asyncConvertKDGReward({userId: userid, value: ValueSwap / 2}))
             .then((res)=>{
               if(res.status === 104){
                 setLoading(false)
