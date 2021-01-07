@@ -1,42 +1,26 @@
-import React from 'react'
-import {Image} from 'react-native'
-import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {TABS} from '../../routers'
-import Maincomponent from '../Maincontainer'
+import React, { useCallback } from 'react';
+import { Text, View , TouchableOpacity, Image} from 'react-native';
 import { useSelector } from 'react-redux';
+import { useNavigation , useRoute  } from '@react-navigation/native';
+import {tabs} from '../../routers'
+export default function App({setTabHeight}) {
+    const navigation = useNavigation()
+    const route = useRoute()
+    const TabsStyle = useSelector(state => state.Styles && state.Styles.Tabs ? state.Styles.Tabs : {})
 
-
-const Tab = createBottomTabNavigator();
-const {Navigator, Screen} = Tab
-export default function App(){
-
-    const display = useSelector(state => state.display)
-    const language = useSelector(state => state.language)
+    const handleNavigator = useCallback((screen)=> {
+        navigation.push(screen)
+    },[])
     return (
-        <Navigator
-
-        tabBarOptions={{
-        activeTintColor: '#fac800',
-        inactiveTintColor: "#8a8c8e",
-        style: {
-            backgroundColor: display === 1 ? '#ffff' :'#283349',
-            borderTopWidth: display === 1 ? 1 : 0,
-        }
-        }}
-        >
-
-        {TABS.map(tab=>
-        <Screen
-        options={{tabBarIcon: ({focused}) =><Image source={focused ? display === 1 ? tab.logoActiveLight : tab.logoActive : tab.logo} />, 
-            title: language === 0 ? tab.titleVi : tab.title
-        }}  
-        key={tab.name} 
-        name={tab.name}
-        >
-            {props => <Maincomponent {...props} reqLogin={tab.reqLogin} Component={tab.render}></Maincomponent>}
-        </Screen>
-        )}
-
-        </Navigator>
+        <>
+            <View onLayout={e => setTabHeight(e.nativeEvent.layout.height)} style={TabsStyle.container}>
+                {
+                    tabs.map((o, index) => <TouchableOpacity onPress={()=>handleNavigator(o.page)} style={TabsStyle.item} key={'tab' + index}>
+                        <Image source={route.name === o.page ? o.icon_1 : o.icon_0} />
+                        <Text style={[TabsStyle.text,route.name === o.page && TabsStyle.active]}>{o.name(1)}</Text>
+                    </TouchableOpacity>)
+                }
+            </View>
+        </>
     )
 }

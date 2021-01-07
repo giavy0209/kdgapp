@@ -1,16 +1,10 @@
-import transition from './transition'
 import storage from './storage'
-import waitFor from './waitFor'
-import checkLanguage from './checkLanguage'
-import checkDisplays from './checkDisplays'
-import {checkCurrency,checkDisplay,checkLang} from './checkProfile'
+import maptheme from './maptheme'
+import mapstyles from './mapstyles'
+import maplanguage from './maplanguage'
 export {
-    transition,
-    checkCurrency,
-    checkDisplay,
-    checkLang,
     storage,
-    waitFor,
-    checkLanguage,
-    checkDisplays
+    mapstyles,
+    maptheme,
+    maplanguage,
 }

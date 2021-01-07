@@ -1,31 +1,28 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import {ImageBackground, ScrollView, } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Dimensions, ImageBackground, ScrollView, Text, TouchableOpacity, View} from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import background from '../assets/images/background.jpg'
+import Tabs from './Tabs'
+import { asyncInitAll } from '../store/actions'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+const {height} = Dimensions.get('screen')
 
-import bg from '../assets/images/bg.jpg'
-import bg2 from '../assets/images/bg2.jpg'
-import bg3 from '../assets/images/bg3.jpg'
-import { mainStyles } from '../styles/'
-import { useDispatch, useSelector } from 'react-redux';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { asyncGetSettings } from '../store/actions';
-import checkDisplays from '../helper/checkDisplays';
-export default function Maincontainer({Component,route ,reqLogin, ...restProps}){
-    const {bottom} = useSafeAreaInsets()
-    
-    const display = useSelector(state => state.display)
-    const [OutScrollView, setOutScrollView] = useState(null)
-    const [OutScrollViewTop, setOutScrollViewTop] = useState(null)
-    const [BackGround, setBackGround] = useState(null)
-
+export default function Maincontainer({Screen, haveTabs}) {
+    const dispatch = useDispatch()
+    const [TabHeight , setTabHeight] = useState(0)
+    const {top} = useSafeAreaInsets()
+    useEffect(()=> {
+        dispatch(asyncInitAll())
+    },[])
 
     return (
-      <ImageBackground source={BackGround ? BackGround : display === 1 ? bg3 : bg} style={[mainStyles.bg,{width: '100%', height: '100%',position: 'relative'}]}>
-        {OutScrollViewTop && OutScrollViewTop}
-        <ScrollView 
-        >
-          <Component setOutScrollViewTop={setOutScrollViewTop} setOutScrollView={setOutScrollView} setBackGround={setBackGround} {...restProps}/>
-        </ScrollView>
-        {OutScrollView && OutScrollView}
-      </ImageBackground>
+        <ImageBackground style={{width : '100%' , height : '100%', position : 'relative'}} source={background}>
+            <View style={{width : '100%' , height : height - TabHeight}}>
+                <ScrollView style={{paddingTop : top}}>
+                    <Screen />
+                </ScrollView>
+            </View>
+            {haveTabs && <Tabs setTabHeight={setTabHeight}/>}
+        </ImageBackground>
     )
 }

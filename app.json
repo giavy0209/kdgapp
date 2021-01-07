@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/iconapp.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -26,7 +26,6 @@
       "permissions" : [],
       "package": "kingwallet.kingdomgame.org",
       "versionCode": 3,
-      "googleServicesFile" : "./google-services.json",
       "config": {
         "googleSignIn": {
           "apiKey": "AIzaSyAsO8pwDRglDK8Cm5Zd68V-68lkFEX43Zg"
@@ -35,6 +34,9 @@
           "apiKey" : "AIzaSyAsO8pwDRglDK8Cm5Zd68V-68lkFEX43Zg"
         }
       }
+    },
+    "androidNavigationBar": {
+      "visible": "sticky-immersive"
     },
     "web": {
       "favicon": "./assets/favicon.png"
