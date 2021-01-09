@@ -5,7 +5,7 @@ const styles = ({
 }) => {
     return StyleSheet.create({
         container : {
-            paddingTop : 60,
+            paddingVertical : 60,
             paddingHorizontal  : 35,
             display : 'flex',
         },
@@ -70,6 +70,37 @@ const styles = ({
             height : '100%',
             justifyContent : 'center',
             alignItems : 'center',
+        },
+        mainButton : {
+            marginTop : 40,
+        },
+        mainButtonContainer : {
+            padding : 16,
+            backgroundColor : '#fff'
+        },
+        getcode : {
+            position : 'absolute',
+            zIndex : 9,
+            right : 24,
+            top : '50%',
+            justifyContent : 'center',
+            alignItems : 'center',
+        },
+        getcodeContainer : {
+            paddingHorizontal : 10,
+        },
+        checkbox : {
+            borderColor : '#fff'
+        },
+        rule: {
+            justifyContent : 'flex-start',
+            alignItems : 'flex-start',
+            marginTop : 30
+        },
+        ruleText : {
+            color : theme.subcolor,
+            fontSize : theme.font16,
+            width : '90%'
         }
     })
 }

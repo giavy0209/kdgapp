@@ -4,8 +4,31 @@ export default storage = {
     setToken : async (jwt) => {
         await AsyncStorage.setItem('jwt' , jwt)
     },
-    setItem : async (key, value) => {
-        await AsyncStorage.setItem(key , JSON.stringify(value))
+    getToken : async () => {
+        var token = await AsyncStorage.getItem('jwt')
+        return token
     },
-    getItem : async (key) => JSON.parse(await AsyncStorage.getItem(key)),
+
+    setLogin : async ({email , password}) => {
+        await AsyncStorage.setItem('email' , email)
+        await AsyncStorage.setItem('password' , password)
+    },
+
+    getLogin : async () => {
+        return {
+            email : await AsyncStorage.getItem('email'),
+            password : await AsyncStorage.getItem('password')
+        }
+    },
+
+    setItem : async (key, value) => {
+        var itemType = typeof value
+        if(itemType !== 'string') value = JSON.stringify(value)
+        await AsyncStorage.setItem(key , value)
+    },
+
+    getItem : async (key) => {
+        var item = await AsyncStorage.getItem(key)
+        if(item) return JSON.parse(item)
+    },
 }

@@ -1,15 +1,27 @@
-import React, { useState } from 'react'
-import { Text,  TextInput,  TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Text,TouchableOpacity, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import LoginScreen from './LoginScreen'
 import RegScreen from './RegScreen'
 import ForgotScreen from './ForgotScreen'
+import {useRoute,useNavigation } from '@react-navigation/native'
 
 export default function App () {
-    const [Current , setCurrent] = useState('Login')
+    const router = useRoute()
+    const screen = router.params?.screen
+
+    const navigation = useNavigation()
+
+    const [Current , setCurrent] = useState(screen ? screen : 'Login')
     const styles = useSelector(state => state.Styles && state.Styles.Login ? state.Styles.Login : {})
     const text = useSelector(state => state.Languages && state.Languages.Login ? state.Languages.Login : {})
+
+    const jwt = useSelector(state => state.jwt)
+
+    useEffect(()=> {
+        jwt && navigation.push('Wallet')
+    },[jwt])
     return (
         <>
             <View style={styles.container}>
@@ -33,9 +45,9 @@ export default function App () {
                         </View>
                     </TouchableOpacity>
                 </View>
-                {Current === 'Login' && <LoginScreen />}
-                {Current === 'Reg' && <RegScreen />}
-                {Current === 'Forgot' && <ForgotScreen />}
+                {Current === 'Login' && <LoginScreen setCurrent={setCurrent}/>}
+                {Current === 'Reg' && <RegScreen setCurrent={setCurrent}/>}
+                {Current === 'Forgot' && <ForgotScreen setCurrent={setCurrent}/>}
             </View>
         </>
     )

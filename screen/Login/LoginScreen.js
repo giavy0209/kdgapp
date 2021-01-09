@@ -1,17 +1,39 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Image, Text,  TextInput,  View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import eye from '../../assets/images/icons/eye.png'
 import eyeClose from '../../assets/images/icons/eyeClose.png'
+import callAPI from '../../axios'
+import Button from '../../components/Button'
+import { storage } from '../../helper'
+import { asyncHandleToast } from '../../store/actions'
+import {useNavigation,useRoute } from '@react-navigation/native'
 export default function App () {
+    const router = useRoute()
+    const email = router.params?.email
+    const dispatch = useDispatch()
+    const navigation = useNavigation()
     const styles = useSelector(state => state.Styles && state.Styles.Login ? state.Styles.Login : {})
     const common = useSelector(state => state.Styles && state.Styles.Common ? state.Styles.Common : {})
     const text = useSelector(state => state.Languages && state.Languages.Login ? state.Languages.Login : {})
     
-    const [Email, setEmail] = useState(null)
+    const [Email, setEmail] = useState(email ? email : null)
     const [Password, setPassword] = useState(null)
     const [HiddenPassword, setHiddenPassword] = useState(true)
+
+    const handleLogin = useCallback(async () => {
+        var res = await callAPI.post('/login', {email :Email , password : Password})
+        if(res.status === 101) return dispatch(asyncHandleToast(text.email_exist , 0))
+        if(res.status === 102) return dispatch(asyncHandleToast(text.email_exist , 0))
+        if(res.status === 1){
+            await storage.setLogin({email : Email , password : Password})
+            await storage.setToken(res.jwt)
+            navigation.push('Wallet')
+        }
+    },[Email , Password,text])
+
+
     return (
         <>
             <Text style={styles.loginDes}>
@@ -21,6 +43,7 @@ export default function App () {
                 <View style={styles.blockInput}>
                     {Email !== null && <Text style={styles.placeholder}>{text.email}</Text>}
                     <TextInput 
+                    autoCompleteType="off"
                     keyboardType="email-address"
                     onBlur={()=>Email === '' && setEmail(null)} 
                     onFocus={()=>!Email && setEmail('')} 
@@ -30,6 +53,7 @@ export default function App () {
                 <View style={[styles.blockInput,{borderBottomWidth : 0}]}>
                     {Password !== null && <Text style={styles.placeholder}>{text.password}</Text>}
                     <TextInput 
+                    autoCompleteType="off"
                     secureTextEntry={HiddenPassword}
                     onBlur={()=>Password === '' && setPassword(null)} 
                     onFocus={()=>!Password && setPassword('')} 
@@ -43,6 +67,15 @@ export default function App () {
                     </View>
                 </View>
             </View>
+            <Button 
+            onPress={handleLogin}
+            text={text.login}
+            disabled={!Email || !Password}
+            style={{
+                Touchable : styles.mainButton,
+                Linear : styles.mainButtonContainer
+            }}
+            />
         </>
     )
 }

@@ -1,13 +1,17 @@
-import React from 'react';
-import { Platform} from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Keyboard, Platform} from 'react-native';
 import { Provider } from 'react-redux'
 import { setStatusBarHidden, setStatusBarStyle, setStatusBarTranslucent } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {useFonts} from 'expo-font'
 import store from './store'
 import MainComponent from './components/Maincontainer'
+import { asyncInitAll } from './store/actions'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native'
 
 import {tabs,routes} from './routers'
 const Stack = createStackNavigator();
@@ -16,6 +20,55 @@ setStatusBarHidden(false, 'slide')
 setStatusBarStyle('dark')
 Platform.OS === 'android' && setStatusBarTranslucent(true)
 
+const Router = function () {
+    const dispatch = useDispatch()
+    const [KeyboardHeight , setKeyboardHeight] = useState(0)
+    const _keyboardDidShow = useCallback(function (e) {
+        setKeyboardHeight(e.endCoordinates.height)
+    },[])
+    const _keyboardDidHide = useCallback(function () {
+        setKeyboardHeight(0)
+    },[])
+
+    useEffect(()=> {
+        dispatch(asyncInitAll())
+
+        Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+    
+        return () => {
+            Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        };
+    },[])
+
+    return (
+        <NavigationContainer >
+            <Navigator
+            screenOptions={{
+                headerShown: false,
+                animationEnabled : false,
+            }}
+            >
+                {
+                    routes.map((o, index) => 
+                        <Screen key={'routes' + index} name={o.page}>
+                            {props => <MainComponent KeyboardHeight={KeyboardHeight} haveTabs={o.haveTabs} Screen={o.screen} {...props} name={o.page} />}
+                        </Screen>
+                    )
+                }
+                {
+                    tabs.map((o, index) => 
+                        <Screen key={'navigate' + index} name={o.page}>
+                            {props => <MainComponent KeyboardHeight={KeyboardHeight} haveTabs={true} Screen={o.screen} {...props} name={o.page} />}
+                        </Screen>
+                    )
+                }
+                
+            </Navigator>
+        </NavigationContainer>
+    )
+}
 
 export default function App() {
     const [loaded] = useFonts({
@@ -24,34 +77,12 @@ export default function App() {
         'WorkSans-Medium': require('./assets/fonts/WorkSans-Medium.ttf'),
     });
 
+
     if(loaded){
         return (
             <SafeAreaProvider>
                 <Provider store={store}>
-                    <NavigationContainer>
-                        <Navigator
-                        screenOptions={{
-                            headerShown: false,
-                            animationEnabled : false
-                        }}
-                        >
-                            {
-                                routes.map((o, index) => 
-                                    <Screen key={'routes' + index} name={o.page}>
-                                        {props => <MainComponent haveTabs={o.haveTabs} Screen={o.screen} {...props} name={o.page} />}
-                                    </Screen>
-                                )
-                            }
-                            {
-                                tabs.map((o, index) => 
-                                    <Screen key={'navigate' + index} name={o.page}>
-                                        {props => <MainComponent haveTabs={true} Screen={o.screen} {...props} name={o.page} />}
-                                    </Screen>
-                                )
-                            }
-                            
-                        </Navigator>
-                    </NavigationContainer>
+                    <Router />
                 </Provider>
             </SafeAreaProvider>
         )

@@ -4,7 +4,7 @@ import {storage} from './helper'
 const API_DOMAIN = "https://kdg-api.kingdomgame.co/api"
 
 async function create() {
-    const jwt = await storage.getItem('jwt')
+    const jwt = await storage.getToken()
     var Axios =  axios.create({
         baseURL : API_DOMAIN,
         headers : {
@@ -16,12 +16,12 @@ async function create() {
 }
 
 const reLogin =async () => {
-    var {email , password} = await storage.getItem('login')
+    var {email , password} = await storage.getLogin()
     if(!email || !password) {
         return
     }
 
-    var resLogin = (await create()).post('/authorize', {email , password}).data
+    var resLogin = (await (await create()).post('/login', {email , password})).data
     if(resLogin.status !== 1){
         return 
     }
@@ -33,7 +33,7 @@ const reLogin =async () => {
 const callAPI = {
     get : async (url) => {
         try {
-            return (await create()).get(url).data
+            return (await (await create()).get(url)).data
         } catch (error) {
             var {status} = await reLogin()
             if(status === 1) await callAPI.get(url)
@@ -41,7 +41,8 @@ const callAPI = {
     },
     post : async (url, body) => {
         try {
-            return (await create()).post(url,body).data
+            var res = (await (await create()).post(url,body)).data
+            return res
         } catch (error) {
             var {status} = await reLogin()
             if(status === 1) await callAPI.post(url, body)
@@ -49,7 +50,7 @@ const callAPI = {
     },
     put : async (url, body) => {
         try {
-            return (await create()).post(url,body).data
+            return (await (await create()).post(url,body)).data
         } catch (error) {
             var {status} = await reLogin()
             if(status === 1) await callAPI.put(url,body)

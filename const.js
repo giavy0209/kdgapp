@@ -9,9 +9,11 @@ export const theme = {
     font18: 1.125,
     font20 : 1.25,
     font22 : 1.375,
+    font24 : 1.5,
     maincolor_dark : '#C8C8C8',
     subcolor_dark : '#8E8E93',
     titlecolor_dark : '#fff',
     hlcolor_dark : '#fac800',
     bgcolor_dark : '#283349',
+    linkcolor_dark : '#4285F4',
 }
