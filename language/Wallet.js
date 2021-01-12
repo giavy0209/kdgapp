@@ -55,6 +55,38 @@ export default lang = {
         vi: "Phí giao dịch",
         en: "Transaction fee"
     },
+    min : {
+        vi: "Giao dịch tối thiểu",
+        en: "Transaction minimum"
+    },
+    min_err : {
+        vi: "Số lượng rút tối thiểu không đủ",
+        en: "Transaction minimum not enough"
+    },
+    not_enough_balance : {
+        vi: "Số dư không đủ",
+        en: "Not enough balance"
+    },
+    missing_field : {
+        vi: "Vui lòng nhập đủ các trường",
+        en: "Please fill all field"
+    },
+    not_2fa : {
+        vi: "Vui lòng thiết lập 2FA trước",
+        en: "Please active 2FA"
+    },
+    incorrect_2fa : {
+        vi: "2Fa không đúng",
+        en: "Incorrect 2FA"
+    },
+    not_kyc : {
+        vi: "Vui lòng xác minh danh tính trước",
+        en: "Please complete KYC"
+    },
+    withdraw_success : {
+        vi: "Rút tiền thành công",
+        en: "Withdraw Successfully"
+    },
     deposit : {
         vi : "Nạp",
         en: "Deposit"

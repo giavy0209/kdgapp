@@ -55,7 +55,7 @@ const Router = function () {
             >
                 {
                     routes.map((o, index) => 
-                        <Screen options={{animationEnabled : o.animation}} key={'routes' + index} name={o.page}>
+                        <Screen options={{animationEnabled : o.animation ,}} key={'routes' + index} name={o.page}>
                             {props => <MainComponent header={o.header} KeyboardHeight={KeyboardHeight} haveTabs={o.haveTabs} Screen={o.screen} {...props} name={o.page} />}
                         </Screen>
                     )

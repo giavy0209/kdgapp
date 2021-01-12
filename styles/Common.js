@@ -31,6 +31,7 @@ const styles = ({
         toast : (type,visible) => {
             return {
                 position : 'absolute',
+                zIndex : 99,
                 right : 0,
                 marginRight : 10,
                 borderRadius : 25,
@@ -84,6 +85,18 @@ const styles = ({
         font18 : {
             fontSize : theme.font18
         },
+        font20 : {
+            fontSize : theme.font20
+        },
+        font22 : {
+            fontSize : theme.font22
+        },
+        font24 : {
+            fontSize : theme.font24
+        },
+        font26 : {
+            fontSize : theme.font26
+        },
         fullSizeAbsolute : {
             position : 'absolute',
             width : '100%',
@@ -102,6 +115,9 @@ const styles = ({
         },
         ml : {
             marginLeft : 10
+        },
+        mt : {
+            marginTop : 10
         },
     })
 }

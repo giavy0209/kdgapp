@@ -103,8 +103,42 @@ const styles = ({
         coinIcon : {
             width : 35,
             height : 35
+        },
+        withdrawCoinInfo : {
+            position : 'relative',
+            overflow : 'hidden',
+            borderRadius : 5
+        },
+        withdrawProgress : {
+            paddingVertical : 30,
+            paddingHorizontal : 15,
+            backgroundColor : theme.bgcolor,
+            borderRadius : 5,
+        },
+        inputContainer : {
+            width : '40%',
+        },
+        input : {
+            borderRadius : 15,
+            backgroundColor : theme.titlecolor,
+            paddingVertical : 15,
+        },
+        inputText : {
+            backgroundColor : theme.titlecolor,
+            paddingVertical : 7,
+            borderRadius : 5,
+            color : theme.subcolor,
+            width : '100%',
+            textAlign : 'center'
+        },
+        inputFake : {
+            borderRadius : 5,
+            backgroundColor : 'rgba(255,255,255,.2)',
+            textAlign : 'center',
+            color : theme.hlcolor,
+            paddingVertical : 7,
+            width : '100%',
         }
-
     })
 }
 
