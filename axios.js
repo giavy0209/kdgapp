@@ -22,6 +22,7 @@ const reLogin =async () => {
     }
 
     var resLogin = (await (await create()).post('/login', {email , password})).data
+    console.log(resLogin);
     if(resLogin.status !== 1){
         return 
     }

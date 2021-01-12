@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Keyboard, Platform} from 'react-native';
+import { Keyboard, LogBox, Platform} from 'react-native';
 import { Provider } from 'react-redux'
 import { setStatusBarHidden, setStatusBarStyle, setStatusBarTranslucent } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -14,15 +14,18 @@ import { createStackNavigator} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native'
 
 import {tabs,routes} from './routers'
+LogBox.ignoreAllLogs()
 const Stack = createStackNavigator();
 const {Screen , Navigator} = Stack
-setStatusBarHidden(false, 'slide')
+setStatusBarHidden(true, 'slide')
 setStatusBarStyle('dark')
 Platform.OS === 'android' && setStatusBarTranslucent(true)
+
 
 const Router = function () {
     const dispatch = useDispatch()
     const [KeyboardHeight , setKeyboardHeight] = useState(0)
+    console.log(KeyboardHeight);
     const _keyboardDidShow = useCallback(function (e) {
         setKeyboardHeight(e.endCoordinates.height)
     },[])
@@ -52,8 +55,8 @@ const Router = function () {
             >
                 {
                     routes.map((o, index) => 
-                        <Screen key={'routes' + index} name={o.page}>
-                            {props => <MainComponent KeyboardHeight={KeyboardHeight} haveTabs={o.haveTabs} Screen={o.screen} {...props} name={o.page} />}
+                        <Screen options={{animationEnabled : o.animation}} key={'routes' + index} name={o.page}>
+                            {props => <MainComponent header={o.header} KeyboardHeight={KeyboardHeight} haveTabs={o.haveTabs} Screen={o.screen} {...props} name={o.page} />}
                         </Screen>
                     )
                 }

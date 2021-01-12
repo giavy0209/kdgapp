@@ -10,14 +10,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import eye from '../../assets/images/icons/eye.png'
 import eyeClose from '../../assets/images/icons/eyeClose.png'
-import { asyncShowHideBalance } from '../../store/actions'
+import { asyncShowHideBalance } from '../../store/initLocal'
+import Number from '../../components/Number'
 
 export default function App () {
     const dispatch = useDispatch()
     const common = useSelector(state => state.Styles && state.Styles.Common ? state.Styles.Common : {})
     const styles = useSelector(state => state.Styles && state.Styles.Wallet ? state.Styles.Wallet : {})
     const text = useSelector(state => state.Languages && state.Languages.Wallet ? state.Languages.Wallet : {})
-
+    const balances = useSelector(state => state.balances)
     const isShowBalance = useSelector(state => state.isShowBalance)
 
     const handleShowHideBalance = useCallback(() => {
@@ -43,23 +44,23 @@ export default function App () {
                 </View>
 
                 <View style={[common.center,common.flexSize]}>
-                    <View style={[common.center, common.row]}>
-                        <Text style={[styles.totalBalance]}>{isShowBalance ? '$8100' : '*****'}</Text>
-                        <TouchableOpacity onPress={handleShowHideBalance} style={[common.iconPadding]}>
+                    <TouchableOpacity onPress={handleShowHideBalance} style={[common.center, common.row]}>
+                        <Number style={[styles.totalBalance]} value={balances?.total}/>
+                        <View style={[common.iconPadding]}>
                             <Image source={isShowBalance ? eye : eyeClose } />
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={[styles.avaiBalanceBlock]}>
                 <View style={[common.row , common.center,styles.avaiBalanceContainer,]}>
                     <View style={[styles.avaiBalanceContent , {borderLeftWidth : 0}]}>
                         <Text style={[styles.avaiBalanceContentTitle]}>{text.avai_balance}</Text>
-                        <Text style={[styles.avaiBalanceContentData]}>$300</Text>
+                        <Number style={[styles.avaiBalanceContentData]} value={balances?.avai}/>
                     </View>
                     <View style={[styles.avaiBalanceContent]}>
                         <Text style={[styles.avaiBalanceContentTitle]}>{text.lock_balance}</Text>
-                        <Text style={[styles.avaiBalanceContentData]}>$300</Text>
+                        <Number style={[styles.avaiBalanceContentData]} value={balances?.locked}/>
                     </View>
                 </View>
             </View>

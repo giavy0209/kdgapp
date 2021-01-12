@@ -1,5 +1,7 @@
 import { Dimensions } from "react-native";
 
+export const baseURL = 'https://kdg-api.kingdomgame.co'
+
 export const theme = {
     ...Dimensions.get('window'),
     REM : 16,

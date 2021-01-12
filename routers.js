@@ -14,7 +14,10 @@ import {
     Swap,
     User, 
     Wallet,
-    Login
+    Login,
+    CoinInfo,
+    Deposit,
+    Withdraw,
 } from './screen'
 
 const tabs = [
@@ -53,6 +56,27 @@ const routes = [
         page : 'Login',
         screen : Login,
         haveTabs : false
+    },
+    {
+        page : 'CoinInfo',
+        screen : CoinInfo,
+        haveTabs : false,
+        animation : true,
+        header : true,
+    },
+    {
+        page : 'Deposit',
+        screen : Deposit,
+        haveTabs : false,
+        animation : true,
+        header : true,
+    },
+    {
+        page : 'Withdraw',
+        screen : Withdraw,
+        haveTabs : false,
+        animation : true,
+        header : true,
     },
 ]
 

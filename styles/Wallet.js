@@ -73,7 +73,38 @@ const styles = ({
         avaiBalanceContentData : {
             color : theme.titlecolor,
             fontSize : theme.font16
+        },
+        listCoinHeader : {
+            justifyContent : 'space-between',
+        },
+        listCoinContainer : {
+            position : 'relative',
+            borderRadius : 5,
+            overflow : 'hidden',
+        },
+        listCoinBg : {
+            opacity : .4
+        },
+        listCoin : {
+            padding : 10,
+        },
+        coinContainer : {
+            position : 'relative',
+            borderRadius : 5,
+            overflow : 'hidden',
+        },
+        coin : {
+            padding : 12,
+            justifyContent : 'space-between'
+        },
+        coinLeft : {
+
+        },
+        coinIcon : {
+            width : 35,
+            height : 35
         }
+
     })
 }
 

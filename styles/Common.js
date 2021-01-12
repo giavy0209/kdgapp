@@ -18,6 +18,12 @@ const styles = ({
             justifyContent : 'center',
             alignItems : 'center'
         },
+        left : {
+            alignItems : 'flex-start'
+        },  
+        right : {
+            alignItems : 'flex-end'
+        },  
         fullSize : {
             width : '100%',
             height : '100%',
@@ -49,7 +55,54 @@ const styles = ({
         },
         iconPadding : {
             padding : 13
-        }
+        },
+        text : {
+            color : theme.maincolor,
+            fontSize : theme.font16
+        },
+        textSub : {
+            color : theme.subcolor,
+            fontSize : theme.font16
+        },
+        textTitle : {
+            color : theme.titlecolor,
+            fontSize : theme.font16
+        },
+        textHL: {
+            color : theme.hlcolor,
+            fontSize : theme.font16
+        },
+        font12 : {
+            fontSize : theme.font12
+        },
+        font14 : {
+            fontSize : theme.font14
+        },
+        font16 : {
+            fontSize : theme.font16
+        },
+        font18 : {
+            fontSize : theme.font18
+        },
+        fullSizeAbsolute : {
+            position : 'absolute',
+            width : '100%',
+            height : '100%',
+            top : 0,
+            left : 0,
+        },
+        background : {
+            backgroundColor : theme.bgcolor
+        },
+        radius : {
+            borderRadius : 5
+        },
+        mr : {
+            marginRight : 10
+        },
+        ml : {
+            marginLeft : 10
+        },
     })
 }
 
