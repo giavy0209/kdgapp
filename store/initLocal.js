@@ -73,6 +73,7 @@ export const asyncHandleToast = (text,type, duration = 2000) => {
 export const actChangeStyles = (themeType) => {
     var themeStyle = maptheme(theme, themeType)
     var Styles = mapstyles(themeStyle)
+    console.log(themeType , ' theme');
     return {
         type : 'STYLES',
         payload : {Styles}
@@ -82,7 +83,7 @@ export const actChangeStyles = (themeType) => {
 export const asyncInitTheme =  () => {
     return async dispatch => {
         var themeType = await storage.getItem('theme')
-
+        console.log(themeType);
         if(!themeType) {
             await storage.setItem('theme', 'dark')
             themeType = 'dark'

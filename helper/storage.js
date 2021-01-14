@@ -29,6 +29,7 @@ export default storage = {
 
     getItem : async (key) => {
         var item = await AsyncStorage.getItem(key)
-        if(item) return JSON.parse(item)
+        if(typeof item !== 'string') item = JSON.parse(item)
+        return item
     },
 }

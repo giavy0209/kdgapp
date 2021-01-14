@@ -14,6 +14,7 @@ import { createStackNavigator} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native'
 
 import {tabs,routes} from './routers'
+import AsyncStorage from '@react-native-community/async-storage';
 LogBox.ignoreAllLogs()
 const Stack = createStackNavigator();
 const {Screen , Navigator} = Stack
@@ -21,11 +22,10 @@ setStatusBarHidden(true, 'slide')
 setStatusBarStyle('dark')
 Platform.OS === 'android' && setStatusBarTranslucent(true)
 
-
+// AsyncStorage.clear()
 const Router = function () {
     const dispatch = useDispatch()
     const [KeyboardHeight , setKeyboardHeight] = useState(0)
-    console.log(KeyboardHeight);
     const _keyboardDidShow = useCallback(function (e) {
         setKeyboardHeight(e.endCoordinates.height)
     },[])

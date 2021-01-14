@@ -12,6 +12,7 @@ import {
 
 export const asyncInitAll = () => {
     return async dispatch => {
+        var isLoginSuccess = dispatch(asyncInitLogin())
         dispatch(asyncInitTheme())
         dispatch(asyncInitLanguage())
         dispatch(asyncInitShowHideBalance())
@@ -19,6 +20,6 @@ export const asyncInitAll = () => {
 
         dispatch(asyncInitBalance())
 
-        return await dispatch(asyncInitLogin())
+        return isLoginSuccess
     }
 }

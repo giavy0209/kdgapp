@@ -24,7 +24,7 @@ const reLogin =async () => {
     var resLogin = (await (await create()).post('/login', {email , password})).data
     console.log(resLogin);
     if(resLogin.status !== 1){
-        return 
+        return {status : 0}
     }
     
     await storage.setItem(resLogin.jwt)

@@ -36,7 +36,6 @@ export default function App({setHeaderTitle,...prop}) {
             token : _2Fa
         })
 
-        console.log(res);
         if(res.status === 100) return dispatch(asyncHandleToast(text.not_2fa , 0))
         if(res.status === 101) return dispatch(asyncHandleToast(text.incorrect_2fa , 0))
         if(res.status === 102) return dispatch(asyncHandleToast(text.not_kyc , 0))
