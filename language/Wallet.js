@@ -99,6 +99,10 @@ export default lang = {
         vi : "Hoặc sao chép mã tại đây",
         en: "Or copy code here"
     },
+    copied : {
+        vi : "Đã copy",
+        en: "Copied"
+    },
     pull_to_deposit : {
         vi : "Kéo sang phải để nạp",
         

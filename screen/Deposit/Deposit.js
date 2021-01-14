@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Image, Text, TextInput, View } from 'react-native'
+import { Image, Text, View,TouchableOpacity , Clipboard } from 'react-native'
 import {useNavigation, useRoute} from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { baseURL } from '../../const'
 import frame from '../../assets/images/icons/frame.png'
 import { asyncHandleToast } from '../../store/initLocal'
-import { QRCode } from 'react-native-custom-qr-codes-expo';
+import QRCode from 'react-native-qrcode-svg'
+import copy from '../../assets/images/icons/copy.png'
 export default function App({setHeaderTitle,...prop}) {
     const {params} = useRoute()
     const dispatch = useDispatch()
@@ -14,12 +15,16 @@ export default function App({setHeaderTitle,...prop}) {
     const styles = useSelector(state => state.Styles && state.Styles.Wallet ? state.Styles.Wallet : {})
     const text = useSelector(state => state.Languages && state.Languages.Wallet ? state.Languages.Wallet : {})
 
-    const [QR , setQR] = useState('')
+    const [QRSize, setQRSize] = useState(0)
+
     useEffect(() => {
         setHeaderTitle(`${text.deposit} ${params.coin.code}`)
     },[setHeaderTitle,text ,params])
 
-    
+    const handleCopy = useCallback((value) => {
+        Clipboard.setString(value)
+        dispatch(asyncHandleToast(text.copied , 1))
+    },[text])
     return (
         <>
         <View style={[common.container,styles.withdraw]}>
@@ -36,7 +41,7 @@ export default function App({setHeaderTitle,...prop}) {
                 </View>
             </View>
             <View style={[common.center , common.mt]}>
-                <Text style={[common.textTitle,common.font12]}>{text.scan}</Text>
+                <Text style={[common.text,common.font14]}>{text.scan}</Text>
                 <View
                 style={{
                     position : 'relative',
@@ -56,12 +61,27 @@ export default function App({setHeaderTitle,...prop}) {
                         resizeMode : 'contain'
                     }}/>
 
-                    <View>
-
+                    <View
+                    style={{
+                        position : 'absolute',
+                        top : 0,
+                        left : 0,
+                        width : '100%',
+                        height : '100%',
+                        justifyContent : 'center',
+                        alignItems : 'center'
+                    }}
+                    onLayout={e => setQRSize(e.nativeEvent.layout.width)}
+                    >
+                        <QRCode size={QRSize * 0.8} value={params.wallet.address}/>
                     </View>
 
-                    {/* <QRCode size={100} backgroundColor="#fff" style={{backgroundColor : '#fff'}} content={params.wallet.address}/> */}
                 </View>
+                <Text style={[common.text,common.font14]}>{text.copy}</Text>
+                <TouchableOpacity onPress={() => handleCopy(params.wallet.address)} style={[common.row, common.center , {alignItems : 'flex-start'}]}>
+                    <Text style={[common.textTitle,common.font18 , {textAlign : 'center' , width : '80%'}]}>{params.wallet.address}</Text>
+                    <Image source={copy} style={[common.ml]}/>
+                </TouchableOpacity>
             </View>
             
         </View>
