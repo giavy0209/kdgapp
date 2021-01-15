@@ -18,7 +18,7 @@ export default function Maincontainer({Screen, haveTabs , KeyboardHeight , heade
         <ImageBackground onLayout={(e) => setBG(e.nativeEvent.layout.height)} style={{width : '100%' , height : '100%', position : 'relative'}} source={background}>
             <Toast />
             {header && <Header setHeaderHeight={setHeaderHeight} title={HeaderTitle}/>}
-            <View style={{width : '100%' , height : BG - TabHeight - KeyboardHeight - HeaderHeight}}>
+            <View style={{width : '100%' , height : BG - TabHeight - KeyboardHeight - HeaderHeight - 15}}>
                 <ScrollView >
                     <Screen setHeaderTitle={setHeaderTitle}/>
                 </ScrollView>

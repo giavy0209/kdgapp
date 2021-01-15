@@ -9,14 +9,11 @@ import {useRoute,useNavigation } from '@react-navigation/native'
 
 export default function App () {
     const router = useRoute()
-    const screen = router.params?.screen
-
+    const screen = router?.params?.screen
     const navigation = useNavigation()
 
-    const [Current , setCurrent] = useState(screen ? screen : 'Login')
     const styles = useSelector(state => state.Styles && state.Styles.Login ? state.Styles.Login : {})
     const text = useSelector(state => state.Languages && state.Languages.Login ? state.Languages.Login : {})
-
     const jwt = useSelector(state => state.jwt)
 
     useEffect(()=> {
@@ -26,28 +23,28 @@ export default function App () {
         <>
             <View style={styles.container}>
                 <View style={styles.rowButton}>
-                    <TouchableOpacity onPress={()=> setCurrent('Login')} style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={()=> navigation.push('Login', {screen : 'Login'})} style={styles.buttonContainer}>
                         <View style={styles.button}>
-                            <Text style={Current === 'Login' ? styles.buttonTextActive : styles.buttonText}>{text.login}</Text>
-                            {Current === 'Login' && <View style={styles.underline}></View>}
+                            <Text style={(!screen || screen === 'Login') ? styles.buttonTextActive : styles.buttonText}>{text.login}</Text>
+                            {(!screen || screen === 'Login') && <View style={styles.underline}></View>}
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=> setCurrent('Reg')} style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={()=> navigation.push('Login',{screen : 'Reg'})} style={styles.buttonContainer}>
                         <View style={styles.button}>
-                            <Text style={Current === 'Reg' ? styles.buttonTextActive : styles.buttonText}>{text.reg}</Text>
-                            {Current === 'Reg' && <View style={styles.underline}></View>}
+                            <Text style={screen === 'Reg' ? styles.buttonTextActive : styles.buttonText}>{text.reg}</Text>
+                            {screen === 'Reg' && <View style={styles.underline}></View>}
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=> setCurrent('Forgot')} style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={()=> navigation.push('Login',{screen : 'Forgot'})} style={styles.buttonContainer}>
                         <View style={styles.button}>
-                            <Text style={Current === 'Forgot' ? styles.buttonTextActive : styles.buttonText}>{text.forgot}</Text>
-                            {Current === 'Forgot' && <View style={styles.underline}></View>}
+                            <Text style={screen === 'Forgot' ? styles.buttonTextActive : styles.buttonText}>{text.forgot}</Text>
+                            {screen === 'Forgot' && <View style={styles.underline}></View>}
                         </View>
                     </TouchableOpacity>
                 </View>
-                {Current === 'Login' && <LoginScreen setCurrent={setCurrent}/>}
-                {Current === 'Reg' && <RegScreen setCurrent={setCurrent}/>}
-                {Current === 'Forgot' && <ForgotScreen setCurrent={setCurrent}/>}
+                {(!screen || screen === 'Login') && <LoginScreen />}
+                {screen === 'Reg' && <RegScreen />}
+                {screen === 'Forgot' && <ForgotScreen />}
             </View>
         </>
     )

@@ -1,9 +1,16 @@
+import AsyncStorage from '@react-native-community/async-storage'
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 
 export default function App () {
     return (
     <>
-    <Text>User</Text>
+    <TouchableOpacity
+    onPress={() => {
+        AsyncStorage.removeItem('email')
+    }}
+    >
+        <Text>Đăng xuất</Text>
+    </TouchableOpacity>
     </>)
 }

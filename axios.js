@@ -18,11 +18,10 @@ async function create() {
 const reLogin =async () => {
     var {email , password} = await storage.getLogin()
     if(!email || !password) {
-        return
+        return {status : 0}
     }
 
     var resLogin = (await (await create()).post('/login', {email , password})).data
-    console.log(resLogin);
     if(resLogin.status !== 1){
         return {status : 0}
     }
@@ -34,10 +33,12 @@ const reLogin =async () => {
 const callAPI = {
     get : async (url) => {
         try {
-            return (await (await create()).get(url)).data
+            var res = (await (await create()).get(url)).data
+            return res
         } catch (error) {
             var {status} = await reLogin()
             if(status === 1) await callAPI.get(url)
+            else return {status : 0}
         }
     },
     post : async (url, body) => {
@@ -47,6 +48,7 @@ const callAPI = {
         } catch (error) {
             var {status} = await reLogin()
             if(status === 1) await callAPI.post(url, body)
+            else return {status : 0}
         }
     },
     put : async (url, body) => {
@@ -55,6 +57,7 @@ const callAPI = {
         } catch (error) {
             var {status} = await reLogin()
             if(status === 1) await callAPI.put(url,body)
+            else return {status : 0}
         }
     },
 }

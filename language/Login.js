@@ -79,4 +79,8 @@ export default lang = {
         vi : 'Đặt lại mật khẩu thành công',
         en : 'Reset password successfully'
     },
+    wrong_login : {
+        vi : 'Sai tên đăng nhập hoặc mật khẩu',
+        en : 'incorrect email or password'
+    },
 }

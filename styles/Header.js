@@ -7,6 +7,7 @@ const styles = ({
         header : {
             height : 49,
             position : 'relative',
+            marginBottom: 15
         },
         arrow : {
             height : '100%' ,

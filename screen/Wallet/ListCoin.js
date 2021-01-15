@@ -93,7 +93,7 @@ export default function App () {
                                         <Image style={[styles.coinIcon]} source={{uri : baseURL + o.coin.icon.path}}/>
                                         <View style={[common.ml]}>
                                             <Text style={[common.textTitle]}>{o.coin.code}</Text>
-                                            <Number style={[common.textSub, common.font14]} value={o.coin.price}/>
+                                            <Number style={[common.textSub, common.font14]} value={o.coin.price * o.balance}/>
                                         </View>
                                     </View>
                                     <View style={[common.right]}>

@@ -21,6 +21,8 @@ export const actChangeBalance = (balance) => {
     }
 }
 
+
+
 export const asyncLogin = (Email , Password) => {
     return async dispatch => {
         var res = await callAPI.post('/login', {email :Email , password : Password})
@@ -28,6 +30,7 @@ export const asyncLogin = (Email , Password) => {
             await storage.setLogin({email : Email , password : Password})
             await storage.setToken(res.jwt)
             dispatch(actChangeJWT(res.jwt))
+            dispatch(asyncInitAuth())
         }
         return res
     }
@@ -49,6 +52,13 @@ export const asyncInitLogin = () => {
 export const asyncInitBalance = () => {
     return async dispatch => {
         var res = await callAPI.get('/balances')
+        if(res.status !== 1) return
         dispatch(actChangeBalances(res.data))
+    }
+}
+
+export const asyncInitAuth = () => {
+    return async dispatch => {
+        dispatch(asyncInitBalance())
     }
 }

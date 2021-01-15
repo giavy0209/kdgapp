@@ -1,3 +1,4 @@
+import {Vibration} from 'react-native'
 import { storage,maptheme, maplanguage, mapstyles } from '../helper';
 import {theme} from '../const'
 
@@ -62,6 +63,7 @@ export const actChangeToast = (text,type , visible) => {
 
 export const asyncHandleToast = (text,type, duration = 2000) => {
     return async (dispatch) => {
+        if(type === 0 )Vibration.vibrate()
         dispatch(actChangeToast(text, type , true))
 
         setTimeout(() => {
@@ -83,7 +85,6 @@ export const actChangeStyles = (themeType) => {
 export const asyncInitTheme =  () => {
     return async dispatch => {
         var themeType = await storage.getItem('theme')
-        console.log(themeType);
         if(!themeType) {
             await storage.setItem('theme', 'dark')
             themeType = 'dark'
@@ -94,7 +95,6 @@ export const asyncInitTheme =  () => {
 }
 
 export const actChangeLanguage = (lang) => {
-
     var languagePage = maplanguage(language , lang)
     return {
         type : 'STYLES',
@@ -104,7 +104,10 @@ export const actChangeLanguage = (lang) => {
 
 export const asyncInitLanguage = () => {
     return async dispatch => {
+        console.log(123);
+
         var langType = await storage.getItem('lang')
+        console.log(langType);
 
         if(!langType) {
             await storage.setItem('lang', 'vi')

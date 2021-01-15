@@ -4,11 +4,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import eye from '../../assets/images/icons/eye.png'
 import eyeClose from '../../assets/images/icons/eyeClose.png'
-import callAPI from '../../axios'
 import Button from '../../components/Button'
-import { storage } from '../../helper'
-import { asyncHandleToast } from '../../store/actions'
+import { asyncHandleToast } from '../../store/initLocal'
 import {useNavigation,useRoute } from '@react-navigation/native'
+import { asyncLogin } from '../../store/initBE'
 export default function App () {
     const router = useRoute()
     const email = router.params?.email
@@ -17,20 +16,15 @@ export default function App () {
     const styles = useSelector(state => state.Styles && state.Styles.Login ? state.Styles.Login : {})
     const common = useSelector(state => state.Styles && state.Styles.Common ? state.Styles.Common : {})
     const text = useSelector(state => state.Languages && state.Languages.Login ? state.Languages.Login : {})
-    
     const [Email, setEmail] = useState(email ? email : null)
     const [Password, setPassword] = useState(null)
     const [HiddenPassword, setHiddenPassword] = useState(true)
 
     const handleLogin = useCallback(async () => {
-        var res = await callAPI.post('/login', {email :Email , password : Password})
+        var res = await dispatch(asyncLogin(Email , Password))
         if(res.status === 101) return dispatch(asyncHandleToast(text.email_exist , 0))
-        if(res.status === 102) return dispatch(asyncHandleToast(text.email_exist , 0))
-        if(res.status === 1){
-            await storage.setLogin({email : Email , password : Password})
-            await storage.setToken(res.jwt)
-            navigation.push('Wallet')
-        }
+        if(res.status === 102) return dispatch(asyncHandleToast(text.wrong_login , 0))
+        if(res.status === 1) navigation.push('Wallet')
     },[Email , Password,text])
 
 

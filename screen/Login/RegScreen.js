@@ -1,16 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState , useCallback} from 'react'
 import { Image, Text,  TextInput, View} from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
-import { useCallback } from 'react/cjs/react.development'
 import eye from '../../assets/images/icons/eye.png'
 import eyeClose from '../../assets/images/icons/eyeClose.png'
 import callAPI from '../../axios'
 import Button from '../../components/Button'
-import { asyncHandleToast } from '../../store/actions'
+import { asyncHandleToast } from '../../store/initLocal'
 import {useNavigation} from '@react-navigation/native'
-export default function App ({setCurrent}) {
+export default function App () {
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const common = useSelector(state => state.Styles && state.Styles.Common ? state.Styles.Common : {})
@@ -45,25 +44,30 @@ export default function App ({setCurrent}) {
                 })
             }, 1000);
         }
-    },[Email , EmailCode , Password, RePassword , RefCode,text,setCurrent])
+    },[Email , EmailCode , Password, RePassword , RefCode,text])
 
     const handleGetCode = useCallback(async()=> {
-        if(!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(Email)) return dispatch(asyncHandleToast(text.incorrect_email , 0))
-
-        var res = await callAPI.post('/create_code?type=1' , {email : Email})
-        if(res.status === 101) return dispatch(asyncHandleToast(text.email_exist, 0))
-        if(res.status === 102) return dispatch(asyncHandleToast(text.get_code_2_min, 0))
-
-        if(res.status === 1) return dispatch(asyncHandleToast(text.get_code_success))
+        
+        try {
+            if(!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(Email)) return dispatch(asyncHandleToast(text.incorrect_email , 0))
+            var res = await callAPI.post('/create_code?type=1' , {email : Email})
+            
+            if(res.status === 101) return dispatch(asyncHandleToast(text.email_exist, 0))
+            if(res.status === 102) return dispatch(asyncHandleToast(text.get_code_2_min, 0))
+    
+            if(res.status === 1) return dispatch(asyncHandleToast(text.get_code_success))
+        } catch (error) {
+            console.log(error);
+        }
 
     },[Email])
 
     return (
         <>
-            <Text style={styles.loginDes}>
+            <Text style={[styles.loginDes ]}>
                 {text.reg_des}
             </Text>
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer]}>
                 <View style={styles.blockInput}>
                     {Email !== null && <Text style={styles.placeholder}>{text.email}</Text>}
                     <TextInput 
@@ -122,7 +126,7 @@ export default function App ({setCurrent}) {
                 </View>
             </View>
             <TouchableOpacity onPress={()=>setIsChecked(!IsChecked)} style={[common.row , common.center, styles.rule]}>
-                <CheckBox
+                {/* <CheckBox
                 value={IsChecked}
                 onValueChange={setIsChecked}
                 style={styles.checkbox}
@@ -133,7 +137,7 @@ export default function App ({setCurrent}) {
                 />
                 <Text style={styles.ruleText}>
                     Tôi đồng ý với <Text style={common.linkweb}>Thỏa thuận người dùng |</Text> <Text style={common.linkweb}>Chính sách bảo mật</Text>
-                </Text>
+                </Text> */}
             </TouchableOpacity>
             <Button 
             onPress={handleReg}

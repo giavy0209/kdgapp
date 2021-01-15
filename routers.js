@@ -55,7 +55,8 @@ const routes = [
     {
         page : 'Login',
         screen : Login,
-        haveTabs : false
+        haveTabs : false,
+        animation : false,
     },
     {
         page : 'CoinInfo',
