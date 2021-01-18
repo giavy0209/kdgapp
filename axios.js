@@ -15,7 +15,7 @@ async function create() {
     return Axios
 }
 
-const reLogin =async () => {
+export const reLogin =async () => {
     var {email , password} = await storage.getLogin()
     if(!email || !password) {
         return {status : 0}
@@ -26,7 +26,7 @@ const reLogin =async () => {
         return {status : 0}
     }
     
-    await storage.setItem(resLogin.jwt)
+    await storage.setToken(resLogin.jwt)
     return {status : 1}
 }
 

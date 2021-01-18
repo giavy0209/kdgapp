@@ -46,6 +46,7 @@ const styles = ({
         },
         container : {
             paddingHorizontal : 15,
+            paddingBottom : 15
         },
         row : {
             display : 'flex',

@@ -11,10 +11,12 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator} from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/native'
 
 import {tabs,routes} from './routers'
+import socket from './socket'
+import { asyncChangeBalances } from './store/initBE';
 import AsyncStorage from '@react-native-community/async-storage';
+
 LogBox.ignoreAllLogs()
 const Stack = createStackNavigator();
 const {Screen , Navigator} = Stack
@@ -28,6 +30,7 @@ const Router = function () {
     const [KeyboardHeight , setKeyboardHeight] = useState(0)
     const _keyboardDidShow = useCallback(function (e) {
         setKeyboardHeight(e.endCoordinates.height)
+        console.log(e.endCoordinates.height);
     },[])
     const _keyboardDidHide = useCallback(function () {
         setKeyboardHeight(0)
@@ -39,6 +42,10 @@ const Router = function () {
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
     
+        socket.on('balances' , (balances) => {
+            dispatch(asyncChangeBalances(balances))
+        })
+
         return () => {
             Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
             Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);

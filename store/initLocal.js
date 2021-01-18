@@ -1,8 +1,9 @@
 import {Vibration} from 'react-native'
 import { storage,maptheme, maplanguage, mapstyles } from '../helper';
 import {theme} from '../const'
-
 import * as language from '../language'
+import {  asyncChangeBalances, asyncInitBalance } from './initBE';
+import { atcChangeLoading } from './actions';
 
 export const actShowHideBalance = (isShowBalance) => {
     return {
@@ -37,13 +38,17 @@ export const asyncSortUpDown = (isSortDown) => {
     return async dispatch => {
         await storage.setItem('isSortDown' , !!isSortDown)
         dispatch(actSortUpDown(isSortDown))
+        dispatch(asyncChangeBalances())
     }
 }
 
 export const asyncInitSortUpDown = () => {
     return async dispatch => {
         var isSortDown = await storage.getItem('isSortDown')
-        if(!isSortDown && isSortDown !== false) isSortDown = true
+        if(!isSortDown && isSortDown !== false) {
+            isSortDown = true
+            await storage.setItem('isSortDown' , isSortDown)
+        }
         dispatch(actSortUpDown(isSortDown))
     }
 }
@@ -75,7 +80,6 @@ export const asyncHandleToast = (text,type, duration = 2000) => {
 export const actChangeStyles = (themeType) => {
     var themeStyle = maptheme(theme, themeType)
     var Styles = mapstyles(themeStyle)
-    console.log(themeType , ' theme');
     return {
         type : 'STYLES',
         payload : {Styles}
@@ -104,11 +108,8 @@ export const actChangeLanguage = (lang) => {
 
 export const asyncInitLanguage = () => {
     return async dispatch => {
-        console.log(123);
-
         var langType = await storage.getItem('lang')
-        console.log(langType);
-
+        
         if(!langType) {
             await storage.setItem('lang', 'vi')
             langType = 'vi'

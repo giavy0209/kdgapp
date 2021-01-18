@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import Swipeable from 'react-native-swipeable';
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,6 +13,7 @@ import { baseURL } from '../../const'
 
 import deposit from '../../assets/images/icons/deposit.png'
 import withdraw from '../../assets/images/icons/withdraw.png'
+import { actChangeBalances } from '../../store/initBE';
 
 export default function App () {
     const dispatch = useDispatch()
@@ -71,7 +72,7 @@ export default function App () {
             <View style={[styles.listCoinContainer]}>
                 <View style={[common.fullSizeAbsolute, common.background , styles.listCoinBg]}></View>
                 <View style={[styles.listCoin]}>
-                    {balances?.balances && balances.balances.map((o, index) => o.coin.show && 
+                    {balances?.balances && balances.balances.map((o, index) =>
                     <View key={o._id}>
                         <Swipeable 
                         style={[styles.coinContainer, (index !== 0 && {marginTop : 7})]}

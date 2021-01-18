@@ -22,14 +22,17 @@ export default storage = {
     },
 
     setItem : async (key, value) => {
-        var itemType = typeof value
-        if(itemType !== 'string') value = JSON.stringify(value)
-        await AsyncStorage.setItem(key , value)
+        try {
+            value = JSON.stringify(value)
+            await AsyncStorage.setItem(key , value)
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     getItem : async (key) => {
         var item = await AsyncStorage.getItem(key)
-        if(typeof item !== 'string') item = JSON.parse(item)
+        item = JSON.parse(item)
         return item
     },
 }
