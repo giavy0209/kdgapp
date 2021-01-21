@@ -30,7 +30,7 @@ export default function App () {
             <View style={[common.container,common.flexSize]}>
                 <View style={[common.row, common.center,styles.header]}>
                     <Text style={[styles.headerTitle]}>{text.king_wallet}</Text>
-                    <View style={[common.row,styles.headerIconRow]}>
+                    {/* <View style={[common.row,styles.headerIconRow]}>
                         <TouchableOpacity style={[styles.headerIcon]}>
                             <Image source={scan}/>
                         </TouchableOpacity>
@@ -40,7 +40,7 @@ export default function App () {
                                 <Text style={[styles.notiText]}>9</Text>
                             </View>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
 
                 <View style={[common.center,common.flexSize]}>

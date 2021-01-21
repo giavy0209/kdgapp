@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native'
-
+import {StyleSheet, Dimensions} from 'react-native'
+const {height} = Dimensions.get('window')
 const styles = ({
     ...theme
 }) => {
@@ -33,6 +33,7 @@ const styles = ({
                 position : 'absolute',
                 zIndex : 99,
                 right : 0,
+                marginTop : 40,
                 marginRight : 10,
                 borderRadius : 25,
                 paddingHorizontal : 10,
@@ -46,7 +47,7 @@ const styles = ({
         },
         container : {
             paddingHorizontal : 15,
-            paddingBottom : 15
+            paddingBottom : 15,
         },
         row : {
             display : 'flex',
@@ -58,7 +59,17 @@ const styles = ({
         iconPadding : {
             padding : 13
         },
+        tc : {
+            textAlign : 'center'
+        },
+        tr : {
+            textAlign : 'right'
+        },
         text : {
+            color : theme.maincolor,
+            fontSize : theme.font16
+        },
+        textMain : {
             color : theme.maincolor,
             fontSize : theme.font16
         },
@@ -108,6 +119,11 @@ const styles = ({
         background : {
             backgroundColor : theme.bgcolor
         },
+        bgo: (o) =>{
+            o = o ? o : .4
+            return{
+            backgroundColor : `rgba(40,51,73 , ${o})`
+        }},
         radius : {
             borderRadius : 5
         },
@@ -120,6 +136,35 @@ const styles = ({
         mt : {
             marginTop : 10
         },
+        pd : {
+            padding : 15,
+        },
+        pv : {
+            paddingVertical : 15
+        },
+        ph : {
+            paddingHorizontal : 15
+        },
+        pl : {
+            paddingLeft : 15,
+        },
+        row_col : (margin) => {
+            margin = margin ? margin : -15
+            return {
+                marginHorizontal : margin,
+                display : 'flex',
+                flexWrap : 'wrap',
+                flexDirection : 'row',
+            }
+        },  
+        column : (column,index, padding ) => {
+            padding = padding ? padding : 15;
+            return {
+                paddingHorizontal : padding,
+                width : (100 / column) + '%',
+                marginTop : index >= column ? padding : 0
+            }
+        }
     })
 }
 

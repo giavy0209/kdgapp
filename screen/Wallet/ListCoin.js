@@ -64,9 +64,9 @@ export default function App () {
                     <TouchableOpacity onPress={handleSort} style={[common.iconPadding]}>
                         <Image source={isSortDown ? sortDown : sortUp}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSort} style={[common.iconPadding]}>
+                    {/* <TouchableOpacity onPress={handleSort} style={[common.iconPadding]}>
                         <Image source={plus}/>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
             <View style={[styles.listCoinContainer]}>
@@ -76,8 +76,8 @@ export default function App () {
                     <View key={o._id}>
                         <Swipeable 
                         style={[styles.coinContainer, (index !== 0 && {marginTop : 7})]}
-                        leftContent={<RenderLeft />} 
-                        rightContent={<RenderRight />} 
+                        leftContent={o.coin.actions?.includes(1) &&<RenderLeft />} 
+                        rightContent={o.coin.actions?.includes(2) && <RenderRight />} 
                         leftActionActivationDistance={200}
                         rightActionActivationDistance={200}
                         onLeftActionComplete={()=> navigation.navigate('Deposit' , {...o})}

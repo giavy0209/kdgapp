@@ -4,6 +4,9 @@ import Common from './Common'
 import Button from './Button'
 import Wallet from './Wallet'
 import Header from './Header'
+import Swap from './Swap'
+import Me from './Me'
+import Profile_Picker from './Profile_Picker'
 
 const allStyles = {
     Header,
@@ -12,6 +15,9 @@ const allStyles = {
     Login,
     Common,
     Wallet,
+    Swap,
+    Me,
+    Profile_Picker,
 }
 
 export default allStyles

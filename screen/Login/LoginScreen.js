@@ -8,6 +8,7 @@ import Button from '../../components/Button'
 import { asyncHandleToast } from '../../store/initLocal'
 import {useNavigation,useRoute } from '@react-navigation/native'
 import { asyncLogin } from '../../store/initBE'
+import socket from '../../socket'
 export default function App () {
     const router = useRoute()
     const email = router.params?.email
@@ -24,7 +25,10 @@ export default function App () {
         var res = await dispatch(asyncLogin(Email , Password))
         if(res.status === 101) return dispatch(asyncHandleToast(text.email_exist , 0))
         if(res.status === 102) return dispatch(asyncHandleToast(text.wrong_login , 0))
-        if(res.status === 1) navigation.push('Wallet')
+        if(res.status === 1) {
+            socket.connect()
+            navigation.push('Wallet')
+        }
     },[Email , Password,text])
 
 

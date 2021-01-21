@@ -91,6 +91,18 @@ export default lang = {
         vi : "Nạp",
         en: "Deposit"
     },
+    swap : {
+        vi : "Swap",
+        en: "Swap"
+    },
+    stake : {
+        vi : "Stake",
+        en: "Stake"
+    },
+    history : {
+        vi : "Lịch sử",
+        en: "History"
+    },
     scan : {
         vi : "Scan tại đây để nạp",
         en: "Scan here to deposit"
@@ -117,5 +129,9 @@ export default lang = {
     },
     release_to_withdraw : {
         vi : 'Thả ra để rút'
+    },
+    no_data : {
+        vi : 'Không có dữ liệu',
+        en : 'No data',
     }
 }

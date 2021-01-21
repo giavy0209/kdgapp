@@ -11,7 +11,6 @@ import { asyncHandleToast } from '../../store/initLocal'
 export default function App({setHeaderTitle,...prop}) {
     const {params} = useRoute()
     const dispatch = useDispatch()
-    const navigation = useNavigation()
     const common = useSelector(state => state.Styles && state.Styles.Common ? state.Styles.Common : {})
     const styles = useSelector(state => state.Styles && state.Styles.Wallet ? state.Styles.Wallet : {})
     const text = useSelector(state => state.Languages && state.Languages.Wallet ? state.Languages.Wallet : {})

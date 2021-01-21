@@ -14,8 +14,7 @@ import { createStackNavigator} from '@react-navigation/stack';
 
 import {tabs,routes} from './routers'
 import socket from './socket'
-import { asyncChangeBalances } from './store/initBE';
-import AsyncStorage from '@react-native-community/async-storage';
+import { asyncChangeBalances, asyncChangeCoin, asyncChangeInfo } from './store/initBE';
 
 LogBox.ignoreAllLogs()
 const Stack = createStackNavigator();
@@ -44,6 +43,14 @@ const Router = function () {
     
         socket.on('balances' , (balances) => {
             dispatch(asyncChangeBalances(balances))
+        })
+
+        socket.on('coins' , (coins) => {
+            dispatch(asyncChangeCoin(coins))
+        })
+
+        socket.on('info' , (info) => {
+            dispatch(asyncChangeInfo(info))
         })
 
         return () => {

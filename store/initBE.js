@@ -1,5 +1,6 @@
 import { storage} from '../helper';
 import callAPI from '../axios';
+import { asyncChangeDropdown } from './dropdown';
 export const actChangeJWT = (jwt) => {
     return {
         type : 'LOGIN' ,
@@ -14,6 +15,20 @@ export const actChangeBalances = (balances) => {
     }
 }
 
+export const actionChangeCoins = coins => {
+    return {
+        type : 'COIN' ,
+        payload : {coins}
+    }
+}
+
+export const actionChangeInfos = info => {
+    return {
+        type : 'INFO' ,
+        payload : {info}
+    }
+}
+
 export const asyncChangeBalances = (balances) => {
     return async dispatch => {
         if(balances) await storage.setItem('balances' , balances)
@@ -21,9 +36,10 @@ export const asyncChangeBalances = (balances) => {
         if(!balances) return
         const isSortDown = await storage.getItem('isSortDown')
         if(typeof isSortDown !== 'boolean') return
-        
         balances.balances.sort((a,b) => (a.coin.price * a.balance - b.coin.price * b.balance) * (isSortDown ? -1 : 1))
         dispatch(actChangeBalances(balances))
+
+        dispatch(asyncChangeDropdown())
     }
 }
 
@@ -59,13 +75,49 @@ export const asyncInitBalance = () => {
     return async dispatch => {
         var res = await callAPI.get('/balances')
         if(res.status !== 1) return
-        
         dispatch(asyncChangeBalances(res.data))
+    }
+}
+
+export const asyncChangeCoin = coins => {
+    return async dispatch => {
+        if(coins) storage.setItem('coins' , coins)
+        dispatch(actionChangeCoins(coins))
+        
+    }
+}
+
+export const asyncChangeInfo = info => {
+    return async dispatch => {
+        if(info) storage.setItem('info' , info)
+        dispatch(actionChangeInfos(info))
+        
+    }
+}
+
+export const asyncInitCoin = () => {
+    return async dispatch => {
+        var res = await callAPI.get('/coins')
+        if(res.status !== 1) return
+        dispatch(asyncChangeCoin(res.data))
+    }
+}
+
+export const asyncInitInfo = () => {
+    return async dispatch => {
+        var res = await callAPI.get('/user/me')
+        if(res.status !== 1) return
+        dispatch(asyncChangeInfo(res.data))
     }
 }
 
 export const asyncInitAuth = () => {
     return async dispatch => {
-        await dispatch(asyncInitBalance())
+        await Promise.all([
+            dispatch(asyncInitBalance()),
+            dispatch(asyncInitCoin()),
+            dispatch(asyncChangeInfo()),
+        ])
+        
     }
 }

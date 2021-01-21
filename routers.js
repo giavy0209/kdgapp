@@ -18,6 +18,11 @@ import {
     CoinInfo,
     Deposit,
     Withdraw,
+    Profile_Picker,
+    Setting_Picker,
+    Secure_Picker,
+    Reward,
+    KYC,
 } from './screen'
 
 const tabs = [
@@ -75,6 +80,20 @@ const routes = [
     {
         page : 'Withdraw',
         screen : Withdraw,
+        haveTabs : false,
+        animation : true,
+        header : true,
+    },
+    {
+        page : 'Profile_Picker',
+        screen : Profile_Picker,
+        haveTabs : false,
+        animation : true,
+        header : true,
+    },
+    {
+        page : 'KYC',
+        screen : KYC,
         haveTabs : false,
         animation : true,
         header : true,

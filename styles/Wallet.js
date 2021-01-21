@@ -138,6 +138,24 @@ const styles = ({
             color : theme.hlcolor,
             paddingVertical : 7,
             width : '100%',
+        },
+        history : {
+            paddingVertical : 14,
+            justifyContent : 'space-between',
+            borderBottomWidth : 1,
+            borderBottomColor : theme.subcolor
+        },
+        redCircle : {
+            width : 40,
+            height : 40,
+            backgroundColor : '#ff0000',
+            borderRadius : 25
+        },
+        greenCircle : {
+            width : 40,
+            height : 40,
+            backgroundColor : '#26A65B',
+            borderRadius : 25
         }
     })
 }

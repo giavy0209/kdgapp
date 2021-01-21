@@ -53,7 +53,7 @@ const callAPI = {
     },
     put : async (url, body) => {
         try {
-            return (await (await create()).post(url,body)).data
+            return (await (await create()).put(url,body)).data
         } catch (error) {
             var {status} = await reLogin()
             if(status === 1) await callAPI.put(url,body)

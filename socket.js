@@ -9,11 +9,18 @@ socket.on('connect' , async () => {
     console.log('socket connected');
 })
 socket.on('authed' , () => {
-    console.log('authed');
-    // socket.emit('request-balance')
+    socket.emit('request-balance')
+    socket.emit('request-coin')
+    socket.emit('request-info')
 })
 socket.on('emiting-balance' , () =>{
     console.log('receiving balance');
+})
+socket.on('emiting-info' , () =>{
+    console.log('receiving info');
+})
+socket.on('emiting-coin' , () =>{
+    console.log('receiving coin');
 })
 socket.on('not-auth' ,async () => {
     const {status} = await reLogin()

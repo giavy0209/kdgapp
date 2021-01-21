@@ -6,6 +6,11 @@ import Login from './Login'
 import CoinInfo from './CoinInfo'
 import Withdraw from './Withdraw'
 import Deposit from './Deposit'
+import Profile_Picker from './Profile_Picker'
+import Setting_Picker from './Setting_Picker'
+import Secure_Picker from './Secure_Picker'
+import Reward from './Reward'
+import KYC from './KYC'
 
 export {
     Staking,
@@ -16,4 +21,9 @@ export {
     CoinInfo,
     Withdraw,
     Deposit,
+    Profile_Picker,
+    Setting_Picker,
+    Secure_Picker,
+    Reward,
+    KYC,
 }
