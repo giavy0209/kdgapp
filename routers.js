@@ -98,6 +98,20 @@ const routes = [
         animation : true,
         header : true,
     },
+    {
+        page : 'Reward',
+        screen : Reward,
+        haveTabs : false,
+        animation : true,
+        header : true,
+    },
+    {
+        page : 'Setting_Picker',
+        screen : Setting_Picker,
+        haveTabs : false,
+        animation : true,
+        header : true,
+    },
 ]
 
 export {

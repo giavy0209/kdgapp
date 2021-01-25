@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState ,useEffect} from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import {useRoute} from '@react-navigation/native'
-import { useEffect } from 'react/cjs/react.development'
 
 import TextNumber from '../../components/Number'
 import { baseURL } from '../../const'

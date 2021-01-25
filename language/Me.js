@@ -33,12 +33,12 @@ export default lang = {
         en: 'KYC requested',
         
     },
-    kyc_status1 : {
+    kyc_status2 : {
         vi : 'Đang chờ duyệt',
         en: 'KYC pending',
         
     },
-    kyc_status2 : {
+    kyc_status1 : {
         vi : 'Đã xác nhận',
         en: 'KYC success',
         

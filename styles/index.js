@@ -7,6 +7,7 @@ import Header from './Header'
 import Swap from './Swap'
 import Me from './Me'
 import Profile_Picker from './Profile_Picker'
+import Staking from './Staking'
 
 const allStyles = {
     Header,
@@ -18,6 +19,7 @@ const allStyles = {
     Swap,
     Me,
     Profile_Picker,
+    Staking,
 }
 
 export default allStyles

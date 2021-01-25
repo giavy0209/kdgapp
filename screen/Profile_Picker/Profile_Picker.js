@@ -18,7 +18,7 @@ export default function App ({setHeaderTitle}) {
                 <TouchableOpacity style={common.pd}>
                     <Text style={[common.textMain]}>{text.profile}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity disabled={info.kyc !== '0' || info.kyc !== '3'} onPress={() => navigation.push('KYC')} style={[common.pd , common.row , {justifyContent : 'space-between'}]}>
+                <TouchableOpacity disabled={info.kyc !== '0' && info.kyc !== '3'} onPress={() => navigation.push('KYC')} style={[common.pd , common.row , {justifyContent : 'space-between'}]}>
                     <Text style={[common.textMain]}>{text.kyc}</Text>
                     <Text style={[common.textMain]}>
                         {

@@ -7,7 +7,6 @@ const styles = ({
         top : {
             height : 313,
             width : '100%',
-            position : 'relative'
         },
         header : {
             marginTop : 54,
