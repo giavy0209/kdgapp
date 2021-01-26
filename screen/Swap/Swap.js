@@ -18,7 +18,7 @@ export default function App () {
     const common = useSelector(state => state.Styles && state.Styles.Common ? state.Styles.Common : {})
     const styles = useSelector(state => state.Styles && state.Styles.Swap ? state.Styles.Swap : {})
     const text = useSelector(state => state.Languages && state.Languages.Swap ? state.Languages.Swap : {})
-    const dropdown = useSelector(state => state.dropdown)
+    const dropdown = useSelector(state => state.dropdown ? state.dropdown : {})
 
     const [Value, setValue] = useState('0')
 
@@ -43,7 +43,7 @@ export default function App () {
             if(value <= dropdown.swapFrom?.balance) {
                 setValue(value.toString())
             }else{
-                value = Math.floor(dropdown.swapFrom.balance * 100) / 100
+                value = Math.floor(dropdown.swapFrom?.balance * 100) / 100
                 setValue(value.toString())
             }
         }
@@ -75,7 +75,7 @@ export default function App () {
                 <Text style={[common.textMain , common.font12]}>{text.min} : {dropdown.swapFrom?.coin.min_swap}</Text>
                 <Text style={[common.textMain , common.font12]}>{text.max} : {dropdown.swapFrom?.coin.max_swap}</Text>
                 <Text style={[common.tr,common.textMain, common.font12]}>
-                    {text.balances} : <TextNumber showCurrency={false} showBalance={true} value={dropdown?.swapFrom.balance}/> 
+                    {text.balances} : <TextNumber showCurrency={false} showBalance={true} value={dropdown?.swapFrom?.balance}/> 
                 </Text>
             </View>
 
@@ -83,8 +83,8 @@ export default function App () {
                 <View style={common.row_col()}>
                     <TextInput onChangeText={handleChangeValue} value={Value} style={[common.column(2)]}/>
                     <TouchableOpacity onPress={handleOpenSelectSwapFrom} style={[common.center, common.row,common.column(2)]}>
-                        <Image style={{width : 35, height :35}} source={{uri : baseURL + dropdown?.swapFrom.coin?.icon.path}}/>
-                        <Text style={common.pl}>{dropdown?.swapFrom.coin?.code}</Text>
+                        <Image style={{width : 35, height :35}} source={{uri : baseURL + dropdown?.swapFrom?.coin?.icon.path}}/>
+                        <Text style={common.pl}>{dropdown?.swapFrom?.coin?.code}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -98,7 +98,7 @@ export default function App () {
                 <View style={common.row_col()}>
                     <TextInput value={
                         (Math.floor(
-                            Number(Value) * dropdown.swapFrom.coin.price / dropdown.swapTo.coin.price * 100
+                            Number(Value) * dropdown.swapFrom?.coin.price / dropdown.swapTo.coin.price * 100
                         ) / 100).toString()
                     } editable={false} style={[common.column(2)]}/>
                     <TouchableOpacity onPress={handleOpenSelectSwapTo} style={[common.center, common.row,common.column(2)]}>

@@ -31,14 +31,24 @@ export const actionChangeInfos = info => {
 
 export const asyncChangeBalances = (balances) => {
     return async dispatch => {
-        if(balances) await storage.setItem('balances' , balances)
         if(!balances) balances = await storage.getItem('balances')
         if(!balances) return
         const isSortDown = await storage.getItem('isSortDown')
         if(typeof isSortDown !== 'boolean') return
         balances.balances.sort((a,b) => (a.coin.price * a.balance - b.coin.price * b.balance) * (isSortDown ? -1 : 1))
-        dispatch(actChangeBalances(balances))
 
+        const coins = await storage.getItem('coins')
+        const coins_in_object = {}
+        for (let index = 0; index < coins.length; index++) {
+            const coin = coins[index];
+            coins_in_object[coin._id] = coin
+        }
+
+        balances.balances.forEach(el => {
+            el.coin = coins_in_object[el.coin._id]
+        })
+        await storage.setItem('balances' , balances)
+        dispatch(actChangeBalances(balances))
         dispatch(asyncChangeDropdown())
     }
 }
@@ -81,8 +91,9 @@ export const asyncInitBalance = () => {
 
 export const asyncChangeCoin = coins => {
     return async dispatch => {
-        if(coins) storage.setItem('coins' , coins)
+        if(coins) await storage.setItem('coins' , coins)
         dispatch(actionChangeCoins(coins))
+        dispatch(asyncChangeBalances())
         
     }
 }

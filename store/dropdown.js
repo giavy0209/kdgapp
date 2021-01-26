@@ -36,20 +36,18 @@ export const asyncChangeDropdown = (
             })
         }
 
+        
         if(!swapFrom && !lastData) swapFrom = listCoinCanSwap[0]
         if(!swapFrom && lastData) {
             swapFrom = balances.balances.find(o => o._id === lastData.swapFrom._id)
         }
-
         if(swapFrom) {
             balances.balances.forEach(el => {
                 if(swapFrom.coin.swap_with.includes(el.coin._id)){
                     listCoinSwapTo.push(el)
                 }
             })
-            swapTo = listCoinSwapTo[0]
         }
-
         
 
         if(!swapTo && !lastData) swapTo = listCoinSwapTo[0]

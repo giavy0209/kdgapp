@@ -14,6 +14,7 @@ export default function App({setHeaderTitle,...prop}) {
     const common = useSelector(state => state.Styles && state.Styles.Common ? state.Styles.Common : {})
     const styles = useSelector(state => state.Styles && state.Styles.Wallet ? state.Styles.Wallet : {})
     const text = useSelector(state => state.Languages && state.Languages.Wallet ? state.Languages.Wallet : {})
+    const balances = useSelector(state => state.balances)
 
     const [Value, setValue] = useState('0')
     const [Address, setAddress] = useState('')
@@ -28,13 +29,14 @@ export default function App({setHeaderTitle,...prop}) {
 
         if(!value || value < params.coin.min_withdraw) return dispatch(asyncHandleToast(text.min , 0))
         if(value +params.coin.withdraw_fee > params.balance) return dispatch(asyncHandleToast(text.not_enough_balance , 0))
-        const res = await callAPI.post('/deposit' , {
-            deposit_type : params.coin.code,
+        const res = await callAPI.post('/withdraw' , {
+            coin : params.coin._id,
             toAddress : Address,
             value : value,
             token : _2Fa
         })
-
+        
+        console.log(res);
         if(res.status === 100) return dispatch(asyncHandleToast(text.not_2fa , 0))
         if(res.status === 101) return dispatch(asyncHandleToast(text.incorrect_2fa , 0))
         if(res.status === 102) return dispatch(asyncHandleToast(text.not_kyc , 0))
@@ -57,7 +59,7 @@ export default function App({setHeaderTitle,...prop}) {
                         <Image style={{width : 35, height : 35, resizeMode : 'contain'}} source={{uri : `${baseURL}${params.coin.icon.path}`}}/>
                         <View>
                             <Text style={common.textTitle}> {params.coin.name} </Text>
-                            <Text style={[common.text , common.font14]}> {text.balance}: {params.balance} </Text>
+                            <Text style={[common.text , common.font14]}> {text.balance}: {balances?.balances.find(o => o._id === params._id).balance} </Text>
                         </View>
                     </View>
                 </View>
