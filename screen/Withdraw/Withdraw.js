@@ -46,7 +46,7 @@ export default function App({setHeaderTitle,...prop}) {
             setValue(0)
             setAddress('')
             set_2Fa('')
-            return dispatch(asyncHandleToast(text.withdraw_success , 0))
+            return dispatch(asyncHandleToast(text.withdraw_success , 1))
         }
     },[params,Value,text,Address, _2Fa])
     return (

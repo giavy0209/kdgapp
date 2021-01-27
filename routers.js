@@ -23,6 +23,8 @@ import {
     Secure_Picker,
     Reward,
     KYC,
+    JoinStake,
+    HistoryStake,
 } from './screen'
 
 const tabs = [
@@ -108,6 +110,20 @@ const routes = [
     {
         page : 'Setting_Picker',
         screen : Setting_Picker,
+        haveTabs : false,
+        animation : true,
+        header : true,
+    },
+    {
+        page : 'JoinStake',
+        screen : JoinStake,
+        haveTabs : false,
+        animation : true,
+        header : true,
+    },
+    {
+        page : 'HistoryStake',
+        screen : HistoryStake,
         haveTabs : false,
         animation : true,
         header : true,

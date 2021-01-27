@@ -11,6 +11,8 @@ import Setting_Picker from './Setting_Picker'
 import Secure_Picker from './Secure_Picker'
 import Reward from './Reward'
 import KYC from './KYC'
+import JoinStake from './JoinStake'
+import HistoryStake from './HistoryStake'
 
 export {
     Staking,
@@ -26,4 +28,6 @@ export {
     Secure_Picker,
     Reward,
     KYC,
+    JoinStake,
+    HistoryStake,
 }

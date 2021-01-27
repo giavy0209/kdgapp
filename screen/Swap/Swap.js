@@ -98,7 +98,7 @@ export default function App () {
                 <View style={common.row_col()}>
                     <TextInput value={
                         (Math.floor(
-                            Number(Value) * dropdown.swapFrom?.coin.price / dropdown.swapTo.coin.price * 100
+                            Number(Value) * dropdown.swapFrom?.coin.price / dropdown.swapTo?.coin.price * 100
                         ) / 100).toString()
                     } editable={false} style={[common.column(2)]}/>
                     <TouchableOpacity onPress={handleOpenSelectSwapTo} style={[common.center, common.row,common.column(2)]}>

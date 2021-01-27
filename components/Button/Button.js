@@ -26,7 +26,7 @@ export default function App({
         !disableLoading && setIsLoading(true)
         await onPress()
         const duration = new Date() - startTime
-        duration > delay && await waitFor(delay - duration)
+        duration < delay && await waitFor(delay - duration)
         !disableLoading && setIsLoading(false)
     },[onPress , delay])
     return (

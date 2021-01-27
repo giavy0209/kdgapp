@@ -1,6 +1,9 @@
-export default function renderDate(rawDate,dateString) {
+export default function renderDate(rawDate,dateString, diff) {
     if(!dateString) dateString = 'hh:mm:ss - dd-momo-yyyy'
-    const date = new Date(rawDate)
+    if(diff) diff = Number(diff.replace('d' ,'')) * 86400000
+    if(!diff) diff = 0
+
+    const date = new Date(new Date(rawDate).getTime() + diff)
     var hh = date.getHours()
     var mm = date.getMinutes()
     var ss = date.getSeconds()

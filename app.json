@@ -2,7 +2,7 @@
   "expo": {
     "name": "King Wallet",
     "slug": "KingWallet",
-    "version": "1.0.2",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/iconapp.png",
     "splash": {
@@ -18,14 +18,14 @@
     ],
     "ios": {
       "bundleIdentifier": "kingwallet.kingdomgame.org",
-      "buildNumber": "1.0.2",
+      "buildNumber": "1.0.6",
       "supportsTablet": true
     },
     "android": {
       "useNextNotificationsApi": true,
       "permissions" : [],
       "package": "kingwallet.kingdomgame.org",
-      "versionCode": 4,
+      "versionCode": 6,
       "config": {
         "googleSignIn": {
           "apiKey": "AIzaSyAsO8pwDRglDK8Cm5Zd68V-68lkFEX43Zg"

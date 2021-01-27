@@ -11,6 +11,7 @@ import { renderDate } from '../../helper';
 import empty from '../../assets/images/icons/empty.png'
 
 const ITEM_PER_PAGE = 10
+
 export default function  App({setHeaderTitle,...prop}) {
     const {params} = useRoute()
     const navigation = useNavigation()
@@ -18,14 +19,16 @@ export default function  App({setHeaderTitle,...prop}) {
     const common = useSelector(state => state.Styles && state.Styles.Common ? state.Styles.Common : {})
     const styles = useSelector(state => state.Styles && state.Styles.Wallet ? state.Styles.Wallet : {})
     const text = useSelector(state => state.Languages && state.Languages.Wallet ? state.Languages.Wallet : {})
-
+    const info = useSelector(state => state.info)
     const [ThisCoin, setThisCoin] = useState({})
     const [Page, setPage] = useState(1)
     const [Total, setTotal] = useState(0)
     const [History, setHistory] = useState([])
     
     const handleGetHistory = useCallback(async (page, coin) => {
-        const res = await callAPI.get(`/transactions?skip=${(page - 1) * 5}&limit=${ITEM_PER_PAGE}&coin=${coin}`)
+        console.log(`/transactions?skip=${(page - 1) * ITEM_PER_PAGE}&limit=${ITEM_PER_PAGE}&coin=${coin}&type=1,2,3,4,5,6`);
+        const res = await callAPI.get(`/transactions?skip=${(page - 1) * ITEM_PER_PAGE}&limit=${ITEM_PER_PAGE}&coin=${coin}&type=1,2,3,4,5,6`)
+        console.log(res.data.length);
         setHistory(res.data)
         setTotal(res.total)
     },[])
@@ -67,11 +70,21 @@ export default function  App({setHeaderTitle,...prop}) {
             {
                 History.length > 0 ? History.map( o => <View key={o._id} style={[common.row,common.center, styles.history]}>
                     <View style={[common.row, common.center]}>
-                        <View style={[(o.type === 0 ? styles.redCircle : styles.greenCircle), common.center]}>
-                            <Image source={o.type === 0 ? withdraw : deposit}/>
+                        <View style={[(o.from?._id === info._id ? styles.redCircle : styles.greenCircle), common.center]}>
+                            <Image source={o.from?._id === info._id ? withdraw : deposit}/>
                         </View>
                         <View style={[common.ml]}>
-                            <Text style={[common.font16 , common.textTitle]}>{o.type === 0 ? text.withdraw : text.deposit}</Text>
+                            <Text style={[common.font16 , common.textTitle]}>
+                            {
+                                o.type === 1 ? text.deposit :
+                                o.type === 2 ? text.withdraw :
+                                o.type === 3 ? text.swap :
+                                o.type === 4 ? text.stake :
+                                o.type === 5 ? text.receive_stake :
+                                o.type === 6 ? text.receive_profit :
+                                null
+                            }
+                            </Text>
                             <Text style={[ common.textTitle,common.font12]}>{renderDate(o.create_date)}</Text>
                         </View>
                     </View>

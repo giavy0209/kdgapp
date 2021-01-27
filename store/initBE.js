@@ -85,7 +85,7 @@ export const asyncInitBalance = () => {
     return async dispatch => {
         var res = await callAPI.get('/balances')
         if(res.status !== 1) return
-        dispatch(asyncChangeBalances(res.data))
+        dispatch(asyncChangeBalances(res))
     }
 }
 
@@ -116,7 +116,7 @@ export const asyncInitCoin = () => {
 
 export const asyncInitInfo = () => {
     return async dispatch => {
-        var res = await callAPI.get('/user/me')
+        var res = await callAPI.get('/user')
         if(res.status !== 1) return
         dispatch(asyncChangeInfo(res.data))
     }
@@ -127,7 +127,7 @@ export const asyncInitAuth = () => {
         await Promise.all([
             dispatch(asyncInitBalance()),
             dispatch(asyncInitCoin()),
-            dispatch(asyncChangeInfo()),
+            dispatch(asyncInitInfo()),
         ])
         
     }

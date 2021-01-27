@@ -99,9 +99,14 @@ export default lang = {
         en: 'Passport',
         
     },
-    name : {
+    first_name : {
         vi : 'Tên',
-        en: 'Name',
+        en: 'First name',
+        
+    },
+    lát_name : {
+        vi : 'HỌ',
+        en: 'Last name',
         
     },
     sex : {

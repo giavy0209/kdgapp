@@ -20,9 +20,10 @@ export default function App ({setHeaderTitle}) {
     const text = useSelector(state => state.Languages && state.Languages.Me ? state.Languages.Me : {})
 
     const [ListContry , setListContry] = useState([])
-    const [Contry , setContry] = useState('VN')
+    const [Country , setContry] = useState('VN')
     const [Paper , setPaper] = useState(1)
-    const [Name , setName] = useState('')
+    const [FirstName , setFirstName] = useState('')
+    const [LastName , setLastName] = useState('')
     const [ID , setID] = useState('')
     const [Images, setImages] = useState({})
     const getCountry = useCallback(async () => {
@@ -82,18 +83,17 @@ export default function App ({setHeaderTitle}) {
 
         if(isError) return dispatch(asyncHandleToast(text.upload_err , 0))
 
-        const res = await callAPI.put('/user',{
-            kyc_name : Name,
-            kyc_country : Contry,
-            kyc_number : ID,
-            kyc : 2
+        const res = await callAPI.put('/kyc',{
+            country : Country,
+            first_nam : FirstName,
+            last_name : LastName,
+            id : ID,
         })
-        console.log(res);
         if(res.status === 100) return dispatch(asyncHandleToast(text.exist , 0))
 
         if(res.status === 1) return dispatch(asyncHandleToast(text.kyc_submited,1))
 
-    },[Contry , Name, ID, Images,text])
+    },[Country , LastName, FirstName, ID, Images,text])
 
     return (
         <>
@@ -105,7 +105,7 @@ export default function App ({setHeaderTitle}) {
                 <Text style={[common.textSub, common.mt]}>{text.country}</Text>
                 <View style={[common.bgo(), common.radius]}>
                     <Picker
-                    selectedValue={Contry}
+                    selectedValue={Country}
                     onValueChange={(value) => setContry(value)}
                     style={[common.textTitle]}>
                         {
@@ -127,7 +127,10 @@ export default function App ({setHeaderTitle}) {
                 </View>
                 <Text style={[common.textSub, common.mt]}>{text.name}</Text>
                 <View style={[common.bgo(), common.radius]}>
-                    <TextInput onChangeText={setName} value={Name} style={[common.textTitle,{padding : 10}]} />
+                    <TextInput onChangeText={setFirstName} value={FirstName} style={[common.textTitle,{padding : 10}]} />
+                </View>
+                <View style={[common.bgo(), common.radius]}>
+                    <TextInput onChangeText={setLastName} value={LastName} style={[common.textTitle,{padding : 10}]} />
                 </View>
                 <Text style={[common.textSub, common.mt]}>{Paper === 1 ? text.paper_id : text.paper_pp}</Text>
                 <View style={[common.bgo(), common.radius]}>

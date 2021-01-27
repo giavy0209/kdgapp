@@ -133,5 +133,14 @@ export default lang = {
     no_data : {
         vi : 'Không có dữ liệu',
         en : 'No data',
-    }
+    },
+    receive_stake : {
+        vi : 'Nhận tiền staking',
+        en : 'Receive stake',
+    },
+    receive_profit : {
+        vi : 'Nhận lãi staking',
+        en : 'Receive profit from stake',
+    },
+    
 }

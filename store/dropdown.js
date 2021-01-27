@@ -52,10 +52,12 @@ export const asyncChangeDropdown = (
 
         if(!swapTo && !lastData) swapTo = listCoinSwapTo[0]
         if(!swapTo && lastData) {
-            swapTo = balances.balances.find(o => o._id === lastData.swapTo?._id)
-            swapTo = swapTo ? swapTo : swapTo = listCoinSwapTo[0]
+            if(swapFrom._id !== lastData.swapFrom._id){
+                swapTo = swapTo ? swapTo : swapTo = listCoinSwapTo[0]
+            }else {
+                swapTo = listCoinSwapTo[0]
+            }
         }
-
         const data = {
             swapFrom,
             swapTo,
