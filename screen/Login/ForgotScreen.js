@@ -30,7 +30,6 @@ export default function App () {
                 forgot_password_code : EmailCode,
                 new_password : Password,
             })
-            console.log(res);
             if(res.status === 101) return dispatch(asyncHandleToast(text.email_exist , 0))
             if(res.status === 102) return dispatch(asyncHandleToast(text.incorrect_email_code , 0))
             if(res.status === 1) {
