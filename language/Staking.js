@@ -126,6 +126,6 @@ Kết thúc thời hạn stake, người dùng có thể rút khoản gốc đã
     },
     end_success : {
         vi : 'Kết thúc staking thành công',
-        en : ''
+        en : 'End Success'
     }
 }

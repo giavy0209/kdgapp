@@ -26,9 +26,7 @@ export default function  App({setHeaderTitle,...prop}) {
     const [History, setHistory] = useState([])
     
     const handleGetHistory = useCallback(async (page, coin) => {
-        console.log(`/transactions?skip=${(page - 1) * ITEM_PER_PAGE}&limit=${ITEM_PER_PAGE}&coin=${coin}&type=1,2,3,4,5,6`);
         const res = await callAPI.get(`/transactions?skip=${(page - 1) * ITEM_PER_PAGE}&limit=${ITEM_PER_PAGE}&coin=${coin}&type=1,2,3,4,5,6`)
-        console.log(res.data.length);
         setHistory(res.data)
         setTotal(res.total)
     },[])
