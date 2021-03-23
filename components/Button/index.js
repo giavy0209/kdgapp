@@ -1,7 +1,3 @@
-import JoinButton from './JoinButton'
-import HistoryButton from './HistoryButton'
+import Button from './Button'
 
-export {
-    JoinButton,
-    HistoryButton
-}
+export default Button

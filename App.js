@@ -1,135 +1,109 @@
-import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
-import {View, SafeAreaView, AppState} from 'react-native'
-import { Provider} from 'react-redux'
+import React, { useCallback, useEffect, useState } from 'react';
+import { Keyboard, LogBox, Platform} from 'react-native';
+import { Provider } from 'react-redux'
+import { setStatusBarHidden, setStatusBarStyle, setStatusBarTranslucent } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {useFonts} from 'expo-font'
 import store from './store'
-import Navigation from './components/Navigation'
-import AsyncStorage from '@react-native-community/async-storage';
-import { SafeAreaProvider} from 'react-native-safe-area-context';
-import {
-  useFonts,
-  Roboto_300Light_Italic,
-  Roboto_400Regular_Italic,
-  Roboto_400Regular,
-  Roboto_500Medium,
-  Roboto_700Bold,
-} from '@expo-google-fonts/roboto';
-import {
-  RobotoCondensed_300Light
-} from '@expo-google-fonts/roboto-condensed';
-import { storage } from './helper';
+import MainComponent from './components/Maincontainer'
+import { asyncInitAll } from './store/actions'
+import { useDispatch, useSelector } from 'react-redux'
 
-console.disableYellowBox = true;
-export default function App() {
-  let [fontsLoaded] = useFonts({
-    Roboto_300Light_Italic,
-    Roboto_400Regular,
-    Roboto_400Regular_Italic,
-    RobotoCondensed_300Light,
-    Roboto_500Medium,
-    Roboto_700Bold,
-  });
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator} from '@react-navigation/stack';
 
-  useEffect(()=>{
-    // AsyncStorage.removeItem('isNotFirstTime')
-    async function setFirstTime(){
-      await AsyncStorage.setItem('isNotFirstTime', JSON.stringify(true))
-      
-      
-    }setFirstTime()
+import {tabs,routes} from './routers'
+import socket from './socket'
+import { asyncChangeBalances, asyncChangeCoin, asyncChangeInfo } from './store/initBE';
 
-  },[])
+LogBox.ignoreAllLogs()
+const Stack = createStackNavigator();
+const {Screen , Navigator} = Stack
+setStatusBarHidden(true, 'slide')
+setStatusBarStyle('dark')
+Platform.OS === 'android' && setStatusBarTranslucent(true)
 
+// AsyncStorage.clear()
+const Router = function () {
+    const dispatch = useDispatch()
+    const [KeyboardHeight , setKeyboardHeight] = useState(0)
+    const _keyboardDidShow = useCallback(function (e) {
+        setKeyboardHeight(e.endCoordinates.height)
+        console.log(e.endCoordinates.height);
+    },[])
+    const _keyboardDidHide = useCallback(function () {
+        setKeyboardHeight(0)
+    },[])
 
-  if (fontsLoaded) {
+    useEffect(()=> {
+        dispatch(asyncInitAll())
+
+        Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+    
+        socket.on('balances' , (balances) => {
+            dispatch(asyncChangeBalances(balances))
+        })
+
+        socket.on('coins' , (coins) => {
+            dispatch(asyncChangeCoin(coins))
+        })
+
+        socket.on('info' , (info) => {
+            dispatch(asyncChangeInfo(info))
+        })
+
+        return () => {
+            Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        };
+    },[])
+
     return (
-
-    <SafeAreaProvider>
-      <Provider store={store}> 
-        <Navigation/>      
-      </Provider>
-    </SafeAreaProvider>
-   
+        <NavigationContainer >
+            <Navigator
+            screenOptions={{
+                headerShown: false,
+                animationEnabled : false,
+            }}
+            >
+                {
+                    routes.map((o, index) => 
+                        <Screen options={{animationEnabled : o.animation ,}} key={'routes' + index} name={o.page}>
+                            {props => <MainComponent header={o.header} KeyboardHeight={KeyboardHeight} haveTabs={o.haveTabs} Screen={o.screen} {...props} name={o.page} />}
+                        </Screen>
+                    )
+                }
+                {
+                    tabs.map((o, index) => 
+                        <Screen key={'navigate' + index} name={o.page}>
+                            {props => <MainComponent KeyboardHeight={KeyboardHeight} haveTabs={true} Screen={o.screen} {...props} name={o.page} />}
+                        </Screen>
+                    )
+                }
+                
+            </Navigator>
+        </NavigationContainer>
     )
-  }else{
-    return (<View></View>)
-  }
 }
 
-// import React, { useRef, useState } from "react";
-// import { Animated, Text, View, StyleSheet, Button } from "react-native";
-// console.disableYellowBox = true;
-// export default function App() {
-//   // fadeAnim will be used as the value for opacity. Initial Value: 0
-//   const [Index, setIndex] = useState(0)
-//   const fadeAnim = useRef(new Animated.Value(0)).current;
-//   const fadeIn = () => {
-//     Animated.timing(fadeAnim, {
-//       toValue: Index + 5,
-//       duration: 300,
-//       useNativeDriver: false
-//     }).start();
-//     setIndex(Index + 5)
-//   };
+export default function App() {
+    const [loaded] = useFonts({
+        WorkSans: require('./assets/fonts/WorkSans.ttf'),
+        'WorkSans-Bold': require('./assets/fonts/WorkSans-Bold.ttf'),
+        'WorkSans-Medium': require('./assets/fonts/WorkSans-Medium.ttf'),
+    });
 
-//   const fadeOut = () => {
-//     // Will change fadeAnim value to 0 in 5 seconds
-//     Animated.timing(fadeAnim, {
-//       toValue: Index - 5,
-//       duration: 300,
-//       useNativeDriver: false
-//     }).start();
-//     setIndex(Index  - 5)
-//   };
-//   return (
-//     <View style={styles.container}>
-//       <Animated.View
-//         style={[
-//           styles.fadingContainer,
-//           {
-//             left: fadeAnim // Bind opacity to animated value
-//           }
-//         ]}
-//       >
-//         <Text style={styles.fadingText}>Fading View!</Text>
-//       </Animated.View>
 
-//       <Animated.View
-//         style={[
-//           styles.fadingContainer,
-//           {
-//             left: fadeAnim // Bind opacity to animated value
-//           }
-//         ]}
-//       >
-//         <Text style={styles.fadingText}>Fading View2</Text>
-//       </Animated.View>
-//       <View style={styles.buttonRow}>
-//         <Button title="Fade In" onPress={fadeIn} />
-//         <Button title="Fade Out" onPress={fadeOut} />
-//       </View>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: "center",
-//     justifyContent: "center"
-//   },
-//   fadingContainer: {
-//     paddingVertical: 8,
-//     paddingHorizontal: 16,
-//     backgroundColor: "powderblue"
-//   },
-//   fadingText: {
-//     fontSize: 28,
-//     textAlign: "center",
-//     margin: 10
-//   },
-//   buttonRow: {
-//     flexDirection: "row",
-//     marginVertical: 16
-//   }
-// });
+    if(loaded){
+        return (
+            <SafeAreaProvider>
+                <Provider store={store}>
+                    <Router />
+                </Provider>
+            </SafeAreaProvider>
+        )
+    }else{
+        return null
+    }
+}

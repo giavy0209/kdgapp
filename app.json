@@ -2,15 +2,11 @@
   "expo": {
     "name": "King Wallet",
     "slug": "KingWallet",
-    "version": "1.0.0",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/iconapp.png",
-    "androidNavigationBar": {
-      "visible": "sticky-immersive",
-      "barStyle": "dark-content"
-    },
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -21,12 +17,26 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.kingdomgame.kingwallet",
-      "buildNumber": "1.0.0"
+      "bundleIdentifier": "kingwallet.kingdomgame.org",
+      "buildNumber": "1.0.6",
+      "supportsTablet": true
     },
     "android": {
-      "package": "com.kingdomgame.kingwallet",
-      "versionCode": 1
+      "useNextNotificationsApi": true,
+      "permissions" : [],
+      "package": "kingwallet.kingdomgame.org",
+      "versionCode": 6,
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyAsO8pwDRglDK8Cm5Zd68V-68lkFEX43Zg"
+        },
+        "googleMaps" : {
+          "apiKey" : "AIzaSyAsO8pwDRglDK8Cm5Zd68V-68lkFEX43Zg"
+        }
+      }
+    },
+    "androidNavigationBar": {
+      "visible": "sticky-immersive"
     },
     "web": {
       "favicon": "./assets/favicon.png"

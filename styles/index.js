@@ -1,20 +1,25 @@
-import mainStyles from './mainStyle'
-import walletStyles from './walletStyles'
-import scannerStyles from './scannerStyles'
-import startScreenStyle from './startScreenStyle'
-import notifyStyles from './notifyStyles'
-import accountStyle from './accountStyle'
-import withdrawStyle from './withdrawStyle'
-import stakingStyle from './stakingStyle'
+import Tabs from './Tabs'
+import Login from './Login'
+import Common from './Common'
+import Button from './Button'
+import Wallet from './Wallet'
+import Header from './Header'
+import Swap from './Swap'
+import Me from './Me'
+import Profile_Picker from './Profile_Picker'
+import Staking from './Staking'
 
-export {
-    mainStyles,
-    walletStyles,
-    scannerStyles,
-    startScreenStyle,
-    notifyStyles,
-    accountStyle,
-    withdrawStyle,
-    stakingStyle
-    
+const allStyles = {
+    Header,
+    Tabs,
+    Button,
+    Login,
+    Common,
+    Wallet,
+    Swap,
+    Me,
+    Profile_Picker,
+    Staking,
 }
+
+export default allStyles
